@@ -6,7 +6,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Dependency injection for the WPF UI.</Description>
     <CommonTags>$(CommonTags);dependency;injection;abstractions;standard</CommonTags>
-    <Configurations>Debug;Release;DLL빌드</Configurations>
+    <Configurations>Debug;Release;DLL빌드;DLL</Configurations>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'DLL빌드'">

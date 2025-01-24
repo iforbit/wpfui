@@ -7,7 +7,7 @@
     <Description>WPF UI provides the Fluent experience in your known and loved WPF framework. Intuitive design, themes, navigation and new immersive controls. All natively and effortlessly.</Description>
     <UseWPF>true</UseWPF>
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
-    <Configurations>Debug;Release;DLL빌드</Configurations>
+    <Configurations>Debug;Release;DLL빌드;DLL</Configurations>
     <PackageProjectUrl>https://github.com/iforbit/WPFUI_4.0</PackageProjectUrl>
     <PackageReleaseNotes>https://github.com/iforbit/WPFUI_4.0/releases</PackageReleaseNotes>
     <Authors>Entropysys.co</Authors>

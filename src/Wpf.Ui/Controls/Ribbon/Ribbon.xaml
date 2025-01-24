@@ -15,8 +15,6 @@
     <ControlTemplate x:Key="rib.Templates.Ribbon"
                      TargetType="{x:Type rib:Ribbon}">
         <ControlTemplate.Resources>
-            <Style TargetType="{x:Type Separator}"
-                   BasedOn="{StaticResource Separator}" />
         </ControlTemplate.Resources>
         <Border Background="{TemplateBinding Background}"
           BorderBrush="{TemplateBinding BorderBrush}"
