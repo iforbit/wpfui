@@ -9,6 +9,7 @@
     <ApplicationIcon>applicationIcon.ico</ApplicationIcon>
     <Platforms>AnyCPU;x64</Platforms>
     <NoWarn>$(NoWarn);SA1601</NoWarn>
+    <Configurations>Debug;Release;DLL빌드</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

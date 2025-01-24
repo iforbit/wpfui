@@ -177,7 +177,7 @@ public class PageControlDocumentation : Control
 
     private static string CreateUrlForGithub(Type pageType, ReadOnlySpan<char> fileExtension)
     {
-        const string baseUrl = "https://github.com/lepoco/wpfui/tree/main/src/Wpf.Ui.Gallery/";
+        const string baseUrl = "https://github.com/iforbit/WPFUI_4.0/tree/main/src/Wpf.Ui.Gallery/";
         const string baseNamespace = "Wpf.Ui.Gallery";
 
         ReadOnlySpan<char> pageFullNameWithoutBaseNamespace = pageType.FullName.AsSpan()[

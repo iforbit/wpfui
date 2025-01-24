@@ -2,13 +2,26 @@
 
   <PropertyGroup>
     <PackageId>WPF-UI</PackageId>
-    <TargetFrameworks>net462;net472;net481;net6.0-windows;net8.0-windows;net9.0-windows</TargetFrameworks>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <TargetFrameworks>net6.0-windows;net8.0-windows;net9.0-windows</TargetFrameworks>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Description>WPF UI provides the Fluent experience in your known and loved WPF framework. Intuitive design, themes, navigation and new immersive controls. All natively and effortlessly.</Description>
     <UseWPF>true</UseWPF>
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <Configurations>Debug;Release;DLL빌드</Configurations>
+    <PackageProjectUrl>https://github.com/iforbit/WPFUI_4.0</PackageProjectUrl>
+    <PackageReleaseNotes>https://github.com/iforbit/WPFUI_4.0/releases</PackageReleaseNotes>
+    <Authors>Entropysys.co</Authors>
+    <Company>Entropysys.co</Company>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)' == 'DLL빌드'">
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net7.0'">
+    <EnableAotAnalyzer>false</EnableAotAnalyzer>
+  </PropertyGroup>
+  
   <ItemGroup>
     <None Include="VisualStudioToolsManifest.xml" Pack="true" PackagePath="tools" />
   </ItemGroup>
@@ -16,10 +29,6 @@
   <ItemGroup>
     <Resource Include="Resources\Fonts\FluentSystemIcons-Filled.ttf" />
     <Resource Include="Resources\Fonts\FluentSystemIcons-Regular.ttf" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'net462'">
-    <PackageReference Include="System.ValueTuple" />
   </ItemGroup>
 
   <ItemGroup>

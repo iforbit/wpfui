@@ -223,8 +223,8 @@
                 Margin="8,0,0,0"
                 Padding="4"
                 Content="GitHub"
-                NavigateUri="https://github.com/lepoco/wpfui"
-                ToolTip="https://github.com/lepoco/wpfui" />
+                NavigateUri="https://github.com/iforbit/WPFUI_4.0"
+                ToolTip="https://github.com/iforbit/WPFUI_4.0" />
             <ui:HyperlinkButton
                 Margin="8,0,0,0"
                 Padding="4"

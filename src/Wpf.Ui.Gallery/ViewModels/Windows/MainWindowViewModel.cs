@@ -30,6 +30,23 @@ public partial class MainWindowViewModel(IStringLocalizer<Translations> localize
     private string _applicationTitle = localizer["WPF UI Gallery"];
 
     [ObservableProperty]
+    private RibbonTab _ribbonTabs = new RibbonTab
+    {
+        Header = "Home",
+        Groups =
+        {
+            new RibbonGroupBox
+            {
+                Header = "Clipboard"
+            },
+            new RibbonGroupBox
+            {
+                Header = "File"
+            }
+        }
+    };
+
+    [ObservableProperty]
     private ObservableCollection<object> _menuItems =
     [
         new NavigationViewItem("Home", SymbolRegular.Home24, typeof(DashboardPage)),

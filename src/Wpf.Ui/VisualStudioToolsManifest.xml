@@ -40,6 +40,7 @@
       <Item Type="Wpf.Ui.Controls.PasswordBox" />
       <Item Type="Wpf.Ui.Controls.ProgressRing" />
       <Item Type="Wpf.Ui.Controls.RatingControl" />
+      <Item Type="Wpf.Ui.Controls.Ribbon" />
       <Item Type="Wpf.Ui.Controls.RichTextBox" />
       <Item Type="Wpf.Ui.Controls.Snackbar" />
       <Item Type="Wpf.Ui.Controls.SplitButton" />

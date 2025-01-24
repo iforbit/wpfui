@@ -27,7 +27,7 @@
                 </Grid.ColumnDefinitions>
 
                 <controls:Button
-                    x:Name="PART_BackButton"
+                    x:Name="PART_BackButton" 
                     Grid.Column="0"
                     IsEnabled="{TemplateBinding IsBackEnabled}"
                     Style="{StaticResource BasePaneButtonStyle}"
@@ -54,7 +54,7 @@
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <StackPanel
-                                Margin="0"
+                                Margin="0" 
                                 IsItemsHost="True"
                                 Orientation="Horizontal" />
                         </ItemsPanelTemplate>

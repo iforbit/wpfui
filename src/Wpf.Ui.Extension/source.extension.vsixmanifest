@@ -4,10 +4,10 @@
         <Identity Id="WPFUI.f1be4a7a-6073-492b-ac8c-dc46e836e926" Version="3.0.5" Language="en-US" Publisher="lepo.co" />
         <DisplayName>WPF UI</DisplayName>
         <Description xml:space="preserve">WPF UI provides the Fluent experience in your known and loved WPF framework. Intuitive design, themes, navigation and new immersive controls. All natively and effortlessly.</Description>
-        <MoreInfo>https://github.com/lepoco/wpfui</MoreInfo>
+        <MoreInfo>https://github.com/iforbit/WPFUI_4.0</MoreInfo>
         <License>license.txt</License>
         <GettingStartedGuide>https://wpfui.lepo.co/documentation</GettingStartedGuide>
-        <ReleaseNotes>https://github.com/lepoco/wpfui/releases</ReleaseNotes>
+        <ReleaseNotes>https://github.com/iforbit/WPFUI_4.0/releases</ReleaseNotes>
         <Icon>wpfui.png</Icon>
         <PreviewImage>preview.png</PreviewImage>
         <Tags>wpf ui wpfui fluent design winui windows controls custom metro modern xaml toolkit color dark theme lepo net6 net5 net</Tags>

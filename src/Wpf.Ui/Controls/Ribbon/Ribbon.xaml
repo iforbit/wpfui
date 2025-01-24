@@ -1,0 +1,178 @@
+<!--
+    This Source Code Form is subject to the terms of the MIT License.
+    If a copy of the MIT was not distributed with this file, You can obtain one at https://opensource.org/licenses/MIT.
+    Copyright (C) Leszek Pomianowski and WPF UI Contributors.
+    All Rights Reserved.
+-->
+
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:rib="clr-namespace:Wpf.Ui.Controls.Ribbon"
+    xmlns:internal="clr-namespace:Wpf.Ui.Internal"
+    >
+
+    <ControlTemplate x:Key="rib.Templates.Ribbon"
+                     TargetType="{x:Type rib:Ribbon}">
+        <ControlTemplate.Resources>
+            <Style TargetType="{x:Type Separator}"
+                   BasedOn="{StaticResource Separator}" />
+        </ControlTemplate.Resources>
+        <Border Background="{TemplateBinding Background}"
+          BorderBrush="{TemplateBinding BorderBrush}"
+          BorderThickness="{TemplateBinding BorderThickness}">
+            <Grid x:Name="PART_LayoutRoot">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <rib:RibbonTabControl   x:Name="PART_RibbonTabControl"
+                                        AreTabHeadersVisible="{TemplateBinding AreTabHeadersVisible}"
+                                        ContentHeight="{TemplateBinding ContentHeight}"
+                                        />
+            </Grid>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsCollapsed" Value="True">
+                <Setter TargetName="PART_RibbonTabControl" Property="Visibility" Value="Collapsed" />
+            </Trigger>
+            <Trigger Property="IsSimplified" Value="True">
+                <Setter TargetName="PART_RibbonTabControl" Property="ContentHeight" Value="42" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="rib.Templates.RibbonTabControl"
+                   TargetType="{x:Type rib:RibbonTabControl}">
+        <Grid x:Name="ContentGrid"
+            VerticalAlignment="Top"
+            Background="White">
+            <Border
+            HorizontalAlignment="Stretch"
+            Background="{DynamicResource CardBackground}"
+            BorderBrush="{DynamicResource CardStrokeColorDefault}"
+            BorderThickness="1,1,1,0"
+            CornerRadius="0,0,4,4"
+            KeyboardNavigation.DirectionalNavigation="Contained"
+            KeyboardNavigation.TabIndex="2"
+            KeyboardNavigation.TabNavigation="Local"
+            TextElement.Foreground="{DynamicResource CardForeground}">
+                <Grid>
+                    <!-- We must use a dedicated border to prevent the effect from affecting font rendering... -->
+                    <Border Background="{DynamicResource CardBackground}"
+                    BorderBrush="{DynamicResource CardBorderBrush}"
+                    BorderThickness="0"
+                            CornerRadius="0,0,4,4"
+                            />
+                    <ContentControl x:Name="mainContentControl"
+                            Margin="0"
+                            Focusable="False">
+                    </ContentControl>
+                </Grid>
+            </Border>
+        </Grid>
+        <ControlTemplate.Triggers>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="rib.Templates.RibbonTabItem"
+                 TargetType="{x:Type rib:RibbonTabItem}">
+        <Grid>
+            <Border x:Name="groupBorder"
+                Margin="0 0 0 1"
+                Background="{StaticResource CardBackgroundFillColorDefault}"
+                BorderBrush="{StaticResource CardStrokeColorDefault}"
+                BorderThickness="1,1,1,0"
+                CornerRadius="8,8,0,0"/>
+            <Border x:Name="backgroundBorder"
+                Background="{DynamicResource CardBackground}"
+                BorderThickness="0" />
+            <Border x:Name="underlineContainerBorder"
+                Margin="0 0 0 3"
+                Background="{DynamicResource CardBackground}"
+                Visibility="Collapsed">
+                <Border x:Name="underlineBorder"
+                    BorderBrush="{DynamicResource CardBorderBrush}"
+                    BorderThickness="0,1,0,0"
+                    Visibility="Collapsed" />
+            </Border>
+
+            <Border x:Name="PART_ContentContainer"
+                Padding="{DynamicResource ExpanderPadding}"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch">
+                <ContentControl x:Name="PART_HeaderContentHost"
+                            Content="{TemplateBinding Header}"
+                            ContentTemplate="{TemplateBinding HeaderTemplate}"
+                            ContentTemplateSelector="{TemplateBinding HeaderTemplateSelector}"
+                            Focusable="False" />
+            </Border>
+
+        </Grid>
+    </ControlTemplate>
+
+    <Style x:Key="DefaultRibbonStyle" TargetType="{x:Type rib:Ribbon}">
+        <Setter Property="Background" Value="{DynamicResource CardBackground}" />
+        <Setter Property="internal:FrameworkHelper.UseLayoutRounding" Value="True" />
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource DefaultControlFocusVisualStyle}" />
+        <Setter Property="Foreground" Value="{DynamicResource CardForeground}" />
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="Template" Value="{DynamicResource rib.Templates.Ribbon}"/>
+        <Setter Property="VerticalAlignment" Value="Top" />
+    </Style>
+
+    <Style BasedOn="{StaticResource DefaultRibbonStyle}" TargetType="{x:Type rib:Ribbon}" />
+    <Style x:Key="DefaultRibbonTabControlStyle" TargetType="{x:Type rib:RibbonTabControl}">
+        <Setter Property="Background" Value="{DynamicResource Background}" />
+        <Setter Property="CanMinimize" Value="{Binding CanMinimize, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type rib:Ribbon}}, Mode=TwoWay}" />
+        <Setter Property="CanUseSimplified" Value="{Binding CanUseSimplified, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type rib:Ribbon}}, Mode=TwoWay}" />
+        <Setter Property="ContentGapHeight" Value="{Binding ContentGapHeight, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type rib:Ribbon}}}" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Foreground" Value="{DynamicResource CardForeground}" />
+        <Setter Property="IsMinimized" Value="{Binding IsMinimized, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type rib:Ribbon}}, Mode=TwoWay}" />
+        <Setter Property="IsSimplified" Value="{Binding IsSimplified, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type rib:Ribbon}}, Mode=TwoWay}" />
+        <Setter Property="VerticalAlignment" Value="Top"/>
+        <Setter Property="Template" Value="{DynamicResource rib.Templates.RibbonTabControl}" />
+    </Style>
+
+    <Style x:Key="DefaultRibbonTabStyle" TargetType="{x:Type rib:RibbonTabItem}">
+        <Setter Property="Template" Value="{DynamicResource rib.Templates.RibbonTabItem}" />
+    </Style>
+
+    <Style x:Key="DefaultRibbonGroupBoxStyle" TargetType="{x:Type rib:RibbonGroupBox}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type rib:RibbonGroupBox}">
+                    <GroupBox Header="{TemplateBinding Header}">
+                        <ContentPresenter Content="{TemplateBinding Content}" />
+                    </GroupBox>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="DefaultRibbonButtonStyle" TargetType="{x:Type rib:RibbonButton}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type rib:RibbonButton}">
+                    <StackPanel Orientation="Horizontal">
+                        <ContentPresenter Content="{TemplateBinding Icon}" />
+                        <TextBlock Text="{TemplateBinding Content}" Margin="5,0,0,0" />
+                    </StackPanel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="Ribbon.Styles.MenuSeparator" TargetType="{x:Type Separator}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Separator}">
+                    <Grid Height="Auto">
+                        <Path Height="1" Margin="32 1 3 2" VerticalAlignment="Center" Data="M0,0L1,0" Fill="{x:Null}" Stretch="Fill" Stroke="{StaticResource CardStrokeColorDefaultBrush}" StrokeDashArray="2 2" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

@@ -112,7 +112,7 @@
                     <TextBlock
                         Grid.Column="1"
                         Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
-                        Text="git clone https://github.com/lepoco/wpfui.git" />
+                        Text="git clone https://github.com/iforbit/WPFUI_4.0.git" />
                 </Grid>
                 <ui:Anchor
                     Margin="0"
@@ -122,7 +122,7 @@
                     Background="Transparent"
                     BorderThickness="0,1,0,0"
                     CornerRadius="0"
-                    NavigateUri="https://github.com/lepoco/wpfui/issues/new/choose">
+                    NavigateUri="https://github.com/iforbit/WPFUI_4.0/issues/new/choose">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
