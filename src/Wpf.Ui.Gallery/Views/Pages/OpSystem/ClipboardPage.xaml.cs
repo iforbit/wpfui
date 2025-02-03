@@ -14,7 +14,7 @@ public partial class ClipboardPage : INavigableView<ClipboardViewModel>
 {
     public ClipboardViewModel ViewModel { get; }
 
-    public ClipboardPage(ClipboardViewModel viewModel)
+    public ClipboardPage( ClipboardViewModel viewModel )
     {
         ViewModel = viewModel;
         DataContext = this;

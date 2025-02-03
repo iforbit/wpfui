@@ -11,7 +11,7 @@ namespace Wpf.Ui;
 /// <summary>
 /// A service that provides methods related to navigation.
 /// </summary>
-public partial class NavigationService(INavigationViewPageProvider pageProvider) : INavigationService
+public partial class NavigationService( INavigationViewPageProvider pageProvider ) : INavigationService
 {
     /// <summary>
     /// Gets or sets the control representing navigation.
@@ -25,14 +25,14 @@ public partial class NavigationService(INavigationViewPageProvider pageProvider)
     }
 
     /// <inheritdoc />
-    public void SetNavigationControl(INavigationView navigation)
+    public void SetNavigationControl( INavigationView navigation )
     {
         NavigationControl = navigation;
         NavigationControl.SetPageProviderService(pageProvider);
     }
 
     /// <inheritdoc />
-    public bool Navigate(Type pageType)
+    public bool Navigate( Type pageType )
     {
         ThrowIfNavigationControlIsNull();
 
@@ -40,7 +40,7 @@ public partial class NavigationService(INavigationViewPageProvider pageProvider)
     }
 
     /// <inheritdoc />
-    public bool Navigate(Type pageType, object? dataContext)
+    public bool Navigate( Type pageType, object? dataContext )
     {
         ThrowIfNavigationControlIsNull();
 
@@ -48,7 +48,7 @@ public partial class NavigationService(INavigationViewPageProvider pageProvider)
     }
 
     /// <inheritdoc />
-    public bool Navigate(string pageTag)
+    public bool Navigate( string pageTag )
     {
         ThrowIfNavigationControlIsNull();
 
@@ -56,7 +56,7 @@ public partial class NavigationService(INavigationViewPageProvider pageProvider)
     }
 
     /// <inheritdoc />
-    public bool Navigate(string pageTag, object? dataContext)
+    public bool Navigate( string pageTag, object? dataContext )
     {
         ThrowIfNavigationControlIsNull();
 
@@ -72,7 +72,7 @@ public partial class NavigationService(INavigationViewPageProvider pageProvider)
     }
 
     /// <inheritdoc />
-    public bool NavigateWithHierarchy(Type pageType)
+    public bool NavigateWithHierarchy( Type pageType )
     {
         ThrowIfNavigationControlIsNull();
 
@@ -80,7 +80,7 @@ public partial class NavigationService(INavigationViewPageProvider pageProvider)
     }
 
     /// <inheritdoc />
-    public bool NavigateWithHierarchy(Type pageType, object? dataContext)
+    public bool NavigateWithHierarchy( Type pageType, object? dataContext )
     {
         ThrowIfNavigationControlIsNull();
 

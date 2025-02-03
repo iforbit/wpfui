@@ -14,7 +14,7 @@ public partial class SplitButtonPage : INavigableView<SplitButtonViewModel>
 {
     public SplitButtonViewModel ViewModel { get; }
 
-    public SplitButtonPage(SplitButtonViewModel viewModel)
+    public SplitButtonPage( SplitButtonViewModel viewModel )
     {
         ViewModel = viewModel;
         DataContext = this;

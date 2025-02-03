@@ -63,7 +63,7 @@ internal interface INotifyIcon
     /// A callback function that processes messages sent to a window.
     /// The WNDPROC type defines a pointer to this callback function.
     /// </summary>
-    public IntPtr WndProc(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled);
+    public IntPtr WndProc( IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled );
 
     /// <summary>
     /// Tries to register the <see cref="INotifyIcon"/> in the shell.
@@ -73,7 +73,7 @@ internal interface INotifyIcon
     /// <summary>
     /// Tries to register the <see cref="INotifyIcon"/> in the shell.
     /// </summary>
-    bool Register(Window parentWindow);
+    bool Register( Window parentWindow );
 
     /// <summary>
     /// Tries to modify the icon of the <see cref="INotifyIcon"/> in the shell.

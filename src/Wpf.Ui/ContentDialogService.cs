@@ -35,7 +35,7 @@ public class ContentDialogService : IContentDialogService
     private ContentPresenter? _dialogHost;
 
     [Obsolete("Use SetDialogHost instead.")]
-    public void SetContentPresenter(ContentPresenter contentPresenter)
+    public void SetContentPresenter( ContentPresenter contentPresenter )
     {
         SetDialogHost(contentPresenter);
     }
@@ -47,7 +47,7 @@ public class ContentDialogService : IContentDialogService
     }
 
     /// <inheritdoc/>
-    public void SetDialogHost(ContentPresenter contentPresenter)
+    public void SetDialogHost( ContentPresenter contentPresenter )
     {
         _dialogHost = contentPresenter;
     }
@@ -59,7 +59,7 @@ public class ContentDialogService : IContentDialogService
     }
 
     /// <inheritdoc/>
-    public Task<ContentDialogResult> ShowAsync(ContentDialog dialog, CancellationToken cancellationToken)
+    public Task<ContentDialogResult> ShowAsync( ContentDialog dialog, CancellationToken cancellationToken )
     {
         if (_dialogHost == null)
         {

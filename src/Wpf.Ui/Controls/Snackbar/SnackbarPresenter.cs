@@ -21,7 +21,7 @@ public class SnackbarPresenter : System.Windows.Controls.ContentPresenter
 
     public SnackbarPresenter()
     {
-        Unloaded += static (sender, _) =>
+        Unloaded += static ( sender, _ ) =>
         {
             var self = (SnackbarPresenter)sender;
             self.OnUnloaded();
@@ -59,7 +59,7 @@ public class SnackbarPresenter : System.Windows.Controls.ContentPresenter
         "WPF0041:Set mutable dependency properties using SetCurrentValue",
         Justification = "SetCurrentValue(ContentProperty, ...) will not work"
     )]
-    private void ImmediatelyHidSnackbar(Snackbar snackbar)
+    private void ImmediatelyHidSnackbar( Snackbar snackbar )
     {
         snackbar.SetCurrentValue(Snackbar.IsShownProperty, false);
         Content = null;
@@ -71,7 +71,7 @@ public class SnackbarPresenter : System.Windows.Controls.ContentPresenter
         CancellationTokenSource = new CancellationTokenSource();
     }
 
-    public virtual void AddToQue(Snackbar snackbar)
+    public virtual void AddToQue( Snackbar snackbar )
     {
         Queue.Enqueue(snackbar);
 
@@ -81,7 +81,7 @@ public class SnackbarPresenter : System.Windows.Controls.ContentPresenter
         }
     }
 
-    public virtual async Task ImmediatelyDisplay(Snackbar snackbar)
+    public virtual async Task ImmediatelyDisplay( Snackbar snackbar )
     {
         await HideCurrent();
         await ShowSnackbar(snackbar);
@@ -116,7 +116,7 @@ public class SnackbarPresenter : System.Windows.Controls.ContentPresenter
         "WPF0041:Set mutable dependency properties using SetCurrentValue",
         Justification = "SetCurrentValue(ContentProperty, ...) will not work"
     )]
-    private async Task ShowSnackbar(Snackbar snackbar)
+    private async Task ShowSnackbar( Snackbar snackbar )
     {
         Content = snackbar;
 
@@ -139,7 +139,7 @@ public class SnackbarPresenter : System.Windows.Controls.ContentPresenter
         "WPF0041:Set mutable dependency properties using SetCurrentValue",
         Justification = "SetCurrentValue(ContentProperty, ...) will not work"
     )]
-    private async Task HidSnackbar(Snackbar snackbar)
+    private async Task HidSnackbar( Snackbar snackbar )
     {
         snackbar.SetCurrentValue(Snackbar.IsShownProperty, false);
 

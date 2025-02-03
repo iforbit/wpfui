@@ -43,7 +43,7 @@ public class ThemesDictionary : ResourceDictionary
         SetSourceBasedOnSelectedTheme(ApplicationTheme.Light);
     }
 
-    private void SetSourceBasedOnSelectedTheme(ApplicationTheme? selectedApplicationTheme)
+    private void SetSourceBasedOnSelectedTheme( ApplicationTheme? selectedApplicationTheme )
     {
         var themeName = selectedApplicationTheme switch
         {

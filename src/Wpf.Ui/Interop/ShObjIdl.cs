@@ -154,39 +154,39 @@ internal static class ShObjIdl
         void HrInit();
 
         [PreserveSig]
-        void AddTab(IntPtr hwnd);
+        void AddTab( IntPtr hwnd );
 
         [PreserveSig]
-        void DeleteTab(IntPtr hwnd);
+        void DeleteTab( IntPtr hwnd );
 
         [PreserveSig]
-        void ActivateTab(IntPtr hwnd);
+        void ActivateTab( IntPtr hwnd );
 
         [PreserveSig]
-        void SetActiveAlt(IntPtr hwnd);
+        void SetActiveAlt( IntPtr hwnd );
 
         // ITaskbarList2
         [PreserveSig]
-        void MarkFullscreenWindow(IntPtr hwnd, [MarshalAs(UnmanagedType.Bool)] bool fFullscreen);
+        void MarkFullscreenWindow( IntPtr hwnd, [MarshalAs(UnmanagedType.Bool)] bool fFullscreen );
 
         // ITaskbarList3
         [PreserveSig]
-        void SetProgressValue(IntPtr hwnd, ulong ullCompleted, ulong ullTotal);
+        void SetProgressValue( IntPtr hwnd, ulong ullCompleted, ulong ullTotal );
 
         [PreserveSig]
-        void SetProgressState(IntPtr hwnd, TBPFLAG tbpFlags);
+        void SetProgressState( IntPtr hwnd, TBPFLAG tbpFlags );
 
         [PreserveSig]
-        void RegisterTab(IntPtr hwndTab, IntPtr hwndMDI);
+        void RegisterTab( IntPtr hwndTab, IntPtr hwndMDI );
 
         [PreserveSig]
-        void UnregisterTab(IntPtr hwndTab);
+        void UnregisterTab( IntPtr hwndTab );
 
         [PreserveSig]
-        void SetTabOrder(IntPtr hwndTab, IntPtr hwndInsertBefore);
+        void SetTabOrder( IntPtr hwndTab, IntPtr hwndInsertBefore );
 
         [PreserveSig]
-        void SetTabActive(IntPtr hwndTab, IntPtr hwndInsertBefore, uint dwReserved);
+        void SetTabActive( IntPtr hwndTab, IntPtr hwndInsertBefore, uint dwReserved );
 
         /// <summary>
         /// Adds thumbnail toolbar buttons to the specified window.
@@ -217,7 +217,7 @@ internal static class ShObjIdl
         );
 
         [PreserveSig]
-        void ThumbBarSetImageList(IntPtr hWnd, IntPtr himl);
+        void ThumbBarSetImageList( IntPtr hWnd, IntPtr himl );
 
         [PreserveSig]
         void SetOverlayIcon(
@@ -227,13 +227,13 @@ internal static class ShObjIdl
         );
 
         [PreserveSig]
-        void SetThumbnailTooltip(IntPtr hwnd, [MarshalAs(UnmanagedType.LPWStr)] string pszTip);
+        void SetThumbnailTooltip( IntPtr hwnd, [MarshalAs(UnmanagedType.LPWStr)] string pszTip );
 
         [PreserveSig]
-        void SetThumbnailClip(IntPtr hwnd, IntPtr prcClip);
+        void SetThumbnailClip( IntPtr hwnd, IntPtr prcClip );
 
         // ITaskbarList4
-        void SetTabProperties(IntPtr hwndTab, STPFLAG stpFlags);
+        void SetTabProperties( IntPtr hwndTab, STPFLAG stpFlags );
     }
 }
 

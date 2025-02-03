@@ -165,7 +165,7 @@ public class CalendarDatePicker : Wpf.Ui.Controls.Button
         );
     }
 
-    protected virtual void OnPopupOpened(object? sender, EventArgs e)
+    protected virtual void OnPopupOpened( object? sender, EventArgs e )
     {
         if (sender is not Popup popup)
         {
@@ -181,7 +181,7 @@ public class CalendarDatePicker : Wpf.Ui.Controls.Button
         _ = Keyboard.Focus(popup.Child);
     }
 
-    protected virtual void OnSelectedDatesChanged(object? sender, SelectionChangedEventArgs e)
+    protected virtual void OnSelectedDatesChanged( object? sender, SelectionChangedEventArgs e )
     {
         if (IsCalendarOpen)
         {

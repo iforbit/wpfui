@@ -29,7 +29,7 @@ public partial class MainWindowViewModel : ViewModel
         "IDE0060:Remove unused parameter",
         Justification = "Demo"
     )]
-    public MainWindowViewModel(INavigationService navigationService)
+    public MainWindowViewModel( INavigationService navigationService )
     {
         if (!_isInitialized)
         {

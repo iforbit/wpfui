@@ -11,7 +11,7 @@ namespace Wpf.Ui.Controls.Ribbon;
 
 public class RibbonScrollViewer : ScrollViewer
 {
-    protected override HitTestResult HitTestCore(PointHitTestParameters hitTestParameters)
+    protected override HitTestResult HitTestCore( PointHitTestParameters hitTestParameters )
     {
         if (this.VisualChildrenCount > 0
             && this.GetVisualChild(0) is { } firstVisualChild)
@@ -23,7 +23,7 @@ public class RibbonScrollViewer : ScrollViewer
     }
 
     /// <inheritdoc />
-    protected override void OnMouseWheel(MouseWheelEventArgs e)
+    protected override void OnMouseWheel( MouseWheelEventArgs e )
     {
         if (e.Handled)
         {

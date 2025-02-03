@@ -20,6 +20,7 @@ namespace Wpf.Ui.Controls;
 public partial class NavigationView : System.Windows.Controls.Control, INavigationView
 {
     /// <summary>
+    /// Initializes static members of the <see cref="NavigationView"/> class.
     /// Initializes static members of the <see cref="NavigationView"/> class and overrides default property metadata.
     /// </summary>
     static NavigationView()
@@ -71,7 +72,7 @@ public partial class NavigationView : System.Windows.Controls.Control, INavigati
     private static readonly Thickness AutoSuggestBoxMarginDefault = new(8, 8, 8, 16);
     private static readonly Thickness FrameMarginDefault = new(0, 50, 0, 0);
 
-    protected static void UpdateVisualState(NavigationView navigationView)
+    protected static void UpdateVisualState(NavigationView navigationView )
     {
         // Skip display modes that don't have multiple states
         if (
@@ -92,7 +93,7 @@ public partial class NavigationView : System.Windows.Controls.Control, INavigati
     }
 
     /// <inheritdoc />
-    protected override void OnInitialized(EventArgs e)
+    protected override void OnInitialized(EventArgs e )
     {
         base.OnInitialized(e);
 
@@ -107,7 +108,7 @@ public partial class NavigationView : System.Windows.Controls.Control, INavigati
         AddItemsToDictionaries();
     }
 
-    private void OnLoaded(object sender, RoutedEventArgs e)
+    private void OnLoaded(object sender, RoutedEventArgs e )
     {
         // TODO: Refresh
         UpdateVisualState((NavigationView)sender);
@@ -116,7 +117,7 @@ public partial class NavigationView : System.Windows.Controls.Control, INavigati
     /// <summary>
     /// This virtual method is called when this element is detached form a loaded tree.
     /// </summary>
-    protected virtual void OnUnloaded(object sender, RoutedEventArgs e)
+    protected virtual void OnUnloaded(object sender, RoutedEventArgs e )
     {
         Loaded -= OnLoaded;
         Unloaded -= OnUnloaded;
@@ -156,7 +157,7 @@ public partial class NavigationView : System.Windows.Controls.Control, INavigati
         }
     }
 
-    protected override void OnMouseDown(MouseButtonEventArgs e)
+    protected override void OnMouseDown(MouseButtonEventArgs e )
     {
         // Back button
         if (e.ChangedButton is MouseButton.XButton1)
@@ -171,7 +172,7 @@ public partial class NavigationView : System.Windows.Controls.Control, INavigati
     /// <summary>
     /// This virtual method is called when ActualWidth or ActualHeight (or both) changed.
     /// </summary>
-    protected virtual void OnSizeChanged(object sender, SizeChangedEventArgs e)
+    protected virtual void OnSizeChanged(object sender, SizeChangedEventArgs e )
     {
         // TODO: Update reveal
     }
@@ -179,7 +180,7 @@ public partial class NavigationView : System.Windows.Controls.Control, INavigati
     /// <summary>
     /// This virtual method is called when <see cref="BackButton"/> is clicked.
     /// </summary>
-    protected virtual void OnBackButtonClick(object sender, RoutedEventArgs e)
+    protected virtual void OnBackButtonClick(object sender, RoutedEventArgs e )
     {
         _ = GoBack();
     }
@@ -187,7 +188,7 @@ public partial class NavigationView : System.Windows.Controls.Control, INavigati
     /// <summary>
     /// This virtual method is called when <see cref="ToggleButton"/> is clicked.
     /// </summary>
-    protected virtual void OnToggleButtonClick(object sender, RoutedEventArgs e)
+    protected virtual void OnToggleButtonClick(object sender, RoutedEventArgs e )
     {
         SetCurrentValue(IsPaneOpenProperty, !IsPaneOpen);
     }
@@ -195,7 +196,7 @@ public partial class NavigationView : System.Windows.Controls.Control, INavigati
     /// <summary>
     /// This virtual method is called when <see cref="AutoSuggestBoxSymbolButton"/> is clicked.
     /// </summary>
-    protected virtual void AutoSuggestBoxSymbolButtonOnClick(object sender, RoutedEventArgs e)
+    protected virtual void AutoSuggestBoxSymbolButtonOnClick(object sender, RoutedEventArgs e )
     {
         SetCurrentValue(IsPaneOpenProperty, !IsPaneOpen);
         _ = AutoSuggestBox?.Focus();
@@ -228,7 +229,7 @@ public partial class NavigationView : System.Windows.Controls.Control, INavigati
         // TODO: When shift clicked on navigationviewitem
     }
 
-    internal void OnNavigationViewItemClick(NavigationViewItem navigationViewItem)
+    internal void OnNavigationViewItemClick(NavigationViewItem navigationViewItem )
     {
         OnItemInvoked();
 
@@ -323,7 +324,7 @@ public partial class NavigationView : System.Windows.Controls.Control, INavigati
         _ = NavigateToMenuItemFromAutoSuggestBox(FooterMenuItems, element);
     }
 
-    protected virtual void AddItemsToDictionaries(IEnumerable list)
+    protected virtual void AddItemsToDictionaries(IEnumerable list )
     {
         foreach (NavigationViewItem singleNavigationViewItem in list.OfType<NavigationViewItem>())
         {
@@ -373,7 +374,7 @@ public partial class NavigationView : System.Windows.Controls.Control, INavigati
         AddItemsToDictionaries(FooterMenuItems);
     }
 
-    protected virtual void AddItemsToAutoSuggestBoxItems(IEnumerable list)
+    protected virtual void AddItemsToAutoSuggestBoxItems(IEnumerable list )
     {
         foreach (NavigationViewItem singleNavigationViewItem in list.OfType<NavigationViewItem>())
         {
@@ -428,7 +429,7 @@ public partial class NavigationView : System.Windows.Controls.Control, INavigati
         return false;
     }
 
-    protected virtual void UpdateMenuItemsTemplate(IEnumerable list)
+    protected virtual void UpdateMenuItemsTemplate(IEnumerable list )
     {
         if (ItemTemplate == null)
         {
@@ -471,7 +472,7 @@ public partial class NavigationView : System.Windows.Controls.Control, INavigati
         currentItem.NavigationViewItemParent?.Activate(this);
     }
 
-    protected void DeactivateMenuItems(IEnumerable list)
+    protected void DeactivateMenuItems(IEnumerable list )
     {
         foreach (var item in list)
         {
@@ -483,7 +484,7 @@ public partial class NavigationView : System.Windows.Controls.Control, INavigati
     }
 
     [DebuggerStepThrough]
-    private void NavigationStackOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    private void NavigationStackOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e )
     {
         switch (e.Action)
         {

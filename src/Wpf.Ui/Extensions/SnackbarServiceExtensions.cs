@@ -18,7 +18,7 @@ public static class SnackbarServiceExtensions
     /// <param name="snackbarService">The <see cref="ISnackbarService"/>.</param>
     /// <param name="title">Name displayed on top of snackbar.</param>
     /// <param name="message">Message inside the snackbar.</param>
-    public static void Show(this ISnackbarService snackbarService, string title, string message)
+    public static void Show( this ISnackbarService snackbarService, string title, string message )
     {
         snackbarService.Show(
             title,

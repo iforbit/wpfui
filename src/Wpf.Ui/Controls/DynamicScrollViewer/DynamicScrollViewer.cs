@@ -103,7 +103,7 @@ public class DynamicScrollViewer : PassiveScrollViewer
     /// base.OnScrollChanged(args) if they want the event to be fired.
     /// </remarks>
     /// <param name="e">ScrollChangedEventArgs containing information about the change in scrolling state.</param>
-    protected override void OnScrollChanged(ScrollChangedEventArgs e)
+    protected override void OnScrollChanged(ScrollChangedEventArgs e )
     {
         base.OnScrollChanged(e);
 
@@ -191,7 +191,7 @@ public class DynamicScrollViewer : PassiveScrollViewer
         scroll._scrollingHorizontally = scroll.IsScrollingHorizontally;
     }
 
-    private static void OnMinimalChangeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void OnMinimalChangeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
         if (d is not DynamicScrollViewer scroll)
         {
@@ -201,7 +201,7 @@ public class DynamicScrollViewer : PassiveScrollViewer
         scroll._minimalChange = scroll.MinimalChange;
     }
 
-    private static void OnTimeoutChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void OnTimeoutChanged(DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
         if (d is not DynamicScrollViewer scroll)
         {

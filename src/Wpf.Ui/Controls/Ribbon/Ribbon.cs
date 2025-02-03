@@ -67,7 +67,7 @@ public class Ribbon : Control, ILogicalChildSupport
     /// </summary>
     /// <param name="sender">Sender</param>
     /// <param name="e">The event data</param>
-    private void OnTabItemsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    private void OnTabItemsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e )
     {
         switch (e.Action)
         {
@@ -75,7 +75,7 @@ public class Ribbon : Control, ILogicalChildSupport
             case NotifyCollectionChangedAction.Replace:
             {
                 var isSimplified = this.IsSimplified;
-                foreach (var item in e.NewItems.NullSafe().OfType<ISimplifiedStateControl>())
+                foreach (ISimplifiedStateControl item in e.NewItems.NullSafe().OfType<ISimplifiedStateControl>())
                 {
                     item.UpdateSimplifiedState(isSimplified);
                 }
@@ -86,7 +86,7 @@ public class Ribbon : Control, ILogicalChildSupport
             case NotifyCollectionChangedAction.Reset:
             {
                 var isSimplified = this.IsSimplified;
-                foreach (var item in this.Tabs.OfType<ISimplifiedStateControl>())
+                foreach (ISimplifiedStateControl item in this.Tabs.OfType<ISimplifiedStateControl>())
                 {
                     item.UpdateSimplifiedState(isSimplified);
                 }
@@ -103,7 +103,6 @@ public class Ribbon : Control, ILogicalChildSupport
     /// </summary>
     public event SelectionChangedEventHandler? SelectedTabChanged;
 
-
     /// <summary>
     /// Occurs when IsMinimized property is changing
     /// </summary>
@@ -114,14 +113,13 @@ public class Ribbon : Control, ILogicalChildSupport
     /// </summary>
     public event DependencyPropertyChangedEventHandler? IsCollapsedChanged;
 
-
     // Ribbon layout root
     private Panel? layoutRoot;
 
     private Window? ownerWindow;
 
     /// <summary>
-    /// Property for defining the TabControl.
+    /// Gets property for defining the TabControl.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public RibbonTabControl? TabControl
@@ -138,7 +136,7 @@ public class Ribbon : Control, ILogicalChildSupport
     public static readonly DependencyProperty TabControlProperty = TabControlPropertyKey.DependencyProperty;
 
     /// <summary>
-    /// Gets or sets whether or not the ribbon is in Simplified mode
+    /// Gets or sets a value indicating whether gets or sets whether or not the ribbon is in Simplified mode
     /// </summary>
     public bool IsSimplified
     {
@@ -149,12 +147,12 @@ public class Ribbon : Control, ILogicalChildSupport
     /// <summary>Identifies the <see cref="IsSimplified"/> dependency property.</summary>
     public static readonly DependencyProperty IsSimplifiedProperty = DependencyProperty.Register(nameof(IsSimplified), typeof(bool), typeof(Ribbon), new PropertyMetadata(false, OnIsSimplifiedChanged));
 
-    private static void OnIsSimplifiedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void OnIsSimplifiedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
         if (d is Ribbon ribbon)
         {
             var isSimplified = ribbon.IsSimplified;
-            foreach (var item in ribbon.Tabs.OfType<ISimplifiedStateControl>())
+            foreach (ISimplifiedStateControl item in ribbon.Tabs.OfType<ISimplifiedStateControl>())
             {
                 item.UpdateSimplifiedState(isSimplified);
             }
@@ -174,7 +172,7 @@ public class Ribbon : Control, ILogicalChildSupport
     public static readonly DependencyProperty SelectedTabItemProperty =
         DependencyProperty.Register(nameof(SelectedTabItem), typeof(RibbonTabItem), typeof(Ribbon), new PropertyMetadata(OnSelectedTabItemChanged));
 
-    private static void OnSelectedTabItemChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void OnSelectedTabItemChanged(DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
         var ribbon = (Ribbon)d;
         if (ribbon.TabControl is not null)
@@ -206,7 +204,7 @@ public class Ribbon : Control, ILogicalChildSupport
     public static readonly DependencyProperty SelectedTabIndexProperty =
         DependencyProperty.Register(nameof(SelectedTabIndex), typeof(int), typeof(Ribbon), new PropertyMetadata(-1, OnSelectedTabIndexChanged));
 
-    private static void OnSelectedTabIndexChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void OnSelectedTabIndexChanged(DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
         var ribbon = (Ribbon)d;
         var selectedIndex = (int)e.NewValue;
@@ -227,7 +225,7 @@ public class Ribbon : Control, ILogicalChildSupport
         }
     }
 
-    private static void AddOrRemoveLogicalChildOnPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void AddOrRemoveLogicalChildOnPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
         var ribbon = (Ribbon)d;
         if (e.OldValue is not null)
@@ -252,7 +250,7 @@ public class Ribbon : Control, ILogicalChildSupport
     public RibbonTabItem? LastVisibleItem => this.GetLastVisibleItem();
 
     /// <summary>
-    /// Gets or sets whether ribbon can be minimized
+    /// Gets or sets a value indicating whether gets or sets whether ribbon can be minimized
     /// </summary>
     public bool CanMinimize
     {
@@ -261,7 +259,7 @@ public class Ribbon : Control, ILogicalChildSupport
     }
 
     /// <summary>
-    /// Gets or sets whether ribbon is minimized
+    /// Gets or sets a value indicating whether gets or sets whether ribbon is minimized
     /// </summary>
     public bool IsMinimized
     {
@@ -278,7 +276,7 @@ public class Ribbon : Control, ILogicalChildSupport
     public static readonly DependencyProperty CanMinimizeProperty =
         DependencyProperty.Register(nameof(CanMinimize), typeof(bool), typeof(Ribbon), new PropertyMetadata(true));
 
-    private static void OnIsMinimizedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void OnIsMinimizedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
         var ribbon = (Ribbon)d;
 
@@ -292,7 +290,7 @@ public class Ribbon : Control, ILogicalChildSupport
     public static readonly DependencyProperty AreTabHeadersVisibleProperty = DependencyProperty.Register(nameof(AreTabHeadersVisible), typeof(bool), typeof(Ribbon), new PropertyMetadata(BooleanBoxes.TrueBox));
 
     /// <summary>
-    /// Defines whether tab headers are visible or not.
+    /// Gets or sets a value indicating whether defines whether tab headers are visible or not.
     /// </summary>
     public bool AreTabHeadersVisible
     {
@@ -300,9 +298,8 @@ public class Ribbon : Control, ILogicalChildSupport
         set => this.SetValue(AreTabHeadersVisibleProperty, BooleanBoxes.Box(value));
     }
 
-
     /// <summary>
-    /// Gets or sets whether ribbon can be switched
+    /// Gets or sets a value indicating whether gets or sets whether ribbon can be switched
     /// </summary>
     public bool CanUseSimplified
     {
@@ -341,7 +338,7 @@ public class Ribbon : Control, ILogicalChildSupport
         DependencyProperty.Register(nameof(ContentHeight), typeof(double), typeof(Ribbon), new PropertyMetadata(RibbonTabControl.DefaultContentHeight));
 
     /// <summary>
-    /// Gets whether ribbon is collapsed
+    /// Gets or sets a value indicating whether gets whether ribbon is collapsed
     /// </summary>
     public bool IsCollapsed
     {
@@ -354,7 +351,7 @@ public class Ribbon : Control, ILogicalChildSupport
         DependencyProperty.Register(nameof(IsCollapsed), typeof(bool),
             typeof(Ribbon), new PropertyMetadata(false, OnIsCollapsedChanged));
 
-    private static void OnIsCollapsedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void OnIsCollapsedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
         var ribbon = (Ribbon)d;
         ribbon.IsCollapsedChanged?.Invoke(ribbon, e);
@@ -379,10 +376,10 @@ public class Ribbon : Control, ILogicalChildSupport
         this.Unloaded += this.OnUnloaded;
     }
 
-    public static void OnLogicalChildPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    public static void OnLogicalChildPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
         // ReSharper disable once SuspiciousTypeConversion.Global
-        var logicalChildSupport = d as ILogicalChildSupport ?? throw new ArgumentException("Argument must be of type ILogicalChildSupport.", nameof(d));
+        ILogicalChildSupport logicalChildSupport = d as ILogicalChildSupport ?? throw new ArgumentException("Argument must be of type ILogicalChildSupport.", nameof(d));
 
         if (e.OldValue is DependencyObject oldValue)
         {
@@ -395,8 +392,9 @@ public class Ribbon : Control, ILogicalChildSupport
             logicalChildSupport.AddLogicalChild(newValue);
         }
     }
+
     // Handles tab control selection changed
-    private void OnTabControlSelectionChanged(object sender, SelectionChangedEventArgs e)
+    private void OnTabControlSelectionChanged(object sender, SelectionChangedEventArgs e )
     {
         if (ReferenceEquals(e.OriginalSource, this.TabControl) == false)
         {
@@ -409,14 +407,14 @@ public class Ribbon : Control, ILogicalChildSupport
         this.SelectedTabChanged?.Invoke(this, e);
     }
 
-    private void OnLoaded(object sender, RoutedEventArgs e)
+    private void OnLoaded(object sender, RoutedEventArgs e )
     {
         this.AttachToWindow();
 
         this.LoadInitialState();
     }
 
-    private void OnUnloaded(object sender, RoutedEventArgs e)
+    private void OnUnloaded(object sender, RoutedEventArgs e )
     {
         this.RibbonStateStorage.Save();
 
@@ -430,7 +428,7 @@ public class Ribbon : Control, ILogicalChildSupport
     {
         this.layoutRoot = this.GetTemplateChild("PART_LayoutRoot") as Panel;
 
-        var selectedTab = this.SelectedTabItem;
+        RibbonTabItem? selectedTab = this.SelectedTabItem;
         if (this.TabControl is not null)
         {
             this.TabControl.SelectionChanged -= this.OnTabControlSelectionChanged;
@@ -450,10 +448,11 @@ public class Ribbon : Control, ILogicalChildSupport
             this.TabControl.SelectedItem = selectedTab;
         }
     }
+
     /// <summary>
     /// Called when the <see cref="ownerWindow"/> is closed, so that we set it to null.
     /// </summary>
-    private void OnOwnerWindowClosed(object? sender, EventArgs e)
+    private void OnOwnerWindowClosed(object? sender, EventArgs e )
     {
         this.DetachFromWindow();
     }
@@ -483,6 +482,7 @@ public class Ribbon : Control, ILogicalChildSupport
 
         this.ownerWindow = null;
     }
+
     private RibbonTabItem? GetFirstVisibleItem()
     {
         return this.Tabs.FirstOrDefault(item => item.Visibility == Visibility.Visible);
@@ -494,7 +494,7 @@ public class Ribbon : Control, ILogicalChildSupport
     }
 
     /// <summary>
-    /// Gets or sets whether Quick Access ToolBar can
+    /// Gets or sets a value indicating whether gets or sets whether Quick Access ToolBar can
     /// save and load its state automatically
     /// </summary>
     public bool AutomaticStateManagement
@@ -507,7 +507,7 @@ public class Ribbon : Control, ILogicalChildSupport
     public static readonly DependencyProperty AutomaticStateManagementProperty =
         DependencyProperty.Register(nameof(AutomaticStateManagement), typeof(bool), typeof(Ribbon), new PropertyMetadata(true, OnAutomaticStateManagementChanged, CoerceAutomaticStateManagement));
 
-    private static object? CoerceAutomaticStateManagement(DependencyObject d, object? basevalue)
+    private static object? CoerceAutomaticStateManagement(DependencyObject d, object? basevalue )
     {
         var ribbon = (Ribbon)d;
         if (ribbon.RibbonStateStorage.IsLoading)
@@ -518,7 +518,7 @@ public class Ribbon : Control, ILogicalChildSupport
         return basevalue;
     }
 
-    private static void OnAutomaticStateManagementChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void OnAutomaticStateManagementChanged(DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
         var ribbon = (Ribbon)d;
         if ((bool)e.NewValue)
@@ -542,13 +542,13 @@ public class Ribbon : Control, ILogicalChildSupport
         }
     }
 
-    void ILogicalChildSupport.AddLogicalChild(object child)
+    void ILogicalChildSupport.AddLogicalChild(object child )
     {
         this.AddLogicalChild(child);
     }
 
     /// <inheritdoc />
-    void ILogicalChildSupport.RemoveLogicalChild(object child)
+    void ILogicalChildSupport.RemoveLogicalChild(object child )
     {
         this.RemoveLogicalChild(child);
     }
@@ -558,7 +558,7 @@ public class Ribbon : Control, ILogicalChildSupport
     {
         get
         {
-            var baseEnumerator = base.LogicalChildren;
+            IEnumerator baseEnumerator = base.LogicalChildren;
             while (baseEnumerator?.MoveNext() == true)
             {
                 yield return baseEnumerator.Current;
@@ -570,5 +570,4 @@ public class Ribbon : Control, ILogicalChildSupport
             }
         }
     }
-
 }

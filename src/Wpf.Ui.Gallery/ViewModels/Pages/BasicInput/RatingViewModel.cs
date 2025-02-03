@@ -22,7 +22,7 @@ public partial class RatingViewModel : ViewModel
     private double _secondRatingValue = 3D;
 
     [RelayCommand]
-    private void OnFirstRatingCheckboxChecked(object sender)
+    private void OnFirstRatingCheckboxChecked( object sender )
     {
         if (sender is not CheckBox checkbox)
         {
@@ -33,7 +33,7 @@ public partial class RatingViewModel : ViewModel
     }
 
     [RelayCommand]
-    private void OnSecondRatingCheckboxChecked(object sender)
+    private void OnSecondRatingCheckboxChecked( object sender )
     {
         if (sender is not CheckBox checkbox)
         {

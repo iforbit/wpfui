@@ -30,7 +30,7 @@ internal static class VisibilityBoxes
     /// Gets a boxed value for <paramref name="value"/>.
     /// </summary>
     /// <returns>A boxed <see cref="Visibility"/> value.</returns>
-    internal static object Box(Visibility value)
+    internal static object Box( Visibility value )
     {
         switch (value)
         {

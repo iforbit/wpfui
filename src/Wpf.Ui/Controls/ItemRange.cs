@@ -21,12 +21,12 @@ public readonly struct ItemRange
 
     public int EndIndex { get; }
 
-    public ItemRange(int startIndex, int endIndex)
+    public ItemRange( int startIndex, int endIndex )
         : this()
     {
         StartIndex = startIndex;
         EndIndex = endIndex;
     }
 
-    public readonly bool Contains(int itemIndex) => itemIndex >= StartIndex && itemIndex <= EndIndex;
+    public readonly bool Contains( int itemIndex ) => itemIndex >= StartIndex && itemIndex <= EndIndex;
 }

@@ -63,7 +63,7 @@ public static class SystemThemeWatcher
         }
     }
 
-    private static void ObserveLoadedWindow(Window window, WindowBackdropType backdrop, bool updateAccents)
+    private static void ObserveLoadedWindow(Window window, WindowBackdropType backdrop, bool updateAccents )
     {
         IntPtr hWnd =
             (hWnd = new WindowInteropHelper(window).Handle) == IntPtr.Zero
@@ -84,7 +84,7 @@ public static class SystemThemeWatcher
         bool updateAccents
     )
     {
-        window.Loaded += (_, _) =>
+        window.Loaded += (_, _ ) =>
         {
             IntPtr hWnd =
                 (hWnd = new WindowInteropHelper(window).Handle) == IntPtr.Zero
@@ -100,7 +100,7 @@ public static class SystemThemeWatcher
         };
     }
 
-    private static void ObserveLoadedHandle(ObservedWindow observedWindow)
+    private static void ObserveLoadedHandle(ObservedWindow observedWindow )
     {
         if (!observedWindow.HasHook)
         {
@@ -116,7 +116,7 @@ public static class SystemThemeWatcher
     /// <summary>
     /// Unwatches the window and removes the hook to receive messages from the system.
     /// </summary>
-    public static void UnWatch(Window? window)
+    public static void UnWatch(Window? window )
     {
         if (window is null)
         {
@@ -148,7 +148,7 @@ public static class SystemThemeWatcher
     /// <summary>
     /// Listens to system messages on the application windows.
     /// </summary>
-    private static IntPtr WndProc(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+    private static IntPtr WndProc(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled )
     {
         if (msg == (int)User32.WM.WININICHANGE)
         {
@@ -158,7 +158,7 @@ public static class SystemThemeWatcher
         return IntPtr.Zero;
     }
 
-    private static void UpdateObservedWindow(nint hWnd)
+    private static void UpdateObservedWindow(nint hWnd )
     {
         if (!UnsafeNativeMethods.IsValidWindow(hWnd))
         {

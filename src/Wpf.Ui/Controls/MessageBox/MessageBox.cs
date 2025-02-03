@@ -251,9 +251,9 @@ public class MessageBox : System.Windows.Window
         Topmost = true;
         SetValue(TemplateButtonCommandProperty, new RelayCommand<MessageBoxButton>(OnButtonClick));
 
-        PreviewMouseDoubleClick += static (_, args) => args.Handled = true;
+        PreviewMouseDoubleClick += static (_, args ) => args.Handled = true;
 
-        Loaded += static (sender, _) =>
+        Loaded += static (sender, _ ) =>
         {
             var self = (MessageBox)sender;
             self.OnLoaded();
@@ -367,14 +367,14 @@ public class MessageBox : System.Windows.Window
 
 #if NET8_0_OR_GREATER
     [UnsafeAccessor(UnsafeAccessorKind.Method, Name = "get_CanCenterOverWPFOwner")]
-    private static extern bool CanCenterOverWPFOwnerAccessor(Window w);
+    private static extern bool CanCenterOverWPFOwnerAccessor(Window w );
 #endif
 
     /// <summary>
     /// Resizes the MessageBox to fit the content's size, including margins.
     /// </summary>
     /// <param name="rootElement">The root element of the MessageBox</param>
-    protected virtual void ResizeToContentSize(UIElement rootElement)
+    protected virtual void ResizeToContentSize(UIElement rootElement )
     {
         Size desiredSize = rootElement.DesiredSize;
 
@@ -388,7 +388,7 @@ public class MessageBox : System.Windows.Window
         ResizeHeight(rootElement);
     }
 
-    protected override void OnClosing(CancelEventArgs e)
+    protected override void OnClosing(CancelEventArgs e )
     {
         base.OnClosing(e);
 
@@ -422,7 +422,7 @@ public class MessageBox : System.Windows.Window
     /// Occurs after the <see cref="MessageBoxButton"/> is clicked
     /// </summary>
     /// <param name="button">The MessageBox button</param>
-    protected virtual void OnButtonClick(MessageBoxButton button)
+    protected virtual void OnButtonClick(MessageBoxButton button )
     {
         MessageBoxResult result = button switch
         {
@@ -441,7 +441,7 @@ public class MessageBox : System.Windows.Window
         _ = WindowBackdrop.ApplyBackdrop(this, WindowBackdropType.Mica);
     }
 
-    private void ResizeWidth(UIElement element)
+    private void ResizeWidth(UIElement element )
     {
         if (Width <= MaxWidth)
         {
@@ -459,7 +459,7 @@ public class MessageBox : System.Windows.Window
         }
     }
 
-    private void ResizeHeight(UIElement element)
+    private void ResizeHeight(UIElement element )
     {
         if (Height <= MaxHeight)
         {

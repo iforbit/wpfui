@@ -9,13 +9,13 @@ using Wpf.Ui.Gallery.Controls;
 
 namespace Wpf.Ui.Gallery.ViewModels.Pages.DialogsAndFlyouts;
 
-public partial class ContentDialogViewModel(IContentDialogService contentDialogService) : ViewModel
+public partial class ContentDialogViewModel( IContentDialogService contentDialogService ) : ViewModel
 {
     [ObservableProperty]
     private string _dialogResultText = string.Empty;
 
     [RelayCommand]
-    private async Task OnShowDialog(object content)
+    private async Task OnShowDialog( object content )
     {
         ContentDialogResult result = await contentDialogService.ShowSimpleDialogAsync(
             new SimpleContentDialogCreateOptions()

@@ -11,7 +11,7 @@ namespace Wpf.Ui.Controls;
 
 public class NavigatingCancelEventArgs : RoutedEventArgs
 {
-    public NavigatingCancelEventArgs(RoutedEvent routedEvent, object source)
+    public NavigatingCancelEventArgs( RoutedEvent routedEvent, object source )
         : base(routedEvent, source) { }
 
     public required object Page { get; init; }

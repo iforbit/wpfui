@@ -41,7 +41,7 @@ public partial class SettingsViewModel : ViewModel
     }
 
     [RelayCommand]
-    private void OnChangeTheme(string parameter)
+    private void OnChangeTheme( string parameter )
     {
         switch (parameter)
         {

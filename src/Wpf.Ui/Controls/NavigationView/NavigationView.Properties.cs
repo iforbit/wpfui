@@ -497,7 +497,7 @@ public partial class NavigationView
         }
     }
 
-    private void OnMenuItems_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    private void OnMenuItems_CollectionChanged( object? sender, NotifyCollectionChangedEventArgs e )
     {
         if (e.NewItems is null)
         {
@@ -508,7 +508,7 @@ public partial class NavigationView
         AddItemsToDictionaries(e.NewItems);
     }
 
-    private static void OnMenuItemsSourceChanged(DependencyObject? d, DependencyPropertyChangedEventArgs e)
+    private static void OnMenuItemsSourceChanged( DependencyObject? d, DependencyPropertyChangedEventArgs e )
     {
         if (d is not NavigationView navigationView)
         {
@@ -531,12 +531,12 @@ public partial class NavigationView
 
         if (e.NewValue is INotifyCollectionChanged oc)
         {
-            oc.CollectionChanged += (s, e) =>
+            oc.CollectionChanged += ( s, e ) =>
                 navigationView.OnMenuItemsSource_CollectionChanged(oc, navigationView.MenuItems, e);
         }
     }
 
-    private void OnFooterMenuItems_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    private void OnFooterMenuItems_CollectionChanged( object? sender, NotifyCollectionChangedEventArgs e )
     {
         if (e.NewItems is null)
         {
@@ -573,12 +573,12 @@ public partial class NavigationView
 
         if (e.NewValue is INotifyCollectionChanged oc)
         {
-            oc.CollectionChanged += (s, e) =>
+            oc.CollectionChanged += ( s, e ) =>
                 navigationView.OnMenuItemsSource_CollectionChanged(oc, navigationView.FooterMenuItems, e);
         }
     }
 
-    private static void OnPaneDisplayModeChanged(DependencyObject? d, DependencyPropertyChangedEventArgs e)
+    private static void OnPaneDisplayModeChanged( DependencyObject? d, DependencyPropertyChangedEventArgs e )
     {
         if (d is not NavigationView navigationView)
         {
@@ -588,7 +588,7 @@ public partial class NavigationView
         navigationView.OnPaneDisplayModeChanged();
     }
 
-    private static void OnItemTemplateChanged(DependencyObject? d, DependencyPropertyChangedEventArgs e)
+    private static void OnItemTemplateChanged( DependencyObject? d, DependencyPropertyChangedEventArgs e )
     {
         if (d is not NavigationView navigationView)
         {
@@ -598,7 +598,7 @@ public partial class NavigationView
         navigationView.OnItemTemplateChanged();
     }
 
-    private static void OnIsPaneOpenChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void OnIsPaneOpenChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
         if (d is not NavigationView navigationView)
         {
@@ -629,7 +629,7 @@ public partial class NavigationView
         UpdateVisualState(navigationView);
     }
 
-    private static void OnTitleBarChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void OnTitleBarChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
         if (d is not NavigationView navigationView)
         {
@@ -663,7 +663,7 @@ public partial class NavigationView
         }
     }
 
-    private static void OnAutoSuggestBoxChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void OnAutoSuggestBoxChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
         if (d is not NavigationView navigationView)
         {
@@ -695,7 +695,7 @@ public partial class NavigationView
         }
     }
 
-    private static void OnBreadcrumbBarChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void OnBreadcrumbBarChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
         if (d is not NavigationView navigationView)
         {

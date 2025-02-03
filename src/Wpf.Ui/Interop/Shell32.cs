@@ -164,7 +164,7 @@ internal static class Shell32
 
     [DllImport(Libraries.Shell32)]
     [return: MarshalAs(UnmanagedType.Bool)]
-    public static extern bool Shell_NotifyIcon([In] NIM dwMessage, [In] NOTIFYICONDATA lpdata);
+    public static extern bool Shell_NotifyIcon( [In] NIM dwMessage, [In] NOTIFYICONDATA lpdata );
 
     /// <summary>
     /// Sets the User Model AppID for the current process, enabling Windows to retrieve this ID

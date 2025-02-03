@@ -11,14 +11,14 @@ public partial class MessageBoxViewModel : ViewModel
 {
     [SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "relay command")]
     [RelayCommand]
-    private void OnOpenStandardMessageBox(object sender)
+    private void OnOpenStandardMessageBox( object sender )
     {
         _ = MessageBox.Show("Something about to happen", "I can feel it");
     }
 
     [SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "relay command")]
     [RelayCommand]
-    private async Task OnOpenCustomMessageBox(object sender)
+    private async Task OnOpenCustomMessageBox( object sender )
     {
         var uiMessageBox = new Wpf.Ui.Controls.MessageBox
         {

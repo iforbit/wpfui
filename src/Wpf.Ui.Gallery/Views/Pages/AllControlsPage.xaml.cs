@@ -11,7 +11,7 @@ public partial class AllControlsPage : INavigableView<AllControlsViewModel>
 {
     public AllControlsViewModel ViewModel { get; }
 
-    public AllControlsPage(AllControlsViewModel viewModel)
+    public AllControlsPage( AllControlsViewModel viewModel )
     {
         ViewModel = viewModel;
         DataContext = this;

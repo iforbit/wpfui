@@ -18,7 +18,7 @@ public class SymbolIcon : FontIcon
         nameof(Symbol),
         typeof(SymbolRegular),
         typeof(SymbolIcon),
-        new PropertyMetadata(SymbolRegular.Empty, static (o, _) => ((SymbolIcon)o).OnGlyphChanged())
+        new PropertyMetadata(SymbolRegular.Empty, static (o, _ ) => ((SymbolIcon)o).OnGlyphChanged())
     );
 
     /// <summary>Identifies the <see cref="Filled"/> dependency property.</summary>
@@ -49,14 +49,14 @@ public class SymbolIcon : FontIcon
 
     public SymbolIcon() { }
 
-    public SymbolIcon(SymbolRegular symbol, double fontSize = 14, bool filled = false)
+    public SymbolIcon(SymbolRegular symbol, double fontSize = 14, bool filled = false )
     {
         Symbol = symbol;
         Filled = filled;
         FontSize = fontSize;
     }
 
-    protected override void OnInitialized(EventArgs e)
+    protected override void OnInitialized(EventArgs e )
     {
         base.OnInitialized(e);
 
@@ -80,7 +80,7 @@ public class SymbolIcon : FontIcon
         SetResourceReference(FontFamilyProperty, Filled ? "FluentSystemIconsFilled" : "FluentSystemIcons");
     }
 
-    private static void OnFilledChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void OnFilledChanged(DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
         var self = (SymbolIcon)d;
         self.SetFontReference();

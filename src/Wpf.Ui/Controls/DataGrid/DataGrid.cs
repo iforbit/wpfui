@@ -54,7 +54,7 @@ public class DataGrid : System.Windows.Controls.DataGrid
         set => SetValue(CheckBoxColumnEditingElementStyleProperty, value);
     }
 
-    protected override void OnInitialized(EventArgs e)
+    protected override void OnInitialized( EventArgs e )
     {
         Columns.CollectionChanged += ColumnsOnCollectionChanged;
 
@@ -63,7 +63,7 @@ public class DataGrid : System.Windows.Controls.DataGrid
         base.OnInitialized(e);
     }
 
-    private void ColumnsOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    private void ColumnsOnCollectionChanged( object? sender, NotifyCollectionChangedEventArgs e )
     {
         UpdateColumnElementStyles();
     }
@@ -76,7 +76,7 @@ public class DataGrid : System.Windows.Controls.DataGrid
         }
     }
 
-    private void UpdateSingleColumn(DataGridColumn dataGridColumn)
+    private void UpdateSingleColumn( DataGridColumn dataGridColumn )
     {
         if (dataGridColumn is DataGridCheckBoxColumn checkBoxColumn)
         {

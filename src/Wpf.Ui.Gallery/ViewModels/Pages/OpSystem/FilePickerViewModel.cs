@@ -158,7 +158,7 @@ public partial class FilePickerViewModel : ViewModel
     }
 
     [RelayCommand]
-    public async Task OnSaveFile(CancellationToken cancellation)
+    public async Task OnSaveFile( CancellationToken cancellation )
     {
         SavedFileNoticeVisibility = Visibility.Collapsed;
 

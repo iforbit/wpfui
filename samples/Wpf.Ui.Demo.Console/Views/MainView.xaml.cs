@@ -16,7 +16,7 @@ public partial class MainView
 
         InitializeComponent();
 
-        Loaded += (_, _) => RootNavigation.Navigate(typeof(DashboardPage));
+        Loaded += ( _, _ ) => RootNavigation.Navigate(typeof(DashboardPage));
 
         UiApplication.Current.MainWindow = this;
 

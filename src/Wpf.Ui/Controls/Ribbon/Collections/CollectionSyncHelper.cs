@@ -17,7 +17,7 @@ public class CollectionSyncHelper<TItem>
     /// <summary>
     /// Creates a new instance with <paramref name="source"/> as <see cref="Source"/> and <paramref name="target"/> as <see cref="Target"/>.
     /// </summary>
-    public CollectionSyncHelper(ObservableCollection<TItem> source, IList target)
+    public CollectionSyncHelper( ObservableCollection<TItem> source, IList target )
     {
         this.Source = source ?? throw new ArgumentNullException(nameof(source));
         this.Target = target ?? throw new ArgumentNullException(nameof(target));
@@ -50,7 +50,7 @@ public class CollectionSyncHelper<TItem>
         }
     }
 
-    private void SourceOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    private void SourceOnCollectionChanged( object? sender, NotifyCollectionChangedEventArgs e )
     {
         switch (e.Action)
         {

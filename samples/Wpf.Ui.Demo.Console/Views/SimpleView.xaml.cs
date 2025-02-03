@@ -15,7 +15,7 @@ public partial class SimpleView
         this.ApplyTheme();
     }
 
-    private void CardAction_Click(object sender, RoutedEventArgs e)
+    private void CardAction_Click( object sender, RoutedEventArgs e )
     {
         ThemeUtilities.ChangeTheme();
     }

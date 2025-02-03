@@ -30,12 +30,12 @@ public partial class SettingsPage
         }
     }
 
-    private void OnLightThemeRadioButtonChecked(object sender, RoutedEventArgs e)
+    private void OnLightThemeRadioButtonChecked( object sender, RoutedEventArgs e )
     {
         Appearance.ApplicationThemeManager.Apply(ApplicationTheme.Light);
     }
 
-    private void OnDarkThemeRadioButtonChecked(object sender, RoutedEventArgs e)
+    private void OnDarkThemeRadioButtonChecked( object sender, RoutedEventArgs e )
     {
         Appearance.ApplicationThemeManager.Apply(ApplicationTheme.Dark);
     }

@@ -31,7 +31,7 @@ internal class EventIdentifier
     /// <summary>
     /// Checks if the identifiers are the same.
     /// </summary>
-    public bool IsEqual(long storedId) => Current == storedId;
+    public bool IsEqual( long storedId ) => Current == storedId;
 
     /// <summary>
     /// Creates and assigns a random value with an extra time code if possible.

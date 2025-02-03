@@ -39,10 +39,10 @@ public partial class BreadcrumbBarViewModel : ViewModel
     }
 
     [RelayCommand]
-    private void OnStringSelected(object item) { }
+    private void OnStringSelected( object item ) { }
 
     [RelayCommand]
-    private void OnFolderSelected(object item)
+    private void OnFolderSelected( object item )
     {
         if (item is not Folder selectedFolder)
         {

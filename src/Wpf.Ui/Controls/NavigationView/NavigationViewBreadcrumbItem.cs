@@ -11,7 +11,7 @@ namespace Wpf.Ui.Controls;
 
 internal class NavigationViewBreadcrumbItem
 {
-    public NavigationViewBreadcrumbItem(INavigationViewItem item)
+    public NavigationViewBreadcrumbItem( INavigationViewItem item )
     {
         Content = item.Content;
         PageId = item.Id;

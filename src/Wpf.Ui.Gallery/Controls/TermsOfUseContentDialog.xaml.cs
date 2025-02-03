@@ -10,13 +10,13 @@ namespace Wpf.Ui.Gallery.Controls;
 
 public partial class TermsOfUseContentDialog : ContentDialog
 {
-    public TermsOfUseContentDialog(ContentPresenter? contentPresenter)
+    public TermsOfUseContentDialog( ContentPresenter? contentPresenter )
         : base(contentPresenter)
     {
         InitializeComponent();
     }
 
-    protected override void OnButtonClick(ContentDialogButton button)
+    protected override void OnButtonClick( ContentDialogButton button )
     {
         if (CheckBox.IsChecked != false)
         {

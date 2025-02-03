@@ -40,7 +40,7 @@ public class CodeBlock : System.Windows.Controls.ContentControl
     );
 
     /// <summary>
-    /// Formatted <see cref="System.Windows.Controls.ContentControl.Content"/>.
+    /// Gets formatted <see cref="SyntaxContent"/>.
     /// </summary>
     public object SyntaxContent
     {
@@ -49,11 +49,12 @@ public class CodeBlock : System.Windows.Controls.ContentControl
     }
 
     /// <summary>
-    /// Command triggered after clicking the control button.
+    /// Gets command triggered after clicking the control button.
     /// </summary>
     public IRelayCommand ButtonCommand => (IRelayCommand)GetValue(ButtonCommandProperty);
 
     /// <summary>
+    /// Initializes a new instance of the <see cref="CodeBlock"/> class.
     /// Creates new instance and assigns <see cref="ButtonCommand"/> default action.
     /// </summary>
     public CodeBlock()
@@ -63,7 +64,7 @@ public class CodeBlock : System.Windows.Controls.ContentControl
         ApplicationThemeManager.Changed += ThemeOnChanged;
     }
 
-    private void ThemeOnChanged(ApplicationTheme currentApplicationTheme, Color systemAccent)
+    private void ThemeOnChanged(ApplicationTheme currentApplicationTheme, Color systemAccent )
     {
         UpdateSyntax();
     }
@@ -73,7 +74,7 @@ public class CodeBlock : System.Windows.Controls.ContentControl
     /// </summary>
     /// <param name="oldContent">The old value of the Content property.</param>
     /// <param name="newContent">The new value of the Content property.</param>
-    protected override void OnContentChanged(object oldContent, object newContent)
+    protected override void OnContentChanged(object oldContent, object newContent )
     {
         UpdateSyntax();
     }
@@ -94,10 +95,10 @@ public class CodeBlock : System.Windows.Controls.ContentControl
         richTextBox.Document.Blocks.Clear();
         richTextBox.Document.Blocks.Add(Highlighter.FormatAsParagraph(_sourceCode));
 
-        SyntaxContent = richTextBox;
+        SetCurrentValue(SyntaxContentProperty, richTextBox);
     }
 
-    private void OnTemplateButtonClick(string? _)
+    private void OnTemplateButtonClick(string? _ )
     {
         Debug.WriteLine($"INFO | CodeBlock source: \n{_sourceCode}", "Wpf.Ui.CodeBlock");
 

@@ -233,7 +233,7 @@ public class NumberBox : Wpf.Ui.Controls.TextBox
     }
 
     /// <inheritdoc />
-    protected override void OnKeyUp(KeyEventArgs e)
+    protected override void OnKeyUp( KeyEventArgs e )
     {
         base.OnKeyUp(e);
 
@@ -268,7 +268,7 @@ public class NumberBox : Wpf.Ui.Controls.TextBox
     }
 
     /// <inheritdoc />
-    protected override void OnTemplateButtonClick(string? parameter)
+    protected override void OnTemplateButtonClick( string? parameter )
     {
         System.Diagnostics.Debug.WriteLine(
             $"INFO: {typeof(NumberBox)} button clicked with param: {parameter}",
@@ -296,7 +296,7 @@ public class NumberBox : Wpf.Ui.Controls.TextBox
     }
 
     /// <inheritdoc />
-    protected override void OnLostFocus(RoutedEventArgs e)
+    protected override void OnLostFocus( RoutedEventArgs e )
     {
         base.OnLostFocus(e);
 
@@ -337,7 +337,7 @@ public class NumberBox : Wpf.Ui.Controls.TextBox
     /// <summary>
     /// Is called when <see cref="Value"/> in this <see cref="NumberBox"/> changes.
     /// </summary>
-    protected virtual void OnValueChanged(DependencyObject d, double? oldValue)
+    protected virtual void OnValueChanged( DependencyObject d, double? oldValue )
     {
         if (_valueUpdating)
         {
@@ -371,7 +371,7 @@ public class NumberBox : Wpf.Ui.Controls.TextBox
     /// <summary>
     /// Is called when something is pasted in this <see cref="NumberBox"/>.
     /// </summary>
-    protected virtual void OnClipboardPaste(object sender, DataObjectPastingEventArgs e)
+    protected virtual void OnClipboardPaste( object sender, DataObjectPastingEventArgs e )
     {
         // TODO: Fix clipboard
         if (sender is not NumberBox)
@@ -382,7 +382,7 @@ public class NumberBox : Wpf.Ui.Controls.TextBox
         ValidateInput();
     }
 
-    private void StepValue(double? change)
+    private void StepValue( double? change )
     {
         System.Diagnostics.Debug.WriteLine(
             $"INFO: {typeof(NumberBox)} {nameof(StepValue)} raised, change {change}",
@@ -467,7 +467,7 @@ public class NumberBox : Wpf.Ui.Controls.TextBox
         return new ValidateNumberFormatter();
     }
 
-    private static void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void OnValueChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
         if (d is not NumberBox numberBox)
         {
@@ -477,7 +477,7 @@ public class NumberBox : Wpf.Ui.Controls.TextBox
         numberBox.OnValueChanged(d, (double?)e.OldValue);
     }
 
-    private static void OnNumberFormatterChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void OnNumberFormatterChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
         if (e.NewValue is not INumberParser)
         {

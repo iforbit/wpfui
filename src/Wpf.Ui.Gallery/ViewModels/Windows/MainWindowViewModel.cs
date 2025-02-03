@@ -24,7 +24,7 @@ using Wpf.Ui.Gallery.Views.Pages.Windows;
 
 namespace Wpf.Ui.Gallery.ViewModels.Windows;
 
-public partial class MainWindowViewModel(IStringLocalizer<Translations> localizer) : ViewModel
+public partial class MainWindowViewModel( IStringLocalizer<Translations> localizer ) : ViewModel
 {
     [ObservableProperty]
     private string _applicationTitle = localizer["WPF UI Gallery"];

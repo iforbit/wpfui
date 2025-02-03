@@ -392,7 +392,7 @@ public class TitleBar : System.Windows.Controls.Control, IThemeControl
     }
 
     /// <inheritdoc />
-    protected override void OnInitialized(EventArgs e)
+    protected override void OnInitialized(EventArgs e )
     {
         base.OnInitialized(e);
 
@@ -400,7 +400,7 @@ public class TitleBar : System.Windows.Controls.Control, IThemeControl
         Appearance.ApplicationThemeManager.Changed += OnThemeChanged;
     }
 
-    protected virtual void OnLoaded(object sender, RoutedEventArgs e)
+    protected virtual void OnLoaded(object sender, RoutedEventArgs e )
     {
         if (DesignerHelper.IsInDesignMode)
         {
@@ -413,7 +413,7 @@ public class TitleBar : System.Windows.Controls.Control, IThemeControl
         _currentWindow.ContentRendered += OnWindowContentRendered;
     }
 
-    private void OnUnloaded(object sender, RoutedEventArgs e)
+    private void OnUnloaded(object sender, RoutedEventArgs e )
     {
         Loaded -= OnLoaded;
         Unloaded -= OnUnloaded;
@@ -522,7 +522,7 @@ public class TitleBar : System.Windows.Controls.Control, IThemeControl
         }
     }
 
-    private void OnParentWindowStateChanged(object? sender, EventArgs e)
+    private void OnParentWindowStateChanged(object? sender, EventArgs e )
     {
         if (IsMaximized != (_currentWindow.WindowState == WindowState.Maximized))
         {
@@ -530,7 +530,7 @@ public class TitleBar : System.Windows.Controls.Control, IThemeControl
         }
     }
 
-    private void OnTemplateButtonClick(TitleBarButtonType buttonType)
+    private void OnTemplateButtonClick(TitleBarButtonType buttonType )
     {
         switch (buttonType)
         {
@@ -559,7 +559,7 @@ public class TitleBar : System.Windows.Controls.Control, IThemeControl
     /// <summary>
     ///     Listening window hooks after rendering window content to SizeToContent support
     /// </summary>
-    private void OnWindowContentRendered(object? sender, EventArgs e)
+    private void OnWindowContentRendered(object? sender, EventArgs e )
     {
         if (sender is not Window window)
         {
@@ -574,7 +574,7 @@ public class TitleBar : System.Windows.Controls.Control, IThemeControl
         windowSource.AddHook(HwndSourceHook);
     }
 
-    private IntPtr HwndSourceHook(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+    private IntPtr HwndSourceHook(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled )
     {
         var message = (User32.WM)msg;
 
@@ -640,7 +640,7 @@ public class TitleBar : System.Windows.Controls.Control, IThemeControl
     /// <summary>
     /// Show 'SystemMenu' on mouse right button up.
     /// </summary>
-    private void TitleBar_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+    private void TitleBar_MouseRightButtonUp(object sender, MouseButtonEventArgs e )
     {
         Point point = PointToScreen(e.GetPosition(this));
 
@@ -655,7 +655,7 @@ public class TitleBar : System.Windows.Controls.Control, IThemeControl
         );
     }
 
-    private T GetTemplateChild<T>(string name)
+    private T GetTemplateChild<T>(string name )
         where T : DependencyObject
     {
         DependencyObject element = GetTemplateChild(name);

@@ -63,7 +63,7 @@ public class NotifyIconService : INotifyIconService
     }
 
     /// <inheritdoc />
-    public void SetParentWindow(Window parentWindow)
+    public void SetParentWindow( Window parentWindow )
     {
         if (ParentWindow is not null)
         {
@@ -104,7 +104,7 @@ public class NotifyIconService : INotifyIconService
     /// </summary>
     protected virtual void OnMiddleDoubleClick() { }
 
-    private void OnParentWindowClosing(object? sender, CancelEventArgs e)
+    private void OnParentWindowClosing( object? sender, CancelEventArgs e )
     {
         internalNotifyIconManager.Dispose();
     }

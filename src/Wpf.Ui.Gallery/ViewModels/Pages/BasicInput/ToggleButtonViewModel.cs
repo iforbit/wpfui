@@ -13,7 +13,7 @@ public partial class ToggleButtonViewModel : ViewModel
     private bool _isToggleButtonEnabled = true;
 
     [RelayCommand]
-    private void OnToggleButtonCheckboxChecked(object sender)
+    private void OnToggleButtonCheckboxChecked( object sender )
     {
         if (sender is not CheckBox checkbox)
         {

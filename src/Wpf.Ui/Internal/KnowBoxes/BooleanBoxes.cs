@@ -24,7 +24,7 @@ internal static class BooleanBoxes
     /// Gets a boxed value for <paramref name="value"/>.
     /// </summary>
     /// <returns>A boxed <see cref="bool"/> value.</returns>
-    internal static object Box(bool value)
+    internal static object Box( bool value )
     {
         return value
             ? TrueBox
@@ -35,7 +35,7 @@ internal static class BooleanBoxes
     /// Gets a boxed value for <paramref name="value"/>.
     /// </summary>
     /// <returns>A boxed nullable <see cref="bool"/> value.</returns>
-    internal static object? Box(bool? value)
+    internal static object? Box( bool? value )
     {
         if (value.HasValue)
         {

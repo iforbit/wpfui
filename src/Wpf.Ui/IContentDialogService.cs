@@ -33,7 +33,7 @@ namespace Wpf.Ui;
 public interface IContentDialogService
 {
     [Obsolete("Use SetDialogHost instead.")]
-    void SetContentPresenter(ContentPresenter contentPresenter);
+    void SetContentPresenter( ContentPresenter contentPresenter );
 
     [Obsolete("Use GetDialogHost instead.")]
     ContentPresenter? GetContentPresenter();
@@ -42,7 +42,7 @@ public interface IContentDialogService
     /// Sets the <see cref="ContentPresenter"/>
     /// </summary>
     /// <param name="dialogHost"><see cref="ContentPresenter"/> inside of which the dialogue will be placed. The new <see cref="ContentDialog"/> will replace the current <see cref="ContentPresenter.Content"/>.</param>
-    void SetDialogHost(ContentPresenter dialogHost);
+    void SetDialogHost( ContentPresenter dialogHost );
 
     /// <summary>
     /// Provides direct access to the <see cref="ContentPresenter"/>
@@ -56,5 +56,5 @@ public interface IContentDialogService
     /// <param name="dialog">The dialog to be displayed.</param>
     /// <param name="cancellationToken">A cancellation token that can be used to cancel the operation.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the dialog result.</returns>
-    Task<ContentDialogResult> ShowAsync(ContentDialog dialog, CancellationToken cancellationToken);
+    Task<ContentDialogResult> ShowAsync( ContentDialog dialog, CancellationToken cancellationToken );
 }

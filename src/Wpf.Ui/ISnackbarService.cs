@@ -22,7 +22,7 @@ public interface ISnackbarService
     /// Sets the <see cref="SnackbarPresenter"/>
     /// </summary>
     /// <param name="contentPresenter"><see cref="ContentPresenter"/> inside of which the snackbar will be placed. The new <see cref="Snackbar"/> will replace the current <see cref="ContentPresenter.Content"/>.</param>
-    void SetSnackbarPresenter(SnackbarPresenter contentPresenter);
+    void SetSnackbarPresenter( SnackbarPresenter contentPresenter );
 
     /// <summary>
     /// Provides direct access to the <see cref="ContentPresenter"/>

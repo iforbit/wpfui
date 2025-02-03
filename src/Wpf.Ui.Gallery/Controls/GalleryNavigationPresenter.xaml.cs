@@ -44,7 +44,7 @@ public class GalleryNavigationPresenter : System.Windows.Controls.Control
         SetValue(TemplateButtonCommandProperty, new Input.RelayCommand<Type>(o => OnTemplateButtonClick(o)));
     }
 
-    private void OnTemplateButtonClick(Type? pageType)
+    private void OnTemplateButtonClick( Type? pageType )
     {
         INavigationService navigationService = App.GetRequiredService<INavigationService>();
 

@@ -175,7 +175,7 @@ public class TextBox : System.Windows.Controls.TextBox
     }
 
     /// <inheritdoc />
-    protected override void OnTextChanged(TextChangedEventArgs e)
+    protected override void OnTextChanged( TextChangedEventArgs e )
     {
         base.OnTextChanged(e);
 
@@ -205,7 +205,7 @@ public class TextBox : System.Windows.Controls.TextBox
     }
 
     /// <inheritdoc />
-    protected override void OnGotFocus(RoutedEventArgs e)
+    protected override void OnGotFocus( RoutedEventArgs e )
     {
         base.OnGotFocus(e);
 
@@ -215,7 +215,7 @@ public class TextBox : System.Windows.Controls.TextBox
     }
 
     /// <inheritdoc />
-    protected override void OnLostFocus(RoutedEventArgs e)
+    protected override void OnLostFocus( RoutedEventArgs e )
     {
         base.OnLostFocus(e);
 
@@ -258,14 +258,14 @@ public class TextBox : System.Windows.Controls.TextBox
     /// <summary>
     /// Triggered by clicking a button in the control template.
     /// </summary>
-    protected virtual void OnTemplateButtonClick(string? parameter)
+    protected virtual void OnTemplateButtonClick( string? parameter )
     {
         Debug.WriteLine($"INFO: {typeof(TextBox)} button clicked", "Wpf.Ui.TextBox");
 
         OnClearButtonClick();
     }
 
-    private static void OnPlaceholderEnabledChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void OnPlaceholderEnabledChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
         if (d is not TextBox control)
         {

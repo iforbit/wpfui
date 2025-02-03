@@ -41,7 +41,7 @@ public class ControlExample : Control
         typeof(ControlExample),
         new PropertyMetadata(
             null,
-            static (o, args) =>
+            static ( o, args ) =>
             {
                 ((ControlExample)o).OnXamlCodeSourceChanged((Uri?)args.NewValue);
             }
@@ -63,7 +63,7 @@ public class ControlExample : Control
         typeof(ControlExample),
         new PropertyMetadata(
             null,
-            static (o, args) =>
+            static ( o, args ) =>
             {
                 ((ControlExample)o).OnCsharpCodeSourceChanged((Uri?)args.NewValue);
             }
@@ -106,17 +106,17 @@ public class ControlExample : Control
         set => SetValue(CsharpCodeSourceProperty, value);
     }
 
-    private void OnXamlCodeSourceChanged(Uri? uri)
+    private void OnXamlCodeSourceChanged( Uri? uri )
     {
         SetCurrentValue(XamlCodeProperty, LoadResource(uri));
     }
 
-    private void OnCsharpCodeSourceChanged(Uri? uri)
+    private void OnCsharpCodeSourceChanged( Uri? uri )
     {
         SetCurrentValue(CsharpCodeProperty, LoadResource(uri));
     }
 
-    private static string LoadResource(Uri? uri)
+    private static string LoadResource( Uri? uri )
     {
         try
         {

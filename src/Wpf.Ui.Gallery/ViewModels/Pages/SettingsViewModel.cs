@@ -9,7 +9,7 @@ using Wpf.Ui.Extensions;
 
 namespace Wpf.Ui.Gallery.ViewModels.Pages;
 
-public sealed partial class SettingsViewModel(INavigationService navigationService) : ViewModel
+public sealed partial class SettingsViewModel( INavigationService navigationService ) : ViewModel
 {
     private bool _isInitialized = false;
 
@@ -31,7 +31,7 @@ public sealed partial class SettingsViewModel(INavigationService navigationServi
         }
     }
 
-    partial void OnCurrentApplicationThemeChanged(ApplicationTheme oldValue, ApplicationTheme newValue)
+    partial void OnCurrentApplicationThemeChanged( ApplicationTheme oldValue, ApplicationTheme newValue )
     {
         ApplicationThemeManager.Apply(newValue);
     }
@@ -54,7 +54,7 @@ public sealed partial class SettingsViewModel(INavigationService navigationServi
         _isInitialized = true;
     }
 
-    private void OnThemeChanged(ApplicationTheme currentApplicationTheme, Color systemAccent)
+    private void OnThemeChanged( ApplicationTheme currentApplicationTheme, Color systemAccent )
     {
         // Update the theme if it has been changed elsewhere than in the settings.
         if (CurrentApplicationTheme != currentApplicationTheme)

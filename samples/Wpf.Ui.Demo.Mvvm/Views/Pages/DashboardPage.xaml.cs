@@ -14,7 +14,7 @@ public partial class DashboardPage : INavigableView<ViewModels.DashboardViewMode
 {
     public ViewModels.DashboardViewModel ViewModel { get; }
 
-    public DashboardPage(ViewModels.DashboardViewModel viewModel)
+    public DashboardPage( ViewModels.DashboardViewModel viewModel )
     {
         ViewModel = viewModel;
         DataContext = this;

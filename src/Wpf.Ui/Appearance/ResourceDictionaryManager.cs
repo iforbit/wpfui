@@ -17,7 +17,7 @@ internal class ResourceDictionaryManager
     /// </summary>
     public string SearchNamespace { get; }
 
-    public ResourceDictionaryManager(string searchNamespace)
+    public ResourceDictionaryManager(string searchNamespace )
     {
         SearchNamespace = searchNamespace;
     }
@@ -27,7 +27,7 @@ internal class ResourceDictionaryManager
     /// </summary>
     /// <param name="resourceLookup">Any part of the resource name.</param>
     /// <returns><see langword="false"/> if it doesn't exist.</returns>
-    public bool HasDictionary(string resourceLookup)
+    public bool HasDictionary(string resourceLookup )
     {
         return GetDictionary(resourceLookup) != null;
     }
@@ -37,7 +37,7 @@ internal class ResourceDictionaryManager
     /// </summary>
     /// <param name="resourceLookup">Any part of the resource name.</param>
     /// <returns><see cref="ResourceDictionary"/>, <see langword="null"/> if it doesn't exist.</returns>
-    public ResourceDictionary? GetDictionary(string resourceLookup)
+    public ResourceDictionary? GetDictionary(string resourceLookup )
     {
         Collection<ResourceDictionary> applicationDictionaries = GetApplicationMergedDictionaries();
 
@@ -95,7 +95,7 @@ internal class ResourceDictionaryManager
     /// <param name="resourceLookup">Any part of the resource name.</param>
     /// <param name="newResourceUri">A valid <see cref="Uri"/> for the replaced resource.</param>
     /// <returns><see langword="true"/> if the dictionary <see cref="Uri"/> was updated. <see langword="false"/> otherwise.</returns>
-    public bool UpdateDictionary(string resourceLookup, Uri? newResourceUri)
+    public bool UpdateDictionary(string resourceLookup, Uri? newResourceUri )
     {
         Collection<ResourceDictionary> applicationDictionaries = UiApplication
             .Current

@@ -17,12 +17,12 @@ internal static class ContextMenuExtensions
     /// <summary>
     /// Tries to apply Mica effect to the <see cref="ContextMenu"/>.
     /// </summary>
-    public static void ApplyMica(this ContextMenu contextMenu)
+    public static void ApplyMica( this ContextMenu contextMenu )
     {
         contextMenu.Opened += ContextMenuOnOpened;
     }
 
-    private static void ContextMenuOnOpened(object sender, RoutedEventArgs e)
+    private static void ContextMenuOnOpened( object sender, RoutedEventArgs e )
     {
         if (
             sender is not ContextMenu contextMenu

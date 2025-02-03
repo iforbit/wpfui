@@ -28,7 +28,7 @@ internal static class DoubleUtil
     /// </returns>
     /// <param name="value1"> The first double to compare. </param>
     /// <param name="value2"> The second double to compare. </param>
-    public static bool AreClose(double value1, double value2)
+    public static bool AreClose( double value1, double value2 )
     {
         // in case they are Infinities (then epsilon check does not work)
         // ReSharper disable once CompareOfFloatsByEqualityOperator
@@ -59,7 +59,7 @@ internal static class DoubleUtil
     /// </returns>
     /// <param name="value1"> The first double to compare. </param>
     /// <param name="value2"> The second double to compare. </param>
-    public static bool GreaterThan(double value1, double value2)
+    public static bool GreaterThan( double value1, double value2 )
     {
         return value1 > value2 && !AreClose(value1, value2);
     }

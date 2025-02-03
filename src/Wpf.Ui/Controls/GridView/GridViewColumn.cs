@@ -91,7 +91,7 @@ public class GridViewColumn : System.Windows.Controls.GridViewColumn
         new FrameworkPropertyMetadata(0.0, OnMinWidthChanged)
     );
 
-    private static void OnMinWidthChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void OnMinWidthChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
         if (d is not GridViewColumn self)
         {
@@ -101,7 +101,7 @@ public class GridViewColumn : System.Windows.Controls.GridViewColumn
         self.OnMinWidthChanged(e);
     }
 
-    protected virtual void OnMinWidthChanged(DependencyPropertyChangedEventArgs e)
+    protected virtual void OnMinWidthChanged( DependencyPropertyChangedEventArgs e )
     {
         // Hook for derived classes to react to MinWidth property changes
     }
@@ -123,7 +123,7 @@ public class GridViewColumn : System.Windows.Controls.GridViewColumn
         new FrameworkPropertyMetadata(double.PositiveInfinity, OnMaxWidthChanged)
     );
 
-    private static void OnMaxWidthChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void OnMaxWidthChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
         if (d is not GridViewColumn self)
         {
@@ -133,7 +133,7 @@ public class GridViewColumn : System.Windows.Controls.GridViewColumn
         self.OnMaxWidthChanged(e);
     }
 
-    protected virtual void OnMaxWidthChanged(DependencyPropertyChangedEventArgs e)
+    protected virtual void OnMaxWidthChanged( DependencyPropertyChangedEventArgs e )
     {
         // Hook for derived classes to react to MaxWidth property changes
     }

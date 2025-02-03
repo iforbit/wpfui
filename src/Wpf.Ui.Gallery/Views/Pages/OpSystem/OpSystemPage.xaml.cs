@@ -12,7 +12,7 @@ public partial class OpSystemPage : INavigableView<OpSystemViewModel>
 {
     public OpSystemViewModel ViewModel { get; }
 
-    public OpSystemPage(OpSystemViewModel viewModel)
+    public OpSystemPage( OpSystemViewModel viewModel )
     {
         ViewModel = viewModel;
         DataContext = this;

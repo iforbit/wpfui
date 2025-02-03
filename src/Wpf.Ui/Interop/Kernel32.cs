@@ -35,7 +35,7 @@ internal class Kernel32
     /// </summary>
     /// <param name="dwErrorCode">The last-error code for the thread.</param>
     [DllImport(Libraries.Kernel32, ExactSpelling = true, CharSet = CharSet.Auto)]
-    public static extern void SetLastError([In] int dwErrorCode);
+    public static extern void SetLastError( [In] int dwErrorCode );
 
     /// <summary>
     /// Determines whether the calling process is being debugged by a user-mode debugger.

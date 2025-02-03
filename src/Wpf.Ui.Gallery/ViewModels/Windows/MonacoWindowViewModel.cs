@@ -13,7 +13,7 @@ public partial class MonacoWindowViewModel : ViewModel
 {
     private MonacoController? _monacoController;
 
-    public void SetWebView(WebView2 webView)
+    public void SetWebView( WebView2 webView )
     {
         webView.NavigationCompleted += OnWebViewNavigationCompleted;
         webView.SetCurrentValue(FrameworkElement.UseLayoutRoundingProperty, true);
@@ -32,7 +32,7 @@ public partial class MonacoWindowViewModel : ViewModel
     }
 
     [RelayCommand]
-    public void OnMenuAction(string parameter) { }
+    public void OnMenuAction( string parameter ) { }
 
     private async Task InitializeEditorAsync()
     {
@@ -57,7 +57,7 @@ public partial class MonacoWindowViewModel : ViewModel
         DispatchAsync(InitializeEditorAsync);
     }
 
-    private static DispatcherOperation<TResult> DispatchAsync<TResult>(Func<TResult> callback)
+    private static DispatcherOperation<TResult> DispatchAsync<TResult>( Func<TResult> callback )
     {
         return Application.Current.Dispatcher.InvokeAsync(callback);
     }

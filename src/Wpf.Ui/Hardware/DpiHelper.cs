@@ -34,7 +34,7 @@ internal static class DpiHelper
     /// Gets DPI of the selected <see cref="Window"/>.
     /// </summary>
     /// <param name="window">The window that you want to get information about.</param>
-    public static Hardware.DisplayDpi GetWindowDpi(Window? window)
+    public static Hardware.DisplayDpi GetWindowDpi( Window? window )
     {
         if (window is null)
         {
@@ -48,7 +48,7 @@ internal static class DpiHelper
     /// Gets DPI of the selected <see cref="Window"/> based on it's handle.
     /// </summary>
     /// <param name="windowHandle">Handle of the window that you want to get information about.</param>
-    public static Hardware.DisplayDpi GetWindowDpi(IntPtr windowHandle)
+    public static Hardware.DisplayDpi GetWindowDpi( IntPtr windowHandle )
     {
         if (windowHandle == IntPtr.Zero || !UnsafeNativeMethods.IsValidWindow(windowHandle))
         {
@@ -111,7 +111,7 @@ internal static class DpiHelper
     /// <param name="dpiScaleX">Horizontal DPI scale.</param>
     /// <param name="dpiScaleY">Vertical DPI scale.</param>
     /// <returns>Returns the parameter converted to the system's coordinates.</returns>
-    public static Point LogicalPixelsToDevice(Point logicalPoint, double dpiScaleX, double dpiScaleY)
+    public static Point LogicalPixelsToDevice( Point logicalPoint, double dpiScaleX, double dpiScaleY )
     {
         _transformToDevice = Matrix.Identity;
         _transformToDevice.Scale(dpiScaleX, dpiScaleY);
@@ -123,7 +123,7 @@ internal static class DpiHelper
     /// Convert a point in system coordinates to a point in device independent pixels (1/96").
     /// </summary>
     /// <returns>Returns the parameter converted to the device independent coordinate system.</returns>
-    public static Point DevicePixelsToLogical(Point devicePoint, double dpiScaleX, double dpiScaleY)
+    public static Point DevicePixelsToLogical( Point devicePoint, double dpiScaleX, double dpiScaleY )
     {
         _transformToDip = Matrix.Identity;
         _transformToDip.Scale(1d / dpiScaleX, 1d / dpiScaleY);
@@ -131,7 +131,7 @@ internal static class DpiHelper
         return _transformToDip.Transform(devicePoint);
     }
 
-    public static Rect LogicalRectToDevice(Rect logicalRectangle, double dpiScaleX, double dpiScaleY)
+    public static Rect LogicalRectToDevice( Rect logicalRectangle, double dpiScaleX, double dpiScaleY )
     {
         Point topLeft = LogicalPixelsToDevice(
             new Point(logicalRectangle.Left, logicalRectangle.Top),
@@ -147,7 +147,7 @@ internal static class DpiHelper
         return new Rect(topLeft, bottomRight);
     }
 
-    public static Rect DeviceRectToLogical(Rect deviceRectangle, double dpiScaleX, double dpiScaleY)
+    public static Rect DeviceRectToLogical( Rect deviceRectangle, double dpiScaleX, double dpiScaleY )
     {
         Point topLeft = DevicePixelsToLogical(
             new Point(deviceRectangle.Left, deviceRectangle.Top),
@@ -163,7 +163,7 @@ internal static class DpiHelper
         return new Rect(topLeft, bottomRight);
     }
 
-    public static Size LogicalSizeToDevice(Size logicalSize, double dpiScaleX, double dpiScaleY)
+    public static Size LogicalSizeToDevice( Size logicalSize, double dpiScaleX, double dpiScaleY )
     {
         Point pt = LogicalPixelsToDevice(
             new Point(logicalSize.Width, logicalSize.Height),
@@ -174,7 +174,7 @@ internal static class DpiHelper
         return new Size { Width = pt.X, Height = pt.Y };
     }
 
-    public static Size DeviceSizeToLogical(Size deviceSize, double dpiScaleX, double dpiScaleY)
+    public static Size DeviceSizeToLogical( Size deviceSize, double dpiScaleX, double dpiScaleY )
     {
         Point pt = DevicePixelsToLogical(
             new Point(deviceSize.Width, deviceSize.Height),

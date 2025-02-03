@@ -20,7 +20,7 @@ internal static class UnsafeReflection
     /// <summary>
     /// Casts <see cref="WindowBackdropType"/> to <see cref="Dwmapi.DWMSBT"/>.
     /// </summary>
-    public static Dwmapi.DWMSBT Cast(WindowBackdropType backgroundType)
+    public static Dwmapi.DWMSBT Cast( WindowBackdropType backgroundType )
     {
         return backgroundType switch
         {
@@ -35,7 +35,7 @@ internal static class UnsafeReflection
     /// <summary>
     /// Casts <see cref="WindowCornerPreference"/> to <see cref="Dwmapi.DWM_WINDOW_CORNER_PREFERENCE"/>.
     /// </summary>
-    public static Dwmapi.DWM_WINDOW_CORNER_PREFERENCE Cast(WindowCornerPreference cornerPreference)
+    public static Dwmapi.DWM_WINDOW_CORNER_PREFERENCE Cast( WindowCornerPreference cornerPreference )
     {
         return cornerPreference switch
         {
@@ -49,7 +49,7 @@ internal static class UnsafeReflection
     /// <summary>
     /// Casts <see cref="TaskBarProgressState"/> to <see cref="ShObjIdl.TBPFLAG"/>.
     /// </summary>
-    public static ShObjIdl.TBPFLAG Cast(TaskBarProgressState taskBarProgressState)
+    public static ShObjIdl.TBPFLAG Cast( TaskBarProgressState taskBarProgressState )
     {
         return taskBarProgressState switch
         {
@@ -64,7 +64,7 @@ internal static class UnsafeReflection
     /// <summary>
     /// Casts <see cref="ShObjIdl.TBPFLAG"/> to <see cref="TaskBarProgressState"/>.
     /// </summary>
-    public static TaskBarProgressState Cast(ShObjIdl.TBPFLAG progressState)
+    public static TaskBarProgressState Cast( ShObjIdl.TBPFLAG progressState )
     {
         return progressState switch
         {

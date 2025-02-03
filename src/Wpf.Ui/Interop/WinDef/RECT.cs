@@ -95,7 +95,7 @@ public struct RECT
     /// <summary>
     /// Sets offset of the rectangle.
     /// </summary>
-    public void Offset(int dx, int dy)
+    public void Offset( int dx, int dy )
     {
         _left += dx;
         _top += dy;
@@ -106,7 +106,7 @@ public struct RECT
     /// <summary>
     /// Combines two RECTs.
     /// </summary>
-    public static RECT Union(RECT rect1, RECT rect2)
+    public static RECT Union( RECT rect1, RECT rect2 )
     {
         return new RECT
         {
@@ -118,7 +118,7 @@ public struct RECT
     }
 
     /// <inheritdoc />
-    public override readonly bool Equals(object? obj)
+    public override readonly bool Equals( object? obj )
     {
         if (obj is not RECT)
         {
@@ -143,12 +143,12 @@ public struct RECT
         return _top.GetHashCode() ^ _bottom.GetHashCode() ^ _left.GetHashCode() ^ _right.GetHashCode();
     }
 
-    public static bool operator ==(RECT left, RECT right)
+    public static bool operator ==( RECT left, RECT right )
     {
         return left.Equals(right);
     }
 
-    public static bool operator !=(RECT left, RECT right)
+    public static bool operator !=( RECT left, RECT right )
     {
         return !(left == right);
     }

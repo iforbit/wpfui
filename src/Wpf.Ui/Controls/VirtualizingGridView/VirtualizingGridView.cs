@@ -85,7 +85,7 @@ public class VirtualizingGridView : ListView
         VirtualizingPanel.SetIsVirtualizingWhenGrouping(this, true);
     }
 
-    protected override void OnInitialized(EventArgs e)
+    protected override void OnInitialized( EventArgs e )
     {
         base.OnInitialized(e);
 

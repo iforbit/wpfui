@@ -14,7 +14,7 @@ public static class LogicalChildSupportHelper
     /// <summary>
     /// Called when <see cref="RibbonControl.IconProperty"/> changes.
     /// </summary>
-    public static void OnLogicalChildPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    public static void OnLogicalChildPropertyChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
         // ReSharper disable once SuspiciousTypeConversion.Global
         var logicalChildSupport = d as ILogicalChildSupport ?? throw new ArgumentException("Argument must be of type ILogicalChildSupport.", nameof(d));

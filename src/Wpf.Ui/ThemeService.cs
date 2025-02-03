@@ -40,7 +40,7 @@ public partial class ThemeService : IThemeService
     }
 
     /// <inheritdoc />
-    public virtual bool SetTheme(ApplicationTheme applicationTheme)
+    public virtual bool SetTheme( ApplicationTheme applicationTheme )
     {
         if (ApplicationThemeManager.GetAppTheme() == applicationTheme)
         {
@@ -61,7 +61,7 @@ public partial class ThemeService : IThemeService
     }
 
     /// <inheritdoc />
-    public bool SetAccent(Color accentColor)
+    public bool SetAccent( Color accentColor )
     {
         ApplicationAccentColorManager.Apply(accentColor);
 
@@ -69,7 +69,7 @@ public partial class ThemeService : IThemeService
     }
 
     /// <inheritdoc />
-    public bool SetAccent(SolidColorBrush accentSolidBrush)
+    public bool SetAccent( SolidColorBrush accentSolidBrush )
     {
         Color color = accentSolidBrush.Color;
         color.A = (byte)Math.Round(accentSolidBrush.Opacity * byte.MaxValue);

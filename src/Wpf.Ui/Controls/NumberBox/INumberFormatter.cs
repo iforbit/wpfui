@@ -16,15 +16,15 @@ public interface INumberFormatter
     /// <summary>
     /// Returns a string representation of a <see cref="double"/> value.
     /// </summary>
-    string FormatDouble(double? value);
+    string FormatDouble(double? value );
 
     /// <summary>
     /// Returns a string representation of an <see cref="int"/> value.
     /// </summary>
-    string FormatInt(int? value);
+    string FormatInt(int? value );
 
     /// <summary>
     /// Returns a string representation of a <see cref="uint"/> value.
     /// </summary>
-    string FormatUInt(uint? value);
+    string FormatUInt(uint? value );
 }

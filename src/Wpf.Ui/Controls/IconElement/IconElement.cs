@@ -31,7 +31,7 @@ public abstract class IconElement : FrameworkElement
         new FrameworkPropertyMetadata(
             SystemColors.ControlTextBrush,
             FrameworkPropertyMetadataOptions.Inherits,
-            static (d, args) => ((IconElement)d).OnForegroundChanged(args)
+            static ( d, args ) => ((IconElement)d).OnForegroundChanged(args)
         )
     );
 
@@ -50,7 +50,7 @@ public abstract class IconElement : FrameworkElement
 
     protected abstract UIElement InitializeChildren();
 
-    protected virtual void OnForegroundChanged(DependencyPropertyChangedEventArgs args) { }
+    protected virtual void OnForegroundChanged( DependencyPropertyChangedEventArgs args ) { }
 
     private void EnsureLayoutRoot()
     {
@@ -66,7 +66,7 @@ public abstract class IconElement : FrameworkElement
         AddVisualChild(_layoutRoot);
     }
 
-    protected override Visual GetVisualChild(int index)
+    protected override Visual GetVisualChild( int index )
     {
         if (index != 0)
         {
@@ -77,7 +77,7 @@ public abstract class IconElement : FrameworkElement
         return _layoutRoot!;
     }
 
-    protected override Size MeasureOverride(Size availableSize)
+    protected override Size MeasureOverride( Size availableSize )
     {
         EnsureLayoutRoot();
 
@@ -85,7 +85,7 @@ public abstract class IconElement : FrameworkElement
         return _layoutRoot.DesiredSize;
     }
 
-    protected override Size ArrangeOverride(Size finalSize)
+    protected override Size ArrangeOverride( Size finalSize )
     {
         EnsureLayoutRoot();
 
@@ -99,7 +99,7 @@ public abstract class IconElement : FrameworkElement
     /// <param name="_">The dependency object (unused).</param>
     /// <param name="baseValue">The value to be coerced.</param>
     /// <returns>An IconElement, either directly or derived from an IconSourceElement.</returns>
-    public static object? Coerce(DependencyObject _, object? baseValue)
+    public static object? Coerce( DependencyObject _, object? baseValue )
     {
         return baseValue switch
         {

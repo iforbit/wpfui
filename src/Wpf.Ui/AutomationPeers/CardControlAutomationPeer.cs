@@ -12,7 +12,7 @@ namespace Wpf.Ui.AutomationPeers;
 /// <summary>
 /// Provides UI Automation peer for the CardControl.
 /// </summary>
-internal class CardControlAutomationPeer(CardControl owner) : FrameworkElementAutomationPeer(owner)
+internal class CardControlAutomationPeer( CardControl owner ) : FrameworkElementAutomationPeer(owner)
 {
     protected override string GetClassNameCore()
     {
@@ -24,7 +24,7 @@ internal class CardControlAutomationPeer(CardControl owner) : FrameworkElementAu
         return AutomationControlType.Pane;
     }
 
-    public override object GetPattern(PatternInterface patternInterface)
+    public override object GetPattern( PatternInterface patternInterface )
     {
         if (patternInterface == PatternInterface.ItemContainer)
         {

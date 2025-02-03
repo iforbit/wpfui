@@ -142,7 +142,7 @@ public class FontIcon : IconElement
         return TextBlock;
     }
 
-    private static void OnFontFamilyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void OnFontFamilyChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
         var self = (FontIcon)d;
         if (self.TextBlock is null)
@@ -156,7 +156,7 @@ public class FontIcon : IconElement
         );
     }
 
-    private static void OnFontSizeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void OnFontSizeChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
         var self = (FontIcon)d;
         if (self.TextBlock is null)
@@ -170,7 +170,7 @@ public class FontIcon : IconElement
         );
     }
 
-    private static void OnFontStyleChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void OnFontStyleChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
         var self = (FontIcon)d;
         if (self.TextBlock is null)
@@ -184,7 +184,7 @@ public class FontIcon : IconElement
         );
     }
 
-    private static void OnFontWeightChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void OnFontWeightChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
         var self = (FontIcon)d;
         if (self.TextBlock is null)
@@ -198,7 +198,7 @@ public class FontIcon : IconElement
         );
     }
 
-    private static void OnGlyphChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void OnGlyphChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
         var self = (FontIcon)d;
         if (self.TextBlock is null)

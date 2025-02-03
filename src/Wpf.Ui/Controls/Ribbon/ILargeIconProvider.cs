@@ -1,0 +1,37 @@
+// This Source Code Form is subject to the terms of the MIT License.
+// If a copy of the MIT was not distributed with this file, You can obtain one at https://opensource.org/licenses/MIT.
+// Copyright (C) Leszek Pomianowski and WPF UI Contributors.
+// All Rights Reserved.
+
+using Wpf.Ui.Controls.Ribbon.Helpers;
+
+namespace Wpf.Ui.Controls.Ribbon;
+
+
+/// <summary>
+/// Inferface for controls which provide a large icon.
+/// </summary>
+public interface ILargeIconProvider
+{
+    /// <summary>
+    /// Gets or sets the large icon.
+    /// </summary>
+    [Localizability(LocalizationCategory.NeverLocalize)]
+    [Localizable(false)]
+    object? LargeIcon { get; set; }
+}
+
+/// <summary>
+/// Provides some <see cref="DependencyProperty"/> for <see cref="ILargeIconProvider"/>.
+/// </summary>
+public class LargeIconProviderProperties : DependencyObject
+{
+    private LargeIconProviderProperties()
+    {
+    }
+
+    /// <summary>
+    /// <see cref="DependencyProperty"/> for <see cref="ILargeIconProvider.LargeIcon"/>.
+    /// </summary>
+    public static readonly DependencyProperty LargeIconProperty = DependencyProperty.Register(nameof(ILargeIconProvider.LargeIcon), typeof(object), typeof(LargeIconProviderProperties), new PropertyMetadata(LogicalChildSupportHelper.OnLogicalChildPropertyChanged));
+}

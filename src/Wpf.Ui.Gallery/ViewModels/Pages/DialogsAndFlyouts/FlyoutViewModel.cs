@@ -11,7 +11,7 @@ public partial class FlyoutViewModel : ViewModel
     private bool _isFlyoutOpen = false;
 
     [RelayCommand]
-    private void OnButtonClick(object sender)
+    private void OnButtonClick( object sender )
     {
         if (!IsFlyoutOpen)
         {

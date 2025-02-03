@@ -45,7 +45,7 @@ public class RelayCommand<T> : IRelayCommand<T>
     /// you should always declare it as nullable, and to always perform checks within <paramref name="execute"/>.
     /// </remarks>
     /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="execute"/> is <see langword="null"/>.</exception>
-    public RelayCommand(Action<T?> execute)
+    public RelayCommand( Action<T?> execute )
     {
         if (execute is null)
         {
@@ -66,7 +66,7 @@ public class RelayCommand<T> : IRelayCommand<T>
     /// you should always declare it as nullable, and to always perform checks within <paramref name="execute"/>.
     /// </remarks>
     /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="execute"/> or <paramref name="canExecute"/> are <see langword="null"/>.</exception>
-    public RelayCommand(Action<T?> execute, Predicate<T?> canExecute)
+    public RelayCommand( Action<T?> execute, Predicate<T?> canExecute )
     {
         if (execute is null)
         {
@@ -90,13 +90,13 @@ public class RelayCommand<T> : IRelayCommand<T>
 
     /// <inheritdoc/>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool CanExecute(T? parameter)
+    public bool CanExecute( T? parameter )
     {
         return _canExecute?.Invoke(parameter) != false;
     }
 
     /// <inheritdoc/>
-    public bool CanExecute(object? parameter)
+    public bool CanExecute( object? parameter )
     {
         // Special case a null value for a value type argument type.
         // This ensures that no exceptions are thrown during initialization.
@@ -115,13 +115,13 @@ public class RelayCommand<T> : IRelayCommand<T>
 
     /// <inheritdoc/>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void Execute(T? parameter)
+    public void Execute( T? parameter )
     {
         _execute(parameter);
     }
 
     /// <inheritdoc/>
-    public void Execute(object? parameter)
+    public void Execute( object? parameter )
     {
         if (!TryGetCommandArgument(parameter, out T? result))
         {
@@ -138,7 +138,7 @@ public class RelayCommand<T> : IRelayCommand<T>
     /// <param name="result">The resulting <typeparamref name="T"/> value, if any.</param>
     /// <returns>Whether or not a compatible command argument could be retrieved.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static bool TryGetCommandArgument(object? parameter, out T? result)
+    internal static bool TryGetCommandArgument( object? parameter, out T? result )
     {
         // If the argument is null and the default value of T is also null, then the
         // argument is valid. T might be a reference type or a nullable value type.
@@ -169,10 +169,10 @@ public class RelayCommand<T> : IRelayCommand<T>
     /// </summary>
     /// <param name="parameter">The input parameter.</param>
     /// <exception cref="ArgumentException">Thrown with an error message to give info on the invalid parameter.</exception>
-    internal static void ThrowArgumentExceptionForInvalidCommandArgument(object? parameter)
+    internal static void ThrowArgumentExceptionForInvalidCommandArgument( object? parameter )
     {
         [MethodImpl(MethodImplOptions.NoInlining)]
-        static Exception GetException(object? parameter)
+        static Exception GetException( object? parameter )
         {
             if (parameter is null)
             {

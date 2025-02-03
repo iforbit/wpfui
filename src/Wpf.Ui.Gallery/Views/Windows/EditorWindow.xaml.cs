@@ -11,7 +11,7 @@ public partial class EditorWindow
 {
     public EditorWindowViewModel ViewModel { get; init; }
 
-    public EditorWindow(EditorWindowViewModel viewModel)
+    public EditorWindow( EditorWindowViewModel viewModel )
     {
         ViewModel = viewModel;
         DataContext = this;

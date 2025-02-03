@@ -15,7 +15,7 @@ public partial class MainWindow : INavigationWindow
 {
     public ViewModels.MainWindowViewModel ViewModel { get; }
 
-    public MainWindow(ViewModels.MainWindowViewModel viewModel, INavigationService navigationService)
+    public MainWindow( ViewModels.MainWindowViewModel viewModel, INavigationService navigationService )
     {
         ViewModel = viewModel;
         DataContext = this;
@@ -29,9 +29,9 @@ public partial class MainWindow : INavigationWindow
 
     public INavigationView GetNavigation() => RootNavigation;
 
-    public bool Navigate(Type pageType) => RootNavigation.Navigate(pageType);
+    public bool Navigate( Type pageType ) => RootNavigation.Navigate(pageType);
 
-    public void SetPageService(INavigationViewPageProvider navigationViewPageProvider) =>
+    public void SetPageService( INavigationViewPageProvider navigationViewPageProvider ) =>
         RootNavigation.SetPageProviderService(navigationViewPageProvider);
 
     public void ShowWindow() => Show();
@@ -41,7 +41,7 @@ public partial class MainWindow : INavigationWindow
     /// <summary>
     /// Raises the closed event.
     /// </summary>
-    protected override void OnClosed(EventArgs e)
+    protected override void OnClosed( EventArgs e )
     {
         base.OnClosed(e);
 
@@ -54,7 +54,7 @@ public partial class MainWindow : INavigationWindow
         throw new NotImplementedException();
     }
 
-    public void SetServiceProvider(IServiceProvider serviceProvider)
+    public void SetServiceProvider( IServiceProvider serviceProvider )
     {
         throw new NotImplementedException();
     }

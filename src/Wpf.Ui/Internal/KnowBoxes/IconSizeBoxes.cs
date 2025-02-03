@@ -35,7 +35,7 @@ public static class IconSizeBoxes
     /// <summary>
     /// Gets a boxed value for <see cref="IconSize"/>.
     /// </summary>
-    public static object Box(IconSize iconSize)
+    public static object Box( IconSize iconSize )
     {
         return iconSize switch
         {
