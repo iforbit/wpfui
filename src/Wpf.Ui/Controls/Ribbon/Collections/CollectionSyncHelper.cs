@@ -12,9 +12,13 @@ namespace Wpf.Ui.Controls.Collections;
 /// <summary>
 /// Synchronizes a target collection with a source collection in a one way fashion.
 /// </summary>
+/// /// <typeparam name="TItem">
+/// The type of items contained in the source collection. This type represents the element type of the <see cref="Source"/>.
+/// </typeparam>
 public class CollectionSyncHelper<TItem>
 {
     /// <summary>
+    /// Initializes a new instance of the <see cref="CollectionSyncHelper{TItem}"/> class.
     /// Creates a new instance with <paramref name="source"/> as <see cref="Source"/> and <paramref name="target"/> as <see cref="Target"/>.
     /// </summary>
     public CollectionSyncHelper( ObservableCollection<TItem> source, IList target )
@@ -28,12 +32,12 @@ public class CollectionSyncHelper<TItem>
     }
 
     /// <summary>
-    /// The source collection.
+    /// Gets the source collection.
     /// </summary>
     public ObservableCollection<TItem> Source { get; }
 
     /// <summary>
-    /// The target collection.
+    /// Gets the target collection.
     /// </summary>
     public IList Target { get; }
 
@@ -44,9 +48,9 @@ public class CollectionSyncHelper<TItem>
     {
         this.Target.Clear();
 
-        foreach (var item in this.Source)
+        foreach (TItem? item in this.Source)
         {
-            this.Target.Add(item);
+            _ = this.Target.Add(item);
         }
     }
 
@@ -86,7 +90,7 @@ public class CollectionSyncHelper<TItem>
                 {
                     foreach (var item in e.NewItems)
                     {
-                        this.Target.Add(item);
+                        _ = this.Target.Add(item);
                     }
                 }
 

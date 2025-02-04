@@ -3,7 +3,7 @@
 // Copyright (C) Leszek Pomianowski and WPF UI Contributors.
 // All Rights Reserved.
 
-namespace Wpf.Ui.Controls.Ribbon;
+namespace Wpf.Ui.Controls;
 
 public class RibbonButton : Button
 {

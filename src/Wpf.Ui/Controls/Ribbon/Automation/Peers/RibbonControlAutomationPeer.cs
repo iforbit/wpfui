@@ -4,9 +4,9 @@
 // All Rights Reserved.
 
 using System.Windows.Automation.Peers;
-using WPFRibbonControl = Wpf.Ui.Controls.Ribbon.RibbonControl;
+using WPFRibbonControl = Wpf.Ui.Controls.RibbonControl;
 
-namespace Wpf.Ui.Controls.Ribbon.Automation.Peers;
+namespace Wpf.Ui.Controls.Automation.Peers;
 
 /// <summary>
 /// Automation peer for <see cref="RibbonControl" />.
@@ -17,7 +17,7 @@ public class RibbonControlAutomationPeer : FrameworkElementAutomationPeer
     /// Initializes a new instance of the <see cref="RibbonControlAutomationPeer"/> class.
     /// Creates a new instance.
     /// </summary>
-    public RibbonControlAutomationPeer(WPFRibbonControl owner )
+    public RibbonControlAutomationPeer(WPFRibbonControl owner)
         : base(owner)
     {
     }

@@ -14,6 +14,7 @@
 
 // ReSharper disable IdentifierTypo
 // ReSharper disable InconsistentNaming
+#pragma warning disable CA1060
 using System.Runtime.InteropServices;
 
 namespace Wpf.Ui.Interop;

@@ -53,7 +53,7 @@ public class Arc : Shape
     );
 
     /// <summary>Identifies the <see cref="StrokeStartLineCap"/> dependency property.</summary>
-    public static readonly DependencyProperty StrokeStartLineCapProperty = DependencyProperty.Register(
+    public static new readonly DependencyProperty StrokeStartLineCapProperty = DependencyProperty.Register(
         nameof(StrokeStartLineCap),
         typeof(PenLineCap),
         typeof(Arc),
@@ -148,7 +148,7 @@ public class Arc : Shape
     /// <para><see href="https://stackoverflow.com/a/36756365/13224348">Based on Mark Feldman implementation.</see></para>
     /// </summary>
     /// <param name="angle">The angle at which to create the point.</param>
-    protected Point PointAtAngle( double angle )
+    protected Point PointAtAngle(double angle )
     {
         if (SweepDirection == SweepDirection.Counterclockwise)
         {
@@ -191,7 +191,7 @@ public class Arc : Shape
     /// <summary>
     /// Event triggered when one of the key parameters is changed. Forces the geometry to be redrawn.
     /// </summary>
-    protected static void PropertyChangedCallback( DependencyObject d, DependencyPropertyChangedEventArgs e )
+    protected static void PropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
         if (d is not Arc control)
         {
@@ -202,7 +202,7 @@ public class Arc : Shape
         control.InvalidateVisual();
     }
 
-    protected override Visual? GetVisualChild( int index )
+    protected override Visual? GetVisualChild(int index )
     {
         if (index != 0)
         {
@@ -214,7 +214,7 @@ public class Arc : Shape
         return _rootLayout;
     }
 
-    protected override Size MeasureOverride( Size availableSize )
+    protected override Size MeasureOverride(Size availableSize )
     {
         EnsureRootLayout();
 
@@ -222,7 +222,7 @@ public class Arc : Shape
         return _rootLayout.DesiredSize;
     }
 
-    protected override Size ArrangeOverride( Size finalSize )
+    protected override Size ArrangeOverride(Size finalSize )
     {
         EnsureRootLayout();
 
@@ -232,7 +232,7 @@ public class Arc : Shape
 
     /// <summary>Overrides the default OnRender method to draw the <see cref="Arc" /> element.</summary>
     /// <param name="drawingContext">A <see cref="DrawingContext" /> object that is drawn during the rendering pass of this <see cref="System.Windows.Shapes.Shape" />.</param>
-    protected override void OnRender( DrawingContext drawingContext )
+    protected override void OnRender(DrawingContext drawingContext )
     {
         base.OnRender(drawingContext);
         Pen pen =

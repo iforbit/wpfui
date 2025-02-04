@@ -20,7 +20,7 @@ public static class ColorExtensions
     /// </summary>
     /// <param name="color">Input color.</param>
     /// <returns>Brush converted to color.</returns>
-    public static SolidColorBrush ToBrush( this Color color )
+    public static SolidColorBrush ToBrush(this Color color )
     {
         return new SolidColorBrush(color);
     }
@@ -31,7 +31,7 @@ public static class ColorExtensions
     /// <param name="color">Input color.</param>
     /// <param name="opacity">Degree of opacity.</param>
     /// <returns>Brush converted to color with modified opacity.</returns>
-    public static SolidColorBrush ToBrush( this Color color, double opacity )
+    public static SolidColorBrush ToBrush(this Color color, double opacity )
     {
         return new SolidColorBrush { Color = color, Opacity = opacity };
     }
@@ -40,7 +40,7 @@ public static class ColorExtensions
     /// Gets <see cref="System.Windows.Media.Color"/> luminance based on HSL space.
     /// </summary>
     /// <param name="color">Input color.</param>
-    public static double GetLuminance( this Color color )
+    public static double GetLuminance(this Color color )
     {
         (float _, float _, float luminance) = color.ToHsl();
 
@@ -51,7 +51,7 @@ public static class ColorExtensions
     /// Gets <see cref="System.Windows.Media.Color"/> brightness based on HSV space.
     /// </summary>
     /// <param name="color">Input color.</param>
-    public static double GetBrightness( this Color color )
+    public static double GetBrightness(this Color color )
     {
         (float _, float _, float brightness) = color.ToHsv();
 
@@ -62,7 +62,7 @@ public static class ColorExtensions
     /// Gets <see cref="System.Windows.Media.Color"/> hue based on HSV space.
     /// </summary>
     /// <param name="color">Input color.</param>
-    public static double GetHue( this Color color )
+    public static double GetHue(this Color color )
     {
         (float hue, float _, float _) = color.ToHsv();
 
@@ -73,7 +73,7 @@ public static class ColorExtensions
     /// Gets <see cref="System.Windows.Media.Color"/> saturation based on HSV space.
     /// </summary>
     /// <param name="color">Input color.</param>
-    public static double GetSaturation( this Color color )
+    public static double GetSaturation(this Color color )
     {
         (float _, float saturation, float _) = color.ToHsv();
 
@@ -86,7 +86,7 @@ public static class ColorExtensions
     /// <param name="color">Input color.</param>
     /// <param name="factor">The value of the luminance change factor from <see langword="100"/> to <see langword="-100"/>.</param>
     /// <returns>Updated <see cref="System.Windows.Media.Color"/>.</returns>
-    public static Color UpdateLuminance( this Color color, float factor )
+    public static Color UpdateLuminance(this Color color, float factor )
     {
         if (factor is > 100 or < -100)
         {
@@ -106,7 +106,7 @@ public static class ColorExtensions
     /// <param name="color">Input color.</param>
     /// <param name="factor">The value of the saturation change factor from <see langword="100"/> to <see langword="-100"/>.</param>
     /// <returns>Updated <see cref="System.Windows.Media.Color"/>.</returns>
-    public static Color UpdateSaturation( this Color color, float factor )
+    public static Color UpdateSaturation(this Color color, float factor )
     {
         if (factor is > 100f or < -100f)
         {
@@ -126,7 +126,7 @@ public static class ColorExtensions
     /// <param name="color">Input color.</param>
     /// <param name="factor">The value of the brightness change factor from <see langword="100"/> to <see langword="-100"/>.</param>
     /// <returns>Updated <see cref="System.Windows.Media.Color"/>.</returns>
-    public static Color UpdateBrightness( this Color color, float factor )
+    public static Color UpdateBrightness(this Color color, float factor )
     {
         if (factor is > 100f or < -100f)
         {
@@ -197,7 +197,7 @@ public static class ColorExtensions
     /// with the lightness dimension resembling the varying amounts of black or white paint in the mixture.
     /// </summary>
     /// <returns><see langword="float"/> hue, <see langword="float"/> saturation, <see langword="float"/> lightness</returns>
-    public static (float Hue, float Saturation, float Lightness) ToHsl( this Color color )
+    public static (float Hue, float Saturation, float Lightness) ToHsl(this Color color )
     {
         int red = color.R;
         int green = color.G;
@@ -252,7 +252,7 @@ public static class ColorExtensions
     /// HSV representation models how colors appear under light.
     /// </summary>
     /// <returns><see langword="float"/> hue, <see langword="float"/> saturation, <see langword="float"/> brightness</returns>
-    public static (float Hue, float Saturation, float Value) ToHsv( this Color color )
+    public static (float Hue, float Saturation, float Value) ToHsv(this Color color )
     {
         int red = color.R;
         int green = color.G;
@@ -304,7 +304,7 @@ public static class ColorExtensions
     /// <summary>
     /// Converts the color values stored as HSL to RGB.
     /// </summary>
-    public static (int R, int G, int B) FromHslToRgb( float hue, float saturation, float lightness )
+    public static (int R, int G, int B) FromHslToRgb(float hue, float saturation, float lightness )
     {
         if (AlmostEquals(saturation, 0, 0.01f))
         {
@@ -328,7 +328,7 @@ public static class ColorExtensions
     /// <summary>
     /// Converts the color values stored as HSV (HSB) to RGB.
     /// </summary>
-    public static (int R, int G, int B) FromHsvToRgb( float hue, float saturation, float brightness )
+    public static (int R, int G, int B) FromHsvToRgb(float hue, float saturation, float brightness )
     {
         var red = 0;
         var green = 0;
@@ -398,7 +398,7 @@ public static class ColorExtensions
     /// <summary>
     /// Calculates the color component for HSL.
     /// </summary>
-    private static int CalcHslChannel( float color, float saturation, float lightness )
+    private static int CalcHslChannel(float color, float saturation, float lightness )
     {
         float num1,
             num2;
@@ -445,7 +445,7 @@ public static class ColorExtensions
     /// <summary>
     /// Whether the floating point number is about the same.
     /// </summary>
-    private static bool AlmostEquals( float numberOne, float numberTwo, float precision = 0 )
+    private static bool AlmostEquals(float numberOne, float numberTwo, float precision = 0 )
     {
         if (precision <= 0)
         {
@@ -458,7 +458,7 @@ public static class ColorExtensions
     /// <summary>
     /// Absolute percentage.
     /// </summary>
-    private static float ToPercentage( float value )
+    private static float ToPercentage(float value )
     {
         return value switch
         {
@@ -471,7 +471,7 @@ public static class ColorExtensions
     /// <summary>
     /// Absolute byte.
     /// </summary>
-    private static byte ToColorByte( int value )
+    private static byte ToColorByte(int value )
     {
         if (value > byte.MaxValue)
         {

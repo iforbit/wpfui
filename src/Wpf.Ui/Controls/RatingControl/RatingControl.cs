@@ -107,7 +107,7 @@ public class RatingControl : System.Windows.Controls.ContentControl
     /// <summary>
     /// Is called when <see cref="Value"/> changes.
     /// </summary>
-    protected virtual void OnValueChanged( double oldValue )
+    protected virtual void OnValueChanged(double oldValue )
     {
         if (Value > MaxValue)
         {
@@ -134,7 +134,7 @@ public class RatingControl : System.Windows.Controls.ContentControl
     /// <summary>
     /// Is called when mouse is moved away from the control.
     /// </summary>
-    protected override void OnMouseLeave( MouseEventArgs e )
+    protected override void OnMouseLeave(MouseEventArgs e )
     {
         base.OnMouseLeave(e);
 
@@ -144,7 +144,7 @@ public class RatingControl : System.Windows.Controls.ContentControl
     /// <summary>
     /// Is called when mouse is moved around the control.
     /// </summary>
-    protected override void OnMouseMove( MouseEventArgs e )
+    protected override void OnMouseMove(MouseEventArgs e )
     {
         base.OnMouseMove(e);
 
@@ -160,7 +160,7 @@ public class RatingControl : System.Windows.Controls.ContentControl
     /// <summary>
     /// Is called when mouse is cliked down.
     /// </summary>
-    protected override void OnMouseDown( MouseButtonEventArgs e )
+    protected override void OnMouseDown(MouseButtonEventArgs e )
     {
         base.OnMouseDown(e);
 
@@ -177,7 +177,7 @@ public class RatingControl : System.Windows.Controls.ContentControl
     /// Adjusts the control's <see cref="Value" /> in response to keyboard input, incrementing or decrementing based on the key pressed.
     /// </summary>
     /// <param name="e">Key event arguments containing details about the key press.</param>
-    protected override void OnKeyUp( KeyEventArgs e )
+    protected override void OnKeyUp(KeyEventArgs e )
     {
         base.OnKeyUp(e);
 
@@ -227,12 +227,12 @@ public class RatingControl : System.Windows.Controls.ContentControl
         UpdateStarsFromValue();
     }
 
-    private void UpdateStarsOnMousePreview( double offsetPercentage )
+    private void UpdateStarsOnMousePreview(double offsetPercentage )
     {
         SetStarsPresence(ExtractValueFromOffset(offsetPercentage));
     }
 
-    private void UpdateStarsOnMouseClick( double offsetPercentage )
+    private void UpdateStarsOnMouseClick(double offsetPercentage )
     {
         var currentValue = ExtractValueFromOffset(offsetPercentage);
 
@@ -244,7 +244,7 @@ public class RatingControl : System.Windows.Controls.ContentControl
         SetStarsPresence(ExtractValueFromOffset(Value * 100 / 5));
     }
 
-    private void SetStarsPresence( int index )
+    private void SetStarsPresence(int index )
     {
         switch (index)
         {
@@ -338,7 +338,7 @@ public class RatingControl : System.Windows.Controls.ContentControl
         }
     }
 
-    private void UpdateStar( int starIndex, StarValue starValue )
+    private void UpdateStar(int starIndex, StarValue starValue )
     {
         SymbolIcon? selectedIcon = starIndex switch
         {
@@ -373,7 +373,7 @@ public class RatingControl : System.Windows.Controls.ContentControl
         }
     }
 
-    private int ExtractValueFromOffset( double offset )
+    private int ExtractValueFromOffset(double offset )
     {
         var starValue = (int)(offset + OffsetTolerance) / 10;
 
@@ -393,7 +393,7 @@ public class RatingControl : System.Windows.Controls.ContentControl
         return starValue;
     }
 
-    private static void OnValueChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
+    private static void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
         if (d is not RatingControl ratingControl)
         {

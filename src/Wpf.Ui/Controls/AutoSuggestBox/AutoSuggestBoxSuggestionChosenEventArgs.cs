@@ -14,5 +14,5 @@ public sealed class AutoSuggestBoxSuggestionChosenEventArgs : RoutedEventArgs
     public AutoSuggestBoxSuggestionChosenEventArgs( RoutedEvent eventArgs, object sender )
         : base(eventArgs, sender) { }
 
-    public required object SelectedItem { get; init; }
+    required public object SelectedItem { get; init; }
 }

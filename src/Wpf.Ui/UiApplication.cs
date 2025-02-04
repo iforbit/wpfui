@@ -21,7 +21,7 @@ public class UiApplication
     /// <summary>
     /// Initializes a new instance of the <see cref="UiApplication"/> class.
     /// </summary>
-    public UiApplication( Application application )
+    public UiApplication(Application application )
     {
         if (application is null)
         {
@@ -95,11 +95,14 @@ public class UiApplication
                     _resources.MergedDictionaries.Add(themesDictionary);
                     _resources.MergedDictionaries.Add(controlsDictionary);
                 }
-                catch { }
+                catch
+                {
+                }
             }
 
             return _application?.Resources ?? _resources;
         }
+
         set
         {
             if (_application is not null)
@@ -114,7 +117,7 @@ public class UiApplication
     /// <summary>
     /// Gets or sets the application's main window.
     /// </summary>
-    public object TryFindResource( object resourceKey )
+    public object TryFindResource(object resourceKey )
     {
         return Resources[resourceKey];
     }
@@ -127,7 +130,7 @@ public class UiApplication
         _application?.Shutdown();
     }
 
-    private static bool ApplicationHasResources( Application application )
+    private static bool ApplicationHasResources(Application application )
     {
         return application
             .Resources.MergedDictionaries.Where(e => e.Source is not null)

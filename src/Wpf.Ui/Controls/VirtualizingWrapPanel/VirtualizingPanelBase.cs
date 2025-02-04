@@ -276,7 +276,7 @@ public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
     public double ViewportHeight => Viewport.Height;
 
     /// <inheritdoc />
-    public virtual Rect MakeVisible( Visual visual, Rect rectangle )
+    public virtual Rect MakeVisible(Visual visual, Rect rectangle )
     {
         Point pos = visual.TransformToAncestor(this).Transform(Offset);
 
@@ -317,7 +317,7 @@ public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
     /// <summary>
     /// Sets the vertical offset.
     /// </summary>
-    public void SetVerticalOffset( double offset )
+    public void SetVerticalOffset(double offset )
     {
         if (offset < 0 || Viewport.Height >= Extent.Height)
         {
@@ -337,7 +337,7 @@ public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
     /// <summary>
     /// Sets the horizontal offset.
     /// </summary>
-    public void SetHorizontalOffset( double offset )
+    public void SetHorizontalOffset(double offset )
     {
         if (offset < 0 || Viewport.Width >= Extent.Width)
         {
@@ -422,7 +422,7 @@ public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
         ScrollHorizontal(ScrollUnit == ScrollUnit.Pixel ? ViewportHeight : GetPageRightScrollAmount());
 
     /// <inheritdoc />
-    protected override void OnItemsChanged( object sender, ItemsChangedEventArgs args )
+    protected override void OnItemsChanged(object sender, ItemsChangedEventArgs args )
     {
         switch (args.Action)
         {
@@ -439,7 +439,7 @@ public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
     /// <summary>
     /// Updates scroll offset, extent and viewport.
     /// </summary>
-    protected virtual void UpdateScrollInfo( Size availableSize, Size extent )
+    protected virtual void UpdateScrollInfo(Size availableSize, Size extent )
     {
         var invalidateScrollInfo = false;
 
@@ -480,7 +480,7 @@ public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
     /// <summary>
     /// Gets item index from the generator.
     /// </summary>
-    protected int GetItemIndexFromChildIndex( int childIndex )
+    protected int GetItemIndexFromChildIndex(int childIndex )
     {
         GeneratorPosition generatorPosition = GetGeneratorPositionFromChildIndex(childIndex);
         return ItemContainerGenerator.IndexFromGeneratorPosition(generatorPosition);
@@ -489,13 +489,13 @@ public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
     /// <summary>
     /// Gets the position of children from the generator.
     /// </summary>
-    protected virtual GeneratorPosition GetGeneratorPositionFromChildIndex( int childIndex )
+    protected virtual GeneratorPosition GetGeneratorPositionFromChildIndex(int childIndex )
     {
         return new GeneratorPosition(childIndex, 0);
     }
 
     /// <inheritdoc />
-    protected override Size MeasureOverride( Size availableSize )
+    protected override Size MeasureOverride(Size availableSize )
     {
         /* Sometimes when scrolling the scrollbar gets hidden without any reason. In this case the "IsMeasureValid"
          * property of the ScrollOwner is false. To prevent a infinite circle the mesasure call is ignored. */
@@ -650,7 +650,7 @@ public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
     /// Sets vertical scroll offset by given amount.
     /// </summary>
     /// <param name="amount">The value by which the offset is to be increased.</param>
-    protected void ScrollVertical( double amount )
+    protected void ScrollVertical(double amount )
     {
         SetVerticalOffset(VerticalOffset + amount);
     }
@@ -659,7 +659,7 @@ public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
     /// Sets horizontal scroll offset by given amount.
     /// </summary>
     /// <param name="amount">The value by which the offset is to be increased.</param>
-    protected void ScrollHorizontal( double amount )
+    protected void ScrollHorizontal(double amount )
     {
         SetHorizontalOffset(HorizontalOffset + amount);
     }
@@ -667,7 +667,7 @@ public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
     /// <summary>
     /// Calculates the extent that would be needed to show all items.
     /// </summary>
-    protected abstract Size CalculateExtent( Size availableSize );
+    protected abstract Size CalculateExtent(Size availableSize );
 
     /// <summary>
     /// Calculates the item range that is visible in the viewport or cached.

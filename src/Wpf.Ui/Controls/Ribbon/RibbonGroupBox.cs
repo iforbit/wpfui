@@ -11,12 +11,12 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using Wpf.Ui.Controls.Ribbon.Helpers;
+using Wpf.Ui.Controls.Helpers;
 using Wpf.Ui.Extensions;
 using Wpf.Ui.Internal;
 using Wpf.Ui.Internal.KnowBoxes;
 
-namespace Wpf.Ui.Controls.Ribbon;
+namespace Wpf.Ui.Controls;
 
 /// <summary>
 /// RibbonGroup represents a logical group of controls as they appear on
@@ -33,6 +33,8 @@ namespace Wpf.Ui.Controls.Ribbon;
 
 public class RibbonGroupBox : HeaderedItemsControl, IDropDownControl, IHeaderedControl, ILogicalChildSupport, IMediumIconProvider, ISimplifiedStateControl, ILargeIconProvider
 {
+    private readonly ItemContainerGeneratorAction updateChildSizesItemContainerGeneratorAction;
+
     // up part
     private Panel? upPanel;
 
@@ -43,8 +45,6 @@ public class RibbonGroupBox : HeaderedItemsControl, IDropDownControl, IHeaderedC
 
     // Is visual currently snapped
     private bool isSnapped;
-
-    private readonly ItemContainerGeneratorAction updateChildSizesItemContainerGeneratorAction;
 
     /// <summary>
     /// Gets get the <see cref="ContentControl"/> responsible for rendering the header.
@@ -64,7 +64,7 @@ public class RibbonGroupBox : HeaderedItemsControl, IDropDownControl, IHeaderedC
     /// <summary>
     /// Sets the value of <see cref="IsCollapsedHeaderContentPresenterProperty"/>.
     /// </summary>
-    public static void SetIsCollapsedHeaderContentPresenter(DependencyObject element, bool value )
+    public static void SetIsCollapsedHeaderContentPresenter( DependencyObject element, bool value )
     {
         element.SetValue(IsCollapsedHeaderContentPresenterProperty, BooleanBoxes.Box(value));
     }
@@ -73,7 +73,7 @@ public class RibbonGroupBox : HeaderedItemsControl, IDropDownControl, IHeaderedC
     /// Gets the value of <see cref="IsCollapsedHeaderContentPresenterProperty"/>.
     /// </summary>
     [AttachedPropertyBrowsableForType(typeof(RibbonGroupBox))]
-    public static bool GetIsCollapsedHeaderContentPresenter(DependencyObject element )
+    public static bool GetIsCollapsedHeaderContentPresenter( DependencyObject element )
     {
         return (bool)element.GetValue(IsCollapsedHeaderContentPresenterProperty);
     }
@@ -100,11 +100,14 @@ public class RibbonGroupBox : HeaderedItemsControl, IDropDownControl, IHeaderedC
 
     /// <summary>Identifies the <see cref="StateDefinition"/> dependency property.</summary>
     public static readonly DependencyProperty StateDefinitionProperty =
-        DependencyProperty.Register(nameof(StateDefinition), typeof(RibbonGroupBoxStateDefinition), typeof(RibbonGroupBox),
+        DependencyProperty.Register(
+            nameof(StateDefinition),
+            typeof(RibbonGroupBoxStateDefinition),
+            typeof(RibbonGroupBox),
             new PropertyMetadata(new RibbonGroupBoxStateDefinition(null), OnStateDefinitionChanged));
 
     // Handles StateDefinitionProperty changes
-    internal static void OnStateDefinitionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e )
+    internal static void OnStateDefinitionChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
         var box = (RibbonGroupBox)d;
         if (!box.IsSimplified)
@@ -124,11 +127,14 @@ public class RibbonGroupBox : HeaderedItemsControl, IDropDownControl, IHeaderedC
 
     /// <summary>Identifies the <see cref="SimplifiedStateDefinition"/> dependency property.</summary>
     public static readonly DependencyProperty SimplifiedStateDefinitionProperty =
-        DependencyProperty.Register(nameof(SimplifiedStateDefinition), typeof(RibbonGroupBoxStateDefinition), typeof(RibbonGroupBox),
+        DependencyProperty.Register(
+            nameof(SimplifiedStateDefinition),
+            typeof(RibbonGroupBoxStateDefinition),
+            typeof(RibbonGroupBox),
             new PropertyMetadata(new RibbonGroupBoxStateDefinition("Large,Middle,Collapsed"), OnSimplifiedStateDefinitionChanged));
 
     // Handles SimplifiedStateDefinitionProperty changes
-    internal static void OnSimplifiedStateDefinitionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e )
+    internal static void OnSimplifiedStateDefinitionChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
         var box = (RibbonGroupBox)d;
         if (box.IsSimplified)
@@ -155,7 +161,7 @@ public class RibbonGroupBox : HeaderedItemsControl, IDropDownControl, IHeaderedC
     /// </summary>
     /// <param name="d">Object</param>
     /// <param name="e">The event data</param>
-    private static void OnStateChanged(DependencyObject d, DependencyPropertyChangedEventArgs e )
+    private static void OnStateChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
         var ribbonGroupBox = (RibbonGroupBox)d;
         ribbonGroupBox.updateChildSizesItemContainerGeneratorAction.QueueAction();
@@ -176,7 +182,7 @@ public class RibbonGroupBox : HeaderedItemsControl, IDropDownControl, IHeaderedC
         }
     }
 
-    private void UpdateChildSizesOfUIElement(object item, DependencyObject? element, RibbonGroupBoxState groupBoxState, bool isSimplified )
+    private void UpdateChildSizesOfUIElement( object item, DependencyObject? element, RibbonGroupBoxState groupBoxState, bool isSimplified )
     {
         if (element is null)
         {
@@ -203,7 +209,7 @@ public class RibbonGroupBox : HeaderedItemsControl, IDropDownControl, IHeaderedC
 
         return;
 
-        static void UpdateValues(DependencyObject element, RibbonGroupBoxState groupBoxState, bool isSimplified )
+        static void UpdateValues( DependencyObject element, RibbonGroupBoxState groupBoxState, bool isSimplified )
         {
             UpdateIsSimplifiedOfUIElement(element, isSimplified);
             RibbonProperties.SetAppropriateSize(element, groupBoxState, isSimplified);
@@ -257,7 +263,7 @@ public class RibbonGroupBox : HeaderedItemsControl, IDropDownControl, IHeaderedC
         this.ScaleScaleableItems(ScaleDirection.Reduce);
     }
 
-    private void ScaleScaleableItems(ScaleDirection scaleDirection )
+    private void ScaleScaleableItems( ScaleDirection scaleDirection )
     {
         foreach (var item in this.Items)
         {
@@ -441,7 +447,7 @@ public class RibbonGroupBox : HeaderedItemsControl, IDropDownControl, IHeaderedC
     /// <summary>Identifies the <see cref="IsDropDownOpen"/> dependency property.</summary>
     public static readonly DependencyProperty IsDropDownOpenProperty = DependencyProperty.Register(nameof(IsDropDownOpen), typeof(bool), typeof(RibbonGroupBox), new PropertyMetadata(BooleanBoxes.FalseBox, OnIsDropDownOpenChanged, CoerceIsDropDownOpen));
 
-    private static object? CoerceIsDropDownOpen(DependencyObject d, object? basevalue )
+    private static object? CoerceIsDropDownOpen( DependencyObject d, object? basevalue )
     {
         var box = (RibbonGroupBox)d;
 
@@ -523,14 +529,14 @@ public class RibbonGroupBox : HeaderedItemsControl, IDropDownControl, IHeaderedC
     /// <summary>
     /// Called when <see cref="IsSimplified"/> changes.
     /// </summary>
-    private static void OnIsSimplifiedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e )
+    private static void OnIsSimplifiedChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
         var box = (RibbonGroupBox)d;
         _ = box.TryClearCacheAndResetStateAndScaleAndNotifyParentRibbonGroupsContainer();
         box.updateChildSizesItemContainerGeneratorAction.QueueAction();
     }
 
-    private static void UpdateIsSimplifiedOfUIElement(DependencyObject? element, bool isSimplified )
+    private static void UpdateIsSimplifiedOfUIElement( DependencyObject? element, bool isSimplified )
     {
         if (element is ISimplifiedStateControl simplifiedStateControl)
         {
@@ -564,19 +570,19 @@ public class RibbonGroupBox : HeaderedItemsControl, IDropDownControl, IHeaderedC
         PopupService.Attach(type);
     }
 
-    private static void OnVisibilityChanged(DependencyObject d, DependencyPropertyChangedEventArgs e )
+    private static void OnVisibilityChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
         var box = (RibbonGroupBox)d;
         _ = box.TryClearCacheAndResetStateAndScaleAndNotifyParentRibbonGroupsContainer();
     }
 
-    private static void OnFontSizeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e )
+    private static void OnFontSizeChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
         var box = (RibbonGroupBox)d;
         _ = box.TryClearCacheAndResetStateAndScaleAndNotifyParentRibbonGroupsContainer();
     }
 
-    private static void OnFontFamilyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e )
+    private static void OnFontFamilyChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
         var box = (RibbonGroupBox)d;
         _ = box.TryClearCacheAndResetStateAndScaleAndNotifyParentRibbonGroupsContainer();
@@ -599,12 +605,12 @@ public class RibbonGroupBox : HeaderedItemsControl, IDropDownControl, IHeaderedC
         this.updateChildSizesItemContainerGeneratorAction = new ItemContainerGeneratorAction(this.ItemContainerGenerator, this.UpdateChildSizes);
     }
 
-    private void OnLoaded(object sender, RoutedEventArgs e )
+    private void OnLoaded( object sender, RoutedEventArgs e )
     {
         this.SubscribeEvents();
     }
 
-    private void OnUnloaded(object sender, RoutedEventArgs e )
+    private void OnUnloaded( object sender, RoutedEventArgs e )
     {
         this.SetCurrentValue(IsDropDownOpenProperty, false);
 
@@ -689,11 +695,11 @@ public class RibbonGroupBox : HeaderedItemsControl, IDropDownControl, IHeaderedC
 
                     if (this.snappedImage is not null)
                     {
-                        this.snappedImage.FlowDirection = this.FlowDirection;
-                        this.snappedImage.Source = renderTargetBitmap;
-                        this.snappedImage.Width = this.ActualWidth;
-                        this.snappedImage.Height = this.ActualHeight;
-                        this.snappedImage.Visibility = Visibility.Visible;
+                        this.snappedImage.SetCurrentValue(FlowDirectionProperty, this.FlowDirection);
+                        this.snappedImage.SetCurrentValue(Image.SourceProperty, renderTargetBitmap);
+                        this.snappedImage.SetCurrentValue(WidthProperty, this.ActualWidth);
+                        this.snappedImage.SetCurrentValue(HeightProperty, this.ActualHeight);
+                        this.snappedImage.SetCurrentValue(VisibilityProperty, Visibility.Visible);
                     }
 
                     this.isSnapped = true;
@@ -702,7 +708,7 @@ public class RibbonGroupBox : HeaderedItemsControl, IDropDownControl, IHeaderedC
             else if (this.snappedImage is not null)
             {
                 // Clean up
-                this.snappedImage.Visibility = Visibility.Collapsed;
+                this.snappedImage.SetCurrentValue(VisibilityProperty, Visibility.Collapsed);
                 this.isSnapped = false;
             }
 
@@ -730,7 +736,7 @@ public class RibbonGroupBox : HeaderedItemsControl, IDropDownControl, IHeaderedC
         using (this.CacheResetGuard.Start())
         {
             // Get desired size for these values
-            this.State = this.StateIntermediate;
+            this.SetCurrentValue(StateProperty, this.StateIntermediate);
             this.Scale = this.ScaleIntermediate;
             this.InvalidateLayout();
             this.Measure(new Size(double.PositiveInfinity, contentHeight));
@@ -783,7 +789,7 @@ public class RibbonGroupBox : HeaderedItemsControl, IDropDownControl, IHeaderedC
         InvalidateMeasureRecursive(this);
     }
 
-    private static void InvalidateMeasureRecursive(UIElement element )
+    private static void InvalidateMeasureRecursive( UIElement element )
     {
         if (element.IsMeasureValid)
         {
@@ -827,7 +833,7 @@ public class RibbonGroupBox : HeaderedItemsControl, IDropDownControl, IHeaderedC
     }
 
     /// <inheritdoc />
-    protected override void OnItemsChanged(NotifyCollectionChangedEventArgs e )
+    protected override void OnItemsChanged( NotifyCollectionChangedEventArgs e )
     {
         base.OnItemsChanged(e);
 
@@ -836,7 +842,7 @@ public class RibbonGroupBox : HeaderedItemsControl, IDropDownControl, IHeaderedC
     }
 
     /// <inheritdoc />
-    protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e )
+    protected override void OnMouseLeftButtonDown( MouseButtonEventArgs e )
     {
         if (ReferenceEquals(e.Source, this) == false
             || this.DropDownPopup is null)
@@ -851,7 +857,7 @@ public class RibbonGroupBox : HeaderedItemsControl, IDropDownControl, IHeaderedC
 
             if (!this.IsDropDownOpen)
             {
-                this.IsDropDownOpen = true;
+                this.SetCurrentValue(IsDropDownOpenProperty, true);
             }
             else
             {
@@ -861,7 +867,7 @@ public class RibbonGroupBox : HeaderedItemsControl, IDropDownControl, IHeaderedC
     }
 
     /// <inheritdoc />
-    protected override void OnKeyDown(KeyEventArgs e )
+    protected override void OnKeyDown( KeyEventArgs e )
     {
         if (this.IsInButtonState == false
             || e.Handled)
@@ -875,7 +881,7 @@ public class RibbonGroupBox : HeaderedItemsControl, IDropDownControl, IHeaderedC
             case Key.Space:
                 e.Handled = true;
 
-                this.IsDropDownOpen = true;
+                this.SetCurrentValue(IsDropDownOpenProperty, true);
                 break;
 
             case Key.System:
@@ -883,26 +889,26 @@ public class RibbonGroupBox : HeaderedItemsControl, IDropDownControl, IHeaderedC
                     && e.KeyboardDevice.Modifiers == ModifierKeys.Alt)
                 {
                     e.Handled = true;
-                    this.IsDropDownOpen = true;
+                    this.SetCurrentValue(IsDropDownOpenProperty, true);
                 }
 
                 break;
 
             case Key.Escape:
                 e.Handled = true;
-                this.IsDropDownOpen = false;
+                this.SetCurrentValue(IsDropDownOpenProperty, false);
                 break;
         }
 
         base.OnKeyDown(e);
     }
 
-    private void OnPopupOpened(object? sender, EventArgs e )
+    private void OnPopupOpened( object? sender, EventArgs e )
     {
         this.DropDownOpened?.Invoke(this, e);
     }
 
-    private void OnPopupClosed(object? sender, EventArgs e )
+    private void OnPopupClosed( object? sender, EventArgs e )
     {
         this.DropDownClosed?.Invoke(this, e);
     }
@@ -912,7 +918,7 @@ public class RibbonGroupBox : HeaderedItemsControl, IDropDownControl, IHeaderedC
     /// </summary>
     /// <param name="sender">Sender</param>
     /// <param name="e">the event data</param>
-    private void OnDialogLauncherButtonClick(object sender, RoutedEventArgs e )
+    private void OnDialogLauncherButtonClick( object sender, RoutedEventArgs e )
     {
         this.LauncherClick?.Invoke(this, e);
     }
@@ -922,7 +928,7 @@ public class RibbonGroupBox : HeaderedItemsControl, IDropDownControl, IHeaderedC
     /// </summary>
     /// <param name="d">Object</param>
     /// <param name="e">The event data</param>
-    private static void OnIsDropDownOpenChanged(DependencyObject d, DependencyPropertyChangedEventArgs e )
+    private static void OnIsDropDownOpenChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
         var groupBox = (RibbonGroupBox)d;
 
@@ -933,7 +939,7 @@ public class RibbonGroupBox : HeaderedItemsControl, IDropDownControl, IHeaderedC
 
         groupBox.OnIsDropDownOpenChanged();
 
-        (UIElementAutomationPeer.FromElement(groupBox) as Wpf.Ui.Controls.Ribbon.Automation.Peers.RibbonGroupBoxAutomationPeer)?.RaiseExpandCollapseAutomationEvent(oldValue, newValue);
+        (UIElementAutomationPeer.FromElement(groupBox) as Wpf.Ui.Controls.Automation.Peers.RibbonGroupBoxAutomationPeer)?.RaiseExpandCollapseAutomationEvent(oldValue, newValue);
 
         // todo: code in DropDownButton does nearly the same. Try to unify it.
         if (newValue)
@@ -991,19 +997,19 @@ public class RibbonGroupBox : HeaderedItemsControl, IDropDownControl, IHeaderedC
     }
 
     /// <inheritdoc />
-    public void UpdateSimplifiedState(bool isSimplified )
+    public void UpdateSimplifiedState( bool isSimplified )
     {
         this.IsSimplified = isSimplified;
     }
 
     /// <inheritdoc />
-    void ILogicalChildSupport.AddLogicalChild(object child )
+    void ILogicalChildSupport.AddLogicalChild( object child )
     {
         this.AddLogicalChild(child);
     }
 
     /// <inheritdoc />
-    void ILogicalChildSupport.RemoveLogicalChild(object child )
+    void ILogicalChildSupport.RemoveLogicalChild( object child )
     {
         this.RemoveLogicalChild(child);
     }
@@ -1042,5 +1048,5 @@ public class RibbonGroupBox : HeaderedItemsControl, IDropDownControl, IHeaderedC
     }
 
     /// <inheritdoc />
-    protected override AutomationPeer OnCreateAutomationPeer() => new Wpf.Ui.Controls.Ribbon.Automation.Peers.RibbonGroupBoxAutomationPeer(this);
+    protected override AutomationPeer OnCreateAutomationPeer() => new Wpf.Ui.Controls.Automation.Peers.RibbonGroupBoxAutomationPeer(this);
 }

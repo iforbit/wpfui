@@ -8,7 +8,7 @@ using System.Windows.Controls.Primitives;
 using Wpf.Ui.Extensions;
 using Wpf.Ui.Internal;
 
-namespace Wpf.Ui.Controls.Ribbon;
+namespace Wpf.Ui.Controls;
 
 /// <summary>
 /// Represent panel with ribbon group.

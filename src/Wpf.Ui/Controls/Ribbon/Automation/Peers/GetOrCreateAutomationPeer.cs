@@ -5,7 +5,7 @@
 
 using System.Windows.Automation.Peers;
 
-namespace Wpf.Ui.Controls.Ribbon.Automation.Peers;
+namespace Wpf.Ui.Controls.Automation.Peers;
 internal static class UIElementExtensions
 {
     public static AutomationPeer? GetOrCreateAutomationPeer(this UIElement element )

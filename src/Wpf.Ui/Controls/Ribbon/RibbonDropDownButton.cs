@@ -10,12 +10,12 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Markup;
-using Wpf.Ui.Controls.Ribbon.Helpers;
+using Wpf.Ui.Controls.Helpers;
 using Wpf.Ui.Extensions;
 using Wpf.Ui.Internal.KnowBoxes;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 
-namespace Wpf.Ui.Controls.Ribbon;
+namespace Wpf.Ui.Controls;
 
 /// <summary>
 /// Represents drop down button
@@ -27,11 +27,11 @@ namespace Wpf.Ui.Controls.Ribbon;
 [DebuggerDisplay("{GetType().FullName}: Header = {Header}, Items.Count = {Items.Count}, Size = {Size}, IsSimplified = {IsSimplified}")]
 public class RibbonDropDownButton : ItemsControl, IRibbonControl, IDropDownControl, ILargeIconProvider, IMediumIconProvider, ISimplifiedRibbonControl
 {
+    private readonly Stack<WeakReference> openMenuItems = new();
+
     private UIElement? buttonBorder;
 
     private ResizeableContentControl? popupContentControl;
-
-    private readonly Stack<WeakReference> openMenuItems = new();
 
     /// <summary>
     /// Gets or sets Size for the element.
@@ -174,7 +174,10 @@ public class RibbonDropDownButton : ItemsControl, IRibbonControl, IDropDownContr
 
     /// <summary>Identifies the <see cref="IsDropDownOpen"/> dependency property.</summary>
     public static readonly DependencyProperty IsDropDownOpenProperty =
-        DependencyProperty.Register(nameof(IsDropDownOpen), typeof(bool), typeof(RibbonDropDownButton),
+        DependencyProperty.Register(
+            nameof(IsDropDownOpen),
+            typeof(bool),
+            typeof(RibbonDropDownButton),
             new PropertyMetadata(BooleanBoxes.FalseBox, OnIsDropDownOpenChanged));
 
     /// <summary>
@@ -260,7 +263,7 @@ public class RibbonDropDownButton : ItemsControl, IRibbonControl, IDropDownContr
     /// <summary>Identifies the <see cref="IsSimplified"/> dependency property.</summary>
     public static readonly DependencyProperty IsSimplifiedProperty = IsSimplifiedPropertyKey.DependencyProperty;
 
-    private static void OnIsSimplifiedChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
+    private static void OnIsSimplifiedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if (d is RibbonDropDownButton dropDownButton)
         {
@@ -273,7 +276,7 @@ public class RibbonDropDownButton : ItemsControl, IRibbonControl, IDropDownContr
     /// </summary>
     /// <param name="oldValue">old value</param>
     /// <param name="newValue">new value</param>
-    protected virtual void OnIsSimplifiedChanged( bool oldValue, bool newValue )
+    protected virtual void OnIsSimplifiedChanged(bool oldValue, bool newValue)
     {
     }
 
@@ -318,7 +321,7 @@ public class RibbonDropDownButton : ItemsControl, IRibbonControl, IDropDownContr
         this.AddHandler(System.Windows.Controls.MenuItem.SubmenuClosedEvent, new RoutedEventHandler(this.OnSubmenuClosed));
     }
 
-    private void OnIsVisibleChanged( object sender, DependencyPropertyChangedEventArgs e )
+    private void OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
     {
         // We should better use code similar to ComboBox.OnLostMouseCapture, but most of the methods called there are internal to WPF...
         if ((bool)e.NewValue == false)
@@ -327,12 +330,12 @@ public class RibbonDropDownButton : ItemsControl, IRibbonControl, IDropDownContr
         }
     }
 
-    private void OnLoaded( object sender, RoutedEventArgs e )
+    private void OnLoaded(object sender, RoutedEventArgs e)
     {
         this.SubscribeEvents();
     }
 
-    private void OnUnloaded( object sender, RoutedEventArgs e )
+    private void OnUnloaded(object sender, RoutedEventArgs e)
     {
         this.SetCurrentValue(IsDropDownOpenProperty, false);
 
@@ -414,7 +417,7 @@ public class RibbonDropDownButton : ItemsControl, IRibbonControl, IDropDownContr
     private object? currentItem;
 
     /// <inheritdoc />
-    protected override bool IsItemItsOwnContainerOverride( object item )
+    protected override bool IsItemItsOwnContainerOverride(object item)
     {
         if (base.IsItemItsOwnContainerOverride(item))
         {
@@ -450,7 +453,7 @@ public class RibbonDropDownButton : ItemsControl, IRibbonControl, IDropDownContr
         return base.GetContainerForItemOverride();
     }
 
-    private void OnDropDownPopupKeyDown( object sender, KeyEventArgs e )
+    private void OnDropDownPopupKeyDown(object sender, KeyEventArgs e)
     {
         if (e.Handled)
         {
@@ -462,7 +465,7 @@ public class RibbonDropDownButton : ItemsControl, IRibbonControl, IDropDownContr
         switch (e.Key)
         {
             case Key.Escape:
-                this.IsDropDownOpen = false;
+                this.SetCurrentValue(IsDropDownOpenProperty, false);
                 handled = true;
                 break;
         }
@@ -473,7 +476,7 @@ public class RibbonDropDownButton : ItemsControl, IRibbonControl, IDropDownContr
         }
     }
 
-    private void OnDropDownPopupMouseDown( object sender, RoutedEventArgs e )
+    private void OnDropDownPopupMouseDown(object sender, RoutedEventArgs e)
     {
         if (this.ClosePopupOnMouseDown
             && (this.popupContentControl?.IsMouseOverResizeThumbs ?? false) == false)
@@ -483,7 +486,7 @@ public class RibbonDropDownButton : ItemsControl, IRibbonControl, IDropDownContr
 
             if (timespan <= 0)
             {
-                this.IsDropDownOpen = false;
+                this.SetCurrentValue(IsDropDownOpenProperty, false);
             }
             else
             {
@@ -492,22 +495,22 @@ public class RibbonDropDownButton : ItemsControl, IRibbonControl, IDropDownContr
                 {
                     await Task.Delay(timespan);
 
-                    this.RunInDispatcherAsync(() => this.IsDropDownOpen = false);
+                    this.RunInDispatcherAsync(() => this.SetCurrentValue(IsDropDownOpenProperty, false));
                 });
             }
         }
     }
 
-    private void HandleButtonBorderMouseLeftButtonDown( object sender, MouseButtonEventArgs e )
+    private void HandleButtonBorderMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
         e.Handled = true;
 
         _ = this.Focus();
-        this.IsDropDownOpen = !this.IsDropDownOpen;
+        this.SetCurrentValue(IsDropDownOpenProperty, !this.IsDropDownOpen);
     }
 
     /// <inheritdoc />
-    protected override void OnKeyDown( KeyEventArgs e )
+    protected override void OnKeyDown(KeyEventArgs e)
     {
         if (e.Handled)
         {
@@ -522,7 +525,7 @@ public class RibbonDropDownButton : ItemsControl, IRibbonControl, IDropDownContr
                 if (this.HasItems
                     && this.IsDropDownOpen == false) // Only handle this for initial navigation. Further navigation is handled by the dropdown itself
                 {
-                    this.IsDropDownOpen = true;
+                    this.SetCurrentValue(IsDropDownOpenProperty, true);
 
                     DependencyObject container = this.ItemContainerGenerator.ContainerFromIndex(0);
 
@@ -537,7 +540,7 @@ public class RibbonDropDownButton : ItemsControl, IRibbonControl, IDropDownContr
                 if (this.HasItems
                     && this.IsDropDownOpen == false) // Only handle this for initial navigation. Further navigation is handled by the dropdown itself
                 {
-                    this.IsDropDownOpen = true;
+                    this.SetCurrentValue(IsDropDownOpenProperty, true);
 
                     DependencyObject container = this.ItemContainerGenerator.ContainerFromIndex(this.Items.Count - 1);
 
@@ -551,7 +554,7 @@ public class RibbonDropDownButton : ItemsControl, IRibbonControl, IDropDownContr
             case Key.Escape:
                 if (this.IsDropDownOpen)
                 {
-                    this.IsDropDownOpen = false;
+                    this.SetCurrentValue(IsDropDownOpenProperty, false);
                     handled = true;
                 }
 
@@ -559,7 +562,7 @@ public class RibbonDropDownButton : ItemsControl, IRibbonControl, IDropDownContr
 
             case Key.Enter:
             case Key.Space:
-                this.IsDropDownOpen = !this.IsDropDownOpen;
+                this.SetCurrentValue(IsDropDownOpenProperty, !this.IsDropDownOpen);
                 handled = true;
                 break;
         }
@@ -572,7 +575,7 @@ public class RibbonDropDownButton : ItemsControl, IRibbonControl, IDropDownContr
         base.OnKeyDown(e);
     }
 
-    internal static void NavigateToContainer( DependencyObject container, FocusNavigationDirection focusNavigationDirection = FocusNavigationDirection.Down )
+    internal static void NavigateToContainer(DependencyObject container, FocusNavigationDirection focusNavigationDirection = FocusNavigationDirection.Down)
     {
         var element = container as UIElement;
 
@@ -591,14 +594,14 @@ public class RibbonDropDownButton : ItemsControl, IRibbonControl, IDropDownContr
         }
     }
 
-    private static object CoerceToolTipIsEnabled( DependencyObject d, object basevalue )
+    private static object CoerceToolTipIsEnabled(DependencyObject d, object basevalue)
     {
         var control = (RibbonDropDownButton)d;
 
         return BooleanBoxes.Box(!control.IsDropDownOpen);
     }
 
-    private static void OnIsDropDownOpenChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
+    private static void OnIsDropDownOpenChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         var control = (RibbonDropDownButton)d;
 
@@ -612,12 +615,12 @@ public class RibbonDropDownButton : ItemsControl, IRibbonControl, IDropDownContr
 
         control.OnIsDropDownOpenChanged(newValue);
 
-        (UIElementAutomationPeer.FromElement(control) as Wpf.Ui.Controls.Ribbon.Automation.Peers.RibbonDropDownButtonAutomationPeer)?.RaiseExpandCollapseAutomationEvent(oldValue, newValue);
+        (UIElementAutomationPeer.FromElement(control) as Wpf.Ui.Controls.Automation.Peers.RibbonDropDownButtonAutomationPeer)?.RaiseExpandCollapseAutomationEvent(oldValue, newValue);
     }
 
-    private void OnIsDropDownOpenChanged( bool newValue )
+    private void OnIsDropDownOpenChanged(bool newValue)
     {
-        this.SetValue(System.Windows.Controls.ToolTipService.IsEnabledProperty, BooleanBoxes.Box(!newValue));
+        this.SetCurrentValue(System.Windows.Controls.ToolTipService.IsEnabledProperty, BooleanBoxes.Box(!newValue));
 
         Debug.WriteLine($"{this.Header} IsDropDownOpen: {newValue.ToString()}");
 
@@ -692,9 +695,9 @@ public class RibbonDropDownButton : ItemsControl, IRibbonControl, IDropDownContr
     }
 
     /// <inheritdoc />
-    protected override AutomationPeer OnCreateAutomationPeer() => new Wpf.Ui.Controls.Ribbon.Automation.Peers.RibbonDropDownButtonAutomationPeer(this);
+    protected override AutomationPeer OnCreateAutomationPeer() => new Wpf.Ui.Controls.Automation.Peers.RibbonDropDownButtonAutomationPeer(this);
 
-    private void OnSubmenuOpened( object sender, RoutedEventArgs e )
+    private void OnSubmenuOpened(object sender, RoutedEventArgs e)
     {
         var menuItem = e.OriginalSource as MenuItem;
         if (menuItem is not null)
@@ -703,7 +706,7 @@ public class RibbonDropDownButton : ItemsControl, IRibbonControl, IDropDownContr
         }
     }
 
-    private void OnSubmenuClosed( object sender, RoutedEventArgs e )
+    private void OnSubmenuClosed(object sender, RoutedEventArgs e)
     {
         if (this.openMenuItems.Count > 0)
         {
@@ -712,19 +715,19 @@ public class RibbonDropDownButton : ItemsControl, IRibbonControl, IDropDownContr
     }
 
     /// <inheritdoc />
-    public void UpdateSimplifiedState( bool isSimplified )
+    public void UpdateSimplifiedState(bool isSimplified)
     {
         this.IsSimplified = isSimplified;
     }
 
     /// <inheritdoc />
-    void ILogicalChildSupport.AddLogicalChild( object child )
+    void ILogicalChildSupport.AddLogicalChild(object child)
     {
         this.AddLogicalChild(child);
     }
 
     /// <inheritdoc />
-    void ILogicalChildSupport.RemoveLogicalChild( object child )
+    void ILogicalChildSupport.RemoveLogicalChild(object child)
     {
         this.RemoveLogicalChild(child);
     }

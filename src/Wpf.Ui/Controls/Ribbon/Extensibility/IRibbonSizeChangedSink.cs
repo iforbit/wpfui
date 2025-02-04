@@ -3,7 +3,7 @@
 // Copyright (C) Leszek Pomianowski and WPF UI Contributors.
 // All Rights Reserved.
 
-namespace Wpf.Ui.Controls.Ribbon.Extensibility;
+namespace Wpf.Ui.Controls.Extensibility;
 
 /// <summary>
 /// Interface which is used to signal size changes
@@ -15,5 +15,5 @@ public interface IRibbonSizeChangedSink
     /// </summary>
     /// <param name="previous">Size before change</param>
     /// <param name="current">Size after change</param>
-    void OnSizePropertyChanged(RibbonControlSize previous, RibbonControlSize current );
+    void OnSizePropertyChanged(RibbonControlSize previous, RibbonControlSize current);
 }

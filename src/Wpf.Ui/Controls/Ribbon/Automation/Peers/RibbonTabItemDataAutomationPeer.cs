@@ -8,7 +8,7 @@ using System.Windows.Automation.Peers;
 using System.Windows.Automation.Provider;
 using Wpf.Ui.Extensions;
 
-namespace Wpf.Ui.Controls.Ribbon.Automation.Peers;
+namespace Wpf.Ui.Controls.Automation.Peers;
 
 /// <summary>
 /// Automation peer for <see cref="RibbonTabItem"/>.
@@ -19,7 +19,7 @@ public class RibbonTabItemDataAutomationPeer : SelectorItemAutomationPeer, IScro
     /// Initializes a new instance of the <see cref="RibbonTabItemDataAutomationPeer"/> class.
     /// Creates a new instance.
     /// </summary>
-    public RibbonTabItemDataAutomationPeer( object item, RibbonTabControlAutomationPeer tabControlAutomationPeer )
+    public RibbonTabItemDataAutomationPeer(object item, RibbonTabControlAutomationPeer tabControlAutomationPeer)
         : base(item, tabControlAutomationPeer)
     {
     }

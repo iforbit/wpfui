@@ -5,10 +5,10 @@
 
 using System.Windows.Controls;
 using System.Windows.Input;
-using Wpf.Ui.Controls.Ribbon.Helpers;
+using Wpf.Ui.Controls.Helpers;
 using Wpf.Ui.Internal.KnowBoxes;
 
-namespace Wpf.Ui.Controls.Ribbon;
+namespace Wpf.Ui.Controls;
 
 /// <summary>
 /// Helper control which enables easy embedding of window steering functions.
@@ -28,7 +28,7 @@ public class WindowSteeringHelperControl : Border
     }
 
     /// <inheritdoc />
-    protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e )
+    protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
     {
         base.OnMouseLeftButtonDown(e);
 
@@ -39,7 +39,7 @@ public class WindowSteeringHelperControl : Border
     }
 
     /// <inheritdoc />
-    protected override void OnMouseRightButtonUp(MouseButtonEventArgs e )
+    protected override void OnMouseRightButtonUp(MouseButtonEventArgs e)
     {
         base.OnMouseRightButtonUp(e);
 

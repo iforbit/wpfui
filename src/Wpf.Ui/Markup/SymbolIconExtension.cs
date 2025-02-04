@@ -34,17 +34,17 @@ public class SymbolIconExtension : MarkupExtension
 {
     public SymbolIconExtension() { }
 
-    public SymbolIconExtension( SymbolRegular symbol )
+    public SymbolIconExtension(SymbolRegular symbol )
     {
         Symbol = symbol;
     }
 
-    public SymbolIconExtension( string symbol )
+    public SymbolIconExtension(string symbol )
     {
         Symbol = (SymbolRegular)Enum.Parse(typeof(SymbolRegular), symbol);
     }
 
-    public SymbolIconExtension( SymbolRegular symbol, bool filled )
+    public SymbolIconExtension(SymbolRegular symbol, bool filled )
         : this(symbol)
     {
         Filled = filled;
@@ -58,7 +58,7 @@ public class SymbolIconExtension : MarkupExtension
 
     public double FontSize { get; set; }
 
-    public override object ProvideValue( IServiceProvider serviceProvider )
+    public override object ProvideValue(IServiceProvider serviceProvider )
     {
         SymbolIcon symbolIcon = new() { Symbol = Symbol, Filled = Filled };
 

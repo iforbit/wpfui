@@ -6,7 +6,7 @@
     xmlns:local="clr-namespace:Wpf.Ui.Demo.Mvvm.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:tray="http://schemas.lepo.co/wpfui/2022/xaml/tray"
-    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml" 
     Title="{Binding ViewModel.ApplicationTitle, Mode=OneWay}"
     Width="1100"
     Height="650"
@@ -33,12 +33,74 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+        <ui:TitleBar
+        Title="{Binding ViewModel.ApplicationTitle, Mode=OneWay}"
+        Grid.Row="0"
+        Icon="pack://application:,,,/Assets/applicationIcon-256.png" />
 
+        <tray:NotifyIcon
+        Grid.Row="0"
+        FocusOnLeftClick="True"
+        Icon="pack://application:,,,/Assets/applicationIcon-256.png"
+        MenuOnRightClick="True"
+        TooltipText="WPF UI - MVVM Demo">
+            <tray:NotifyIcon.Menu>
+                <ContextMenu ItemsSource="{Binding ViewModel.TrayMenuItems, Mode=OneWay}" />
+            </tray:NotifyIcon.Menu>
+        </tray:NotifyIcon>
+        
+        <ui:Ribbon Grid.Row="1" AutomaticStateManagement="True" CanUseSimplified="True" >
+            <ui:RibbonTabItem Header="Resizing &amp; Screentips"
+                      ReduceOrder="Default,Default,Default,Large,Large,Large,Other,Other,Other">
+                <!-- By default ReduceOrder="Large, Middle, Small" -->
+                <ui:RibbonGroupBox x:Name="Default" Header="Default Behaviour">
+                    <!-- To use ScreenTip you have to create it and set to ToolTip property -->
+                    <ui:Button  Margin="0,0,0,5" Style="{StaticResource BasePaneButtonStyle}" >
+                        <ui:Button.Icon>
+                            <ui:SymbolIcon Symbol="LineHorizontal320" />
+                        </ui:Button.Icon>
+                        <ui:Button.Content>
+                            <TextBlock FontWeight="Medium" Text="Green" />
+                        </ui:Button.Content>
+                    </ui:Button>
+                    <!-- ScreenTip is able to be shown on disabled controls -->
+                    <ui:Button   Margin="0,0,0,5"
+               Style="{StaticResource BasePaneButtonStyle}" >
+                        <ui:Button.Icon>
+                            <ui:SymbolIcon Symbol="LineHorizontal320" />
+                        </ui:Button.Icon>
+                        <ui:Button.Content>
+                            <TextBlock FontWeight="Medium" Text="Gray" />
+                        </ui:Button.Content>
+                    </ui:Button>
+
+                </ui:RibbonGroupBox>
+
+                <!-- You can set short form (for ex, "Middle" is equal "Middle,Middle,Middle") -->
+                <ui:RibbonGroupBox x:Name="Large"
+                           Header="Large Only">
+                    <ui:Button Margin="0,0,0,5"
+                                  Style="{StaticResource BasePaneButtonStyle}" >
+                        <ui:Button.Icon>
+                            <ui:SymbolIcon Symbol="LineHorizontal320" />
+                        </ui:Button.Icon>
+                        <ui:Button.Content>
+                            <TextBlock FontWeight="Medium" Text="Middle" />
+                        </ui:Button.Content>
+                    </ui:Button>
+                </ui:RibbonGroupBox>
+            </ui:RibbonTabItem>
+            <ui:RibbonTabItem Header="Test" >
+            </ui:RibbonTabItem>
+            <ui:RibbonTabItem Header="Test2" >
+            </ui:RibbonTabItem>
+        </ui:Ribbon>
         <ui:NavigationView
             x:Name="RootNavigation"
-            Grid.Row="1"
+            Grid.Row="2"
             FooterMenuItemsSource="{Binding ViewModel.NavigationFooter, Mode=OneWay}"
             PaneDisplayMode="Left"
             MenuItemsSource="{Binding ViewModel.NavigationItems, Mode=OneWay}">
@@ -59,20 +121,6 @@
             </ui:NavigationView.Header>
         </ui:NavigationView>
 
-        <ui:TitleBar
-            Title="{Binding ViewModel.ApplicationTitle, Mode=OneWay}"
-            Grid.Row="0"
-            Icon="pack://application:,,,/Assets/applicationIcon-256.png" />
-
-        <tray:NotifyIcon
-            Grid.Row="0"
-            FocusOnLeftClick="True"
-            Icon="pack://application:,,,/Assets/applicationIcon-256.png"
-            MenuOnRightClick="True"
-            TooltipText="WPF UI - MVVM Demo">
-            <tray:NotifyIcon.Menu>
-                <ContextMenu ItemsSource="{Binding ViewModel.TrayMenuItems, Mode=OneWay}" />
-            </tray:NotifyIcon.Menu>
-        </tray:NotifyIcon>
+    
     </Grid>
 </ui:FluentWindow>

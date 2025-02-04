@@ -271,7 +271,7 @@ public class NotifyIcon : System.Windows.FrameworkElement, IDisposable
     }
 
     /// <inheritdoc />
-    protected override void OnRender( DrawingContext drawingContext )
+    protected override void OnRender(DrawingContext drawingContext )
     {
         base.OnRender(drawingContext);
 
@@ -347,7 +347,7 @@ public class NotifyIcon : System.Windows.FrameworkElement, IDisposable
     /// <para>Only unmanaged resources can be disposed.</para>
     /// </summary>
     /// <param name="disposing">If disposing equals <see langword="true"/>, dispose all managed and unmanaged resources.</param>
-    protected virtual void Dispose( bool disposing )
+    protected virtual void Dispose(bool disposing )
     {
         if (Disposed)
         {
@@ -372,13 +372,13 @@ public class NotifyIcon : System.Windows.FrameworkElement, IDisposable
     /// This virtual method is called when <see cref="ContextMenu"/> of <see cref="NotifyIcon"/> is changed.
     /// </summary>
     /// <param name="contextMenu">New context menu object.</param>
-    protected virtual void OnMenuChanged( ContextMenu contextMenu )
+    protected virtual void OnMenuChanged(ContextMenu contextMenu )
     {
         internalNotifyIconManager.ContextMenu = contextMenu;
         internalNotifyIconManager.ContextMenu.SetCurrentValue(Control.FontSizeProperty, MenuFontSize);
     }
 
-    private static void OnTooltipTextChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
+    private static void OnTooltipTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
         if (d is not NotifyIcon notifyIcon)
         {
@@ -390,7 +390,7 @@ public class NotifyIcon : System.Windows.FrameworkElement, IDisposable
         _ = notifyIcon.internalNotifyIconManager.ModifyToolTip();
     }
 
-    private static void OnIconChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
+    private static void OnIconChanged(DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
         if (d is not NotifyIcon notifyIcon)
         {
@@ -401,7 +401,7 @@ public class NotifyIcon : System.Windows.FrameworkElement, IDisposable
         _ = notifyIcon.internalNotifyIconManager.ModifyIcon();
     }
 
-    private static void OnFocusOnLeftClickChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
+    private static void OnFocusOnLeftClickChanged(DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
         if (d is not NotifyIcon notifyIcon)
         {
@@ -418,7 +418,7 @@ public class NotifyIcon : System.Windows.FrameworkElement, IDisposable
         notifyIcon.FocusOnLeftClick = newValue;
     }
 
-    private static void OnMenuOnRightClickChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
+    private static void OnMenuOnRightClickChanged(DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
         if (d is not NotifyIcon notifyIcon)
         {
@@ -435,7 +435,7 @@ public class NotifyIcon : System.Windows.FrameworkElement, IDisposable
         notifyIcon.MenuOnRightClick = newValue;
     }
 
-    private static void OnMenuChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
+    private static void OnMenuChanged(DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
         if (d is not NotifyIcon notifyIcon)
         {

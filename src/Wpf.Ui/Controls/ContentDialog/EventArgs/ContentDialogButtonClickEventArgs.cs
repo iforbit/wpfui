@@ -8,8 +8,8 @@ namespace Wpf.Ui.Controls;
 
 public class ContentDialogButtonClickEventArgs : RoutedEventArgs
 {
-    public ContentDialogButtonClickEventArgs(RoutedEvent routedEvent, object source )
+    public ContentDialogButtonClickEventArgs( RoutedEvent routedEvent, object source )
         : base(routedEvent, source) { }
 
-    public required ContentDialogButton Button { get; init; }
+    required public ContentDialogButton Button { get; init; }
 }

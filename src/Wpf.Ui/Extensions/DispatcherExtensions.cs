@@ -33,7 +33,7 @@ internal static class DispatcherExtensions
         }
         else
         {
-            dispatcher.BeginInvoke(priority, action);
+            _ = dispatcher.BeginInvoke(priority, action);
         }
     }
 
@@ -57,7 +57,7 @@ internal static class DispatcherExtensions
         }
         else
         {
-            dispatcher.Invoke(priority, action);
+            _ = dispatcher.Invoke(priority, action);
         }
     }
 }

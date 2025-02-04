@@ -6,13 +6,13 @@
 using System.Windows.Input;
 using Wpf.Ui.Interop;
 
-namespace Wpf.Ui.Controls.Ribbon.Helpers;
+namespace Wpf.Ui.Controls.Helpers;
 public static class WindowSteeringHelper
 {
     /// <summary>
     /// 마우스 왼쪽 버튼을 눌렀을 때 창 이동 또는 최대화 처리
     /// </summary>
-    public static void HandleMouseLeftButtonDown(MouseButtonEventArgs e, bool handleDragMove, bool handleStateChange )
+    public static void HandleMouseLeftButtonDown(MouseButtonEventArgs e, bool handleDragMove, bool handleStateChange)
     {
         if (e.Source is not DependencyObject dpo)
         {
@@ -22,7 +22,7 @@ public static class WindowSteeringHelper
         HandleMouseLeftButtonDown(dpo, e, handleDragMove, handleStateChange);
     }
 
-    public static void HandleMouseLeftButtonDown(DependencyObject dependencyObject, MouseButtonEventArgs e, bool handleDragMove, bool handleStateChange )
+    public static void HandleMouseLeftButtonDown(DependencyObject dependencyObject, MouseButtonEventArgs e, bool handleDragMove, bool handleStateChange)
     {
         var window = Window.GetWindow(dependencyObject);
         if (window is null)
@@ -53,7 +53,7 @@ public static class WindowSteeringHelper
         }
     }
 
-    private static void ToggleWindowState(Window window )
+    private static void ToggleWindowState(Window window)
     {
         IntPtr hwnd = new WindowInteropHelper(window).Handle;
         if (hwnd == IntPtr.Zero)
@@ -74,7 +74,7 @@ public static class WindowSteeringHelper
     /// <summary>
     /// 시스템 메뉴를 표시 (Win32 API 사용)
     /// </summary>
-    public static void ShowSystemMenu(DependencyObject dependencyObject, MouseButtonEventArgs e )
+    public static void ShowSystemMenu(DependencyObject dependencyObject, MouseButtonEventArgs e)
     {
         var window = Window.GetWindow(dependencyObject);
         if (window is null)
@@ -85,7 +85,7 @@ public static class WindowSteeringHelper
         ShowSystemMenu(window, e);
     }
 
-    public static void ShowSystemMenu(Window window, MouseButtonEventArgs e )
+    public static void ShowSystemMenu(Window window, MouseButtonEventArgs e)
     {
         e.Handled = true;
         IntPtr hwnd = new WindowInteropHelper(window).Handle;
@@ -106,7 +106,7 @@ public static class WindowSteeringHelper
     /// <summary>
     /// 특정 위치에서 시스템 메뉴를 표시
     /// </summary>
-    public static void ShowSystemMenu(Window window, Point screenLocation )
+    public static void ShowSystemMenu(Window window, Point screenLocation)
     {
         IntPtr hwnd = new WindowInteropHelper(window).Handle;
         IntPtr hMenu = User32.GetSystemMenu(hwnd, false);
@@ -120,7 +120,7 @@ public static class WindowSteeringHelper
     /// <summary>
     /// 창의 위치 및 크기 설정
     /// </summary>
-    public static void SetWindowPosition(Window window, int x, int y, int width, int height )
+    public static void SetWindowPosition(Window window, int x, int y, int width, int height)
     {
         IntPtr hwnd = new WindowInteropHelper(window).Handle;
         if (hwnd == IntPtr.Zero)
@@ -134,7 +134,7 @@ public static class WindowSteeringHelper
     /// <summary>
     /// 창을 최상위로 가져오기
     /// </summary>
-    public static void BringWindowToFront(Window window )
+    public static void BringWindowToFront(Window window)
     {
         IntPtr hwnd = new WindowInteropHelper(window).Handle;
         if (hwnd == IntPtr.Zero)
@@ -148,7 +148,7 @@ public static class WindowSteeringHelper
     /// <summary>
     /// 특정 DPI 값을 가져오기
     /// </summary>
-    public static uint GetDpiForWindow(Window window )
+    public static uint GetDpiForWindow(Window window)
     {
         IntPtr hwnd = new WindowInteropHelper(window).Handle;
         return hwnd != IntPtr.Zero ? User32.GetDpiForWindow(hwnd) : 96; // 기본 DPI = 96

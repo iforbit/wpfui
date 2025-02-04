@@ -21,13 +21,12 @@ namespace Wpf.Ui.Interop;
 #pragma warning disable SA1300 // Element should begin with upper-case letter
 #pragma warning disable SA1307 // Accessible fields should begin with upper-case letter
 #pragma warning disable SA1401 // Fields should be private
-
+#pragma warning disable CA1060
 /// <summary>
 /// USER procedure declarations, constant definitions and macros.
 /// </summary>
 internal static class User32
 {
-
     public const double AdditionalPopupSpaceForKeyTips = 20;
 
     /// <summary>
@@ -351,7 +350,6 @@ internal static class User32
         public int right;
         public int bottom;
     }
-
 
     [StructLayout(LayoutKind.Sequential)]
     public struct MONITORINFO
@@ -860,17 +858,17 @@ internal static class User32
     /// <summary>
     /// Delegate declaration that matches native WndProc signatures.
     /// </summary>
-    public delegate IntPtr WndProc(IntPtr hWnd, WM uMsg, IntPtr wParam, IntPtr lParam );
+    public delegate IntPtr WndProc( IntPtr hWnd, WM uMsg, IntPtr wParam, IntPtr lParam );
 
     /// <summary>
     /// Delegate declaration that matches native WndProc signatures.
     /// </summary>
-    public delegate IntPtr WndProcHook(IntPtr hWnd, WM uMsg, IntPtr wParam, IntPtr lParam, ref bool handled );
+    public delegate IntPtr WndProcHook( IntPtr hWnd, WM uMsg, IntPtr wParam, IntPtr lParam, ref bool handled );
 
     /// <summary>
     /// Delegate declaration that matches managed WndProc signatures.
     /// </summary>
-    public delegate IntPtr MessageHandler(WM uMsg, IntPtr wParam, IntPtr lParam, out bool handled );
+    public delegate IntPtr MessageHandler( WM uMsg, IntPtr wParam, IntPtr lParam, out bool handled );
 
     /// <summary>
     /// The ReleaseDC function releases a device context (DC), freeing it for use by other applications.
@@ -880,7 +878,7 @@ internal static class User32
     /// <param name="hDC">A handle to the DC to be released.</param>
     /// <returns>The return value indicates whether the DC was released. If the DC was released, the return value is 1. If the DC was not released, the return value is zero.</returns>
     [DllImport(Libraries.User32, CharSet = CharSet.Auto)]
-    public static extern int ReleaseDC([In] IntPtr hWnd, [In] IntPtr hDC );
+    public static extern int ReleaseDC( [In] IntPtr hWnd, [In] IntPtr hDC );
 
     /// <summary>
     /// Calculates the required size of the window rectangle, based on the desired size of the client rectangle.
@@ -909,7 +907,7 @@ internal static class User32
     /// <returns><see langword="true"/> if successful; otherwise, <see langword="false"/>. To get extended error information, call <see cref="Kernel32.GetLastError"/>.</returns>
     [DllImport(Libraries.User32, CharSet = CharSet.Auto, SetLastError = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
-    public static extern bool ChangeWindowMessageFilter([In] WM message, [In] MSGFLT dwFlag );
+    public static extern bool ChangeWindowMessageFilter( [In] WM message, [In] MSGFLT dwFlag );
 
     /// <summary>
     /// Modifies the User Interface Privilege Isolation (UIPI) message filter for a specified window.
@@ -1095,7 +1093,7 @@ internal static class User32
     /// <param name="lpwcx">A pointer to a <see cref="WNDCLASSEX"/> structure. You must fill the structure with the appropriate class attributes before passing it to the function.</param>
     /// <returns>If the function succeeds, the return value is a class atom that uniquely identifies the class being registered.</returns>
     [DllImport(Libraries.User32, SetLastError = true, CharSet = CharSet.Unicode)]
-    public static extern short RegisterClassExW([In] ref WNDCLASSEX lpwcx );
+    public static extern short RegisterClassExW( [In] ref WNDCLASSEX lpwcx );
 
     /// <summary>
     /// Registers a window class for subsequent use in calls to the CreateWindow or CreateWindowEx function.
@@ -1104,7 +1102,7 @@ internal static class User32
     /// <param name="lpwcx">A pointer to a <see cref="WNDCLASSEX"/> structure. You must fill the structure with the appropriate class attributes before passing it to the function.</param>
     /// <returns>If the function succeeds, the return value is a class atom that uniquely identifies the class being registered.</returns>
     [DllImport(Libraries.User32, SetLastError = true)]
-    public static extern short RegisterClassExA([In] ref WNDCLASSEX lpwcx );
+    public static extern short RegisterClassExA( [In] ref WNDCLASSEX lpwcx );
 
     /// <summary>
     /// Registers a window class for subsequent use in calls to the CreateWindow or CreateWindowEx function.
@@ -1112,7 +1110,7 @@ internal static class User32
     /// <param name="lpwcx">A pointer to a <see cref="WNDCLASSEX"/> structure. You must fill the structure with the appropriate class attributes before passing it to the function.</param>
     /// <returns>If the function succeeds, the return value is a class atom that uniquely identifies the class being registered.</returns>
     [DllImport(Libraries.User32, SetLastError = true)]
-    public static extern short RegisterClassEx([In] ref WNDCLASSEX lpwcx );
+    public static extern short RegisterClassEx( [In] ref WNDCLASSEX lpwcx );
 
     /// <summary>
     /// Calls the default window procedure to provide default processing for any window messages that an application does not process.
@@ -1176,7 +1174,7 @@ internal static class User32
     /// <param name="nIndex">The zero-based offset to the value to be retrieved.</param>
     /// <returns>If the function succeeds, the return value is the requested value.</returns>
     [DllImport(Libraries.User32, CharSet = CharSet.Unicode)]
-    public static extern long GetWindowLongW([In] IntPtr hWnd, [In] int nIndex );
+    public static extern long GetWindowLongW( [In] IntPtr hWnd, [In] int nIndex );
 
     /// <summary>
     /// Retrieves information about the specified window. The function also retrieves the 32-bit (DWORD) value at the specified offset into the extra window memory.
@@ -1187,7 +1185,7 @@ internal static class User32
     /// <param name="nIndex">The zero-based offset to the value to be retrieved.</param>
     /// <returns>If the function succeeds, the return value is the requested value.</returns>
     [DllImport(Libraries.User32, CharSet = CharSet.Auto)]
-    public static extern long GetWindowLongA([In] IntPtr hWnd, [In] int nIndex );
+    public static extern long GetWindowLongA( [In] IntPtr hWnd, [In] int nIndex );
 
     /// <summary>
     /// Retrieves information about the specified window. The function also retrieves the 32-bit (DWORD) value at the specified offset into the extra window memory.
@@ -1197,7 +1195,7 @@ internal static class User32
     /// <param name="nIndex">The zero-based offset to the value to be retrieved.</param>
     /// <returns>If the function succeeds, the return value is the requested value.</returns>
     [DllImport(Libraries.User32, CharSet = CharSet.Auto)]
-    public static extern long GetWindowLong([In] IntPtr hWnd, [In] int nIndex );
+    public static extern long GetWindowLong( [In] IntPtr hWnd, [In] int nIndex );
 
     /// <summary>
     /// Retrieves information about the specified window. The function also retrieves the 32-bit (DWORD) value at the specified offset into the extra window memory.
@@ -1207,7 +1205,7 @@ internal static class User32
     /// <param name="nIndex">The zero-based offset to the value to be retrieved.</param>
     /// <returns>If the function succeeds, the return value is the requested value.</returns>
     [DllImport(Libraries.User32, CharSet = CharSet.Auto)]
-    public static extern long GetWindowLong([In] IntPtr hWnd, [In] GWL nIndex );
+    public static extern long GetWindowLong( [In] IntPtr hWnd, [In] GWL nIndex );
 
     /// <summary>
     /// Retrieves information about the specified window. The function also retrieves the value at a specified offset into the extra window memory.
@@ -1217,7 +1215,7 @@ internal static class User32
     /// <param name="nIndex">The zero-based offset to the value to be retrieved.</param>
     /// <returns>If the function succeeds, the return value is the requested value.</returns>
     [DllImport(Libraries.User32, CharSet = CharSet.Auto)]
-    public static extern IntPtr GetWindowLongPtrW([In] IntPtr hWnd, [In] int nIndex );
+    public static extern IntPtr GetWindowLongPtrW( [In] IntPtr hWnd, [In] int nIndex );
 
     /// <summary>
     /// Retrieves information about the specified window. The function also retrieves the value at a specified offset into the extra window memory.
@@ -1227,7 +1225,7 @@ internal static class User32
     /// <param name="nIndex">The zero-based offset to the value to be retrieved.</param>
     /// <returns>If the function succeeds, the return value is the requested value.</returns>
     [DllImport(Libraries.User32, CharSet = CharSet.Auto)]
-    public static extern IntPtr GetWindowLongPtrA([In] IntPtr hWnd, [In] int nIndex );
+    public static extern IntPtr GetWindowLongPtrA( [In] IntPtr hWnd, [In] int nIndex );
 
     /// <summary>
     /// Retrieves information about the specified window. The function also retrieves the value at a specified offset into the extra window memory.
@@ -1236,7 +1234,7 @@ internal static class User32
     /// <param name="nIndex">The zero-based offset to the value to be retrieved.</param>
     /// <returns>If the function succeeds, the return value is the requested value.</returns>
     [DllImport(Libraries.User32, CharSet = CharSet.Auto)]
-    public static extern IntPtr GetWindowLongPtr([In] IntPtr hWnd, [In] int nIndex );
+    public static extern IntPtr GetWindowLongPtr( [In] IntPtr hWnd, [In] int nIndex );
 
     /// <summary>
     /// Changes an attribute of the specified window. The function also sets the 32-bit (long) value at the specified offset into the extra window memory.
@@ -1248,7 +1246,7 @@ internal static class User32
     /// <param name="dwNewLong">The replacement value.</param>
     /// <returns>If the function succeeds, the return value is the previous value of the specified 32-bit integer.</returns>
     [DllImport(Libraries.User32, CharSet = CharSet.Unicode)]
-    public static extern long SetWindowLongW([In] IntPtr hWnd, [In] int nIndex, [In] long dwNewLong );
+    public static extern long SetWindowLongW( [In] IntPtr hWnd, [In] int nIndex, [In] long dwNewLong );
 
     /// <summary>
     /// Changes an attribute of the specified window. The function also sets the 32-bit (long) value at the specified offset into the extra window memory.
@@ -1260,7 +1258,7 @@ internal static class User32
     /// <param name="dwNewLong">The replacement value.</param>
     /// <returns>If the function succeeds, the return value is the previous value of the specified 32-bit integer.</returns>
     [DllImport(Libraries.User32, CharSet = CharSet.Auto)]
-    public static extern long SetWindowLongA([In] IntPtr hWnd, [In] int nIndex, [In] long dwNewLong );
+    public static extern long SetWindowLongA( [In] IntPtr hWnd, [In] int nIndex, [In] long dwNewLong );
 
     /// <summary>
     /// Changes an attribute of the specified window. The function also sets the 32-bit (long) value at the specified offset into the extra window memory.
@@ -1271,7 +1269,7 @@ internal static class User32
     /// <param name="dwNewLong">The replacement value.</param>
     /// <returns>If the function succeeds, the return value is the previous value of the specified 32-bit integer.</returns>
     [DllImport(Libraries.User32, CharSet = CharSet.Auto)]
-    public static extern long SetWindowLong([In] IntPtr hWnd, [In] int nIndex, [In] long dwNewLong );
+    public static extern long SetWindowLong( [In] IntPtr hWnd, [In] int nIndex, [In] long dwNewLong );
 
     /// <summary>
     /// Changes an attribute of the specified window. The function also sets the 32-bit (long) value at the specified offset into the extra window memory.
@@ -1283,7 +1281,7 @@ internal static class User32
     /// <param name="dwNewLong">The replacement value.</param>
     /// <returns>If the function succeeds, the return value is the previous value of the specified 32-bit integer.</returns>
     [DllImport(Libraries.User32, CharSet = CharSet.Auto)]
-    public static extern long SetWindowLong([In] IntPtr hWnd, [In] GWL nIndex, [In] long dwNewLong );
+    public static extern long SetWindowLong( [In] IntPtr hWnd, [In] GWL nIndex, [In] long dwNewLong );
 
     /// <summary>
     /// Changes an attribute of the specified window. The function also sets the 32-bit (long) value at the specified offset into the extra window memory.
@@ -1295,7 +1293,7 @@ internal static class User32
     /// <param name="dwNewLong">New window style.</param>
     /// <returns>If the function succeeds, the return value is the previous value of the specified 32-bit integer.</returns>
     [DllImport(Libraries.User32, CharSet = CharSet.Auto)]
-    public static extern long SetWindowLong([In] IntPtr hWnd, [In] GWL nIndex, [In] WS dwNewLong );
+    public static extern long SetWindowLong( [In] IntPtr hWnd, [In] GWL nIndex, [In] WS dwNewLong );
 
     /// <summary>
     /// Changes an attribute of the specified window. The function also sets a value at the specified offset in the extra window memory.
@@ -1306,7 +1304,7 @@ internal static class User32
     /// <param name="dwNewLong">The replacement value.</param>
     /// <returns>If the function succeeds, the return value is the previous value of the specified offset.</returns>
     [DllImport(Libraries.User32, CharSet = CharSet.Auto)]
-    public static extern IntPtr SetWindowLongPtrW([In] IntPtr hWnd, [In] int nIndex, [In] IntPtr dwNewLong );
+    public static extern IntPtr SetWindowLongPtrW( [In] IntPtr hWnd, [In] int nIndex, [In] IntPtr dwNewLong );
 
     /// <summary>
     /// Changes an attribute of the specified window. The function also sets a value at the specified offset in the extra window memory.
@@ -1317,7 +1315,7 @@ internal static class User32
     /// <param name="dwNewLong">The replacement value.</param>
     /// <returns>If the function succeeds, the return value is the previous value of the specified offset.</returns>
     [DllImport(Libraries.User32, CharSet = CharSet.Auto)]
-    public static extern IntPtr SetWindowLongPtrA([In] IntPtr hWnd, [In] int nIndex, [In] IntPtr dwNewLong );
+    public static extern IntPtr SetWindowLongPtrA( [In] IntPtr hWnd, [In] int nIndex, [In] IntPtr dwNewLong );
 
     /// <summary>
     /// Changes an attribute of the specified window. The function also sets a value at the specified offset in the extra window memory.
@@ -1327,13 +1325,13 @@ internal static class User32
     /// <param name="dwNewLong">The replacement value.</param>
     /// <returns>If the function succeeds, the return value is the previous value of the specified offset.</returns>
     [DllImport(Libraries.User32, CharSet = CharSet.Auto)]
-    public static extern IntPtr SetWindowLongPtr([In] IntPtr hWnd, [In] int nIndex, [In] IntPtr dwNewLong );
+    public static extern IntPtr SetWindowLongPtr( [In] IntPtr hWnd, [In] int nIndex, [In] IntPtr dwNewLong );
 
     /// <summary>
     /// Changes an attribute of the specified window.
     /// </summary>
     [DllImport(Libraries.User32, CharSet = CharSet.Auto, SetLastError = true)]
-    public static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong );
+    public static extern int SetWindowLong( IntPtr hWnd, int nIndex, int dwNewLong );
 
     /// <summary>
     /// Destroys an icon and frees any memory the icon occupied.
@@ -1342,7 +1340,7 @@ internal static class User32
     /// <returns>If the function succeeds, the return value is nonzero.</returns>
     [DllImport(Libraries.User32)]
     [return: MarshalAs(UnmanagedType.Bool)]
-    public static extern bool DestroyIcon([In] IntPtr handle );
+    public static extern bool DestroyIcon( [In] IntPtr handle );
 
     /// <summary>
     /// Determines whether the specified window handle identifies an existing window.
@@ -1351,7 +1349,7 @@ internal static class User32
     /// <returns>If the window handle identifies an existing window, the return value is nonzero.</returns>
     [DllImport(Libraries.User32, CharSet = CharSet.Auto)]
     [return: MarshalAs(UnmanagedType.Bool)]
-    public static extern bool IsWindow([In] IntPtr hWnd );
+    public static extern bool IsWindow( [In] IntPtr hWnd );
 
     /// <summary>
     /// Destroys the specified window. The function sends WM_DESTROY and WM_NCDESTROY messages to the window to deactivate it and remove the keyboard focus from it.
@@ -1360,7 +1358,7 @@ internal static class User32
     /// <returns>If the function succeeds, the return value is nonzero.</returns>
     [DllImport(Libraries.User32, CharSet = CharSet.Auto, SetLastError = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
-    public static extern bool DestroyWindow([In] IntPtr hWnd );
+    public static extern bool DestroyWindow( [In] IntPtr hWnd );
 
     /// <summary>
     /// Retrieves the show state and the restored, minimized, and maximized positions of the specified window.
@@ -1370,7 +1368,7 @@ internal static class User32
     /// <returns>If the function succeeds, the return value is nonzero.</returns>
     [DllImport(Libraries.User32, SetLastError = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
-    public static extern bool GetWindowPlacement([In] IntPtr hWnd, [In] WINDOWPLACEMENT lpwndpl );
+    public static extern bool GetWindowPlacement( [In] IntPtr hWnd, [In] WINDOWPLACEMENT lpwndpl );
 
     /// <summary>
     /// Retrieves the dimensions of the bounding rectangle of the specified window. The dimensions are given in screen coordinates that are relative to the upper-left corner of the screen.
@@ -1380,7 +1378,7 @@ internal static class User32
     /// <returns>If the function succeeds, the return value is nonzero.</returns>
     [DllImport(Libraries.User32, SetLastError = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
-    public static extern bool GetWindowRect([In] IntPtr hWnd, [Out] out Rect lpRect );
+    public static extern bool GetWindowRect( [In] IntPtr hWnd, [Out] out Rect lpRect );
 
     /// <summary>
     /// Determines the visibility state of the specified window.
@@ -1389,7 +1387,7 @@ internal static class User32
     /// <returns>If the specified window, its parent window, its parent's parent window, and so forth, have the WS_VISIBLE style, the return value is nonzero. Otherwise, the return value is zero.</returns>
     [DllImport(Libraries.User32)]
     [return: MarshalAs(UnmanagedType.Bool)]
-    public static extern bool IsWindowVisible([In] IntPtr hWnd );
+    public static extern bool IsWindowVisible( [In] IntPtr hWnd );
 
     /// <summary>
     /// Determines whether the specified window is enabled for mouse and keyboard input.
@@ -1397,7 +1395,7 @@ internal static class User32
     /// <param name="hWnd">A handle to the window to be tested.</param>
     /// <returns>If the window is enabled, the return value is nonzero.</returns>
     [DllImport(Libraries.User32, ExactSpelling = true)]
-    internal static extern bool IsWindowEnabled(IntPtr hWnd );
+    internal static extern bool IsWindowEnabled( IntPtr hWnd );
 
     /// <summary>
     /// The MonitorFromWindow function retrieves a handle to the display monitor that has the largest area of intersection with the bounding rectangle of a specified window.
@@ -1406,7 +1404,7 @@ internal static class User32
     /// <param name="dwFlags">Determines the function's return value if the window does not intersect any display monitor.</param>
     /// <returns>If the window intersects one or more display monitor rectangles, the return value is an HMONITOR handle to the display monitor that has the largest area of intersection with the window.</returns>
     [DllImport(Libraries.User32)]
-    public static extern IntPtr MonitorFromWindow(IntPtr hWnd, uint dwFlags );
+    public static extern IntPtr MonitorFromWindow( IntPtr hWnd, uint dwFlags );
 
     /// <summary>
     /// Retrieves the specified system metric or system configuration setting.
@@ -1416,7 +1414,7 @@ internal static class User32
     /// Note that all SM_CX* values are widths and all SM_CY* values are heights. Also note that all settings designed to return Boolean data represent <see langword="true"/> as any nonzero value, and <see langword="false"/> as a zero value.</param>
     /// <returns>If the function succeeds, the return value is the requested system metric or configuration setting.</returns>
     [DllImport(Libraries.User32)]
-    public static extern int GetSystemMetrics([In] SM nIndex );
+    public static extern int GetSystemMetrics( [In] SM nIndex );
 
     /// <summary>
     /// Defines a new window message that is guaranteed to be unique throughout the system. The message value can be used when sending or posting messages.
@@ -1425,7 +1423,7 @@ internal static class User32
     /// <param name="lpString">The message to be registered.</param>
     /// <returns>If the message is successfully registered, the return value is a message identifier in the range 0xC000 through 0xFFFF.</returns>
     [DllImport(Libraries.User32, SetLastError = true, CharSet = CharSet.Unicode)]
-    public static extern uint RegisterWindowMessageW([MarshalAs(UnmanagedType.LPWStr)] string lpString );
+    public static extern uint RegisterWindowMessageW( [MarshalAs(UnmanagedType.LPWStr)] string lpString );
 
     /// <summary>
     /// Defines a new window message that is guaranteed to be unique throughout the system. The message value can be used when sending or posting messages.
@@ -1434,7 +1432,7 @@ internal static class User32
     /// <param name="lpString">The message to be registered.</param>
     /// <returns>If the message is successfully registered, the return value is a message identifier in the range 0xC000 through 0xFFFF.</returns>
     [DllImport(Libraries.User32, SetLastError = true, CharSet = CharSet.Auto)]
-    public static extern uint RegisterWindowMessageA([MarshalAs(UnmanagedType.LPWStr)] string lpString );
+    public static extern uint RegisterWindowMessageA( [MarshalAs(UnmanagedType.LPWStr)] string lpString );
 
     /// <summary>
     /// Defines a new window message that is guaranteed to be unique throughout the system. The message value can be used when sending or posting messages.
@@ -1442,7 +1440,7 @@ internal static class User32
     /// <param name="lpString">The message to be registered.</param>
     /// <returns>If the message is successfully registered, the return value is a message identifier in the range 0xC000 through 0xFFFF.</returns>
     [DllImport(Libraries.User32, SetLastError = true, CharSet = CharSet.Auto)]
-    public static extern uint RegisterWindowMessage([MarshalAs(UnmanagedType.LPWStr)] string lpString );
+    public static extern uint RegisterWindowMessage( [MarshalAs(UnmanagedType.LPWStr)] string lpString );
 
     /// <summary>
     /// Activates a window. The window must be attached to the calling thread's message queue.
@@ -1450,7 +1448,7 @@ internal static class User32
     /// <param name="hWnd">A handle to the top-level window to be activated.</param>
     /// <returns>If the function succeeds, the return value is the handle to the window that was previously active.</returns>
     [DllImport(Libraries.User32, SetLastError = true)]
-    public static extern IntPtr SetActiveWindow(IntPtr hWnd );
+    public static extern IntPtr SetActiveWindow( IntPtr hWnd );
 
     /// <summary>
     /// Brings the thread that created the specified window into the foreground and activates the window.
@@ -1461,7 +1459,7 @@ internal static class User32
     /// <returns>If the window was brought to the foreground, the return value is nonzero.</returns>
     [DllImport(Libraries.User32, CharSet = CharSet.Auto)]
     [return: MarshalAs(UnmanagedType.Bool)]
-    public static extern bool SetForegroundWindow(IntPtr hWnd );
+    public static extern bool SetForegroundWindow( IntPtr hWnd );
 
     /// <summary>
     /// Retrieves the position of the mouse cursor, in screen coordinates.
@@ -1470,22 +1468,22 @@ internal static class User32
     /// <returns>Returns nonzero if successful or zero otherwise. To get extended error information, call <see cref="Kernel32.GetLastError"/>.</returns>
     [DllImport(Libraries.User32, SetLastError = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
-    public static extern bool GetCursorPos([Out] out WinDef.POINT lpPoint );
+    public static extern bool GetCursorPos( [Out] out WinDef.POINT lpPoint );
 
     [DllImport(Libraries.User32)]
-    public static extern bool UnionRect(out WinDef.RECT rcDst, ref WinDef.RECT rc1, ref WinDef.RECT rc2 );
+    public static extern bool UnionRect( out WinDef.RECT rcDst, ref WinDef.RECT rc1, ref WinDef.RECT rc2 );
 
     [DllImport(Libraries.User32, SetLastError = true)]
-    public static extern bool IntersectRect(ref WinDef.RECT rcDest, ref WinDef.RECT rc1, ref WinDef.RECT rc2 );
+    public static extern bool IntersectRect( ref WinDef.RECT rcDest, ref WinDef.RECT rc1, ref WinDef.RECT rc2 );
 
     [DllImport(Libraries.User32)]
     public static extern IntPtr GetShellWindow();
 
     [DllImport(Libraries.User32, CharSet = CharSet.Unicode)]
-    public static extern int MapVirtualKey(int nVirtKey, int nMapType );
+    public static extern int MapVirtualKey( int nVirtKey, int nMapType );
 
     [DllImport(Libraries.User32)]
-    public static extern int GetSysColor(int nIndex );
+    public static extern int GetSysColor( int nIndex );
 
     [DllImport(Libraries.User32)]
     public static extern IntPtr GetSystemMenu(
@@ -1494,7 +1492,7 @@ internal static class User32
     );
 
     [DllImport(Libraries.User32, EntryPoint = "EnableMenuItem")]
-    private static extern int _EnableMenuItem([In] IntPtr hMenu, [In] SC uIDEnableItem, [In] MF uEnable );
+    private static extern int _EnableMenuItem( [In] IntPtr hMenu, [In] SC uIDEnableItem, [In] MF uEnable );
 
     /// <summary>
     /// Enables, disables, or grays the specified menu item.
@@ -1503,7 +1501,7 @@ internal static class User32
     /// <param name="uIDEnableItem">The menu item to be enabled, disabled, or grayed, as determined by the uEnable parameter.</param>
     /// <param name="uEnable">Controls the interpretation of the uIDEnableItem parameter and indicate whether the menu item is enabled, disabled, or grayed.</param>
     /// <returns>The return value specifies the previous state of the menu item (it is either MF_DISABLED, MF_ENABLED, or MF_GRAYED). If the menu item does not exist, the return value is -1 (<see cref="MF.DOES_NOT_EXIST"/>).</returns>
-    public static MF EnableMenuItem([In] IntPtr hMenu, [In] SC uIDEnableItem, [In] MF uEnable )
+    public static MF EnableMenuItem( [In] IntPtr hMenu, [In] SC uIDEnableItem, [In] MF uEnable )
     {
         // Returns the previous state of the menu item, or -1 if the menu item does not exist.
         int iRet = _EnableMenuItem(hMenu, uIDEnableItem, uEnable);
@@ -1524,7 +1522,7 @@ internal static class User32
     /// <param name="hRgn">A handle to a region. The function sets the window region of the window to this region.</param>
     /// <param name="bRedraw">Specifies whether the system redraws the window after setting the window region. If bRedraw is <see langword="true"/>, the system does so; otherwise, it does not.</param>
     /// <exception cref="Win32Exception">Native method returned HRESULT.</exception>
-    public static void SetWindowRgn([In] IntPtr hWnd, [In] IntPtr hRgn, [In] bool bRedraw )
+    public static void SetWindowRgn( [In] IntPtr hWnd, [In] IntPtr hRgn, [In] bool bRedraw )
     {
         var err = _SetWindowRgn(hWnd, hRgn, bRedraw);
 
@@ -1606,7 +1604,7 @@ internal static class User32
     /// <param name="hWnd">The window that you want to get information about.</param>
     /// <returns>The DPI for the window, which depends on the DPI_AWARENESS of the window.</returns>
     [DllImport(Libraries.User32, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Winapi)]
-    public static extern uint GetDpiForWindow([In] IntPtr hWnd );
+    public static extern uint GetDpiForWindow( [In] IntPtr hWnd );
 
     /// <summary>
     /// Returns the dots per inch (dpi) value for the specified window.
@@ -1614,13 +1612,13 @@ internal static class User32
     /// <param name="hwnd">The window that you want to get information about.</param>
     /// <returns>The DPI for the window, which depends on the DPI_AWARENESS of the window.</returns>
     [DllImport(Libraries.User32, CharSet = CharSet.Auto)]
-    public static extern uint GetDpiForWindow([In] HandleRef hwnd );
+    public static extern uint GetDpiForWindow( [In] HandleRef hwnd );
 
     [DllImport(Libraries.User32, CharSet = CharSet.Auto)]
     public static extern bool ReleaseCapture();
 
     [DllImport(Libraries.User32, CharSet = CharSet.Auto)]
-    public static extern bool ShowWindow(IntPtr hWnd, SW nCmdShow );
+    public static extern bool ShowWindow( IntPtr hWnd, SW nCmdShow );
 
     [DllImport(Libraries.User32, CharSet = CharSet.Auto)]
     public static extern bool TrackPopupMenuEx(
@@ -1631,7 +1629,6 @@ internal static class User32
         IntPtr hWnd,            // 메뉴를 표시할 윈도우 핸들
         IntPtr lptpm // NULL 또는 TPM 구조체
     );
-
 
     [DllImport(Libraries.User32, CharSet = CharSet.Auto)]
     public static extern IntPtr MonitorFromRect( ref RECT lprc, uint dwFlags );

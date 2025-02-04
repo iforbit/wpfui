@@ -5,8 +5,7 @@
 
 using System.Windows.Controls;
 
-namespace Wpf.Ui.Controls.Ribbon;
-
+namespace Wpf.Ui.Controls;
 
 /// <summary>
 /// Represents a control that has a header.

@@ -6,24 +6,24 @@
 using System.Windows.Controls;
 using Wpf.Ui.Internal.KnowBoxes;
 
-namespace Wpf.Ui.Controls.Ribbon.Helpers;
+namespace Wpf.Ui.Controls.Helpers;
 
 internal static class ItemsControlHelper
 {
     public static readonly DependencyProperty IsMovingItemsToDifferentControlProperty = DependencyProperty.RegisterAttached(
         "IsMovingItemsToDifferentControl", typeof(bool), typeof(ItemsControlHelper), new PropertyMetadata(BooleanBoxes.FalseBox));
 
-    public static void SetIsMovingItemsToDifferentControl(DependencyObject element, bool value )
+    public static void SetIsMovingItemsToDifferentControl(DependencyObject element, bool value)
     {
         element.SetValue(IsMovingItemsToDifferentControlProperty, BooleanBoxes.Box(value));
     }
 
-    public static bool GetIsMovingItemsToDifferentControl(DependencyObject element )
+    public static bool GetIsMovingItemsToDifferentControl(DependencyObject element)
     {
         return (bool)element.GetValue(IsMovingItemsToDifferentControlProperty);
     }
 
-    public static ItemsControl? ItemsControlFromItemContainer(DependencyObject? container )
+    public static ItemsControl? ItemsControlFromItemContainer(DependencyObject? container)
     {
         if (container is null)
         {
@@ -58,7 +58,7 @@ internal static class ItemsControlHelper
         return itemsControl;
     }
 
-    public static void MoveItemsToDifferentControl(ItemsControl source, ItemsControl target )
+    public static void MoveItemsToDifferentControl(ItemsControl source, ItemsControl target)
     {
         try
         {
@@ -68,8 +68,8 @@ internal static class ItemsControlHelper
             System.Collections.IEnumerable? itemsSource = source.ItemsSource;
             if (itemsSource is not null)
             {
-                source.ItemsSource = null;
-                target.ItemsSource = itemsSource;
+                source.SetCurrentValue(ItemsControl.ItemsSourceProperty, null);
+                target.SetCurrentValue(ItemsControl.ItemsSourceProperty, itemsSource);
             }
             else
             {

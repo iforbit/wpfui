@@ -8,7 +8,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using Wpf.Ui.Internal.KnowBoxes;
 
-namespace Wpf.Ui.Controls.Ribbon;
+namespace Wpf.Ui.Controls;
 
 /// <inheritdoc />
 [TemplatePart(Name = "PART_ResizeVerticalThumb", Type = typeof(Thumb))]
@@ -41,8 +41,11 @@ public class ResizeableContentControl : ContentControl
 
     /// <summary>Identifies the <see cref="ResizeMode"/> dependency property.</summary>
     public static readonly DependencyProperty ResizeModeProperty =
-        DependencyProperty.Register(nameof(ResizeMode), typeof(ContextMenuResizeMode),
-            typeof(ResizeableContentControl), new PropertyMetadata(ContextMenuResizeMode.None));
+        DependencyProperty.Register(
+            nameof(ResizeMode),
+            typeof(ContextMenuResizeMode),
+            typeof(ResizeableContentControl),
+            new PropertyMetadata(ContextMenuResizeMode.None));
 
     /// <inheritdoc />
     public override void OnApplyTemplate()
@@ -88,31 +91,31 @@ public class ResizeableContentControl : ContentControl
     }
 
     // Handles resize both drag
-    private void OnResizeBothDelta(object sender, DragDeltaEventArgs e )
+    private void OnResizeBothDelta(object sender, DragDeltaEventArgs e)
     {
         if (double.IsNaN(this.Width))
         {
-            this.Width = this.ActualWidth;
+            this.SetCurrentValue(WidthProperty, this.ActualWidth);
         }
 
         if (double.IsNaN(this.Height))
         {
-            this.Height = this.ActualHeight;
+            this.SetCurrentValue(HeightProperty, this.ActualHeight);
         }
 
-        this.Width = Math.Max(this.MinWidth, Math.Min(this.MaxWidth, this.Width + e.HorizontalChange));
-        this.Height = Math.Max(this.MinHeight, Math.Min(this.MaxHeight + this.GetResizeThumbHeight(), this.Height + e.VerticalChange));
+        this.SetCurrentValue(WidthProperty, Math.Max(this.MinWidth, Math.Min(this.MaxWidth, this.Width + e.HorizontalChange)));
+        this.SetCurrentValue(HeightProperty, Math.Max(this.MinHeight, Math.Min(this.MaxHeight + this.GetResizeThumbHeight(), this.Height + e.VerticalChange)));
     }
 
     // Handles resize vertical drag
-    private void OnResizeVerticalDelta(object sender, DragDeltaEventArgs e )
+    private void OnResizeVerticalDelta(object sender, DragDeltaEventArgs e)
     {
         if (double.IsNaN(this.Height))
         {
-            this.Height = this.ActualHeight;
+            this.SetCurrentValue(HeightProperty, this.ActualHeight);
         }
 
-        this.Height = Math.Max(this.MinHeight, Math.Min(this.MaxHeight + this.GetResizeThumbHeight(), this.Height + e.VerticalChange));
+        this.SetCurrentValue(HeightProperty, Math.Max(this.MinHeight, Math.Min(this.MaxHeight + this.GetResizeThumbHeight(), this.Height + e.VerticalChange)));
     }
 
     /// <summary>

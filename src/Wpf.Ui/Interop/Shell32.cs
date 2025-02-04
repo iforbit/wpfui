@@ -16,6 +16,7 @@
 // ReSharper disable InconsistentNaming
 #pragma warning disable SA1307 // Accessible fields should begin with upper-case letter
 #pragma warning disable SA1401 // Fields should be private
+#pragma warning disable CA1060
 
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;

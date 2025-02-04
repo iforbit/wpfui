@@ -1,4 +1,4 @@
-﻿// This Source Code Form is subject to the terms of the MIT License.
+// This Source Code Form is subject to the terms of the MIT License.
 // If a copy of the MIT was not distributed with this file, You can obtain one at https://opensource.org/licenses/MIT.
 // Copyright (C) Leszek Pomianowski and WPF UI Contributors.
 // All Rights Reserved.
@@ -30,7 +30,7 @@ public class ScopeGuard : IDisposable
     /// </summary>
     /// <param name="onEntry">Action being called on entry.</param>
     /// <param name="onDispose">Action being called on dispose.</param>
-    public ScopeGuard( Action onEntry, Action onDispose )
+    public ScopeGuard(Action onEntry, Action onDispose )
     {
         this.onEntry = onEntry ?? throw new ArgumentNullException(nameof(onEntry));
         this.onDispose = onDispose ?? throw new ArgumentNullException(nameof(onDispose));

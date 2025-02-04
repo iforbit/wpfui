@@ -11,5 +11,5 @@ public class ContentDialogClosedEventArgs : RoutedEventArgs
     public ContentDialogClosedEventArgs( RoutedEvent routedEvent, object source )
         : base(routedEvent, source) { }
 
-    public required ContentDialogResult Result { get; init; }
+    required public ContentDialogResult Result { get; init; }
 }

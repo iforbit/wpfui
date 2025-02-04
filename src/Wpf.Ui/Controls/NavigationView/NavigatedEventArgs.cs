@@ -14,5 +14,5 @@ public class NavigatedEventArgs : RoutedEventArgs
     public NavigatedEventArgs( RoutedEvent routedEvent, object source )
         : base(routedEvent, source) { }
 
-    public required object Page { get; init; }
+    required public object Page { get; init; }
 }

@@ -1,4 +1,4 @@
-﻿// This Source Code Form is subject to the terms of the MIT License.
+// This Source Code Form is subject to the terms of the MIT License.
 // If a copy of the MIT was not distributed with this file, You can obtain one at https://opensource.org/licenses/MIT.
 // Copyright (C) Leszek Pomianowski and WPF UI Contributors.
 // All Rights Reserved.
@@ -7,7 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Windows.Automation;
 using System.Windows.Automation.Peers;
 
-namespace Wpf.Ui.Controls.Ribbon.Automation.Peers;
+namespace Wpf.Ui.Controls.Automation.Peers;
 
 /// <summary>
 /// Automation peer wrapper for <see cref="RibbonTabItem"/>.
@@ -18,7 +18,7 @@ public class RibbonTabItemAutomationPeer : FrameworkElementAutomationPeer
     /// Initializes a new instance of the <see cref="RibbonTabItemAutomationPeer"/> class.
     /// Creates a new instance.
     /// </summary>
-    public RibbonTabItemAutomationPeer( RibbonTabItem owner )
+    public RibbonTabItemAutomationPeer(RibbonTabItem owner)
         : base(owner)
     {
         this.OwningTab = owner;
@@ -27,7 +27,7 @@ public class RibbonTabItemAutomationPeer : FrameworkElementAutomationPeer
     private RibbonTabItem OwningTab { get; }
 
     /// <inheritdoc />
-    public override object GetPattern( PatternInterface patternInterface )
+    public override object GetPattern(PatternInterface patternInterface)
     {
         switch (patternInterface)
         {
@@ -93,7 +93,7 @@ public class RibbonTabItemAutomationPeer : FrameworkElementAutomationPeer
     }
 
     [MethodImpl(MethodImplOptions.NoInlining)]
-    internal void RaiseTabExpandCollapseAutomationEvent( bool oldValue, bool newValue )
+    internal void RaiseTabExpandCollapseAutomationEvent(bool oldValue, bool newValue)
     {
         this.EventsSource?.RaisePropertyChangedEvent(ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty, oldValue ? ExpandCollapseState.Expanded : ExpandCollapseState.Collapsed, newValue ? ExpandCollapseState.Expanded : ExpandCollapseState.Collapsed);
     }

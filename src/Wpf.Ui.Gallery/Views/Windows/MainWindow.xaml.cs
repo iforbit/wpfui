@@ -86,9 +86,4 @@ public partial class MainWindow : IWindow
 
         _isUserClosedPane = true;
     }
-
-    public void Show()
-    {
-        throw new NotImplementedException();
-    }
 }

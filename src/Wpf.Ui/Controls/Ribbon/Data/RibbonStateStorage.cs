@@ -9,7 +9,7 @@ using System.IO.IsolatedStorage;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Wpf.Ui.Controls.Ribbon.Data;
+namespace Wpf.Ui.Controls.Data;
 
 /// <summary>
 /// Handles loading and saving the state of a <see cref="Ribbon"/> from/to a <see cref="MemoryStream"/>, for temporary storage, and from/to <see cref="IsolatedStorage"/>, for persistent storage.
@@ -20,17 +20,17 @@ public class RibbonStateStorage : IRibbonStateStorage
 
     private readonly Ribbon ribbon;
 
+    private readonly Stream memoryStream;
+
     // Name of the isolated storage file
     private string? isolatedStorageFileName;
-
-    private readonly Stream memoryStream;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="RibbonStateStorage"/> class.
     /// Creates a new instance.
     /// </summary>
     /// <param name="ribbon">The <see cref="Ribbon"/> of which the state should be stored.</param>
-    public RibbonStateStorage(Ribbon ribbon )
+    public RibbonStateStorage(Ribbon ribbon)
     {
         this.ribbon = ribbon;
         this.memoryStream = new MemoryStream();
@@ -68,7 +68,7 @@ public class RibbonStateStorage : IRibbonStateStorage
             }
 
             var stringForHash = string.Empty;
-            var window = Window.GetWindow(this.ribbon);
+            Window? window = Window.GetWindow(this.ribbon);
 
             if (window is not null)
             {
@@ -134,7 +134,7 @@ public class RibbonStateStorage : IRibbonStateStorage
     /// Saves state to <paramref name="stream"/>.
     /// </summary>
     /// <param name="stream">Stream</param>
-    protected virtual void Save(Stream stream )
+    protected virtual void Save(Stream stream)
     {
         // Don't save or load state in design mode
         if (DesignerProperties.GetIsInDesignMode(this.ribbon))
@@ -220,7 +220,7 @@ public class RibbonStateStorage : IRibbonStateStorage
     /// Loads state from <paramref name="stream"/>.
     /// </summary>
     /// <param name="stream">The <see cref="Stream"/> to load the state from.</param>
-    protected virtual void Load(Stream stream )
+    protected virtual void Load(Stream stream)
     {
         this.IsLoading = true;
 
@@ -238,7 +238,7 @@ public class RibbonStateStorage : IRibbonStateStorage
     /// Loads state from <paramref name="stream"/>.
     /// </summary>
     /// <param name="stream">The <see cref="Stream"/> to load the state from.</param>
-    protected virtual void LoadStateCore(Stream stream )
+    protected virtual void LoadStateCore(Stream stream)
     {
         var reader = new StreamReader(stream);
         var data = reader.ReadToEnd();
@@ -249,7 +249,7 @@ public class RibbonStateStorage : IRibbonStateStorage
     /// Loads state from <paramref name="data"/>.
     /// </summary>
     /// <param name="data">The <see cref="string"/> to load the state from.</param>
-    protected virtual void LoadState(string data )
+    protected virtual void LoadState(string data)
     {
         // Load Ribbon State
         var ribbonProperties = data.Split(',');
@@ -280,7 +280,7 @@ public class RibbonStateStorage : IRibbonStateStorage
     /// <summary>
     /// Determines whether the given file exists in the given storage
     /// </summary>
-    protected static bool IsolatedStorageFileExists(IsolatedStorageFile storage, string fileName )
+    protected static bool IsolatedStorageFileExists(IsolatedStorageFile storage, string fileName)
     {
         var files = storage.GetFileNames(fileName);
         return files.Length != 0;
@@ -327,7 +327,7 @@ public class RibbonStateStorage : IRibbonStateStorage
     /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
     /// </summary>
     /// <param name="disposing">Defines whether managed resources should also be freed.</param>
-    protected virtual void Dispose(bool disposing )
+    protected virtual void Dispose(bool disposing)
     {
         if (this.Disposed)
         {

@@ -1,4 +1,4 @@
-﻿// This Source Code Form is subject to the terms of the MIT License.
+// This Source Code Form is subject to the terms of the MIT License.
 // If a copy of the MIT was not distributed with this file, You can obtain one at https://opensource.org/licenses/MIT.
 // Copyright (C) Leszek Pomianowski and WPF UI Contributors.
 // All Rights Reserved.
@@ -7,7 +7,7 @@ using System.Windows.Automation;
 using System.Windows.Automation.Peers;
 using System.Windows.Automation.Provider;
 
-namespace Wpf.Ui.Controls.Ribbon.Automation.Peers;
+namespace Wpf.Ui.Controls.Automation.Peers;
 
 /// <summary>
 /// Automation peer for <see cref="RibbonGroupBox"/>.
@@ -20,7 +20,7 @@ public class RibbonGroupBoxAutomationPeer : FrameworkElementAutomationPeer, IExp
     /// Initializes a new instance of the <see cref="RibbonGroupBoxAutomationPeer"/> class.
     /// Creates a new instance.
     /// </summary>
-    public RibbonGroupBoxAutomationPeer( RibbonGroupBox owner )
+    public RibbonGroupBoxAutomationPeer(RibbonGroupBox owner)
         : base(owner)
     {
         this.OwningGroup = owner;
@@ -91,7 +91,7 @@ public class RibbonGroupBoxAutomationPeer : FrameworkElementAutomationPeer, IExp
     }
 
     /// <inheritdoc />
-    public override object GetPattern( PatternInterface patternInterface )
+    public override object GetPattern(PatternInterface patternInterface)
     {
         switch (patternInterface)
         {
@@ -127,7 +127,7 @@ public class RibbonGroupBoxAutomationPeer : FrameworkElementAutomationPeer, IExp
             return;
         }
 
-        this.OwningGroup.IsDropDownOpen = true;
+        this.OwningGroup.SetCurrentValue(RibbonGroupBox.IsDropDownOpenProperty, true);
     }
 
     /// <inheritdoc />
@@ -138,18 +138,29 @@ public class RibbonGroupBoxAutomationPeer : FrameworkElementAutomationPeer, IExp
             return;
         }
 
-        this.OwningGroup.IsDropDownOpen = false;
+        this.OwningGroup.SetCurrentValue(RibbonGroupBox.IsDropDownOpenProperty, false);
     }
 
     /// <inheritdoc />
-    ExpandCollapseState IExpandCollapseProvider.ExpandCollapseState => this.IsCollapseOrExpandValid
-        ? ExpandCollapseState.Collapsed
-        : ExpandCollapseState.Expanded;
+    public ExpandCollapseState ExpandCollapseState
+    {
+        get
+        {
+            if (this.IsCollapseOrExpandValid)
+            {
+                return ExpandCollapseState.Collapsed;
+            }
+            else
+            {
+                return ExpandCollapseState.Expanded;
+            }
+        }
+    }
 
     private bool IsCollapseOrExpandValid => this.OwningGroup.State is RibbonGroupBoxState.Collapsed or RibbonGroupBoxState.QuickAccess;
 
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.NoInlining)]
-    internal void RaiseExpandCollapseAutomationEvent( bool oldValue, bool newValue )
+    internal void RaiseExpandCollapseAutomationEvent(bool oldValue, bool newValue)
     {
         this.RaisePropertyChangedEvent(
             ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty,

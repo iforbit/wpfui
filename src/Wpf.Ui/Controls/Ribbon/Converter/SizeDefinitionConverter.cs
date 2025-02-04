@@ -3,8 +3,7 @@
 // Copyright (C) Leszek Pomianowski and WPF UI Contributors.
 // All Rights Reserved.
 
-namespace Wpf.Ui.Controls.Ribbon.Converter;
-
+namespace Wpf.Ui.Controls.Converter;
 
 /// <summary>
 /// Class which enables conversion from <see cref="string"/> to <see cref="RibbonControlSizeDefinition"/>
@@ -12,13 +11,13 @@ namespace Wpf.Ui.Controls.Ribbon.Converter;
 public class SizeDefinitionConverter : TypeConverter
 {
     /// <inheritdoc />
-    public override bool CanConvertFrom( ITypeDescriptorContext? context, Type sourceType )
+    public override bool CanConvertFrom(ITypeDescriptorContext? context, Type sourceType)
     {
         return sourceType.IsAssignableFrom(typeof(string));
     }
 
     /// <inheritdoc />
-    public override object ConvertFrom( ITypeDescriptorContext? context, CultureInfo? culture, object value )
+    public override object ConvertFrom(ITypeDescriptorContext? context, CultureInfo? culture, object value)
     {
         return new RibbonControlSizeDefinition(value as string);
     }

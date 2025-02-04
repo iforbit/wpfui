@@ -13,13 +13,13 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Markup;
-using Wpf.Ui.Controls.Ribbon.Automation.Peers;
-using Wpf.Ui.Controls.Ribbon.Helpers;
+using Wpf.Ui.Controls.Automation.Peers;
+using Wpf.Ui.Controls.Helpers;
 using Wpf.Ui.Extensions;
 using Wpf.Ui.Internal;
 using Wpf.Ui.Internal.KnowBoxes;
 
-namespace Wpf.Ui.Controls.Ribbon;
+namespace Wpf.Ui.Controls;
 
 /// <summary>
 /// Represents ribbon tab item
@@ -32,14 +32,14 @@ namespace Wpf.Ui.Controls.Ribbon;
 
 public class RibbonTabItem : Control, IHeaderedControl, ILogicalChildSupport, ISimplifiedStateControl
 {
+    // Ribbon groups container
+    private readonly RibbonGroupsContainer groupsInnerContainer = new();
+
     // Content container
     private Border? contentContainer;
 
     // Collection of ribbon groups
     private ObservableCollection<RibbonGroupBox>? groups;
-
-    // Ribbon groups container
-    private readonly RibbonGroupsContainer groupsInnerContainer = new();
 
     // Cached width
     private double cachedWidth;
@@ -83,7 +83,7 @@ public class RibbonTabItem : Control, IHeaderedControl, ILogicalChildSupport, IS
     public string? ReduceOrder
     {
         get => groupsInnerContainer.ReduceOrder;
-        set => groupsInnerContainer.ReduceOrder = value;
+        set => groupsInnerContainer.SetValue(RibbonGroupsContainer.ReduceOrderProperty, value);
     }
 
     /// <summary>
@@ -162,7 +162,7 @@ public class RibbonTabItem : Control, IHeaderedControl, ILogicalChildSupport, IS
         DependencyProperty.Register(nameof(Group), typeof(RibbonContextualTabGroup), typeof(RibbonTabItem), new PropertyMetadata(OnGroupChanged));
 
     // handles Group property chanhged
-    private static void OnGroupChanged(DependencyObject d, DependencyPropertyChangedEventArgs e )
+    private static void OnGroupChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         var tab = (RibbonTabItem)d;
 
@@ -224,7 +224,7 @@ public class RibbonTabItem : Control, IHeaderedControl, ILogicalChildSupport, IS
     }
 
     // handles ribbon groups collection changes
-    private void OnGroupsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e )
+    private void OnGroupsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
         switch (e.Action)
         {
@@ -250,20 +250,23 @@ public class RibbonTabItem : Control, IHeaderedControl, ILogicalChildSupport, IS
             break;
 
             case NotifyCollectionChangedAction.Remove:
-            foreach (UIElement item in e.OldItems.NullSafe().OfType<UIElement>())
+            {
+                foreach (UIElement item in e.OldItems.NullSafe().OfType<UIElement>())
                 {
                     groupsInnerContainer.Children.Remove(item);
                 }
+            }
 
             break;
 
             case NotifyCollectionChangedAction.Replace:
-            foreach (UIElement item in e.OldItems.NullSafe().OfType<UIElement>())
+            {
+                foreach (UIElement item in e.OldItems.NullSafe().OfType<UIElement>())
                 {
                     groupsInnerContainer.Children.Remove(item);
                 }
 
-            {
+                {
                     var isSimplified = IsSimplified;
                     foreach (UIElement item in e.NewItems.NullSafe().OfType<UIElement>())
                     {
@@ -275,12 +278,14 @@ public class RibbonTabItem : Control, IHeaderedControl, ILogicalChildSupport, IS
                         }
                     }
                 }
+            }
 
             break;
 
             case NotifyCollectionChangedAction.Reset:
-            groupsInnerContainer.Children.Clear();
             {
+                groupsInnerContainer.Children.Clear();
+                {
                     var isSimplified = IsSimplified;
                     foreach (RibbonGroupBox group in Groups)
                     {
@@ -292,6 +297,7 @@ public class RibbonTabItem : Control, IHeaderedControl, ILogicalChildSupport, IS
                         }
                     }
                 }
+            }
 
             break;
         }
@@ -330,14 +336,14 @@ public class RibbonTabItem : Control, IHeaderedControl, ILogicalChildSupport, IS
     /// <summary>
     /// Handles Focusable changes
     /// </summary>
-    private static void OnFocusableChanged(DependencyObject d, DependencyPropertyChangedEventArgs e )
+    private static void OnFocusableChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
     }
 
     /// <summary>
     /// Coerces Focusable
     /// </summary>
-    private static object? CoerceFocusable(DependencyObject d, object? basevalue )
+    private static object? CoerceFocusable(DependencyObject d, object? basevalue)
     {
         var control = d as RibbonTabItem;
         Ribbon? ribbon = control?.FindParentRibbon();
@@ -383,7 +389,7 @@ public class RibbonTabItem : Control, IHeaderedControl, ILogicalChildSupport, IS
     /// <summary>Identifies the <see cref="IsSimplified"/> dependency property.</summary>
     public static readonly DependencyProperty IsSimplifiedProperty = IsSimplifiedPropertyKey.DependencyProperty;
 
-    private static void OnIsSimplifiedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e )
+    private static void OnIsSimplifiedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if (d is RibbonTabItem ribbonTabItem)
         {
@@ -412,7 +418,7 @@ public class RibbonTabItem : Control, IHeaderedControl, ILogicalChildSupport, IS
     }
 
     // Handles visibility changes
-    private static void OnVisibilityChanged(DependencyObject d, DependencyPropertyChangedEventArgs e )
+    private static void OnVisibilityChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         var item = d as RibbonTabItem;
 
@@ -434,7 +440,7 @@ public class RibbonTabItem : Control, IHeaderedControl, ILogicalChildSupport, IS
                 }
                 else
                 {
-                    item.TabControlParent.SelectedItem = item.TabControlParent.GetFirstVisibleAndEnabledItem();
+                    item.TabControlParent.SetCurrentValue(Selector.SelectedItemProperty, item.TabControlParent.GetFirstVisibleAndEnabledItem());
                 }
             }
         }
@@ -467,7 +473,7 @@ public class RibbonTabItem : Control, IHeaderedControl, ILogicalChildSupport, IS
     }
 
     /// <inheritdoc />
-    protected override Size MeasureOverride(Size constraint )
+    protected override Size MeasureOverride(Size constraint)
     {
         if (contentContainer is null)
         {
@@ -499,7 +505,7 @@ public class RibbonTabItem : Control, IHeaderedControl, ILogicalChildSupport, IS
     }
 
     /// <inheritdoc />
-    protected override Size ArrangeOverride(Size arrangeBounds )
+    protected override Size ArrangeOverride(Size arrangeBounds)
     {
         Size result = base.ArrangeOverride(arrangeBounds);
 
@@ -520,7 +526,7 @@ public class RibbonTabItem : Control, IHeaderedControl, ILogicalChildSupport, IS
     }
 
     /// <inheritdoc />
-    protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e )
+    protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
     {
         if (ReferenceEquals(e.Source, this)
             && e.ClickCount == 2)
@@ -555,7 +561,7 @@ public class RibbonTabItem : Control, IHeaderedControl, ILogicalChildSupport, IS
                         TabControlParent.SetCurrentValue(RibbonTabControl.IsDropDownOpenProperty, true);
                     }
 
-                    TabControlParent.RaiseRequestBackstageClose();
+                    // TabControlParent.RaiseRequestBackstageClose();
                 }
                 else
                 {
@@ -568,7 +574,7 @@ public class RibbonTabItem : Control, IHeaderedControl, ILogicalChildSupport, IS
     }
 
     /// <inheritdoc />
-    protected override void OnKeyDown(KeyEventArgs e )
+    protected override void OnKeyDown(KeyEventArgs e)
     {
         switch (e.Key)
         {
@@ -589,7 +595,7 @@ public class RibbonTabItem : Control, IHeaderedControl, ILogicalChildSupport, IS
     }
 
     /// <inheritdoc />
-    protected override void OnGotKeyboardFocus(KeyboardFocusChangedEventArgs e )
+    protected override void OnGotKeyboardFocus(KeyboardFocusChangedEventArgs e)
     {
         base.OnGotKeyboardFocus(e);
 
@@ -600,7 +606,7 @@ public class RibbonTabItem : Control, IHeaderedControl, ILogicalChildSupport, IS
     protected override AutomationPeer OnCreateAutomationPeer() => new RibbonTabItemAutomationPeer(this);
 
     // Handles IsSelected property changes
-    private static void OnIsSelectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e )
+    private static void OnIsSelectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         var container = (RibbonTabItem)d;
         var newValue = (bool)e.NewValue;
@@ -629,7 +635,7 @@ public class RibbonTabItem : Control, IHeaderedControl, ILogicalChildSupport, IS
     /// Handles selected
     /// </summary>
     /// <param name="e">The event data</param>
-    protected virtual void OnSelected(RoutedEventArgs e )
+    protected virtual void OnSelected(RoutedEventArgs e)
     {
         HandleIsSelectedChanged(e);
     }
@@ -638,23 +644,23 @@ public class RibbonTabItem : Control, IHeaderedControl, ILogicalChildSupport, IS
     /// handles unselected
     /// </summary>
     /// <param name="e">The event data</param>
-    protected virtual void OnUnselected(RoutedEventArgs e )
+    protected virtual void OnUnselected(RoutedEventArgs e)
     {
         HandleIsSelectedChanged(e);
     }
 
     // Handles IsSelected property changes
-    private void HandleIsSelectedChanged(RoutedEventArgs e )
+    private void HandleIsSelectedChanged(RoutedEventArgs e)
     {
         RaiseEvent(e);
     }
 
-    private void OnLoaded(object sender, RoutedEventArgs e )
+    private void OnLoaded(object sender, RoutedEventArgs e)
     {
         SubscribeEvents();
     }
 
-    private void OnUnloaded(object sender, RoutedEventArgs e )
+    private void OnUnloaded(object sender, RoutedEventArgs e)
     {
         UnSubscribeEvents();
     }
@@ -679,19 +685,19 @@ public class RibbonTabItem : Control, IHeaderedControl, ILogicalChildSupport, IS
     }
 
     /// <inheritdoc />
-    public void UpdateSimplifiedState(bool isSimplified )
+    public void UpdateSimplifiedState(bool isSimplified)
     {
         IsSimplified = isSimplified;
     }
 
     /// <inheritdoc />
-    void ILogicalChildSupport.AddLogicalChild(object child )
+    void ILogicalChildSupport.AddLogicalChild(object child)
     {
         AddLogicalChild(child);
     }
 
     /// <inheritdoc />
-    void ILogicalChildSupport.RemoveLogicalChild(object child )
+    void ILogicalChildSupport.RemoveLogicalChild(object child)
     {
         RemoveLogicalChild(child);
     }

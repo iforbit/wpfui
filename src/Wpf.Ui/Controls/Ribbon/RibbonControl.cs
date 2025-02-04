@@ -10,12 +10,12 @@ using System.Windows.Data;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Shapes;
-using Wpf.Ui.Controls.Ribbon.Helpers;
+using Wpf.Ui.Controls.Helpers;
 using Wpf.Ui.Extensions;
 using Wpf.Ui.Internal;
 using Wpf.Ui.Internal.KnowBoxes;
 
-namespace Wpf.Ui.Controls.Ribbon;
+namespace Wpf.Ui.Controls;
 
 /// <summary>
 /// Represent base class for Fluent controls
@@ -127,7 +127,7 @@ public abstract class RibbonControl : System.Windows.Controls.Control, ICommandS
     /// <summary>
     /// Handles Command changed
     /// </summary>
-    private static void OnCommandChanged(DependencyObject d, DependencyPropertyChangedEventArgs e )
+    private static void OnCommandChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if (d is not RibbonControl control)
         {
@@ -156,7 +156,7 @@ public abstract class RibbonControl : System.Windows.Controls.Control, ICommandS
     /// <summary>
     /// Handles Command CanExecute changed
     /// </summary>
-    private void OnCommandCanExecuteChanged(object? sender, EventArgs e )
+    private void OnCommandCanExecuteChanged(object? sender, EventArgs e)
     {
         this.UpdateCanExecute();
     }
@@ -217,7 +217,6 @@ public abstract class RibbonControl : System.Windows.Controls.Control, ICommandS
         // ContextMenuService.Coerce(this);
     }
 
-    /// <inheritdoc />
     public abstract FrameworkElement CreateQuickAccessItem();
 
     /// <summary>
@@ -225,7 +224,7 @@ public abstract class RibbonControl : System.Windows.Controls.Control, ICommandS
     /// </summary>
     /// <param name="source">Source item</param>
     /// <param name="element">Toolbar item</param>
-    public static void BindQuickAccessItem(FrameworkElement source, FrameworkElement element )
+    public static void BindQuickAccessItem(FrameworkElement source, FrameworkElement element)
     {
         Bind(source, element, nameof(source.DataContext), DataContextProperty, BindingMode.OneWay);
 
@@ -309,7 +308,6 @@ public abstract class RibbonControl : System.Windows.Controls.Control, ICommandS
         RibbonProperties.SetSize(element, RibbonControlSize.Small);
     }
 
-    /// <inheritdoc />
     public bool CanAddToQuickAccessToolBar
     {
         get => (bool)this.GetValue(CanAddToQuickAccessToolBarProperty);
@@ -323,27 +321,27 @@ public abstract class RibbonControl : System.Windows.Controls.Control, ICommandS
     /// <summary>
     /// Occurs then CanAddToQuickAccessToolBar property changed
     /// </summary>
-    public static void OnCanAddToQuickAccessToolBarChanged(DependencyObject d, DependencyPropertyChangedEventArgs e )
+    public static void OnCanAddToQuickAccessToolBarChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         d.CoerceValue(ContextMenuProperty);
     }
 
-    internal static void Bind(object source, FrameworkElement target, string path, DependencyProperty property, BindingMode mode )
+    internal static void Bind(object source, FrameworkElement target, string path, DependencyProperty property, BindingMode mode)
     {
         Bind(source, target, new PropertyPath(path), property, mode);
     }
 
-    internal static void Bind(object source, FrameworkElement target, string path, DependencyProperty property, BindingMode mode, UpdateSourceTrigger updateSourceTrigger )
+    internal static void Bind(object source, FrameworkElement target, string path, DependencyProperty property, BindingMode mode, UpdateSourceTrigger updateSourceTrigger)
     {
         Bind(source, target, new PropertyPath(path), property, mode, updateSourceTrigger);
     }
 
-    internal static void Bind(object source, FrameworkElement target, PropertyPath path, DependencyProperty property, BindingMode mode )
+    internal static void Bind(object source, FrameworkElement target, PropertyPath path, DependencyProperty property, BindingMode mode)
     {
         Bind(source, target, path, property, mode, UpdateSourceTrigger.Default);
     }
 
-    internal static void Bind(object source, FrameworkElement target, PropertyPath path, DependencyProperty property, BindingMode mode, UpdateSourceTrigger updateSourceTrigger )
+    internal static void Bind(object source, FrameworkElement target, PropertyPath path, DependencyProperty property, BindingMode mode, UpdateSourceTrigger updateSourceTrigger)
     {
         var binding = new System.Windows.Data.Binding
         {
@@ -373,7 +371,7 @@ public abstract class RibbonControl : System.Windows.Controls.Control, ICommandS
     /// </summary>
     /// <param name="control">Control</param>
     /// <returns>Workarea in witch control is placed</returns>
-    public static Rect GetControlWorkArea(FrameworkElement control )
+    public static Rect GetControlWorkArea(FrameworkElement control)
     {
         if (PresentationSource.FromVisual(control) is null)
         {
@@ -416,7 +414,7 @@ public abstract class RibbonControl : System.Windows.Controls.Control, ICommandS
     /// </summary>
     /// <param name="control">Control</param>
     /// <returns>Workarea in witch control is placed</returns>
-    public static Rect GetControlMonitor(FrameworkElement control )
+    public static Rect GetControlMonitor(FrameworkElement control)
     {
         if (PresentationSource.FromVisual(control) is null)
         {
@@ -456,19 +454,19 @@ public abstract class RibbonControl : System.Windows.Controls.Control, ICommandS
     /// Get the parent <see cref="Ribbon"/>.
     /// </summary>
     /// <returns>The found <see cref="Ribbon"/> or <c>null</c> of no parent <see cref="Ribbon"/> could be found.</returns>
-    public static Ribbon? GetParentRibbon(DependencyObject obj )
+    public static Ribbon? GetParentRibbon(DependencyObject obj)
     {
         return UIHelper.GetParent<Ribbon>(obj);
     }
 
     /// <inheritdoc />
-    public new void AddLogicalChild(object child )
+    public new void AddLogicalChild(object child)
     {
         this.AddLogicalChild(child);
     }
 
     /// <inheritdoc />
-    public new void RemoveLogicalChild(object child )
+    public new void RemoveLogicalChild(object child)
     {
         this.RemoveLogicalChild(child);
     }
@@ -497,5 +495,5 @@ public abstract class RibbonControl : System.Windows.Controls.Control, ICommandS
     }
 
     /// <inheritdoc />
-    protected override AutomationPeer OnCreateAutomationPeer() => new Wpf.Ui.Controls.Ribbon.Automation.Peers.RibbonControlAutomationPeer(this);
+    protected override AutomationPeer OnCreateAutomationPeer() => new Wpf.Ui.Controls.Automation.Peers.RibbonControlAutomationPeer(this);
 }

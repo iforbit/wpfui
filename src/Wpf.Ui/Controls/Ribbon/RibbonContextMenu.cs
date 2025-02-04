@@ -5,7 +5,7 @@
 
 using System.Windows.Controls.Primitives;
 
-namespace Wpf.Ui.Controls.Ribbon;
+namespace Wpf.Ui.Controls;
 
 /// <summary>
 /// Represents context menu resize mode
@@ -34,7 +34,7 @@ public enum ContextMenuResizeMode
 /// </summary>
 [TemplatePart(Name = "PART_ResizeVerticalThumb", Type = typeof(Thumb))]
 [TemplatePart(Name = "PART_ResizeBothThumb", Type = typeof(Thumb))]
-public class ContextMenu : System.Windows.Controls.ContextMenu
+public class RibbonContextMenu : System.Windows.Controls.ContextMenu
 {
     // Thumb to resize in both directions
     private Thumb? resizeBothThumb;
@@ -53,17 +53,20 @@ public class ContextMenu : System.Windows.Controls.ContextMenu
 
     /// <summary>Identifies the <see cref="ResizeMode"/> dependency property.</summary>
     public static readonly DependencyProperty ResizeModeProperty =
-        DependencyProperty.Register(nameof(ResizeMode), typeof(ContextMenuResizeMode),
-            typeof(ContextMenu), new PropertyMetadata(ContextMenuResizeMode.None));
+        DependencyProperty.Register(
+            nameof(ResizeMode),
+            typeof(ContextMenuResizeMode),
+            typeof(RibbonContextMenu),
+            new PropertyMetadata(ContextMenuResizeMode.None));
 
     /// <summary>
-    /// Initializes static members of the <see cref="ContextMenu"/> class.
+    /// Initializes static members of the <see cref="RibbonContextMenu"/> class.
     /// Static constructor
     /// </summary>]
-    static ContextMenu()
+    static RibbonContextMenu()
     {
-        DefaultStyleKeyProperty.OverrideMetadata(typeof(ContextMenu), new FrameworkPropertyMetadata(typeof(ContextMenu)));
-        FocusVisualStyleProperty.OverrideMetadata(typeof(ContextMenu), new FrameworkPropertyMetadata());
+        DefaultStyleKeyProperty.OverrideMetadata(typeof(RibbonContextMenu), new FrameworkPropertyMetadata(typeof(RibbonContextMenu)));
+        FocusVisualStyleProperty.OverrideMetadata(typeof(RibbonContextMenu), new FrameworkPropertyMetadata());
     }
 
     /// <inheritdoc />
@@ -99,13 +102,13 @@ public class ContextMenu : System.Windows.Controls.ContextMenu
     }
 
     /// <inheritdoc />
-    protected override bool IsItemItsOwnContainerOverride( object item )
+    protected override bool IsItemItsOwnContainerOverride(object item)
     {
         return item is FrameworkElement;
     }
 
     // Handles resize both drag
-    private void OnResizeBothDelta( object sender, DragDeltaEventArgs e )
+    private void OnResizeBothDelta(object sender, DragDeltaEventArgs e)
     {
         if (double.IsNaN(this.Width))
         {
@@ -122,7 +125,7 @@ public class ContextMenu : System.Windows.Controls.ContextMenu
     }
 
     // Handles resize vertical drag
-    private void OnResizeVerticalDelta( object sender, DragDeltaEventArgs e )
+    private void OnResizeVerticalDelta(object sender, DragDeltaEventArgs e)
     {
         if (double.IsNaN(this.Height))
         {

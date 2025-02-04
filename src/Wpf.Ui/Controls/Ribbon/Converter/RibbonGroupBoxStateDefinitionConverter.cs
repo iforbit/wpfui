@@ -3,7 +3,8 @@
 // Copyright (C) Leszek Pomianowski and WPF UI Contributors.
 // All Rights Reserved.
 
-namespace Wpf.Ui.Controls.Ribbon.Converter;
+namespace Wpf.Ui.Controls.Converter;
+
 /// <summary>
 /// Class which enables conversion from <see cref="string"/> to <see cref="RibbonGroupBoxStateDefinition"/>
 /// </summary>

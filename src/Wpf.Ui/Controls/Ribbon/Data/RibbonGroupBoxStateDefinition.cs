@@ -3,9 +3,9 @@
 // Copyright (C) Leszek Pomianowski and WPF UI Contributors.
 // All Rights Reserved.
 
-using Wpf.Ui.Controls.Ribbon.Converter;
+using Wpf.Ui.Controls.Converter;
 
-namespace Wpf.Ui.Controls.Ribbon;
+namespace Wpf.Ui.Controls;
 
 /// <summary>
 /// This class holds the Holds transitionable states when the <see cref="RibbonGroupsContainer"/> automatically resizes the <see cref="RibbonGroupBox"/>.
@@ -29,7 +29,7 @@ public readonly struct RibbonGroupBoxStateDefinition : IEquatable<RibbonGroupBox
     /// Initializes a new instance of the <see cref="RibbonGroupBoxStateDefinition"/> struct.
     /// Creates a new instance
     /// </summary>
-    public RibbonGroupBoxStateDefinition(string? stateDefinition )
+    public RibbonGroupBoxStateDefinition(string? stateDefinition)
         : this()
     {
         this.states = DefaultStates;
@@ -81,7 +81,7 @@ public readonly struct RibbonGroupBoxStateDefinition : IEquatable<RibbonGroupBox
     /// <summary>
     /// Converts from <see cref="string"/> to <see cref="RibbonGroupBoxStateDefinition"/>
     /// </summary>
-    public static RibbonGroupBoxStateDefinition FromString(string stateDefinition )
+    public static RibbonGroupBoxStateDefinition FromString(string stateDefinition)
     {
         return new RibbonGroupBoxStateDefinition(stateDefinition);
     }
@@ -89,7 +89,7 @@ public readonly struct RibbonGroupBoxStateDefinition : IEquatable<RibbonGroupBox
     /// <summary>
     /// Converts from <see cref="string"/> to <see cref="RibbonGroupBoxStateDefinition"/>
     /// </summary>
-    public static implicit operator RibbonGroupBoxStateDefinition(string stateDefinition )
+    public static implicit operator RibbonGroupBoxStateDefinition(string stateDefinition)
     {
         return FromString(stateDefinition);
     }
@@ -97,7 +97,7 @@ public readonly struct RibbonGroupBoxStateDefinition : IEquatable<RibbonGroupBox
     /// <summary>
     /// Converts from <see cref="RibbonGroupBoxStateDefinition"/> to <see cref="string"/>
     /// </summary>
-    public static implicit operator string(RibbonGroupBoxStateDefinition stateDefinition )
+    public static implicit operator string(RibbonGroupBoxStateDefinition stateDefinition)
     {
         return stateDefinition.ToString();
     }
@@ -105,7 +105,7 @@ public readonly struct RibbonGroupBoxStateDefinition : IEquatable<RibbonGroupBox
     /// <summary>
     /// Converts from <see cref="string"/> to <see cref="RibbonGroupBoxState"/>
     /// </summary>
-    public static RibbonGroupBoxState ToRibbonGroupBoxState(string ribbonControlState )
+    public static RibbonGroupBoxState ToRibbonGroupBoxState(string ribbonControlState)
     {
         return Enum.TryParse(ribbonControlState, true, out RibbonGroupBoxState result)
             ? result
@@ -115,7 +115,7 @@ public readonly struct RibbonGroupBoxStateDefinition : IEquatable<RibbonGroupBox
     /// <summary>
     /// Gets the appropriate enlarged <see cref="RibbonGroupBoxState"/> depending on StateDefinition />
     /// </summary>
-    public RibbonGroupBoxState EnlargeState(RibbonGroupBoxState ribbonGroupBoxState )
+    public RibbonGroupBoxState EnlargeState(RibbonGroupBoxState ribbonGroupBoxState)
     {
         RibbonGroupBoxState[] currentStates = this.GetStates();
         var index = Array.IndexOf(currentStates, ribbonGroupBoxState);
@@ -149,7 +149,7 @@ public readonly struct RibbonGroupBoxStateDefinition : IEquatable<RibbonGroupBox
     /// <summary>
     /// Gets the appropriate reduced <see cref="RibbonGroupBoxState"/> depending on StateDefinition />
     /// </summary>
-    public RibbonGroupBoxState ReduceState(RibbonGroupBoxState ribbonGroupBoxState )
+    public RibbonGroupBoxState ReduceState(RibbonGroupBoxState ribbonGroupBoxState)
     {
         RibbonGroupBoxState[] currentStates = this.GetStates();
         var index = Array.IndexOf(currentStates, ribbonGroupBoxState);
@@ -185,9 +185,8 @@ public readonly struct RibbonGroupBoxStateDefinition : IEquatable<RibbonGroupBox
         return this.states ?? DefaultStates;
     }
 
-
     /// <inheritdoc />
-    public override bool Equals(object? obj )
+    public override bool Equals(object? obj)
     {
         if (obj is null)
         {
@@ -198,9 +197,8 @@ public readonly struct RibbonGroupBoxStateDefinition : IEquatable<RibbonGroupBox
                && this.Equals(definition);
     }
 
-
     /// <inheritdoc />
-    public bool Equals(RibbonGroupBoxStateDefinition other )
+    public bool Equals(RibbonGroupBoxStateDefinition other)
     {
         RibbonGroupBoxState[] currentStates = this.GetStates();
         if (currentStates.Length != other.States.Count)
@@ -239,7 +237,7 @@ public readonly struct RibbonGroupBoxStateDefinition : IEquatable<RibbonGroupBox
     /// <param name="left">The first object to compare. </param>
     /// <param name="right">The second object to compare. </param>
     /// <returns>true if the objects are considered equal; otherwise, false. If both <paramref name="left" /> and <paramref name="right" /> are null, the method returns true.</returns>
-    public static bool operator ==(RibbonGroupBoxStateDefinition left, RibbonGroupBoxStateDefinition right )
+    public static bool operator ==(RibbonGroupBoxStateDefinition left, RibbonGroupBoxStateDefinition right)
     {
         return left.Equals(right);
     }
@@ -248,12 +246,10 @@ public readonly struct RibbonGroupBoxStateDefinition : IEquatable<RibbonGroupBox
     /// <param name="left">The first object to compare.</param>
     /// <param name="right">The second object to compare.</param>
     /// <returns>true if the objects are not considered equal; otherwise, false. If both <paramref name="left" /> and <paramref name="right" /> are null, the method returns false.</returns>
-    public static bool operator !=(RibbonGroupBoxStateDefinition left, RibbonGroupBoxStateDefinition right )
+    public static bool operator !=(RibbonGroupBoxStateDefinition left, RibbonGroupBoxStateDefinition right)
     {
         return !left.Equals(right);
     }
-
-
 
     /// <summary>
     /// Returns a string that represents the current object.

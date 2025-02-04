@@ -14,11 +14,12 @@ namespace Wpf.Ui.Internal;
 internal class ItemContainerGeneratorAction
 {
     /// <summary>
+    /// Initializes a new instance of the <see cref="ItemContainerGeneratorAction"/> class.
     /// Creates a new instance used to queue action for completion or items changes of <see cref="ItemContainerGenerator"/>
     /// </summary>
     /// <param name="generator">The <see cref="ItemContainerGenerator"/> to be used.</param>
     /// <param name="action">The <see cref="System.Action"/> that should be invoked.</param>
-    public ItemContainerGeneratorAction( ItemContainerGenerator generator, Action action )
+    public ItemContainerGeneratorAction(ItemContainerGenerator generator, Action action )
     {
         this.Generator = generator;
         this.Action = action;
@@ -35,7 +36,7 @@ internal class ItemContainerGeneratorAction
     public Action Action { get; }
 
     /// <summary>
-    /// Gets the current wait state. <c>true</c> in case <see cref="QueueAction"/> was called and we are waiting for the <see cref="Generator"/> to finish.
+    /// Gets a value indicating whether gets the current wait state. <c>true</c> in case <see cref="QueueAction"/> was called and we are waiting for the <see cref="Generator"/> to finish.
     /// </summary>
     public bool IsWaitingForGenerator { get; private set; }
 
@@ -62,7 +63,7 @@ internal class ItemContainerGeneratorAction
         this.Action();
     }
 
-    private void HandleItemContainerGenerator_StatusChanged( object? sender, EventArgs e )
+    private void HandleItemContainerGenerator_StatusChanged(object? sender, EventArgs e )
     {
         this.QueueAction();
     }

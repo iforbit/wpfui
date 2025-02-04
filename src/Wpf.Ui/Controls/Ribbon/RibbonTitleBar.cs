@@ -7,12 +7,12 @@ using System.Windows.Automation.Peers;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
-using Wpf.Ui.Controls.Ribbon.Helpers;
+using Wpf.Ui.Controls.Helpers;
 using Wpf.Ui.Extensions;
 using Wpf.Ui.Internal;
 using Wpf.Ui.Internal.KnowBoxes;
 
-namespace Wpf.Ui.Controls.Ribbon;
+namespace Wpf.Ui.Controls;
 
 /// <summary>
 /// Represents title bar
@@ -56,7 +56,7 @@ public class RibbonTitleBar : HeaderedItemsControl
     public static readonly DependencyProperty QuickAccessToolBarProperty =
         DependencyProperty.Register(nameof(QuickAccessToolBar), typeof(FrameworkElement), typeof(RibbonTitleBar), new PropertyMetadata(OnQuickAccessToolBarChanged));
 
-    private static void OnQuickAccessToolBarChanged(DependencyObject d, DependencyPropertyChangedEventArgs e )
+    private static void OnQuickAccessToolBarChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         var titleBar = (RibbonTitleBar)d;
         titleBar.ScheduleForceMeasureAndArrange();
@@ -115,7 +115,7 @@ public class RibbonTitleBar : HeaderedItemsControl
     }
 
     /// <inheritdoc />
-    protected override HitTestResult HitTestCore(PointHitTestParameters hitTestParameters )
+    protected override HitTestResult HitTestCore(PointHitTestParameters hitTestParameters)
     {
         HitTestResult? baseResult = base.HitTestCore(hitTestParameters);
 
@@ -128,7 +128,7 @@ public class RibbonTitleBar : HeaderedItemsControl
     }
 
     /// <inheritdoc />
-    protected override void OnMouseRightButtonUp(MouseButtonEventArgs e )
+    protected override void OnMouseRightButtonUp(MouseButtonEventArgs e)
     {
         base.OnMouseRightButtonUp(e);
 
@@ -142,7 +142,7 @@ public class RibbonTitleBar : HeaderedItemsControl
     }
 
     /// <inheritdoc />
-    protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e )
+    protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
     {
         base.OnMouseLeftButtonDown(e);
 
@@ -167,7 +167,7 @@ public class RibbonTitleBar : HeaderedItemsControl
     }
 
     /// <inheritdoc />
-    protected override bool IsItemItsOwnContainerOverride(object item )
+    protected override bool IsItemItsOwnContainerOverride(object item)
     {
         return item is RibbonContextualTabGroup;
     }
@@ -187,7 +187,7 @@ public class RibbonTitleBar : HeaderedItemsControl
     }
 
     /// <inheritdoc />
-    protected override Size MeasureOverride(Size constraint )
+    protected override Size MeasureOverride(Size constraint)
     {
         if (this.isAtLeastOneRequiredControlPresent == false)
         {
@@ -217,7 +217,7 @@ public class RibbonTitleBar : HeaderedItemsControl
     }
 
     /// <inheritdoc />
-    protected override Size ArrangeOverride(Size arrangeBounds )
+    protected override Size ArrangeOverride(Size arrangeBounds)
     {
         if (this.isAtLeastOneRequiredControlPresent == false)
         {
@@ -257,7 +257,7 @@ public class RibbonTitleBar : HeaderedItemsControl
         this.RunInDispatcherAsync(() => this.CheckPosition(currentRelativePosition, this.GetCurrentRelativePosition()));
     }
 
-    private void CheckPosition(Point previousRelativePosition, Point currentRelativePositon )
+    private void CheckPosition(Point previousRelativePosition, Point currentRelativePositon)
     {
         if (previousRelativePosition != currentRelativePositon)
         {
@@ -278,7 +278,7 @@ public class RibbonTitleBar : HeaderedItemsControl
     }
 
     // Update items size and positions
-    private void Update(Size constraint )
+    private void Update(Size constraint)
     {
         RibbonContextualTabGroup[] visibleGroups = this.HideContextTabs
             ? Array.Empty<RibbonContextualTabGroup>()
@@ -475,7 +475,7 @@ public class RibbonTitleBar : HeaderedItemsControl
         this.headerRect.Width += 2;
     }
 
-    private Rect GetHeaderRect(Size constraint, double left, double allTextWidth, double headerHolderWidth )
+    private Rect GetHeaderRect(Size constraint, double left, double allTextWidth, double headerHolderWidth)
     {
         return this.HeaderAlignment switch
         {
@@ -509,5 +509,5 @@ public class RibbonTitleBar : HeaderedItemsControl
     }
 
     /// <inheritdoc />
-    protected override AutomationPeer OnCreateAutomationPeer() => new Wpf.Ui.Controls.Ribbon.Automation.Peers.RibbonTitleBarAutomationPeer(this);
+    protected override AutomationPeer OnCreateAutomationPeer() => new Wpf.Ui.Controls.Automation.Peers.RibbonTitleBarAutomationPeer(this);
 }

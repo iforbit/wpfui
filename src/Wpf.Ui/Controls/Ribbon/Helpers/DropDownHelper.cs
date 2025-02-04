@@ -5,7 +5,7 @@
 
 using System.Windows.Forms;
 
-namespace Wpf.Ui.Controls.Ribbon.Helpers;
+namespace Wpf.Ui.Controls.Helpers;
 
 /// <summary>
 /// Helper class for drop downs.
@@ -15,7 +15,7 @@ public static class DropDownHelper
     /// <summary>
     /// Coerces the maximum drop down height.
     /// </summary>
-    public static object? CoerceMaxDropDownHeight(DependencyObject d, object? baseValue )
+    public static object? CoerceMaxDropDownHeight(DependencyObject d, object? baseValue)
     {
         return baseValue is not double value
             ? baseValue
@@ -25,7 +25,7 @@ public static class DropDownHelper
     /// <summary>
     /// Gets the maximum drop down height.
     /// </summary>
-    public static double GetMaxDropDownHeight(DependencyObject d, double baseValue )
+    public static double GetMaxDropDownHeight(DependencyObject d, double baseValue)
     {
         if (double.IsNaN(baseValue) is false)
         {

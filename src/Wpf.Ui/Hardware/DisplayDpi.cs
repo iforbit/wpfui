@@ -18,7 +18,7 @@ public readonly struct DisplayDpi
     /// </summary>
     /// <param name="dpiScaleX">The DPI scale on the X axis.</param>
     /// <param name="dpiScaleY">The DPI scale on the Y axis.</param>
-    public DisplayDpi( double dpiScaleX, double dpiScaleY )
+    public DisplayDpi(double dpiScaleX, double dpiScaleY )
     {
         DpiScaleX = dpiScaleX;
         DpiScaleY = dpiScaleY;
@@ -32,7 +32,7 @@ public readonly struct DisplayDpi
     /// </summary>
     /// <param name="dpiX">The DPI on the X axis.</param>
     /// <param name="dpiY">The DPI on the Y axis.</param>
-    public DisplayDpi( int dpiX, int dpiY )
+    public DisplayDpi(int dpiX, int dpiY )
     {
         DpiX = dpiX;
         DpiY = dpiY;

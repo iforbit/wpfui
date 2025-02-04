@@ -7,7 +7,7 @@ using System.Windows.Automation;
 using System.Windows.Automation.Peers;
 using System.Windows.Automation.Provider;
 
-namespace Wpf.Ui.Controls.Ribbon.Automation.Peers;
+namespace Wpf.Ui.Controls.Automation.Peers;
 
 /// <summary>
 /// Automation peer for <see cref="RibbonDropDownButton"/>.
@@ -18,7 +18,7 @@ public class RibbonDropDownButtonAutomationPeer : RibbonHeaderedControlAutomatio
     /// Initializes a new instance of the <see cref="RibbonDropDownButtonAutomationPeer"/> class.
     /// Creates a new instance.
     /// </summary>
-    public RibbonDropDownButtonAutomationPeer(RibbonDropDownButton owner )
+    public RibbonDropDownButtonAutomationPeer(RibbonDropDownButton owner)
         : base(owner)
     {
         this.OwnerDropDownButton = owner;
@@ -45,7 +45,7 @@ public class RibbonDropDownButtonAutomationPeer : RibbonHeaderedControlAutomatio
     }
 
     /// <inheritdoc />
-    public override object GetPattern(PatternInterface patternInterface )
+    public override object GetPattern(PatternInterface patternInterface)
     {
         switch (patternInterface)
         {
@@ -59,20 +59,33 @@ public class RibbonDropDownButtonAutomationPeer : RibbonHeaderedControlAutomatio
     /// <inheritdoc />
     public void Collapse()
     {
-        this.OwnerDropDownButton.IsDropDownOpen = false;
+        this.OwnerDropDownButton.SetCurrentValue(RibbonDropDownButton.IsDropDownOpenProperty, false);
     }
 
     /// <inheritdoc />
     public void Expand()
     {
-        this.OwnerDropDownButton.IsDropDownOpen = true;
+        this.OwnerDropDownButton.SetCurrentValue(RibbonDropDownButton.IsDropDownOpenProperty, true);
     }
 
     /// <inheritdoc />
-    ExpandCollapseState IExpandCollapseProvider.ExpandCollapseState => this.OwnerDropDownButton.IsDropDownOpen == false ? ExpandCollapseState.Collapsed : ExpandCollapseState.Expanded;
+    public ExpandCollapseState ExpandCollapseState
+    {
+        get
+        {
+            if (this.OwnerDropDownButton.IsDropDownOpen == false)
+            {
+                return ExpandCollapseState.Collapsed;
+            }
+            else
+            {
+                return ExpandCollapseState.Expanded;
+            }
+        }
+    }
 
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.NoInlining)]
-    internal void RaiseExpandCollapseAutomationEvent(bool oldValue, bool newValue )
+    internal void RaiseExpandCollapseAutomationEvent(bool oldValue, bool newValue)
     {
         this.RaisePropertyChangedEvent(
             ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty,

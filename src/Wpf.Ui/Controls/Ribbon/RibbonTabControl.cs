@@ -12,15 +12,15 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Threading;
-using Wpf.Ui.Controls.Ribbon.Automation.Peers;
-using Wpf.Ui.Controls.Ribbon.Helpers;
+using Wpf.Ui.Controls.Automation.Peers;
+using Wpf.Ui.Controls.Helpers;
 using Wpf.Ui.Extensions;
 using Wpf.Ui.Internal;
 using Wpf.Ui.Internal.KnowBoxes;
 using Wpf.Ui.Interop;
 using static Wpf.Ui.Interop.User32;
 
-namespace Wpf.Ui.Controls.Ribbon;
+namespace Wpf.Ui.Controls;
 
 /// <summary>
 /// Represents ribbon tab control
@@ -56,11 +56,12 @@ public class RibbonTabControl : Selector, IDropDownControl, ILogicalChildSupport
     private ObservableCollection<UIElement>? toolBarItems;
 
     // ToolBar panel
-
+    /*
     /// <summary>
     /// Event which is fired when the, maybe listening, <see cref="Backstage"/> should be closed
     /// </summary>
     public event EventHandler? RequestBackstageClose;
+    */
 
     /// <inheritdoc />
     public event EventHandler? DropDownOpened;
@@ -79,8 +80,11 @@ public class RibbonTabControl : Selector, IDropDownControl, ILogicalChildSupport
 
     /// <summary>Identifies the <see cref="Menu"/> dependency property.</summary>
     public static readonly DependencyProperty MenuProperty =
-        DependencyProperty.Register(nameof(Menu), typeof(UIElement),
-            typeof(RibbonTabControl), new PropertyMetadata());
+        DependencyProperty.Register(
+            nameof(Menu),
+            typeof(UIElement),
+            typeof(RibbonTabControl),
+            new PropertyMetadata());
 
     /// <inheritdoc />
     public Popup? DropDownPopup { get; private set; }
@@ -175,7 +179,7 @@ public class RibbonTabControl : Selector, IDropDownControl, ILogicalChildSupport
     /// <summary>Identifies the <see cref="IsDropDownOpen"/> dependency property.</summary>
     public static readonly DependencyProperty IsDropDownOpenProperty = DependencyProperty.Register(nameof(IsDropDownOpen), typeof(bool), typeof(RibbonTabControl), new PropertyMetadata(BooleanBoxes.FalseBox, OnIsDropDownOpenChanged, CoerceIsDropDownOpen));
 
-    private static object? CoerceIsDropDownOpen(DependencyObject d, object? basevalue )
+    private static object? CoerceIsDropDownOpen(DependencyObject d, object? basevalue)
     {
         var tabControl = d as RibbonTabControl;
 
@@ -255,7 +259,7 @@ public class RibbonTabControl : Selector, IDropDownControl, ILogicalChildSupport
     internal Panel? ToolbarPanel { get; private set; }
 
     // Handle toolbar iitems changes
-    private void OnToolbarItemsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e )
+    private void OnToolbarItemsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
         if (this.ToolbarPanel is null)
         {
@@ -424,7 +428,7 @@ public class RibbonTabControl : Selector, IDropDownControl, ILogicalChildSupport
     }
 
     /// <inheritdoc />
-    protected override void OnInitialized(EventArgs e )
+    protected override void OnInitialized(EventArgs e)
     {
         base.OnInitialized(e);
 
@@ -438,7 +442,7 @@ public class RibbonTabControl : Selector, IDropDownControl, ILogicalChildSupport
     }
 
     /// <inheritdoc />
-    protected override bool IsItemItsOwnContainerOverride(object item )
+    protected override bool IsItemItsOwnContainerOverride(object item)
     {
         return item is RibbonTabItem;
     }
@@ -448,42 +452,11 @@ public class RibbonTabControl : Selector, IDropDownControl, ILogicalChildSupport
     {
         this.TabsContainer = this.GetTemplateChild("PART_TabsContainer") as Panel;
 
-        this.DisplayOptionsControl = this.GetTemplateChild("PART_DisplayOptionsButton") as Control;
-
         this.SelectedContentPresenter = this.Template.FindName("PART_SelectedContent", this) as FrameworkElement;
-
-        this.DropDownPopup = this.Template.FindName("PART_Popup", this) as Popup;
-
-        if (this.DropDownPopup is not null)
-        {
-            this.DropDownPopup.CustomPopupPlacementCallback = this.CustomPopupPlacementMethod;
-        }
-
-        if (this.ToolbarPanel is not null
-            && this.toolBarItems is not null)
-        {
-            foreach (UIElement item in this.toolBarItems)
-            {
-                this.ToolbarPanel.Children.Remove(item);
-                this.AddLogicalChild(item);
-            }
-        }
-
-        this.ToolbarPanel = this.Template.FindName("PART_ToolbarPanel", this) as Panel;
-
-        if (this.ToolbarPanel is not null
-            && this.toolBarItems is not null)
-        {
-            foreach (UIElement item in this.toolBarItems)
-            {
-                this.RemoveLogicalChild(item);
-                _ = this.ToolbarPanel.Children.Add(item);
-            }
-        }
     }
 
     /// <inheritdoc />
-    protected override void OnItemsChanged(NotifyCollectionChangedEventArgs e )
+    protected override void OnItemsChanged(NotifyCollectionChangedEventArgs e)
     {
         base.OnItemsChanged(e);
 
@@ -515,7 +488,7 @@ public class RibbonTabControl : Selector, IDropDownControl, ILogicalChildSupport
     }
 
     /// <inheritdoc />
-    protected override void OnSelectionChanged(SelectionChangedEventArgs e )
+    protected override void OnSelectionChanged(SelectionChangedEventArgs e)
     {
         RibbonTabItem? newSelectedItem = e.AddedItems.Count > 0
             ? (RibbonTabItem?)e.AddedItems[0]
@@ -534,7 +507,7 @@ public class RibbonTabControl : Selector, IDropDownControl, ILogicalChildSupport
         {
             if (this.IsDropDownOpen)
             {
-                this.IsDropDownOpen = false;
+                this.SetCurrentValue(IsDropDownOpenProperty, false);
             }
         }
 
@@ -542,7 +515,7 @@ public class RibbonTabControl : Selector, IDropDownControl, ILogicalChildSupport
     }
 
     /// <inheritdoc />
-    protected override void OnPreviewMouseWheel(MouseWheelEventArgs e )
+    protected override void OnPreviewMouseWheel(MouseWheelEventArgs e)
     {
         if (!this.IsMouseWheelScrollingEnabledEverywhere || !this.IsMouseOver)
         {
@@ -568,7 +541,7 @@ public class RibbonTabControl : Selector, IDropDownControl, ILogicalChildSupport
     }
 
     /// <inheritdoc />
-    protected override void OnMouseWheel(MouseWheelEventArgs e )
+    protected override void OnMouseWheel(MouseWheelEventArgs e)
     {
         // Mouse wheel on tab container may be used to cycle selected tab.
         if (this.IsMouseWheelScrollingEnabled)
@@ -578,7 +551,7 @@ public class RibbonTabControl : Selector, IDropDownControl, ILogicalChildSupport
     }
 
     /// <inheritdoc />
-    protected override void OnKeyDown(KeyEventArgs e )
+    protected override void OnKeyDown(KeyEventArgs e)
     {
         base.OnKeyDown(e);
 
@@ -598,7 +571,7 @@ public class RibbonTabControl : Selector, IDropDownControl, ILogicalChildSupport
             case Key.Escape:
                 if (this.IsDropDownOpen)
                 {
-                    this.IsDropDownOpen = false;
+                    this.SetCurrentValue(IsDropDownOpenProperty, false);
 
                     if (this.IsKeyboardFocusWithin)
                     {
@@ -649,10 +622,10 @@ public class RibbonTabControl : Selector, IDropDownControl, ILogicalChildSupport
     }
 
     /// <inheritdoc />
-    protected override AutomationPeer OnCreateAutomationPeer() => new Wpf.Ui.Controls.Ribbon.Automation.Peers.RibbonTabControlAutomationPeer(this);
+    protected override AutomationPeer OnCreateAutomationPeer() => new Wpf.Ui.Controls.Automation.Peers.RibbonTabControlAutomationPeer(this);
 
     // Process mouse wheel event
-    internal void ProcessMouseWheel(MouseWheelEventArgs e )
+    internal void ProcessMouseWheel(MouseWheelEventArgs e)
     {
         if (this.IsMinimized
             || this.SelectedItem is null)
@@ -694,7 +667,7 @@ public class RibbonTabControl : Selector, IDropDownControl, ILogicalChildSupport
         {
             if (visualItems.Count > 0)
             {
-                visualItems[0].IsSelected = true;
+                visualItems[0].SetCurrentValue(RibbonTabItem.IsSelectedProperty, true);
             }
         }
         else
@@ -704,7 +677,7 @@ public class RibbonTabControl : Selector, IDropDownControl, ILogicalChildSupport
                 if (selectedIndex > 0)
                 {
                     selectedIndex--;
-                    visualItems[selectedIndex].IsSelected = true;
+                    visualItems[selectedIndex].SetCurrentValue(RibbonTabItem.IsSelectedProperty, true);
                 }
             }
             else if (e.Delta < 0)
@@ -712,7 +685,7 @@ public class RibbonTabControl : Selector, IDropDownControl, ILogicalChildSupport
                 if (selectedIndex < visualItems.Count - 1)
                 {
                     selectedIndex++;
-                    visualItems[selectedIndex].IsSelected = true;
+                    visualItems[selectedIndex].SetCurrentValue(RibbonTabItem.IsSelectedProperty, true);
                 }
             }
         }
@@ -736,7 +709,7 @@ public class RibbonTabControl : Selector, IDropDownControl, ILogicalChildSupport
     }
 
     // Find next tab item
-    private RibbonTabItem? FindNextTabItem(int startIndex, int direction )
+    private RibbonTabItem? FindNextTabItem(int startIndex, int direction)
     {
         if (direction != 0)
         {
@@ -772,7 +745,7 @@ public class RibbonTabControl : Selector, IDropDownControl, ILogicalChildSupport
         if (this.SelectedIndex < 0)
         {
             this.SelectedContent = null;
-            this.SelectedTabItem = null;
+            this.SetCurrentValue(SelectedTabItemProperty, null);
         }
         else
         {
@@ -780,22 +753,22 @@ public class RibbonTabControl : Selector, IDropDownControl, ILogicalChildSupport
             if (selectedTabItem is not null)
             {
                 this.SelectedContent = selectedTabItem.GroupsContainer;
-                this.SelectedTabItem = selectedTabItem;
+                this.SetCurrentValue(SelectedTabItemProperty, selectedTabItem);
             }
         }
     }
 
-    private void OnLoaded(object sender, RoutedEventArgs e )
+    private void OnLoaded(object sender, RoutedEventArgs e)
     {
     }
 
-    private void OnUnloaded(object sender, RoutedEventArgs e )
+    private void OnUnloaded(object sender, RoutedEventArgs e)
     {
         this.SetCurrentValue(IsDropDownOpenProperty, false);
     }
 
     // Handles GeneratorStatus changed
-    private void OnGeneratorStatusChanged(object? sender, EventArgs e )
+    private void OnGeneratorStatusChanged(object? sender, EventArgs e)
     {
         if (this.ItemContainerGenerator.Status == GeneratorStatus.ContainersGenerated)
         {
@@ -813,12 +786,12 @@ public class RibbonTabControl : Selector, IDropDownControl, ILogicalChildSupport
             return;
         }
 
-        this.SelectedItem = this.GetFirstVisibleAndEnabledItem();
+        this.SetCurrentValue(SelectedItemProperty, this.GetFirstVisibleAndEnabledItem());
 
         if (this.SelectedItem is null
             && this.IsEnabled == false)
         {
-            this.SelectedItem = this.GetFirstVisibleItem();
+            this.SetCurrentValue(SelectedItemProperty, this.GetFirstVisibleItem());
         }
 
         if (this.IsKeyboardFocusWithin)
@@ -828,7 +801,7 @@ public class RibbonTabControl : Selector, IDropDownControl, ILogicalChildSupport
     }
 
     // Handles IsMinimized changed
-    private static void OnIsMinimizedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e )
+    private static void OnIsMinimizedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         var tabControl = (RibbonTabControl)d;
 
@@ -886,7 +859,7 @@ public class RibbonTabControl : Selector, IDropDownControl, ILogicalChildSupport
     /// <summary>
     /// Implements custom placement for ribbon popup
     /// </summary>
-    private unsafe CustomPopupPlacement[]? CustomPopupPlacementMethod(Size popupsize, Size targetsize, Point offset )
+    private unsafe CustomPopupPlacement[]? CustomPopupPlacementMethod(Size popupsize, Size targetsize, Point offset)
     {
         if (this.DropDownPopup is null
             || this.SelectedTabItem is null)
@@ -961,7 +934,7 @@ public class RibbonTabControl : Selector, IDropDownControl, ILogicalChildSupport
             }
 
             // Set width and prevent negative values
-            this.DropDownPopup.Width = Math.Max(0, Math.Min(actualWidth, inWindowRibbonWidth));
+            this.DropDownPopup.SetCurrentValue(WidthProperty, Math.Max(0, Math.Min(actualWidth, inWindowRibbonWidth)));
         }
 
         return new[]
@@ -972,12 +945,11 @@ public class RibbonTabControl : Selector, IDropDownControl, ILogicalChildSupport
     }
 
     // Handles IsDropDownOpen property changed
-    private static void OnIsDropDownOpenChanged(DependencyObject d, DependencyPropertyChangedEventArgs e )
+    private static void OnIsDropDownOpenChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         var ribbonTabControl = (RibbonTabControl)d;
 
-        ribbonTabControl.RaiseRequestBackstageClose();
-
+        // ribbonTabControl.RaiseRequestBackstageClose();
         if (ribbonTabControl.IsDropDownOpen)
         {
             ribbonTabControl.OnRibbonTabPopupOpening();
@@ -992,14 +964,6 @@ public class RibbonTabControl : Selector, IDropDownControl, ILogicalChildSupport
             var peer = UIElementAutomationPeer.CreatePeerForElement(ribbonTabControl.SelectedTabItem) as RibbonTabItemAutomationPeer;
             peer?.RaiseTabExpandCollapseAutomationEvent((bool)e.OldValue, (bool)e.NewValue);
         }
-    }
-
-    /// <summary>
-    /// Raises an event causing the Backstage-View to be closed
-    /// </summary>
-    public void RaiseRequestBackstageClose()
-    {
-        this.RequestBackstageClose?.Invoke(this, EventArgs.Empty);
     }
 
     /// <summary>
@@ -1038,13 +1002,13 @@ public class RibbonTabControl : Selector, IDropDownControl, ILogicalChildSupport
     }
 
     /// <inheritdoc />
-    void ILogicalChildSupport.AddLogicalChild(object child )
+    void ILogicalChildSupport.AddLogicalChild(object child)
     {
         this.AddLogicalChild(child);
     }
 
     /// <inheritdoc />
-    void ILogicalChildSupport.RemoveLogicalChild(object child )
+    void ILogicalChildSupport.RemoveLogicalChild(object child)
     {
         this.RemoveLogicalChild(child);
     }

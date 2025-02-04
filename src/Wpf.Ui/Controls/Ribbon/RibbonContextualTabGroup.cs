@@ -8,7 +8,7 @@ using System.Windows.Input;
 using Wpf.Ui.Extensions;
 using Wpf.Ui.Internal.KnowBoxes;
 
-namespace Wpf.Ui.Controls.Ribbon;
+namespace Wpf.Ui.Controls;
 
 /// <summary>
 /// Represents contextual tab group
@@ -74,7 +74,10 @@ public class RibbonContextualTabGroup : Control
 
     /// <summary>Identifies the <see cref="Header"/> dependency property.</summary>
     public static readonly DependencyProperty HeaderProperty =
-        DependencyProperty.Register(nameof(Header), typeof(string), typeof(RibbonContextualTabGroup),
+        DependencyProperty.Register(
+            nameof(Header),
+            typeof(string),
+            typeof(RibbonContextualTabGroup),
             new PropertyMetadata("RibbonContextualTabGroup", OnHeaderChanged));
 
     /// <summary>
@@ -82,7 +85,7 @@ public class RibbonContextualTabGroup : Control
     /// </summary>
     /// <param name="d">Object</param>
     /// <param name="e">The event data.</param>
-    private static void OnHeaderChanged(DependencyObject d, DependencyPropertyChangedEventArgs e )
+    private static void OnHeaderChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
     }
 
@@ -101,12 +104,12 @@ public class RibbonContextualTabGroup : Control
     }
 
     private static readonly DependencyPropertyKey InnerVisibilityPropertyKey =
-        DependencyProperty.RegisterReadOnly(nameof(InnerVisibility), typeof(Visibility), typeof(RibbonContextualTabGroup), new PropertyMetadata(VisibilityBoxes.Visible, OnInnerVisibilityChanged));
+        DependencyProperty.RegisterReadOnly(nameof(InnerVisibility), typeof(Visibility), typeof(RibbonContextualTabGroup), new PropertyMetadata(Visibility.Visible, OnInnerVisibilityChanged));
 
     /// <summary>Identifies the <see cref="InnerVisibility"/> dependency property.</summary>
     public static readonly DependencyProperty InnerVisibilityProperty = InnerVisibilityPropertyKey.DependencyProperty;
 
-    private static void OnInnerVisibilityChanged(DependencyObject d, DependencyPropertyChangedEventArgs e )
+    private static void OnInnerVisibilityChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
         var contextGroup = (RibbonContextualTabGroup)d;
 
@@ -141,7 +144,7 @@ public class RibbonContextualTabGroup : Control
     static RibbonContextualTabGroup()
     {
         DefaultStyleKeyProperty.OverrideMetadata(typeof(RibbonContextualTabGroup), new FrameworkPropertyMetadata(typeof(RibbonContextualTabGroup)));
-        VisibilityProperty.OverrideMetadata(typeof(RibbonContextualTabGroup), new PropertyMetadata(VisibilityBoxes.Collapsed, OnVisibilityChanged));
+        VisibilityProperty.OverrideMetadata(typeof(RibbonContextualTabGroup), new PropertyMetadata(Visibility.Collapsed, OnVisibilityChanged));
     }
 
     /// <summary>
@@ -149,7 +152,7 @@ public class RibbonContextualTabGroup : Control
     /// </summary>
     /// <param name="d">Object</param>
     /// <param name="e">The event data</param>
-    private static void OnVisibilityChanged(DependencyObject d, DependencyPropertyChangedEventArgs e )
+    private static void OnVisibilityChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
         var group = (RibbonContextualTabGroup)d;
 
@@ -168,13 +171,13 @@ public class RibbonContextualTabGroup : Control
         this.Unloaded += this.OnUnloaded;
     }
 
-    private void OnLoaded(object sender, RoutedEventArgs e )
+    private void OnLoaded( object sender, RoutedEventArgs e )
     {
         this.SubscribeEvents();
         this.UpdateInnerVisibility();
     }
 
-    private void OnUnloaded(object sender, RoutedEventArgs e )
+    private void OnUnloaded( object sender, RoutedEventArgs e )
     {
         this.UnSubscribeEvents();
     }
@@ -193,7 +196,7 @@ public class RibbonContextualTabGroup : Control
     /// Appends tab item
     /// </summary>
     /// <param name="item">Ribbon tab item</param>
-    internal void AppendTabItem(RibbonTabItem item )
+    internal void AppendTabItem( RibbonTabItem item )
     {
         this.Items.Add(item);
         this.UpdateInnerVisiblityAndGroupBorders();
@@ -203,7 +206,7 @@ public class RibbonContextualTabGroup : Control
     /// Removes tab item
     /// </summary>
     /// <param name="item">Ribbon tab item</param>
-    internal void RemoveTabItem(RibbonTabItem item )
+    internal void RemoveTabItem( RibbonTabItem item )
     {
         _ = this.Items.Remove(item);
         this.UpdateInnerVisiblityAndGroupBorders();
@@ -267,7 +270,7 @@ public class RibbonContextualTabGroup : Control
     }
 
     /// <inheritdoc />
-    protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e )
+    protected override void OnMouseLeftButtonUp( MouseButtonEventArgs e )
     {
         RibbonTabItem? firstVisibleItem = this.FirstVisibleAndEnabledItem;
 
@@ -285,7 +288,7 @@ public class RibbonContextualTabGroup : Control
             {
                 if (firstVisibleItem.TabControlParent.IsMinimized)
                 {
-                    firstVisibleItem.TabControlParent.IsMinimized = false;
+                    firstVisibleItem.TabControlParent.SetCurrentValue(RibbonTabControl.IsMinimizedProperty, false);
                 }
 
                 firstVisibleItem.IsSelected = true;
@@ -305,7 +308,7 @@ public class RibbonContextualTabGroup : Control
             : Visibility.Collapsed;
     }
 
-    private static void ForceRedraw(RibbonContextualTabGroup contextGroup )
+    private static void ForceRedraw( RibbonContextualTabGroup contextGroup )
     {
         contextGroup.ForceMeasureImmediate();
 

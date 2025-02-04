@@ -3,10 +3,10 @@
 // Copyright (C) Leszek Pomianowski and WPF UI Contributors.
 // All Rights Reserved.
 
-using Wpf.Ui.Controls.Ribbon.Extensibility;
+using Wpf.Ui.Controls.Extensibility;
 using Wpf.Ui.Internal.KnowBoxes;
 
-namespace Wpf.Ui.Controls.Ribbon;
+namespace Wpf.Ui.Controls;
 
 /// <summary>
 /// Attached Properties for the Fluent Ribbon library
@@ -34,7 +34,7 @@ public class RibbonProperties : DependencyObject
     /// <summary>
     /// Sets <see cref="SizeProperty"/> for <paramref name="element"/>.
     /// </summary>
-    public static void SetSize(DependencyObject element, RibbonControlSize value )
+    public static void SetSize(DependencyObject element, RibbonControlSize value)
     {
         element.SetValue(SizeProperty, value);
     }
@@ -43,12 +43,12 @@ public class RibbonProperties : DependencyObject
     /// Gets <see cref="SizeProperty"/> for <paramref name="element"/>.
     /// </summary>
     // [AttachedPropertyBrowsableForType(typeof(IRibbonControl))]
-    public static RibbonControlSize GetSize(DependencyObject element )
+    public static RibbonControlSize GetSize(DependencyObject element)
     {
         return (RibbonControlSize)element.GetValue(SizeProperty);
     }
 
-    private static void OnSizeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e )
+    private static void OnSizeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         var sink = d as IRibbonSizeChangedSink;
 
@@ -76,7 +76,7 @@ public class RibbonProperties : DependencyObject
     /// <summary>
     /// Sets <see cref="SizeDefinitionProperty"/> for <paramref name="element"/>.
     /// </summary>
-    public static void SetSizeDefinition(DependencyObject element, RibbonControlSizeDefinition value )
+    public static void SetSizeDefinition(DependencyObject element, RibbonControlSizeDefinition value)
     {
         element.SetValue(SizeDefinitionProperty, value);
     }
@@ -85,13 +85,13 @@ public class RibbonProperties : DependencyObject
     /// Gets <see cref="SizeDefinitionProperty"/> for <paramref name="element"/>.
     /// </summary>
     // [AttachedPropertyBrowsableForType(typeof(IRibbonControl))]
-    public static RibbonControlSizeDefinition GetSizeDefinition(DependencyObject element )
+    public static RibbonControlSizeDefinition GetSizeDefinition(DependencyObject element)
     {
         return (RibbonControlSizeDefinition)element.GetValue(SizeDefinitionProperty);
     }
 
     // Handles RibbonSizeDefinitionProperty changes
-    internal static void OnSizeDefinitionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e )
+    internal static void OnSizeDefinitionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         // Find parent group box
         RibbonGroupBox? groupBox = FindParentRibbonGroupBox(d);
@@ -105,7 +105,7 @@ public class RibbonProperties : DependencyObject
     }
 
     // Finds parent group box
-    internal static RibbonGroupBox? FindParentRibbonGroupBox(DependencyObject element )
+    internal static RibbonGroupBox? FindParentRibbonGroupBox(DependencyObject element)
     {
         DependencyObject? currentElement = element;
         RibbonGroupBox? groupBox;
@@ -131,7 +131,7 @@ public class RibbonProperties : DependencyObject
     /// <param name="element">UI Element</param>
     /// <param name="state">Group box state</param>
     /// <param name="isSimplified">Group box isSimplified state</param>
-    public static void SetAppropriateSize(DependencyObject element, RibbonGroupBoxState state, bool isSimplified )
+    public static void SetAppropriateSize(DependencyObject element, RibbonGroupBoxState state, bool isSimplified)
     {
         RibbonControlSizeDefinition sizeDefinition = isSimplified ? GetSimplifiedSizeDefinition(element) : GetSizeDefinition(element);
         SetSize(element, sizeDefinition.GetSize(state));
@@ -161,7 +161,7 @@ public class RibbonProperties : DependencyObject
     /// <summary>
     /// Sets <see cref="SimplifiedSizeDefinitionProperty"/> for <paramref name="element"/>.
     /// </summary>
-    public static void SetSimplifiedSizeDefinition(DependencyObject element, RibbonControlSizeDefinition value )
+    public static void SetSimplifiedSizeDefinition(DependencyObject element, RibbonControlSizeDefinition value)
     {
         element.SetValue(SimplifiedSizeDefinitionProperty, value);
     }
@@ -170,13 +170,13 @@ public class RibbonProperties : DependencyObject
     /// Gets <see cref="SimplifiedSizeDefinitionProperty"/> for <paramref name="element"/>.
     /// </summary>
     // [AttachedPropertyBrowsableForType(typeof(ISimplifiedRibbonControl))]
-    public static RibbonControlSizeDefinition GetSimplifiedSizeDefinition(DependencyObject element )
+    public static RibbonControlSizeDefinition GetSimplifiedSizeDefinition(DependencyObject element)
     {
         return (RibbonControlSizeDefinition)element.GetValue(SimplifiedSizeDefinitionProperty);
     }
 
     // Handles RibbonSizeDefinitionProperty changes
-    internal static void OnSimplifiedSizeDefinitionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e )
+    internal static void OnSimplifiedSizeDefinitionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         // Find parent group box
         RibbonGroupBox? groupBox = FindParentRibbonGroupBox(d);
@@ -195,7 +195,7 @@ public class RibbonProperties : DependencyObject
     /// </summary>
     /// <param name="element">UI Element</param>
     /// <param name="size">Ribbon control size before applying SizeDefinition</param>
-    public static void SetAppropriateSize(DependencyObject element, RibbonControlSize size )
+    public static void SetAppropriateSize(DependencyObject element, RibbonControlSize size)
     {
         SetSize(element, GetSizeDefinition(element).GetSize(size));
     }
@@ -208,7 +208,7 @@ public class RibbonProperties : DependencyObject
     /// <summary>
     /// Sets <see cref="MouseOverBackgroundProperty"/> for <paramref name="element"/>.
     /// </summary>
-    public static void SetMouseOverBackground(DependencyObject element, Brush? value )
+    public static void SetMouseOverBackground(DependencyObject element, Brush? value)
     {
         element.SetValue(MouseOverBackgroundProperty, value);
     }
@@ -217,7 +217,7 @@ public class RibbonProperties : DependencyObject
     /// Gets <see cref="MouseOverBackgroundProperty"/> for <paramref name="element"/>.
     /// </summary>
     // [AttachedPropertyBrowsableForType(typeof(IRibbonControl))]
-    public static Brush? GetMouseOverBackground(DependencyObject element )
+    public static Brush? GetMouseOverBackground(DependencyObject element)
     {
         return (Brush)element.GetValue(MouseOverBackgroundProperty);
     }
@@ -230,7 +230,7 @@ public class RibbonProperties : DependencyObject
     /// <summary>
     /// Sets <see cref="PressedBackgroundProperty"/> for <paramref name="element"/>.
     /// </summary>
-    public static void SetPressedBackground(DependencyObject element, Brush? value )
+    public static void SetPressedBackground(DependencyObject element, Brush? value)
     {
         element.SetValue(PressedBackgroundProperty, value);
     }
@@ -239,7 +239,7 @@ public class RibbonProperties : DependencyObject
     /// Gets <see cref="PressedBackgroundProperty"/> for <paramref name="element"/>.
     /// </summary>
     // [AttachedPropertyBrowsableForType(typeof(IRibbonControl))]
-    public static Brush? GetPressedBackground(DependencyObject element )
+    public static Brush? GetPressedBackground(DependencyObject element)
     {
         return (Brush)element.GetValue(PressedBackgroundProperty);
     }
@@ -252,7 +252,7 @@ public class RibbonProperties : DependencyObject
     /// <summary>
     /// Sets <see cref="MouseOverForegroundProperty"/> for <paramref name="element"/>.
     /// </summary>
-    public static void SetMouseOverForeground(DependencyObject element, Brush? value )
+    public static void SetMouseOverForeground(DependencyObject element, Brush? value)
     {
         element.SetValue(MouseOverForegroundProperty, value);
     }
@@ -261,7 +261,7 @@ public class RibbonProperties : DependencyObject
     /// Gets <see cref="MouseOverForegroundProperty"/> for <paramref name="element"/>.
     /// </summary>
     // [AttachedPropertyBrowsableForType(typeof(IRibbonControl))]
-    public static Brush? GetMouseOverForeground(DependencyObject element )
+    public static Brush? GetMouseOverForeground(DependencyObject element)
     {
         return (Brush?)element.GetValue(MouseOverForegroundProperty);
     }
@@ -274,7 +274,7 @@ public class RibbonProperties : DependencyObject
     /// <summary>
     /// Sets <see cref="IsSelectedBackgroundProperty"/> for <paramref name="element"/>.
     /// </summary>
-    public static void SetIsSelectedBackground(DependencyObject element, Brush? value )
+    public static void SetIsSelectedBackground(DependencyObject element, Brush? value)
     {
         element.SetValue(IsSelectedBackgroundProperty, value);
     }
@@ -283,7 +283,7 @@ public class RibbonProperties : DependencyObject
     /// Gets <see cref="IsSelectedBackgroundProperty"/> for <paramref name="element"/>.
     /// </summary>
     // [AttachedPropertyBrowsableForType(typeof(IRibbonControl))]
-    public static Brush? GetIsSelectedBackground(DependencyObject element )
+    public static Brush? GetIsSelectedBackground(DependencyObject element)
     {
         return (Brush?)element.GetValue(IsSelectedBackgroundProperty);
     }
@@ -295,13 +295,13 @@ public class RibbonProperties : DependencyObject
         "LastVisibleWidth", typeof(double), typeof(RibbonProperties), new PropertyMetadata(DoubleBoxes.Zero));
 
     /// <summary>Helper for setting <see cref="LastVisibleWidthProperty"/> on <paramref name="element"/>.</summary>
-    public static void SetLastVisibleWidth(DependencyObject element, double value )
+    public static void SetLastVisibleWidth(DependencyObject element, double value)
     {
         element.SetValue(LastVisibleWidthProperty, value);
     }
 
     /// <summary>Helper for getting <see cref="LastVisibleWidthProperty"/> on <paramref name="element"/>.</summary>
-    public static double GetLastVisibleWidth(DependencyObject? element )
+    public static double GetLastVisibleWidth(DependencyObject? element)
     {
 #pragma warning disable WPF0042 // Avoid side effects in CLR accessors.
         if (element is null)
@@ -312,25 +312,6 @@ public class RibbonProperties : DependencyObject
 
         return (double)element.GetValue(LastVisibleWidthProperty);
     }
-
-    /// <summary>
-    /// Defines if the element is part of the <see cref="QuickAccessToolBar"/>.
-    /// </summary>
-    public static readonly DependencyProperty IsElementInQuickAccessToolBarProperty = DependencyProperty.RegisterAttached(
-        "IsElementInQuickAccessToolBar", typeof(bool), typeof(RibbonProperties), new PropertyMetadata(BooleanBoxes.FalseBox));
-
-    /// <summary>Helper for setting <see cref="IsElementInQuickAccessToolBarProperty"/> on <paramref name="element"/>.</summary>
-    public static void SetIsElementInQuickAccessToolBar(DependencyObject element, bool value )
-    {
-        element.SetValue(IsElementInQuickAccessToolBarProperty, BooleanBoxes.Box(value));
-    }
-
-    /// <summary>Helper for getting <see cref="IsElementInQuickAccessToolBarProperty"/> on <paramref name="element"/>.</summary>
-    public static bool GetIsElementInQuickAccessToolBar(DependencyObject element )
-    {
-        return (bool)element.GetValue(IsElementInQuickAccessToolBarProperty);
-    }
-
 #pragma warning disable WPF0010
     /// <summary>
     /// Defines the desired icon size for the element.
@@ -340,7 +321,7 @@ public class RibbonProperties : DependencyObject
 #pragma warning restore WPF0010
 
     /// <summary>Helper for setting <see cref="IconSizeProperty"/> on <paramref name="element"/>.</summary>
-    public static void SetIconSize(DependencyObject element, IconSize value )
+    public static void SetIconSize(DependencyObject element, IconSize value)
     {
         element.SetValue(IconSizeProperty, IconSizeBoxes.Box(value));
     }
@@ -349,7 +330,7 @@ public class RibbonProperties : DependencyObject
     [AttachedPropertyBrowsableForType(typeof(IRibbonControl))]
     [AttachedPropertyBrowsableForType(typeof(IMediumIconProvider))]
     [AttachedPropertyBrowsableForType(typeof(ILargeIconProvider))]
-    public static IconSize GetIconSize(DependencyObject element )
+    public static IconSize GetIconSize(DependencyObject element)
     {
         return (IconSize)element.GetValue(IconSizeProperty);
     }
@@ -363,7 +344,7 @@ public class RibbonProperties : DependencyObject
 #pragma warning restore WPF0010
 
     /// <summary>Helper for setting <see cref="CustomIconSizeProperty"/> on <paramref name="element"/>.</summary>
-    public static void SetCustomIconSize(DependencyObject element, Size value )
+    public static void SetCustomIconSize(DependencyObject element, Size value)
     {
         element.SetValue(CustomIconSizeProperty, value);
     }
@@ -372,7 +353,7 @@ public class RibbonProperties : DependencyObject
     [AttachedPropertyBrowsableForType(typeof(IRibbonControl))]
     [AttachedPropertyBrowsableForType(typeof(IMediumIconProvider))]
     [AttachedPropertyBrowsableForType(typeof(ILargeIconProvider))]
-    public static Size GetCustomIconSize(DependencyObject element )
+    public static Size GetCustomIconSize(DependencyObject element)
     {
         return (Size)element.GetValue(CustomIconSizeProperty);
     }
@@ -383,13 +364,13 @@ public class RibbonProperties : DependencyObject
     public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.RegisterAttached("CornerRadius", typeof(CornerRadius), typeof(RibbonProperties), new PropertyMetadata(default(CornerRadius)));
 
     /// <summary>Helper for setting <see cref="CornerRadiusProperty"/> on <paramref name="element"/>.</summary>
-    public static void SetCornerRadius(DependencyObject element, CornerRadius value )
+    public static void SetCornerRadius(DependencyObject element, CornerRadius value)
     {
         element.SetValue(CornerRadiusProperty, value);
     }
 
     /// <summary>Helper for getting <see cref="CornerRadiusProperty"/> on <paramref name="element"/>.</summary>
-    public static CornerRadius GetCornerRadius(DependencyObject element )
+    public static CornerRadius GetCornerRadius(DependencyObject element)
     {
         return (CornerRadius)element.GetValue(CornerRadiusProperty);
     }

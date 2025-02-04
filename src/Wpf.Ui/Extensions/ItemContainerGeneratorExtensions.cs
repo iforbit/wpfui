@@ -16,6 +16,10 @@ public static class ItemContainerGeneratorExtensions
     /// <summary>
     /// Returns the container or the content of the container.
     /// </summary>
+    /// <typeparam name="TContainerOrContent">
+    /// The type of the container or its content that is expected. If the container itself is of this type,
+    /// then it is returned; otherwise, if the container's content is of this type, that content is returned.
+    /// </typeparam>
     /// <returns>
     /// The container for <paramref name="item" /> if the container is of type <typeparamref name="TContainerOrContent" />.
     /// The container content for <paramref name="item" /> if the container content is of type <typeparamref name="TContainerOrContent" />, but the container itself is not of type <typeparamref name="TContainerOrContent" />.
@@ -43,6 +47,10 @@ public static class ItemContainerGeneratorExtensions
     /// <summary>
     /// Returns the container or the content of the container.
     /// </summary>
+    /// <typeparam name="TContainerOrContent">
+    /// The type of the container or its content that is expected. If the container itself is of this type,
+    /// then it is returned; otherwise, if the container's content is of this type, that content is returned.
+    /// </typeparam>
     /// <returns>
     /// The container for <paramref name="index" /> if the container is of type <typeparamref name="TContainerOrContent" />.
     /// The container content for <paramref name="index" /> if the container content is of type <typeparamref name="TContainerOrContent" />, but the container itself is not of type <typeparamref name="TContainerOrContent" />.
@@ -82,7 +90,7 @@ public static class ItemContainerGeneratorExtensions
             return item;
         }
 
-        var visualParent = UIHelper.GetVisualParent(container);
+        DependencyObject? visualParent = UIHelper.GetVisualParent(container);
         if (visualParent is not null)
         {
             item = @this.ItemFromContainer(visualParent);

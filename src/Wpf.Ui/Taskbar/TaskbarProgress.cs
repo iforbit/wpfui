@@ -25,7 +25,7 @@ public static class TaskBarProgress
     /// </summary>
     /// <param name="window">Window to manipulate.</param>
     /// <param name="taskBarProgressState">State of the progress indicator.</param>
-    public static bool SetState( Window? window, TaskBarProgressState taskBarProgressState )
+    public static bool SetState(Window? window, TaskBarProgressState taskBarProgressState )
     {
         if (window is null)
         {
@@ -37,7 +37,7 @@ public static class TaskBarProgress
             return SetState(new WindowInteropHelper(window).Handle, taskBarProgressState);
         }
 
-        window.Loaded += ( _, _ ) =>
+        window.Loaded += (_, _ ) =>
         {
             _ = SetState(new WindowInteropHelper(window).Handle, taskBarProgressState);
         };
@@ -50,7 +50,7 @@ public static class TaskBarProgress
     /// </summary>
     /// <param name="hWnd">Window handle.</param>
     /// <param name="taskBarProgressState">State of the progress indicator.</param>
-    public static bool SetState( IntPtr hWnd, TaskBarProgressState taskBarProgressState )
+    public static bool SetState(IntPtr hWnd, TaskBarProgressState taskBarProgressState )
     {
         if (!IsSupported())
         {
@@ -66,7 +66,7 @@ public static class TaskBarProgress
     /// <param name="window">Window to manipulate.</param>
     /// <param name="taskBarProgressState">Progress sate to set.</param>
     /// <param name="current">Current value to display</param>
-    public static bool SetValue( Window window, TaskBarProgressState taskBarProgressState, int current )
+    public static bool SetValue(Window window, TaskBarProgressState taskBarProgressState, int current )
     {
         if (current > 100)
         {
@@ -105,7 +105,7 @@ public static class TaskBarProgress
             return SetValue(new WindowInteropHelper(window).Handle, taskBarProgressState, current, total);
         }
 
-        window.Loaded += ( _, _ ) =>
+        window.Loaded += (_, _ ) =>
         {
             _ = SetValue(new WindowInteropHelper(window).Handle, taskBarProgressState, current, total);
         };
@@ -119,7 +119,7 @@ public static class TaskBarProgress
     /// <param name="hWnd">Window handle.</param>
     /// <param name="taskBarProgressState">Progress sate to set.</param>
     /// <param name="current">Current value to display</param>
-    public static bool SetValue( IntPtr hWnd, TaskBarProgressState taskBarProgressState, int current )
+    public static bool SetValue(IntPtr hWnd, TaskBarProgressState taskBarProgressState, int current )
     {
         if (current > 100)
         {

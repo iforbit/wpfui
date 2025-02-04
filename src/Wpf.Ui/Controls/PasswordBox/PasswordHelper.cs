@@ -19,7 +19,7 @@ public partial class PasswordBox
         private string _newPasswordValue;
         private string _currentPassword;
 
-        public PasswordHelper( PasswordBox passwordBox )
+        public PasswordHelper(PasswordBox passwordBox )
         {
             _passwordBox = passwordBox;
             _currentText = string.Empty;
@@ -87,7 +87,7 @@ public partial class PasswordBox
             return _newPasswordValue;
         }
 
-        private void UpdatePasswordWithInputCharacter( int insertIndex, string insertValue )
+        private void UpdatePasswordWithInputCharacter(int insertIndex, string insertValue )
         {
             Debug.Assert(_currentText == _passwordBox.Text, "_currentText == _passwordBox.Text");
 

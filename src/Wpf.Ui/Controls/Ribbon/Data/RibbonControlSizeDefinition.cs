@@ -3,9 +3,9 @@
 // Copyright (C) Leszek Pomianowski and WPF UI Contributors.
 // All Rights Reserved.
 
-using Wpf.Ui.Controls.Ribbon.Converter;
+using Wpf.Ui.Controls.Converter;
 
-namespace Wpf.Ui.Controls.Ribbon;
+namespace Wpf.Ui.Controls;
 
 /// <summary>
 /// Class to map from <see cref="RibbonGroupBoxState"/> to <see cref="RibbonControlSize"/>

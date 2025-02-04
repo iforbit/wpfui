@@ -28,7 +28,7 @@ namespace Wpf.Ui.Tray;
 /// </summary>
 internal static class TrayManager
 {
-    public static bool Register( INotifyIcon notifyIcon )
+    public static bool Register(INotifyIcon notifyIcon )
     {
         if (notifyIcon is null)
         {
@@ -38,7 +38,7 @@ internal static class TrayManager
         return Register(notifyIcon, GetParentSource());
     }
 
-    public static bool Register( INotifyIcon notifyIcon, Window parentWindow )
+    public static bool Register(INotifyIcon notifyIcon, Window parentWindow )
     {
         if (parentWindow == null)
         {
@@ -48,7 +48,7 @@ internal static class TrayManager
         return Register(notifyIcon, (HwndSource)PresentationSource.FromVisual(parentWindow));
     }
 
-    public static bool Register( INotifyIcon notifyIcon, HwndSource? parentSource )
+    public static bool Register(INotifyIcon notifyIcon, HwndSource? parentSource )
     {
         if (parentSource is null)
         {
@@ -110,7 +110,7 @@ internal static class TrayManager
         return true;
     }
 
-    public static bool ModifyIcon( INotifyIcon notifyIcon )
+    public static bool ModifyIcon(INotifyIcon notifyIcon )
     {
         if (!notifyIcon.IsRegistered)
         {
@@ -122,7 +122,7 @@ internal static class TrayManager
         return Interop.Shell32.Shell_NotifyIcon(Interop.Shell32.NIM.MODIFY, notifyIcon.ShellIconData);
     }
 
-    public static bool ModifyToolTip( INotifyIcon notifyIcon )
+    public static bool ModifyToolTip(INotifyIcon notifyIcon )
     {
         if (!notifyIcon.IsRegistered)
         {
@@ -138,7 +138,7 @@ internal static class TrayManager
     /// <summary>
     /// Tries to remove the <see cref="INotifyIcon"/> from the shell.
     /// </summary>
-    public static bool Unregister( INotifyIcon notifyIcon )
+    public static bool Unregister(INotifyIcon notifyIcon )
     {
         if (notifyIcon.ShellIconData == null || !notifyIcon.IsRegistered)
         {
@@ -167,7 +167,7 @@ internal static class TrayManager
         return (HwndSource)PresentationSource.FromVisual(mainWindow);
     }
 
-    private static void ReloadHicon( INotifyIcon notifyIcon )
+    private static void ReloadHicon(INotifyIcon notifyIcon )
     {
         IntPtr hIcon = IntPtr.Zero;
 

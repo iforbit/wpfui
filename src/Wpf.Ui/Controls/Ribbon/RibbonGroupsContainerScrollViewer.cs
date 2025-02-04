@@ -6,7 +6,7 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace Wpf.Ui.Controls.Ribbon;
+namespace Wpf.Ui.Controls;
 
 /// <summary>
 /// Represents a <see cref="ScrollViewer" /> specific to <see cref="RibbonGroupsContainer" />.
@@ -20,7 +20,7 @@ public class RibbonGroupsContainerScrollViewer : ScrollViewer
     }
 
     /// <inheritdoc />
-    protected override void OnMouseWheel(MouseWheelEventArgs e )
+    protected override void OnMouseWheel(MouseWheelEventArgs e)
     {
         if (e.Handled)
         {

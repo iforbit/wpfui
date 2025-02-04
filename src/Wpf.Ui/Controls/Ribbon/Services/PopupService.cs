@@ -1,4 +1,4 @@
-﻿// This Source Code Form is subject to the terms of the MIT License.
+// This Source Code Form is subject to the terms of the MIT License.
 // If a copy of the MIT was not distributed with this file, You can obtain one at https://opensource.org/licenses/MIT.
 // Copyright (C) Leszek Pomianowski and WPF UI Contributors.
 // All Rights Reserved.
@@ -9,7 +9,7 @@ using System.Windows.Input;
 using Wpf.Ui.Extensions;
 using Wpf.Ui.Internal;
 
-namespace Wpf.Ui.Controls.Ribbon;
+namespace Wpf.Ui.Controls;
 
 /// <summary>
 /// Dismiss popup mode.
@@ -67,7 +67,7 @@ public class DismissPopupEventArgs : RoutedEventArgs
     /// Constructor.
     /// </summary>
     /// <param name="dismissMode">Dismiss mode.</param>
-    public DismissPopupEventArgs(DismissPopupMode dismissMode )
+    public DismissPopupEventArgs(DismissPopupMode dismissMode)
         : this(dismissMode, DismissPopupReason.Undefined)
     {
     }
@@ -78,7 +78,7 @@ public class DismissPopupEventArgs : RoutedEventArgs
     /// </summary>
     /// <param name="dismissMode">Dismiss mode.</param>
     /// <param name="reason">Dismiss reason.</param>
-    public DismissPopupEventArgs(DismissPopupMode dismissMode, DismissPopupReason reason )
+    public DismissPopupEventArgs(DismissPopupMode dismissMode, DismissPopupReason reason)
     {
         this.RoutedEvent = PopupService.DismissPopupEvent;
         this.DismissMode = dismissMode;
@@ -96,7 +96,7 @@ public class DismissPopupEventArgs : RoutedEventArgs
     public DismissPopupReason DismissReason { get; set; }
 
     /// <inheritdoc />
-    protected override void InvokeEventHandler(Delegate genericHandler, object genericTarget )
+    protected override void InvokeEventHandler(Delegate genericHandler, object genericTarget)
     {
         var handler = (EventHandler<DismissPopupEventArgs>)genericHandler;
         handler(genericTarget, this);
@@ -116,7 +116,7 @@ public static class PopupService
     /// <summary>
     /// Raises DismissPopup event (Async)
     /// </summary>
-    public static void RaiseDismissPopupEventAsync(object sender, DismissPopupMode mode, DismissPopupReason reason = DismissPopupReason.Undefined )
+    public static void RaiseDismissPopupEventAsync(object sender, DismissPopupMode mode, DismissPopupReason reason = DismissPopupReason.Undefined)
     {
         var element = sender as UIElement;
 
@@ -133,7 +133,7 @@ public static class PopupService
     /// <summary>
     /// Raises DismissPopup event
     /// </summary>
-    public static void RaiseDismissPopupEvent(object sender, DismissPopupMode mode, DismissPopupReason reason = DismissPopupReason.Undefined )
+    public static void RaiseDismissPopupEvent(object sender, DismissPopupMode mode, DismissPopupReason reason = DismissPopupReason.Undefined)
     {
         var element = sender as UIElement;
 
@@ -151,7 +151,7 @@ public static class PopupService
     /// Set needed parameters to control
     /// </summary>
     /// <param name="classType">Control type</param>
-    public static void Attach(Type classType )
+    public static void Attach(Type classType)
     {
         EventManager.RegisterClassHandler(classType, Mouse.PreviewMouseDownOutsideCapturedElementEvent, new MouseButtonEventHandler(OnClickThroughThunk));
         EventManager.RegisterClassHandler(classType, DismissPopupEvent, new EventHandler<DismissPopupEventArgs>(OnDismissPopup));
@@ -163,7 +163,7 @@ public static class PopupService
     /// <summary>
     /// Handles PreviewMouseDownOutsideCapturedElementEvent event
     /// </summary>
-    private static void OnClickThroughThunk(object sender, MouseButtonEventArgs e )
+    private static void OnClickThroughThunk(object sender, MouseButtonEventArgs e)
     {
         WriteDebug(nameof(OnClickThroughThunk));
         WriteDebug($"Sender         - {sender}");
@@ -204,7 +204,7 @@ public static class PopupService
     /// <summary>
     /// Handles lost mouse capture event
     /// </summary>
-    private static void OnLostMouseCapture(object sender, MouseEventArgs e )
+    private static void OnLostMouseCapture(object sender, MouseEventArgs e)
     {
         WriteDebug(nameof(OnLostMouseCapture));
         WriteDebug($"Sender         - {sender}");
@@ -281,8 +281,7 @@ public static class PopupService
     /// </summary>
     /// <param name="parent">Parent</param>
     /// <param name="element">Element</param>
-    /// <returns>Returns true whether parent is ancestor of element</returns>
-    public static bool IsAncestorOf(DependencyObject? parent, DependencyObject? element )
+    public static bool IsAncestorOf(DependencyObject? parent, DependencyObject? element)
     {
         if (parent is null)
         {
@@ -305,7 +304,7 @@ public static class PopupService
     /// <summary>
     /// Handles dismiss popup event
     /// </summary>
-    private static void OnDismissPopup(object? sender, DismissPopupEventArgs e )
+    private static void OnDismissPopup(object? sender, DismissPopupEventArgs e)
     {
         var control = sender as IDropDownControl;
 
@@ -332,13 +331,13 @@ public static class PopupService
     }
 
 #pragma warning disable CA1801 // Review unused parameters
-    private static void DismisPopupForAlways(IDropDownControl control, DismissPopupEventArgs e )
+    private static void DismisPopupForAlways(IDropDownControl control, DismissPopupEventArgs e)
 #pragma warning restore CA1801 // Review unused parameters
     {
         control.IsDropDownOpen = false;
     }
 
-    private static void DismisPopupForMouseNotOver(IDropDownControl control, DismissPopupEventArgs e )
+    private static void DismisPopupForMouseNotOver(IDropDownControl control, DismissPopupEventArgs e)
     {
         if (control.IsDropDownOpen == false
             || control is RibbonDropDownButton { DismissOnClickOutside: false })
@@ -380,8 +379,7 @@ public static class PopupService
     /// Returns true whether mouse is physically over the popup
     /// </summary>
     /// <param name="popup">Element</param>
-    /// <returns>Returns true whether mouse is physically over the popup</returns>
-    public static bool IsMousePhysicallyOver(Popup? popup )
+    public static bool IsMousePhysicallyOver(Popup? popup)
     {
         if (popup?.Child is null)
         {
@@ -395,8 +393,7 @@ public static class PopupService
     /// Returns true whether mouse is physically over the element
     /// </summary>
     /// <param name="element">Element</param>
-    /// <returns>Returns true whether mouse is physically over the element</returns>
-    public static bool IsMousePhysicallyOver(UIElement? element )
+    public static bool IsMousePhysicallyOver(UIElement? element)
     {
         if (element is null)
         {
@@ -413,7 +410,7 @@ public static class PopupService
     /// <summary>
     /// Handles context menu opening event
     /// </summary>
-    private static void OnContextMenuOpening(object sender, ContextMenuEventArgs e )
+    private static void OnContextMenuOpening(object sender, ContextMenuEventArgs e)
     {
         if (sender is IDropDownControl control)
         {
@@ -425,7 +422,7 @@ public static class PopupService
     /// <summary>
     /// Handles context menu closing event
     /// </summary>
-    private static void OnContextMenuClosing(object sender, ContextMenuEventArgs e )
+    private static void OnContextMenuClosing(object sender, ContextMenuEventArgs e)
     {
         if (sender is IDropDownControl control)
         {
@@ -439,7 +436,7 @@ public static class PopupService
         }
     }
 
-    private static bool IsPopupRoot(object? obj )
+    private static bool IsPopupRoot(object? obj)
     {
         if (obj is null)
         {
@@ -453,7 +450,7 @@ public static class PopupService
     }
 
 #pragma warning disable CA1801 // Review unused parameters
-    private static void WriteDebug(string message )
+    private static void WriteDebug(string message)
 #pragma warning restore CA1801 // Review unused parameters
     {
         // Debug.WriteLine(message);

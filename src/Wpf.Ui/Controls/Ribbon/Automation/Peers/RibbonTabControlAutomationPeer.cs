@@ -7,7 +7,7 @@ using System.Windows.Automation.Peers;
 using System.Windows.Automation.Provider;
 using Wpf.Ui.Internal;
 
-namespace Wpf.Ui.Controls.Ribbon.Automation.Peers;
+namespace Wpf.Ui.Controls.Automation.Peers;
 
 /// <summary>
 /// Automation peer for <see cref="RibbonTabControl"/>.
@@ -18,7 +18,7 @@ public class RibbonTabControlAutomationPeer : SelectorAutomationPeer, ISelection
     /// Initializes a new instance of the <see cref="RibbonTabControlAutomationPeer"/> class.
     /// Creates a new instance.
     /// </summary>
-    public RibbonTabControlAutomationPeer(RibbonTabControl owner )
+    public RibbonTabControlAutomationPeer( RibbonTabControl owner )
         : base(owner)
     {
         this.OwningRibbonTabControl = owner;
@@ -27,7 +27,7 @@ public class RibbonTabControlAutomationPeer : SelectorAutomationPeer, ISelection
     private RibbonTabControl OwningRibbonTabControl { get; }
 
     /// <inheritdoc />
-    protected override ItemAutomationPeer CreateItemAutomationPeer(object item )
+    protected override ItemAutomationPeer CreateItemAutomationPeer( object item )
     {
         return new RibbonTabItemDataAutomationPeer(item, this);
     }
@@ -44,12 +44,18 @@ public class RibbonTabControlAutomationPeer : SelectorAutomationPeer, ISelection
         return new Point(double.NaN, double.NaN);
     }
 
-    bool ISelectionProvider.IsSelectionRequired => true;
+    public bool IsSelectionRequired
+    {
+        get { return true; }
+    }
 
-    bool ISelectionProvider.CanSelectMultiple => false;
+    public bool CanSelectMultiple
+    {
+        get { return false; }
+    }
 
     /// <inheritdoc />
-    public override object? GetPattern(PatternInterface patternInterface )
+    public override object? GetPattern( PatternInterface patternInterface )
     {
         switch (patternInterface)
         {

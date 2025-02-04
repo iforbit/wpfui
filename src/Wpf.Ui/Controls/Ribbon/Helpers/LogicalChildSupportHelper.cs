@@ -3,9 +3,8 @@
 // Copyright (C) Leszek Pomianowski and WPF UI Contributors.
 // All Rights Reserved.
 
-using System.Windows.Controls.Ribbon;
+namespace Wpf.Ui.Controls.Helpers;
 
-namespace Wpf.Ui.Controls.Ribbon.Helpers;
 /// <summary>
 /// Helper functions for classes implementing <see cref="ILogicalChildSupport"/>.
 /// </summary>
@@ -17,7 +16,7 @@ public static class LogicalChildSupportHelper
     public static void OnLogicalChildPropertyChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
         // ReSharper disable once SuspiciousTypeConversion.Global
-        var logicalChildSupport = d as ILogicalChildSupport ?? throw new ArgumentException("Argument must be of type ILogicalChildSupport.", nameof(d));
+        ILogicalChildSupport logicalChildSupport = d as ILogicalChildSupport ?? throw new ArgumentException("Argument must be of type ILogicalChildSupport.", nameof(d));
 
         if (e.OldValue is DependencyObject oldValue)
         {

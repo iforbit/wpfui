@@ -3,10 +3,7 @@
 // Copyright (C) Leszek Pomianowski and WPF UI Contributors.
 // All Rights Reserved.
 
-using System.Windows.Controls.Ribbon;
-
-namespace Wpf.Ui.Controls.Ribbon;
-
+namespace Wpf.Ui.Controls;
 
 /// <summary>
 /// Base interface for Fluent controls

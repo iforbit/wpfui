@@ -3,10 +3,9 @@
 // Copyright (C) Leszek Pomianowski and WPF UI Contributors.
 // All Rights Reserved.
 
-using Wpf.Ui.Controls.Ribbon.Helpers;
+using Wpf.Ui.Controls.Helpers;
 
-namespace Wpf.Ui.Controls.Ribbon;
-
+namespace Wpf.Ui.Controls;
 
 /// <summary>
 /// Inferface for controls which provide a medium icon.

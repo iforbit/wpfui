@@ -5,7 +5,7 @@
 
 using System.Windows.Automation.Peers;
 
-namespace Wpf.Ui.Controls.Ribbon.Automation.Peers;
+namespace Wpf.Ui.Controls.Automation.Peers;
 
 /// <summary>
 /// Base automation peer for <see cref="IHeaderedControl"/>.
@@ -16,7 +16,7 @@ public abstract class RibbonHeaderedControlAutomationPeer : FrameworkElementAuto
     /// Initializes a new instance of the <see cref="RibbonHeaderedControlAutomationPeer"/> class.
     /// Creates a new instance.
     /// </summary>
-    protected RibbonHeaderedControlAutomationPeer(FrameworkElement owner )
+    protected RibbonHeaderedControlAutomationPeer(FrameworkElement owner)
         : base(owner)
     {
     }

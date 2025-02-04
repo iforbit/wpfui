@@ -1,4 +1,4 @@
-﻿// This Source Code Form is subject to the terms of the MIT License.
+// This Source Code Form is subject to the terms of the MIT License.
 // If a copy of the MIT was not distributed with this file, You can obtain one at https://opensource.org/licenses/MIT.
 // Copyright (C) Leszek Pomianowski and WPF UI Contributors.
 // All Rights Reserved.
@@ -6,7 +6,7 @@
 using System.Windows.Controls;
 using Wpf.Ui.Internal;
 
-namespace Wpf.Ui.Controls.Ribbon;
+namespace Wpf.Ui.Controls;
 
 /// <summary>
 /// Represents contextual groups container
@@ -16,7 +16,7 @@ public class RibbonContextualGroupsContainer : Panel
     private readonly List<Size> sizes = new();
 
     /// <inheritdoc />
-    protected override Size ArrangeOverride(Size finalSize )
+    protected override Size ArrangeOverride(Size finalSize)
     {
         var finalRect = new Rect(finalSize);
         var index = 0;
@@ -34,7 +34,7 @@ public class RibbonContextualGroupsContainer : Panel
     }
 
     /// <inheritdoc />
-    protected override Size MeasureOverride(Size availableSize )
+    protected override Size MeasureOverride(Size availableSize)
     {
         var allGroupsWidth = 0D;
         this.sizes.Clear();

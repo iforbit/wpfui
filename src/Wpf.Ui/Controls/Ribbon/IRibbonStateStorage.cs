@@ -3,19 +3,22 @@
 // Copyright (C) Leszek Pomianowski and WPF UI Contributors.
 // All Rights Reserved.
 
-namespace Wpf.Ui.Controls.Ribbon;
+using Wpf.Ui.Controls.Data;
+
+namespace Wpf.Ui.Controls;
+
 /// <summary>
 /// Interface for handling loading and saving the state of a <see cref="Ribbon"/>.
 /// </summary>
 public interface IRibbonStateStorage : IDisposable
 {
     /// <summary>
-    /// Gets whether state is currently loading.
+    /// Gets a value indicating whether gets whether state is currently loading.
     /// </summary>
     bool IsLoading { get; }
 
     /// <summary>
-    /// Gets or sets whether state is loaded.
+    /// Gets a value indicating whether gets or sets whether state is loaded.
     /// </summary>
     bool IsLoaded { get; }
 

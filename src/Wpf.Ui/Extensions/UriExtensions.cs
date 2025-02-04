@@ -13,7 +13,7 @@ public static class UriExtensions
     /// <summary>
     /// Removes last segment of the <see cref="Uri"/>.
     /// </summary>
-    public static Uri TrimLastSegment( this Uri uri )
+    public static Uri TrimLastSegment(this Uri uri )
     {
         if (uri.Segments.Length < 2)
         {
@@ -29,7 +29,7 @@ public static class UriExtensions
     /// <summary>
     /// Determines whether the end of <see cref="Uri"/> is equal to provided value.
     /// </summary>
-    public static bool EndsWith( this Uri uri, string value )
+    public static bool EndsWith(this Uri uri, string value )
     {
         return uri.ToString().EndsWith(value);
     }
@@ -37,7 +37,7 @@ public static class UriExtensions
     /// <summary>
     /// Append provided segments to the <see cref="Uri"/>.
     /// </summary>
-    public static Uri Append( this Uri uri, params string[] segments )
+    public static Uri Append(this Uri uri, params string[] segments )
     {
         if (!uri.IsAbsoluteUri)
         {
@@ -47,7 +47,7 @@ public static class UriExtensions
         return new Uri(
             segments.Aggregate(
                 uri.AbsoluteUri,
-                ( current, path ) =>
+                (current, path ) =>
                     string.Format(
                         "{0}/{1}",
                         current.TrimEnd('/').TrimEnd('\\'),
@@ -60,7 +60,7 @@ public static class UriExtensions
     /// <summary>
     /// Append new <see cref="Uri"/> to the <see cref="Uri"/>.
     /// </summary>
-    public static Uri Append( this Uri uri, Uri value )
+    public static Uri Append(this Uri uri, Uri value )
     {
         return new Uri(
             string.Format(

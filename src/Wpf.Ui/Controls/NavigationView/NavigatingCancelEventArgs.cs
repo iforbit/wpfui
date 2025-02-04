@@ -14,7 +14,7 @@ public class NavigatingCancelEventArgs : RoutedEventArgs
     public NavigatingCancelEventArgs( RoutedEvent routedEvent, object source )
         : base(routedEvent, source) { }
 
-    public required object Page { get; init; }
+    required public object Page { get; init; }
 
     public bool Cancel { get; set; }
 }

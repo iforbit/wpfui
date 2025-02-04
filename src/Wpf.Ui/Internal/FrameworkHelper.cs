@@ -21,8 +21,7 @@ public static class FrameworkHelper
     /// <summary>
     /// Gets UseLayoutRounding attached property value
     /// </summary>
-    /// <returns></returns>
-    public static bool GetUseLayoutRounding( DependencyObject obj )
+    public static bool GetUseLayoutRounding(DependencyObject obj )
     {
         return (bool)obj.GetValue(UseLayoutRoundingProperty);
     }
@@ -30,7 +29,7 @@ public static class FrameworkHelper
     /// <summary>
     /// Gets UseLayoutRounding attached property value
     /// </summary>
-    public static void SetUseLayoutRounding( DependencyObject obj, bool value )
+    public static void SetUseLayoutRounding(DependencyObject obj, bool value )
     {
         obj.SetValue(UseLayoutRoundingProperty, BooleanBoxes.Box(value));
     }
@@ -41,7 +40,7 @@ public static class FrameworkHelper
     public static readonly DependencyProperty UseLayoutRoundingProperty =
         DependencyProperty.RegisterAttached("UseLayoutRounding", typeof(bool), typeof(FrameworkHelper), new PropertyMetadata(BooleanBoxes.FalseBox, OnUseLayoutRoundingChanged));
 
-    private static void OnUseLayoutRoundingChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
+    private static void OnUseLayoutRoundingChanged(DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
         d.SetCurrentValue(UIElement.SnapsToDevicePixelsProperty, BooleanBoxes.TrueBox);
         d.SetCurrentValue(FrameworkElement.UseLayoutRoundingProperty, BooleanBoxes.TrueBox);
