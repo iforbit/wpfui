@@ -254,13 +254,15 @@ public class RibbonGroupBoxWrapPanel : Panel
                     ? itemHeight
                     : child.DesiredSize.Height);
 
-            if (DoubleUtil.GreaterThan(curLineSize.U + sz.U, uvConstraint.U)) // need to switch to another line
+            // need to switch to another line
+            if (DoubleUtil.GreaterThan(curLineSize.U + sz.U, uvConstraint.U))
             {
                 panelSize.U = Math.Max(curLineSize.U, panelSize.U);
                 panelSize.V += curLineSize.V;
                 curLineSize = sz;
 
-                if (DoubleUtil.GreaterThan(sz.U, uvConstraint.U)) // the element is wider then the constraint - give it a separate line
+                // the element is wider then the constraint - give it a separate line
+                if (DoubleUtil.GreaterThan(sz.U, uvConstraint.U))
                 {
                     panelSize.U = Math.Max(sz.U, panelSize.U);
                     panelSize.V += sz.V;
@@ -386,13 +388,15 @@ public class RibbonGroupBoxWrapPanel : Panel
                     ? itemHeight
                     : child.DesiredSize.Height);
 
-            if (DoubleUtil.GreaterThan(curLineSize.U + sz.U, uvFinalSize.U)) // need to switch to another line
+            // need to switch to another line
+            if (DoubleUtil.GreaterThan(curLineSize.U + sz.U, uvFinalSize.U))
             {
                 this.ArrangeLineWrapMode(accumulatedV, curLineSize.V, firstInLine, i, useItemU, itemU);
                 accumulatedV += curLineSize.V;
                 curLineSize = sz;
 
-                if (DoubleUtil.GreaterThan(sz.U, uvFinalSize.U)) // the element is wider then the constraint - give it a separate line
+                // the element is wider then the constraint - give it a separate line
+                if (DoubleUtil.GreaterThan(sz.U, uvFinalSize.U))
                 {
                     // switch to next line which only contain one element
                     this.ArrangeLineWrapMode(accumulatedV, sz.V, i, ++i, useItemU, itemU);

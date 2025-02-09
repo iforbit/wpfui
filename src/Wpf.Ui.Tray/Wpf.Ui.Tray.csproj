@@ -7,7 +7,7 @@
     <CommonTags>$(CommonTags);tray;notifyicon;notify</CommonTags>
     <UseWPF>true</UseWPF>
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <Configurations>Debug;Release;DLL빌드;DLL</Configurations>
   </PropertyGroup>
   

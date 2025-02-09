@@ -1,0 +1,23 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="clr-namespace:Wpf.Ui.Controls">
+
+    <Style x:Key="controls.Ribbon.Styles.MenuSeparator"
+         TargetType="{x:Type Separator}">
+        <Setter Property="Template" Value="{DynamicResource controls.Ribbon.Templates.MenuSeparator}" />
+    </Style>
+
+    <ControlTemplate x:Key="controls.Ribbon.Templates.MenuSeparator"
+                   TargetType="{x:Type Separator}">
+        <Grid Height="Auto">
+            <Path Height="1"
+                Margin="32 1 3 2"
+                VerticalAlignment="Center"
+                Data="M0,0L1,0"
+                Fill="{x:Null}"
+                Stretch="Fill"
+                Stroke="{DynamicResource controls.Ribbon.Brushes.Separator.Border}"
+                StrokeDashArray="2 2" />
+        </Grid>
+    </ControlTemplate>
+</ResourceDictionary>

@@ -7,6 +7,11 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:tray="http://schemas.lepo.co/wpfui/2022/xaml/tray"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml" 
+    xmlns:conv="clr-namespace:Wpf.Ui.Demo.Mvvm.Converter"
+
+    xmlns:Internal="clr-namespace:Wpf.Ui.Internal;assembly=Wpf.Ui"
+    xmlns:templateSelectors ="clr-namespace:Wpf.Ui.Controls.TemplateSelectors;assembly=Wpf.Ui"
+    
     Title="{Binding ViewModel.ApplicationTitle, Mode=OneWay}"
     Width="1100"
     Height="650"
@@ -23,6 +28,14 @@
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
 
+    <ui:FluentWindow.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+            
+            </ResourceDictionary.MergedDictionaries>
+      
+        </ResourceDictionary>
+    </ui:FluentWindow.Resources>
     <ui:FluentWindow.InputBindings>
         <KeyBinding
             Key="F"
@@ -38,8 +51,7 @@
         </Grid.RowDefinitions>
         <ui:TitleBar
         Title="{Binding ViewModel.ApplicationTitle, Mode=OneWay}"
-        Grid.Row="0"
-        Icon="pack://application:,,,/Assets/applicationIcon-256.png" />
+        Grid.Row="0" Icon="pack://application:,,,/Assets/applicationIcon-256.png" />
 
         <tray:NotifyIcon
         Grid.Row="0"
@@ -51,52 +63,9 @@
                 <ContextMenu ItemsSource="{Binding ViewModel.TrayMenuItems, Mode=OneWay}" />
             </tray:NotifyIcon.Menu>
         </tray:NotifyIcon>
-        
-        <ui:Ribbon Grid.Row="1" AutomaticStateManagement="True" CanUseSimplified="True" >
-            <ui:RibbonTabItem Header="Resizing &amp; Screentips"
-                      ReduceOrder="Default,Default,Default,Large,Large,Large,Other,Other,Other">
-                <!-- By default ReduceOrder="Large, Middle, Small" -->
-                <ui:RibbonGroupBox x:Name="Default" Header="Default Behaviour">
-                    <!-- To use ScreenTip you have to create it and set to ToolTip property -->
-                    <ui:Button  Margin="0,0,0,5" Style="{StaticResource BasePaneButtonStyle}" >
-                        <ui:Button.Icon>
-                            <ui:SymbolIcon Symbol="LineHorizontal320" />
-                        </ui:Button.Icon>
-                        <ui:Button.Content>
-                            <TextBlock FontWeight="Medium" Text="Green" />
-                        </ui:Button.Content>
-                    </ui:Button>
-                    <!-- ScreenTip is able to be shown on disabled controls -->
-                    <ui:Button   Margin="0,0,0,5"
-               Style="{StaticResource BasePaneButtonStyle}" >
-                        <ui:Button.Icon>
-                            <ui:SymbolIcon Symbol="LineHorizontal320" />
-                        </ui:Button.Icon>
-                        <ui:Button.Content>
-                            <TextBlock FontWeight="Medium" Text="Gray" />
-                        </ui:Button.Content>
-                    </ui:Button>
 
-                </ui:RibbonGroupBox>
-
-                <!-- You can set short form (for ex, "Middle" is equal "Middle,Middle,Middle") -->
-                <ui:RibbonGroupBox x:Name="Large"
-                           Header="Large Only">
-                    <ui:Button Margin="0,0,0,5"
-                                  Style="{StaticResource BasePaneButtonStyle}" >
-                        <ui:Button.Icon>
-                            <ui:SymbolIcon Symbol="LineHorizontal320" />
-                        </ui:Button.Icon>
-                        <ui:Button.Content>
-                            <TextBlock FontWeight="Medium" Text="Middle" />
-                        </ui:Button.Content>
-                    </ui:Button>
-                </ui:RibbonGroupBox>
-            </ui:RibbonTabItem>
-            <ui:RibbonTabItem Header="Test" >
-            </ui:RibbonTabItem>
-            <ui:RibbonTabItem Header="Test2" >
-            </ui:RibbonTabItem>
+        <ui:Ribbon Grid.Row="1" AutomaticStateManagement="True" CanUseSimplified="True" SnapsToDevicePixels="True" ItemsSource="{Binding ViewModel.TabItems, Mode=OneWay}" >
+            
         </ui:Ribbon>
         <ui:NavigationView
             x:Name="RootNavigation"

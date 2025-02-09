@@ -56,12 +56,11 @@ public class RibbonTabControl : Selector, IDropDownControl, ILogicalChildSupport
     private ObservableCollection<UIElement>? toolBarItems;
 
     // ToolBar panel
-    /*
+
     /// <summary>
     /// Event which is fired when the, maybe listening, <see cref="Backstage"/> should be closed
     /// </summary>
     public event EventHandler? RequestBackstageClose;
-    */
 
     /// <inheritdoc />
     public event EventHandler? DropDownOpened;
@@ -949,7 +948,7 @@ public class RibbonTabControl : Selector, IDropDownControl, ILogicalChildSupport
     {
         var ribbonTabControl = (RibbonTabControl)d;
 
-        // ribbonTabControl.RaiseRequestBackstageClose();
+        ribbonTabControl.RaiseRequestBackstageClose();
         if (ribbonTabControl.IsDropDownOpen)
         {
             ribbonTabControl.OnRibbonTabPopupOpening();
@@ -964,6 +963,14 @@ public class RibbonTabControl : Selector, IDropDownControl, ILogicalChildSupport
             var peer = UIElementAutomationPeer.CreatePeerForElement(ribbonTabControl.SelectedTabItem) as RibbonTabItemAutomationPeer;
             peer?.RaiseTabExpandCollapseAutomationEvent((bool)e.OldValue, (bool)e.NewValue);
         }
+    }
+
+    /// <summary>
+    /// Raises an event causing the Backstage-View to be closed
+    /// </summary>
+    public void RaiseRequestBackstageClose()
+    {
+        this.RequestBackstageClose?.Invoke(this, EventArgs.Empty);
     }
 
     /// <summary>

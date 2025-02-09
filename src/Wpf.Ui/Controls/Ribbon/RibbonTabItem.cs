@@ -561,7 +561,7 @@ public class RibbonTabItem : Control, IHeaderedControl, ILogicalChildSupport, IS
                         TabControlParent.SetCurrentValue(RibbonTabControl.IsDropDownOpenProperty, true);
                     }
 
-                    // TabControlParent.RaiseRequestBackstageClose();
+                    TabControlParent.RaiseRequestBackstageClose();
                 }
                 else
                 {

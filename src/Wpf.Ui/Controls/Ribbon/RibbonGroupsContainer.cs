@@ -20,17 +20,17 @@ public class RibbonGroupsContainer : Panel, IScrollInfo
     {
         public static readonly MeasureCache Empty = new MeasureCache(Size.Empty, Size.Empty);
 
-        public MeasureCache( Size availableSize, Size desiredSize )
+        public MeasureCache(Size availableSize, Size desiredSize)
         {
-            AvailableSize = availableSize;
-            DesiredSize = desiredSize;
+            this.AvailableSize = availableSize;
+            this.DesiredSize = desiredSize;
         }
 
         public Size AvailableSize { get; }
 
         public Size DesiredSize { get; }
 
-        public bool IsEmpty => AvailableSize.IsEmpty;
+        public bool IsEmpty => this.AvailableSize.IsEmpty;
     }
 
     private MeasureCache measureCache;
@@ -44,8 +44,8 @@ public class RibbonGroupsContainer : Panel, IScrollInfo
     /// </summary>
     public string? ReduceOrder
     {
-        get => (string?)GetValue(ReduceOrderProperty);
-        set => SetValue(ReduceOrderProperty, value);
+        get => (string?)this.GetValue(ReduceOrderProperty);
+        set => this.SetValue(ReduceOrderProperty, value);
     }
 
     /// <summary>Identifies the <see cref="ReduceOrder"/> dependency property.</summary>
@@ -53,7 +53,7 @@ public class RibbonGroupsContainer : Panel, IScrollInfo
         DependencyProperty.Register(nameof(ReduceOrder), typeof(string), typeof(RibbonGroupsContainer), new PropertyMetadata(OnReduceOrderChanged));
 
     // handles ReduseOrder property changed
-    private static void OnReduceOrderChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
+    private static void OnReduceOrderChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         var ribbonPanel = (RibbonGroupsContainer)d;
 
@@ -80,65 +80,65 @@ public class RibbonGroupsContainer : Panel, IScrollInfo
     /// </summary>
     public RibbonGroupsContainer()
     {
-        Focusable = false;
+        this.Focusable = false;
     }
 
     /// <inheritdoc />
-    protected override UIElementCollection CreateUIElementCollection( FrameworkElement logicalParent )
+    protected override UIElementCollection CreateUIElementCollection(FrameworkElement logicalParent)
     {
         return new UIElementCollection(this, /*Parent as FrameworkElement*/this);
     }
 
     /// <inheritdoc />
-    protected override Size MeasureOverride( Size availableSize )
+    protected override Size MeasureOverride(Size availableSize)
     {
         // System.Diagnostics.Trace.WriteLine($"MeasureOverride {availableSize}");
-        Size desiredSize = GetChildrenDesiredSizeIntermediate();
+        Size desiredSize = this.GetChildrenDesiredSizeIntermediate();
 
-        if (reduceOrder.Length == 0
+        if (this.reduceOrder.Length == 0
 
             // Check cached measure to prevent "flicker"
-            || (measureCache.AvailableSize == availableSize && measureCache.DesiredSize == desiredSize))
+            || (this.measureCache.AvailableSize == availableSize && this.measureCache.DesiredSize == desiredSize))
         {
-            VerifyScrollData(availableSize.Width, desiredSize.Width);
+            this.VerifyScrollData(availableSize.Width, desiredSize.Width);
             return desiredSize;
         }
 
         // If we have more available space - try to expand groups
         while (desiredSize.Width <= availableSize.Width)
         {
-            var hasMoreVariants = reduceOrderIndex < reduceOrder.Length - 1;
+            var hasMoreVariants = this.reduceOrderIndex < this.reduceOrder.Length - 1;
             if (hasMoreVariants == false)
             {
                 break;
             }
 
             // Increase size of another item
-            reduceOrderIndex++;
-            IncreaseGroupBoxSize(reduceOrder[reduceOrderIndex]);
+            this.reduceOrderIndex++;
+            this.IncreaseGroupBoxSize(this.reduceOrder[this.reduceOrderIndex]);
 
-            desiredSize = GetChildrenDesiredSizeIntermediate();
+            desiredSize = this.GetChildrenDesiredSizeIntermediate();
         }
 
         // If not enough space - go to next variant
         while (desiredSize.Width > availableSize.Width)
         {
-            var hasMoreVariants = reduceOrderIndex >= 0;
+            var hasMoreVariants = this.reduceOrderIndex >= 0;
             if (hasMoreVariants == false)
             {
                 break;
             }
 
             // Decrease size of another item
-            DecreaseGroupBoxSize(reduceOrder[reduceOrderIndex]);
-            reduceOrderIndex--;
+            this.DecreaseGroupBoxSize(this.reduceOrder[this.reduceOrderIndex]);
+            this.reduceOrderIndex--;
 
-            desiredSize = GetChildrenDesiredSizeIntermediate();
+            desiredSize = this.GetChildrenDesiredSizeIntermediate();
         }
 
-        measureCache = new MeasureCache(availableSize, desiredSize);
+        this.measureCache = new MeasureCache(availableSize, desiredSize);
 
-        VerifyScrollData(availableSize.Width, desiredSize.Width);
+        this.VerifyScrollData(availableSize.Width, desiredSize.Width);
 
         return desiredSize;
     }
@@ -148,7 +148,7 @@ public class RibbonGroupsContainer : Panel, IScrollInfo
         double width = 0;
         double height = 0;
 
-        foreach (UIElement? child in InternalChildren)
+        foreach (UIElement? child in this.InternalChildren)
         {
             var groupBox = child as RibbonGroupBox;
             if (groupBox is null)
@@ -165,9 +165,9 @@ public class RibbonGroupsContainer : Panel, IScrollInfo
     }
 
     // Increase size of the item
-    private void IncreaseGroupBoxSize( string name )
+    private void IncreaseGroupBoxSize(string name)
     {
-        RibbonGroupBox? groupBox = FindGroup(name);
+        RibbonGroupBox? groupBox = this.FindGroup(name);
         var scale = name.StartsWith("(", StringComparison.Ordinal);
 
         if (groupBox is null)
@@ -193,9 +193,9 @@ public class RibbonGroupsContainer : Panel, IScrollInfo
     }
 
     // Decrease size of the item
-    private void DecreaseGroupBoxSize( string name )
+    private void DecreaseGroupBoxSize(string name)
     {
-        RibbonGroupBox? groupBox = FindGroup(name);
+        RibbonGroupBox? groupBox = this.FindGroup(name);
         var scale = name.StartsWith("(", StringComparison.OrdinalIgnoreCase);
 
         if (groupBox is null)
@@ -220,14 +220,14 @@ public class RibbonGroupsContainer : Panel, IScrollInfo
         }
     }
 
-    private RibbonGroupBox? FindGroup( string name )
+    private RibbonGroupBox? FindGroup(string name)
     {
         if (name.StartsWith("(", StringComparison.Ordinal))
         {
             name = name.Substring(1, name.Length - 2);
         }
 
-        foreach (FrameworkElement? child in InternalChildren)
+        foreach (FrameworkElement? child in this.InternalChildren)
         {
             if (child?.Name == name)
             {
@@ -239,14 +239,14 @@ public class RibbonGroupsContainer : Panel, IScrollInfo
     }
 
     /// <inheritdoc />
-    protected override Size ArrangeOverride( Size finalSize )
+    protected override Size ArrangeOverride(Size finalSize)
     {
         var finalRect = new Rect(finalSize)
         {
-            X = -HorizontalOffset
+            X = -this.HorizontalOffset
         };
 
-        foreach (UIElement? item in InternalChildren)
+        foreach (UIElement? item in this.InternalChildren)
         {
             if (item is null)
             {
@@ -265,52 +265,52 @@ public class RibbonGroupsContainer : Panel, IScrollInfo
     /// <inheritdoc />
     public ScrollViewer? ScrollOwner
     {
-        get => ScrollData.ScrollOwner;
-        set => ScrollData.ScrollOwner = value;
+        get => this.ScrollData.ScrollOwner;
+        set => this.ScrollData.ScrollOwner = value;
     }
 
     /// <inheritdoc />
-    public void SetHorizontalOffset( double offset )
+    public void SetHorizontalOffset(double offset)
     {
-        var newValue = CoerceOffset(ValidateInputOffset(offset, nameof(HorizontalOffset)), ScrollData.ExtentWidth, ScrollData.ViewportWidth);
+        var newValue = CoerceOffset(ValidateInputOffset(offset, nameof(this.HorizontalOffset)), this.ScrollData.ExtentWidth, this.ScrollData.ViewportWidth);
 
-        if (DoubleUtil.AreClose(ScrollData.OffsetX, newValue) == false)
+        if (DoubleUtil.AreClose(this.ScrollData.OffsetX, newValue) == false)
         {
-            ScrollData.OffsetX = newValue;
-            InvalidateArrange();
+            this.ScrollData.OffsetX = newValue;
+            this.InvalidateArrange();
         }
     }
 
     /// <inheritdoc />
-    public double ExtentWidth => ScrollData.ExtentWidth;
+    public double ExtentWidth => this.ScrollData.ExtentWidth;
 
     /// <inheritdoc />
-    public double HorizontalOffset => ScrollData.OffsetX;
+    public double HorizontalOffset => this.ScrollData.OffsetX;
 
     /// <inheritdoc />
-    public double ViewportWidth => ScrollData.ViewportWidth;
+    public double ViewportWidth => this.ScrollData.ViewportWidth;
 
     /// <inheritdoc />
     public void LineLeft()
     {
-        SetHorizontalOffset(HorizontalOffset - 48.0);
+        this.SetHorizontalOffset(this.HorizontalOffset - 48.0);
     }
 
     /// <inheritdoc />
     public void LineRight()
     {
-        SetHorizontalOffset(HorizontalOffset + 48.0);
+        this.SetHorizontalOffset(this.HorizontalOffset + 48.0);
     }
 
     /// <inheritdoc />
-    public Rect MakeVisible( Visual visual, Rect rectangle )
+    public Rect MakeVisible(Visual visual, Rect rectangle)
     {
         // We can only work on visuals that are us or children.
         // An empty rect has no size or position.  We can't meaningfully use it.
         if (rectangle.IsEmpty
             || visual is null
             || ReferenceEquals(visual, this)
-            || !IsAncestorOf(visual))
+            || !this.IsAncestorOf(visual))
         {
             return Rect.Empty;
         }
@@ -321,14 +321,14 @@ public class RibbonGroupsContainer : Panel, IScrollInfo
         rectangle = childTransform.TransformBounds(rectangle);
 
         // Initialize the viewport
-        var viewport = new Rect(HorizontalOffset, rectangle.Top, ViewportWidth, rectangle.Height);
+        var viewport = new Rect(this.HorizontalOffset, rectangle.Top, this.ViewportWidth, rectangle.Height);
         rectangle.X += viewport.X;
 
         // Compute the offsets required to minimally scroll the child maximally into view.
         var minX = ComputeScrollOffsetWithMinimalScroll(viewport.Left, viewport.Right, rectangle.Left, rectangle.Right);
 
         // We have computed the scrolling offsets; scroll to them.
-        SetHorizontalOffset(minX);
+        this.SetHorizontalOffset(minX);
 
         // Compute the visible rectangle of the child relative to the viewport.
         viewport.X = minX;
@@ -344,7 +344,7 @@ public class RibbonGroupsContainer : Panel, IScrollInfo
         double topView,
         double bottomView,
         double topChild,
-        double bottomChild )
+        double bottomChild)
     {
         // # CHILD POSITION       CHILD SIZE      SCROLL      REMEDY
         // 1 Above viewport       <= viewport     Down        Align top edge of child & viewport
@@ -390,13 +390,13 @@ public class RibbonGroupsContainer : Panel, IScrollInfo
     /// <inheritdoc />
     public void MouseWheelLeft()
     {
-        SetHorizontalOffset(HorizontalOffset - 48.0);
+        this.SetHorizontalOffset(this.HorizontalOffset - 48.0);
     }
 
     /// <inheritdoc />
     public void MouseWheelRight()
     {
-        SetHorizontalOffset(HorizontalOffset + 48.0);
+        this.SetHorizontalOffset(this.HorizontalOffset + 48.0);
     }
 
     /// <summary>
@@ -451,7 +451,7 @@ public class RibbonGroupsContainer : Panel, IScrollInfo
     /// <summary>
     /// Not implemented
     /// </summary>
-    public void SetVerticalOffset( double offset )
+    public void SetVerticalOffset(double offset)
     {
     }
 
@@ -485,13 +485,13 @@ public class RibbonGroupsContainer : Panel, IScrollInfo
     public double ViewportHeight => 0.0;
 
     // Gets scroll data info
-    private ScrollData ScrollData => scrollData ?? (scrollData = new ScrollData());
+    private ScrollData ScrollData => this.scrollData ?? (this.scrollData = new ScrollData());
 
     // Scroll data info
     private ScrollData? scrollData;
 
     // Validates input offset
-    private static double ValidateInputOffset( double offset, string parameterName )
+    private static double ValidateInputOffset(double offset, string parameterName)
     {
         if (double.IsNaN(offset))
         {
@@ -505,7 +505,7 @@ public class RibbonGroupsContainer : Panel, IScrollInfo
     // Checks the X/Y offset and coerces them into the range [0, Extent - ViewportSize]
     // If extent, viewport, or the newly coerced offsets are different than the existing offset,
     //   cachces are updated and InvalidateScrollInfo() is called.
-    private void VerifyScrollData( double viewportWidth, double extentWidth )
+    private void VerifyScrollData(double viewportWidth, double extentWidth)
     {
         var isValid = true;
 
@@ -514,24 +514,24 @@ public class RibbonGroupsContainer : Panel, IScrollInfo
             viewportWidth = extentWidth;
         }
 
-        var offsetX = CoerceOffset(ScrollData.OffsetX, extentWidth, viewportWidth);
+        var offsetX = CoerceOffset(this.ScrollData.OffsetX, extentWidth, viewportWidth);
 
-        isValid &= DoubleUtil.AreClose(viewportWidth, ScrollData.ViewportWidth);
-        isValid &= DoubleUtil.AreClose(extentWidth, ScrollData.ExtentWidth);
-        isValid &= DoubleUtil.AreClose(ScrollData.OffsetX, offsetX);
+        isValid &= DoubleUtil.AreClose(viewportWidth, this.ScrollData.ViewportWidth);
+        isValid &= DoubleUtil.AreClose(extentWidth, this.ScrollData.ExtentWidth);
+        isValid &= DoubleUtil.AreClose(this.ScrollData.OffsetX, offsetX);
 
-        ScrollData.ViewportWidth = viewportWidth;
-        ScrollData.ExtentWidth = extentWidth;
-        ScrollData.OffsetX = offsetX;
+        this.ScrollData.ViewportWidth = viewportWidth;
+        this.ScrollData.ExtentWidth = extentWidth;
+        this.ScrollData.OffsetX = offsetX;
 
         if (isValid == false)
         {
-            ScrollOwner?.InvalidateScrollInfo();
+            this.ScrollOwner?.InvalidateScrollInfo();
         }
     }
 
     // Returns an offset coerced into the [0, Extent - Viewport] range.
-    private static double CoerceOffset( double offset, double extent, double viewport )
+    private static double CoerceOffset(double offset, double extent, double viewport)
     {
         if (offset > extent - viewport)
         {
@@ -547,33 +547,33 @@ public class RibbonGroupsContainer : Panel, IScrollInfo
     }
 
     /// <inheritdoc />
-    protected override void OnChildDesiredSizeChanged( UIElement child )
+    protected override void OnChildDesiredSizeChanged(UIElement child)
     {
         // Prevent invalidation for various reasons.
         // This is done to prevent excessive measuring calls.
-        if (IsMeasureValid is false)
+        if (this.IsMeasureValid is false)
         {
             return;
         }
 
         base.OnChildDesiredSizeChanged(child);
-        GroupBoxCacheClearedAndStateAndScaleResetted(null);
+        this.GroupBoxCacheClearedAndStateAndScaleResetted(null);
     }
 
     // We have to reset the reduce order to it's initial value, clear all caches we keep here and invalidate measure/arrange
-    internal void GroupBoxCacheClearedAndStateAndScaleResetted( RibbonGroupBox? ribbonGroupBox )
+    internal void GroupBoxCacheClearedAndStateAndScaleResetted(RibbonGroupBox? ribbonGroupBox)
     {
-        if (measureCache.IsEmpty)
+        if (this.measureCache.IsEmpty)
         {
             return;
         }
 
-        var newReduceOrderIndex = reduceOrder.Length - 1;
-        reduceOrderIndex = newReduceOrderIndex;
+        var newReduceOrderIndex = this.reduceOrder.Length - 1;
+        this.reduceOrderIndex = newReduceOrderIndex;
 
-        measureCache = MeasureCache.Empty;
+        this.measureCache = MeasureCache.Empty;
 
-        foreach (var item in InternalChildren)
+        foreach (var item in this.InternalChildren)
         {
             var groupBox = item as RibbonGroupBox;
             if (groupBox is null

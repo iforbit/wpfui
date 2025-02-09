@@ -96,6 +96,74 @@ public class Ribbon : Control, ILogicalChildSupport
         }
     }
 
+    /// <summary>Identifies the <see cref="ItemsSource"/> dependency property.</summary>
+    public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.Register(
+        nameof(ItemsSource),
+        typeof(object),
+        typeof(Ribbon),
+        new FrameworkPropertyMetadata(null, OnItemsSourceChanged)
+    );
+
+    private static void OnItemsSourceChanged(DependencyObject? d, DependencyPropertyChangedEventArgs e)
+    {
+        if (d is not Ribbon ribbon)
+        {
+            return;
+        }
+
+        ribbon.Tabs.Clear();
+
+        if (e.NewValue is IEnumerable newItemsSource and not string)
+        {
+            foreach (var item in newItemsSource)
+            {
+                if (item is RibbonTabItem tabItem)
+                {
+                    ribbon.Tabs.Add(tabItem);
+                }
+                else
+                {
+                    // 로그 남기거나 예외 처리
+                }
+            }
+        }
+        else if (e.NewValue != null)
+        {
+            if (e.NewValue is RibbonTabItem tabItem)
+            {
+                ribbon.Tabs.Add(tabItem);
+            }
+            else
+            {
+                // 로그 남기거나 예외 처리
+            }
+        }
+
+        if (e.NewValue is INotifyCollectionChanged oc)
+        {
+            oc.CollectionChanged += (s, e) =>
+                ribbon.OnTabItemsCollectionChanged(ribbon.Tabs, e);
+        }
+    }
+
+    /// <inheritdoc/>
+    [Bindable(true)]
+    public object? ItemsSource
+    {
+        get => GetValue(ItemsSourceProperty);
+        set
+        {
+            if (value is null)
+            {
+                ClearValue(ItemsSourceProperty);
+            }
+            else
+            {
+                SetValue(ItemsSourceProperty, value);
+            }
+        }
+    }
+
     private CollectionSyncHelper<RibbonTabItem>? tabsSync;
 
     /// <summary>
