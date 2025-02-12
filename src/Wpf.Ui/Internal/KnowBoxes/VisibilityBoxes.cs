@@ -5,7 +5,6 @@
 
 namespace Wpf.Ui.Internal.KnowBoxes;
 
-
 /// <summary>
 /// Class containing boxed values for <see cref="Visibility"/>.
 /// </summary>
@@ -30,7 +29,7 @@ internal static class VisibilityBoxes
     /// Gets a boxed value for <paramref name="value"/>.
     /// </summary>
     /// <returns>A boxed <see cref="Visibility"/> value.</returns>
-    internal static object Box(Visibility value)
+    internal static object Box(Visibility value )
     {
         switch (value)
         {

@@ -133,7 +133,7 @@ public static class ApplicationThemeManager
     /// <summary>
     /// Applies Resources in the <paramref name="frameworkElement"/>.
     /// </summary>
-    public static void Apply(FrameworkElement frameworkElement)
+    public static void Apply(FrameworkElement frameworkElement )
     {
         if (frameworkElement is null)
         {
@@ -179,7 +179,7 @@ public static class ApplicationThemeManager
         ApplySystemTheme(true);
     }
 
-    public static void ApplySystemTheme(bool updateAccent)
+    public static void ApplySystemTheme(bool updateAccent )
     {
         SystemThemeManager.UpdateSystemThemeCache();
 

@@ -20,7 +20,7 @@ public class SnackbarService : ISnackbarService
     public TimeSpan DefaultTimeOut { get; set; } = TimeSpan.FromSeconds(5);
 
     /// <inheritdoc />
-    public void SetSnackbarPresenter(SnackbarPresenter contentPresenter)
+    public void SetSnackbarPresenter( SnackbarPresenter contentPresenter )
     {
         _presenter = contentPresenter;
     }

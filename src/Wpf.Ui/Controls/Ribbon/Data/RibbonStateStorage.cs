@@ -9,23 +9,24 @@ using System.IO.IsolatedStorage;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Wpf.Ui.Controls.Ribbon.Data;
+namespace Wpf.Ui.Controls.Data;
 
 /// <summary>
 /// Handles loading and saving the state of a <see cref="Ribbon"/> from/to a <see cref="MemoryStream"/>, for temporary storage, and from/to <see cref="IsolatedStorage"/>, for persistent storage.
 /// </summary>
 public class RibbonStateStorage : IRibbonStateStorage
 {
-    private static readonly MD5 md5Hasher = MD5.Create();
+    private static readonly MD5 Md5Hasher = MD5.Create();
 
     private readonly Ribbon ribbon;
+
+    private readonly Stream memoryStream;
 
     // Name of the isolated storage file
     private string? isolatedStorageFileName;
 
-    private readonly Stream memoryStream;
-
     /// <summary>
+    /// Initializes a new instance of the <see cref="RibbonStateStorage"/> class.
     /// Creates a new instance.
     /// </summary>
     /// <param name="ribbon">The <see cref="Ribbon"/> of which the state should be stored.</param>
@@ -44,7 +45,7 @@ public class RibbonStateStorage : IRibbonStateStorage
     }
 
     /// <summary>
-    /// Gets whether this object already got disposed.
+    /// Gets a value indicating whether gets whether this object already got disposed.
     /// </summary>
     protected bool Disposed { get; private set; }
 
@@ -67,7 +68,7 @@ public class RibbonStateStorage : IRibbonStateStorage
             }
 
             var stringForHash = string.Empty;
-            var window = Window.GetWindow(this.ribbon);
+            Window? window = Window.GetWindow(this.ribbon);
 
             if (window is not null)
             {
@@ -86,7 +87,7 @@ public class RibbonStateStorage : IRibbonStateStorage
                 stringForHash += "." + this.ribbon.Name;
             }
 
-            this.isolatedStorageFileName = "Fluent.Ribbon.State." + BitConverter.ToInt32(md5Hasher.ComputeHash(Encoding.Default.GetBytes(stringForHash)), 0).ToString("X");
+            this.isolatedStorageFileName = "Fluent.Ribbon.State." + BitConverter.ToInt32(Md5Hasher.ComputeHash(Encoding.Default.GetBytes(stringForHash)), 0).ToString("X");
             return this.isolatedStorageFileName;
         }
     }
@@ -116,7 +117,7 @@ public class RibbonStateStorage : IRibbonStateStorage
 
         try
         {
-            var storage = GetIsolatedStorageFile();
+            IsolatedStorageFile storage = GetIsolatedStorageFile();
 
             using (var stream = new IsolatedStorageFileStream(this.IsolatedStorageFileName, FileMode.Create, FileAccess.Write, storage))
             {
@@ -141,7 +142,7 @@ public class RibbonStateStorage : IRibbonStateStorage
             return;
         }
 
-        var builder = this.CreateStateData();
+        StringBuilder builder = this.CreateStateData();
 
         var writer = new StreamWriter(stream);
         writer.Write(builder.ToString());
@@ -158,9 +159,9 @@ public class RibbonStateStorage : IRibbonStateStorage
         var builder = new StringBuilder();
 
         // Save Ribbon State
-        builder.Append(this.ribbon.IsMinimized.ToString(CultureInfo.InvariantCulture));
-        builder.Append(',');
-        builder.Append(this.ribbon.IsSimplified.ToString(CultureInfo.InvariantCulture));
+        _ = builder.Append(this.ribbon.IsMinimized.ToString(CultureInfo.InvariantCulture));
+        _ = builder.Append(',');
+        _ = builder.Append(this.ribbon.IsSimplified.ToString(CultureInfo.InvariantCulture));
 
         return builder;
     }
@@ -192,7 +193,7 @@ public class RibbonStateStorage : IRibbonStateStorage
 
         try
         {
-            var storage = GetIsolatedStorageFile();
+            IsolatedStorageFile storage = GetIsolatedStorageFile();
             if (IsolatedStorageFileExists(storage, this.IsolatedStorageFileName))
             {
                 using (var stream = new IsolatedStorageFileStream(this.IsolatedStorageFileName, FileMode.Open, FileAccess.Read, storage))
@@ -306,7 +307,7 @@ public class RibbonStateStorage : IRibbonStateStorage
     /// </summary>
     public virtual void Reset()
     {
-        var storage = GetIsolatedStorageFile();
+        IsolatedStorageFile storage = GetIsolatedStorageFile();
 
         foreach (var filename in storage.GetFileNames("*Fluent.Ribbon.State*"))
         {

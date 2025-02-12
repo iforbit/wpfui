@@ -47,7 +47,7 @@ public partial class InfoBarViewModel : ViewModel
         }
     }
 
-    private static InfoBarSeverity ConvertIndexToInfoBarSeverity(int value)
+    private static InfoBarSeverity ConvertIndexToInfoBarSeverity( int value )
     {
         return value switch
         {

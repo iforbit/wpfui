@@ -16,6 +16,9 @@
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Resources/DefaultFocusVisualStyle.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Resources/DefaultTextBoxScrollViewerStyle.xaml" />
 
+        <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Resources/RibbonStyles.xaml" />
+
+
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/AccessText/AccessText.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/Anchor/Anchor.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/AutoSuggestBox/AutoSuggestBox.xaml" />
@@ -73,7 +76,6 @@
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/ProgressRing/ProgressRing.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/RadioButton/RadioButton.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/RatingControl/RatingControl.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/Ribbon/Ribbon.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/RichTextBox/RichTextBox.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/ScrollBar/ScrollBar.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/ScrollViewer/ScrollViewer.xaml" />
@@ -99,5 +101,7 @@
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/VirtualizingItemsControl/VirtualizingItemsControl.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/VirtualizingWrapPanel/VirtualizingWrapPanel.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/Window/Window.xaml" />
+
+
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

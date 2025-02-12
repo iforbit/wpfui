@@ -3,8 +3,6 @@
 // Copyright (C) Leszek Pomianowski and WPF UI Contributors.
 // All Rights Reserved.
 
-using System;
-
 namespace Wpf.Ui.Internal.KnowBoxes;
 
 /// <summary>
@@ -35,7 +33,7 @@ public static class IconSizeBoxes
     /// <summary>
     /// Gets a boxed value for <see cref="IconSize"/>.
     /// </summary>
-    public static object Box(IconSize iconSize)
+    public static object Box(IconSize iconSize )
     {
         return iconSize switch
         {

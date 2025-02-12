@@ -11,7 +11,7 @@ namespace Wpf.Ui.Converters;
 
 internal class ProgressThicknessConverter : IValueConverter
 {
-    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object Convert( object? value, Type targetType, object? parameter, CultureInfo culture )
     {
         if (value is double height)
         {
@@ -21,7 +21,7 @@ internal class ProgressThicknessConverter : IValueConverter
         return 12.0d;
     }
 
-    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object ConvertBack( object? value, Type targetType, object? parameter, CultureInfo culture )
     {
         throw new NotImplementedException();
     }

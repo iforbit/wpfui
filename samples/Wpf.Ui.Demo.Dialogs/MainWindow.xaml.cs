@@ -18,7 +18,7 @@ public partial class MainWindow
         InitializeComponent();
     }
 
-    private async void OnShowDialogClick(object sender, RoutedEventArgs e)
+    private async void OnShowDialogClick( object sender, RoutedEventArgs e )
     {
         // Dispatch to the UI queue
         await Application.Current.Dispatcher.InvokeAsync(ShowSampleDialogAsync);

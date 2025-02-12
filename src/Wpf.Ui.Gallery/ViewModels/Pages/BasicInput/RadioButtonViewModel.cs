@@ -13,7 +13,7 @@ public partial class RadioButtonViewModel : ViewModel
     private bool _isRadioButtonEnabled = true;
 
     [RelayCommand]
-    private void OnRadioButtonCheckboxChecked(object sender)
+    private void OnRadioButtonCheckboxChecked( object sender )
     {
         if (sender is not CheckBox checkbox)
         {

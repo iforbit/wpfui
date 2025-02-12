@@ -23,7 +23,7 @@ public partial class EditorWindowViewModel : ViewModel
     private Visibility _statusBarVisibility = Visibility.Visible;
 
     [RelayCommand]
-    public void OnStatusBarAction(string value)
+    public void OnStatusBarAction( string value )
     {
         if (string.IsNullOrEmpty(value))
         {

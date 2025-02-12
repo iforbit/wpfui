@@ -11,7 +11,7 @@ namespace Wpf.Ui.Tray.Interop;
 // ReSharper disable InconsistentNaming
 #pragma warning disable SA1300 // Element should begin with upper-case letter
 #pragma warning disable SA1307 // Accessible fields should begin with upper-case letter
-
+#pragma warning disable CA1060
 /// <summary>
 /// USER procedure declarations, constant definitions and macros.
 /// </summary>
@@ -854,7 +854,7 @@ internal static class User32
     public static extern bool AdjustWindowRectEx(
         [In] ref Rect lpRect,
         [In] WS dwStyle,
-        [In] [MarshalAs(UnmanagedType.Bool)] bool bMenu,
+        [In][MarshalAs(UnmanagedType.Bool)] bool bMenu,
         [In] WS_EX dwExStyle
     );
 
@@ -976,8 +976,8 @@ internal static class User32
     [DllImport(Libraries.User32, SetLastError = true, CharSet = CharSet.Unicode)]
     public static extern IntPtr CreateWindowExW(
         [In] WS_EX dwExStyle,
-        [In, Optional] [MarshalAs(UnmanagedType.LPWStr)] string lpClassName,
-        [In, Optional] [MarshalAs(UnmanagedType.LPWStr)] string lpWindowName,
+        [In, Optional][MarshalAs(UnmanagedType.LPWStr)] string lpClassName,
+        [In, Optional][MarshalAs(UnmanagedType.LPWStr)] string lpWindowName,
         [In] WS dwStyle,
         [In] int x,
         [In] int y,
@@ -1417,7 +1417,7 @@ internal static class User32
     [DllImport(Libraries.User32)]
     public static extern IntPtr GetSystemMenu(
         [In] IntPtr hWnd,
-        [In] [MarshalAs(UnmanagedType.Bool)] bool bRevert
+        [In][MarshalAs(UnmanagedType.Bool)] bool bRevert
     );
 
     [DllImport(Libraries.User32, EntryPoint = "EnableMenuItem")]
@@ -1441,7 +1441,7 @@ internal static class User32
     private static extern int _SetWindowRgn(
         [In] IntPtr hWnd,
         [In] IntPtr hRgn,
-        [In] [MarshalAs(UnmanagedType.Bool)] bool bRedraw
+        [In][MarshalAs(UnmanagedType.Bool)] bool bRedraw
     );
 
     /// <summary>

@@ -42,7 +42,7 @@ async Task<string> FetchVersion()
             .Trim() ?? throw new Exception("Unable to parse the version string");
 }
 
-string FormatIconName(string rawIconName)
+string FormatIconName( string rawIconName )
 {
     rawIconName = rawIconName
         .Replace("ic_fluent_", string.Empty)
@@ -62,7 +62,7 @@ string FormatIconName(string rawIconName)
     return iconName;
 }
 
-async Task FetchFontContents(FontSource source, string version)
+async Task FetchFontContents( FontSource source, string version )
 {
     using var httpClient = new HttpClient();
     httpClient.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (compatible; AcmeInc/1.0)");
@@ -96,7 +96,7 @@ foreach (var key in keysToRemove)
     Console.WriteLine($"Deleted key \"{key}\" because no duplicate found in all lists");
 }
 
-async Task WriteToFile(FontSource singleFont, string fileRootDirectory)
+async Task WriteToFile( FontSource singleFont, string fileRootDirectory )
 {
     var destinationPath = Path.Combine(fileRootDirectory, singleFont.DestinationPath);
 

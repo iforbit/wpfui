@@ -14,37 +14,37 @@ namespace Wpf.Ui.Controls;
 public class ValidateNumberFormatter : INumberFormatter, INumberParser
 {
     /// <inheritdoc />
-    public string FormatDouble(double? value)
+    public string FormatDouble( double? value )
     {
         return value?.ToString(GetFormatSpecifier(), GetCurrentCultureConverter()) ?? string.Empty;
     }
 
     /// <inheritdoc />
-    public string FormatInt(int? value)
+    public string FormatInt( int? value )
     {
         return value?.ToString(GetFormatSpecifier(), GetCurrentCultureConverter()) ?? string.Empty;
     }
 
     /// <inheritdoc />
-    public string FormatUInt(uint? value)
+    public string FormatUInt( uint? value )
     {
         return value?.ToString(GetFormatSpecifier(), GetCurrentCultureConverter()) ?? string.Empty;
     }
 
     /// <inheritdoc />
-    public double? ParseDouble(string? value)
+    public double? ParseDouble( string? value )
     {
         return double.TryParse(value, out double d) ? d : null;
     }
 
     /// <inheritdoc />
-    public int? ParseInt(string? value)
+    public int? ParseInt( string? value )
     {
         return int.TryParse(value, out int i) ? i : null;
     }
 
     /// <inheritdoc />
-    public uint? ParseUInt(string? value)
+    public uint? ParseUInt( string? value )
     {
         return uint.TryParse(value, out uint ui) ? ui : (uint?)null;
     }

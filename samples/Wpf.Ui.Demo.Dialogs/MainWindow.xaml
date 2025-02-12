@@ -19,11 +19,6 @@
     </Window.Resources>
 
     <Grid>
-        <ui:Button
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Click="OnShowDialogClick"
-            Content="Show dialog" />
-        <ContentPresenter x:Name="ContentPresenterForDialogs" Grid.Row="0" />
+      
     </Grid>
 </Window>

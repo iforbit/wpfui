@@ -8,7 +8,7 @@ using System.Diagnostics;
 public static class Program
 {
     [STAThread]
-    public static void Main(string[] args)
+    public static void Main( string[] args )
     {
         Debug.WriteLine("Args: " + string.Join(", ", args));
 

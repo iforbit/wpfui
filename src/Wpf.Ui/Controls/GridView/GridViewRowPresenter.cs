@@ -3,9 +3,6 @@
 // Copyright (C) Leszek Pomianowski and WPF UI Contributors.
 // All Rights Reserved.
 
-using System.Reflection;
-using System.Windows.Controls;
-
 namespace Wpf.Ui.Controls;
 
 /// <summary>
@@ -13,7 +10,7 @@ namespace Wpf.Ui.Controls;
 /// </summary>
 public class GridViewRowPresenter : System.Windows.Controls.GridViewRowPresenter
 {
-    protected override Size ArrangeOverride(Size arrangeSize)
+    protected override Size ArrangeOverride(Size arrangeSize )
     {
         // update the desired width of each column (clamps desiredwidth to MinWidth and MaxWidth)
         if (Columns != null)
@@ -27,7 +24,7 @@ public class GridViewRowPresenter : System.Windows.Controls.GridViewRowPresenter
         return base.ArrangeOverride(arrangeSize);
     }
 
-    protected override Size MeasureOverride(Size constraint)
+    protected override Size MeasureOverride(Size constraint )
     {
         if (Columns != null)
         {

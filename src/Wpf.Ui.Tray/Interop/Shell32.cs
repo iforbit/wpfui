@@ -11,7 +11,7 @@ namespace Wpf.Ui.Tray.Interop;
 // ReSharper disable InconsistentNaming
 #pragma warning disable SA1307 // Accessible fields should begin with upper-case letter
 #pragma warning disable SA1401 // Fields should be private
-
+#pragma warning disable CA1060
 /// <summary>
 /// The Windows UI provides users with access to a wide variety of objects necessary to run applications and manage the operating system.
 /// </summary>

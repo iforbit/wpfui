@@ -29,7 +29,7 @@ public partial class App
             _ = c.SetBasePath(AppContext.BaseDirectory);
         })
         .ConfigureServices(
-            (_1, services) =>
+            ( _1, services ) =>
             {
                 _ = services.AddNavigationViewPageProvider();
 
@@ -81,7 +81,7 @@ public partial class App
     /// <summary>
     /// Occurs when the application is loading.
     /// </summary>
-    private void OnStartup(object sender, StartupEventArgs e)
+    private void OnStartup( object sender, StartupEventArgs e )
     {
         _host.Start();
     }
@@ -89,7 +89,7 @@ public partial class App
     /// <summary>
     /// Occurs when the application is closing.
     /// </summary>
-    private void OnExit(object sender, ExitEventArgs e)
+    private void OnExit( object sender, ExitEventArgs e )
     {
         _host.StopAsync().Wait();
 
@@ -99,7 +99,7 @@ public partial class App
     /// <summary>
     /// Occurs when an exception is thrown by an application but not handled.
     /// </summary>
-    private void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+    private void OnDispatcherUnhandledException( object sender, DispatcherUnhandledExceptionEventArgs e )
     {
         // For more info see https://docs.microsoft.com/en-us/dotnet/api/system.windows.application.dispatcherunhandledexception?view=windowsdesktop-6.0
     }

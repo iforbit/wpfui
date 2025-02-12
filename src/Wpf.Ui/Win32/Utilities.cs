@@ -92,7 +92,7 @@ internal sealed class Utilities
         }
     }
 
-    public static void SafeDispose<T>(ref T disposable)
+    public static void SafeDispose<T>( ref T disposable )
         where T : IDisposable
     {
         // Dispose can safely be called on an object multiple times.
@@ -107,7 +107,7 @@ internal sealed class Utilities
         t.Dispose();
     }
 
-    public static void SafeRelease<T>(ref T comObject)
+    public static void SafeRelease<T>( ref T comObject )
         where T : class
     {
         T t = comObject;

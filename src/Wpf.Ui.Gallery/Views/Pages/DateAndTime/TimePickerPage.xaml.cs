@@ -14,7 +14,7 @@ public partial class TimePickerPage : INavigableView<TimePickerViewModel>
 {
     public TimePickerViewModel ViewModel { get; init; }
 
-    public TimePickerPage(TimePickerViewModel viewModel)
+    public TimePickerPage( TimePickerViewModel viewModel )
     {
         ViewModel = viewModel;
         DataContext = this;

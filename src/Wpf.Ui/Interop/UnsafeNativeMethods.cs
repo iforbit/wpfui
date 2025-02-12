@@ -7,8 +7,8 @@
    and is intended for use on Windows systems only.
    This Source Code is partially based on the source code provided by the .NET Foundation. */
 
-using System.Runtime.InteropServices;
 using Microsoft.Win32;
+using System.Runtime.InteropServices;
 using Wpf.Ui.Controls;
 using Wpf.Ui.Hardware;
 
@@ -25,7 +25,7 @@ public static class UnsafeNativeMethods
     /// <param name="window">Selected window.</param>
     /// <param name="cornerPreference">Window corner preference.</param>
     /// <returns><see langword="true"/> if invocation of native Windows function succeeds.</returns>
-    public static bool ApplyWindowCornerPreference(Window window, WindowCornerPreference cornerPreference) =>
+    public static bool ApplyWindowCornerPreference(Window window, WindowCornerPreference cornerPreference ) =>
         GetHandle(window, out IntPtr windowHandle)
         && ApplyWindowCornerPreference(windowHandle, cornerPreference);
 
@@ -35,7 +35,7 @@ public static class UnsafeNativeMethods
     /// <param name="handle">Selected window handle.</param>
     /// <param name="cornerPreference">Window corner preference.</param>
     /// <returns><see langword="true"/> if invocation of native Windows function succeeds.</returns>
-    public static bool ApplyWindowCornerPreference(IntPtr handle, WindowCornerPreference cornerPreference)
+    public static bool ApplyWindowCornerPreference(IntPtr handle, WindowCornerPreference cornerPreference )
     {
         if (handle == IntPtr.Zero)
         {
@@ -65,7 +65,7 @@ public static class UnsafeNativeMethods
     /// </summary>
     /// <param name="window">The window to which the effect is to be applied.</param>
     /// <returns><see langword="true"/> if invocation of native Windows function succeeds.</returns>
-    public static bool RemoveWindowDarkMode(Window? window) =>
+    public static bool RemoveWindowDarkMode(Window? window ) =>
         GetHandle(window, out IntPtr windowHandle) && RemoveWindowDarkMode(windowHandle);
 
     /// <summary>
@@ -73,7 +73,7 @@ public static class UnsafeNativeMethods
     /// </summary>
     /// <param name="handle">Window handle.</param>
     /// <returns><see langword="true"/> if invocation of native Windows function succeeds.</returns>
-    public static bool RemoveWindowDarkMode(IntPtr handle)
+    public static bool RemoveWindowDarkMode(IntPtr handle )
     {
         if (handle == IntPtr.Zero)
         {
@@ -104,7 +104,7 @@ public static class UnsafeNativeMethods
     /// </summary>
     /// <param name="window">The window to which the effect is to be applied.</param>
     /// <returns><see langword="true"/> if invocation of native Windows function succeeds.</returns>
-    public static bool ApplyWindowDarkMode(Window? window) =>
+    public static bool ApplyWindowDarkMode(Window? window ) =>
         GetHandle(window, out IntPtr windowHandle) && ApplyWindowDarkMode(windowHandle);
 
     /// <summary>
@@ -112,7 +112,7 @@ public static class UnsafeNativeMethods
     /// </summary>
     /// <param name="handle">Window handle.</param>
     /// <returns><see langword="true"/> if invocation of native Windows function succeeds.</returns>
-    public static bool ApplyWindowDarkMode(IntPtr handle)
+    public static bool ApplyWindowDarkMode(IntPtr handle )
     {
         if (handle == IntPtr.Zero)
         {
@@ -143,7 +143,7 @@ public static class UnsafeNativeMethods
     /// </summary>
     /// <param name="window">The window to which the effect is to be applied.</param>
     /// <returns><see langword="true"/> if invocation of native Windows function succeeds.</returns>
-    public static bool RemoveWindowTitlebarContents(Window? window)
+    public static bool RemoveWindowTitlebarContents(Window? window )
     {
         if (window == null)
         {
@@ -155,7 +155,7 @@ public static class UnsafeNativeMethods
             return GetHandle(window, out IntPtr windowHandle) && RemoveWindowTitlebarContents(windowHandle);
         }
 
-        window.Loaded += (sender, _1) =>
+        window.Loaded += (sender, _1 ) =>
         {
             _ = GetHandle(sender as Window, out IntPtr windowHandle);
             _ = RemoveWindowTitlebarContents(windowHandle);
@@ -169,7 +169,7 @@ public static class UnsafeNativeMethods
     /// </summary>
     /// <param name="handle">Window handle.</param>
     /// <returns><see langword="true"/> if invocation of native Windows function succeeds.</returns>
-    public static bool RemoveWindowTitlebarContents(IntPtr handle)
+    public static bool RemoveWindowTitlebarContents(IntPtr handle )
     {
         if (handle == IntPtr.Zero)
         {
@@ -195,7 +195,7 @@ public static class UnsafeNativeMethods
     /// <param name="handle">Selected window handle.</param>
     /// <param name="backgroundType">Backdrop type.</param>
     /// <returns><see langword="true"/> if invocation of native Windows function succeeds.</returns>
-    public static bool ApplyWindowBackdrop(IntPtr handle, WindowBackdropType backgroundType)
+    public static bool ApplyWindowBackdrop(IntPtr handle, WindowBackdropType backgroundType )
     {
         if (handle == IntPtr.Zero)
         {
@@ -230,7 +230,7 @@ public static class UnsafeNativeMethods
     /// </summary>
     /// <param name="handle">Window handle.</param>
     /// <param name="backdropType">Background backdrop type.</param>
-    public static bool IsWindowHasBackdrop(IntPtr handle, WindowBackdropType backdropType)
+    public static bool IsWindowHasBackdrop(IntPtr handle, WindowBackdropType backdropType )
     {
         if (!User32.IsWindow(handle))
         {
@@ -253,14 +253,14 @@ public static class UnsafeNativeMethods
     /// Tries to determine whether the provided <see cref="Window"/> has applied legacy Mica effect.
     /// </summary>
     /// <param name="window">Window to check.</param>
-    public static bool IsWindowHasLegacyMica(Window? window) =>
+    public static bool IsWindowHasLegacyMica(Window? window ) =>
         GetHandle(window, out IntPtr windowHandle) && IsWindowHasLegacyMica(windowHandle);
 
     /// <summary>
     /// Tries to determine whether the provided handle has applied legacy Mica effect.
     /// </summary>
     /// <param name="handle">Window handle.</param>
-    public static bool IsWindowHasLegacyMica(IntPtr handle)
+    public static bool IsWindowHasLegacyMica(IntPtr handle )
     {
         if (!User32.IsWindow(handle))
         {
@@ -284,7 +284,7 @@ public static class UnsafeNativeMethods
     /// </summary>
     /// <param name="window">The window to which the effect is to be applied.</param>
     /// <returns><see langword="true"/> if invocation of native Windows function succeeds.</returns>
-    public static bool ApplyWindowLegacyMicaEffect(Window? window) =>
+    public static bool ApplyWindowLegacyMicaEffect(Window? window ) =>
         GetHandle(window, out IntPtr windowHandle) && ApplyWindowLegacyMicaEffect(windowHandle);
 
     /// <summary>
@@ -292,7 +292,7 @@ public static class UnsafeNativeMethods
     /// </summary>
     /// <param name="handle">Window handle.</param>
     /// <returns><see langword="true"/> if invocation of native Windows function succeeds.</returns>
-    public static bool ApplyWindowLegacyMicaEffect(IntPtr handle)
+    public static bool ApplyWindowLegacyMicaEffect(IntPtr handle )
     {
         var backdropPvAttribute = 0x1; // Enable
 
@@ -312,7 +312,7 @@ public static class UnsafeNativeMethods
     /// </summary>
     /// <param name="window">The window to which the effect is to be applied.</param>
     /// <returns><see langword="true"/> if invocation of native Windows function succeeds.</returns>
-    public static bool ApplyWindowLegacyAcrylicEffect(Window? window) =>
+    public static bool ApplyWindowLegacyAcrylicEffect(Window? window ) =>
         GetHandle(window, out IntPtr windowHandle) && ApplyWindowLegacyAcrylicEffect(windowHandle);
 
     /// <summary>
@@ -320,7 +320,7 @@ public static class UnsafeNativeMethods
     /// </summary>
     /// <param name="handle">Window handle</param>
     /// <returns><see langword="true"/> if invocation of native Windows function succeeds.</returns>
-    public static bool ApplyWindowLegacyAcrylicEffect(IntPtr handle)
+    public static bool ApplyWindowLegacyAcrylicEffect(IntPtr handle )
     {
         var accentPolicy = new Interop.User32.ACCENT_POLICY
         {
@@ -376,7 +376,9 @@ public static class UnsafeNativeMethods
 
                     return Color.FromArgb(255, values[2], values[1], values[0]);
                 }
-                catch { }
+                catch
+                {
+                }
             }
         }
 
@@ -388,7 +390,7 @@ public static class UnsafeNativeMethods
     /// </summary>
     /// <param name="hWnd">Window handle.</param>
     /// <param name="taskbarFlag">Taskbar flag.</param>
-    internal static bool SetTaskbarState(IntPtr hWnd, ShObjIdl.TBPFLAG taskbarFlag)
+    internal static bool SetTaskbarState(IntPtr hWnd, ShObjIdl.TBPFLAG taskbarFlag )
     {
         if (hWnd == IntPtr.Zero)
         {
@@ -419,7 +421,7 @@ public static class UnsafeNativeMethods
     /// <param name="current">Current progress value.</param>
     /// <param name="total">Maximum progress value.</param>
     /// <returns>True if successful updated, otherwise false.</returns>
-    internal static bool SetTaskbarValue(IntPtr hWnd, ShObjIdl.TBPFLAG taskbarFlag, int current, int total)
+    internal static bool SetTaskbarValue(IntPtr hWnd, ShObjIdl.TBPFLAG taskbarFlag, int current, int total )
     {
         if (hWnd == IntPtr.Zero)
         {
@@ -449,7 +451,7 @@ public static class UnsafeNativeMethods
         return true;
     }
 
-    public static bool RemoveWindowCaption(Window window)
+    public static bool RemoveWindowCaption(Window window )
     {
         if (window is null)
         {
@@ -461,7 +463,7 @@ public static class UnsafeNativeMethods
         return RemoveWindowCaption(windowHandle);
     }
 
-    public static bool RemoveWindowCaption(IntPtr hWnd)
+    public static bool RemoveWindowCaption(IntPtr hWnd )
     {
         if (hWnd == IntPtr.Zero)
         {
@@ -489,7 +491,7 @@ public static class UnsafeNativeMethods
         return true;
     }
 
-    public static bool ExtendClientAreaIntoTitleBar(Window window)
+    public static bool ExtendClientAreaIntoTitleBar(Window window )
     {
         if (window is null)
         {
@@ -501,7 +503,7 @@ public static class UnsafeNativeMethods
         return ExtendClientAreaIntoTitleBar(windowHandle);
     }
 
-    public static bool ExtendClientAreaIntoTitleBar(IntPtr hWnd)
+    public static bool ExtendClientAreaIntoTitleBar(IntPtr hWnd )
     {
         /*
          * !! EXPERIMENTAl !!
@@ -572,7 +574,7 @@ public static class UnsafeNativeMethods
     /// <summary>
     /// Checks if provided pointer represents existing window.
     /// </summary>
-    public static bool IsValidWindow(IntPtr hWnd)
+    public static bool IsValidWindow(IntPtr hWnd )
     {
         return User32.IsWindow(hWnd);
     }
@@ -581,7 +583,7 @@ public static class UnsafeNativeMethods
     /// Tries to get the pointer to the window handle.
     /// </summary>
     /// <returns><see langword="true"/> if the handle is not <see cref="IntPtr.Zero"/>.</returns>
-    private static bool GetHandle(Window? window, out IntPtr windowHandle)
+    private static bool GetHandle(Window? window, out IntPtr windowHandle )
     {
         if (window is null)
         {
@@ -595,7 +597,7 @@ public static class UnsafeNativeMethods
         return windowHandle != IntPtr.Zero;
     }
 
-    private static IntPtr SetWindowLong(IntPtr handle, User32.GWL nIndex, long windowStyleLong)
+    private static IntPtr SetWindowLong(IntPtr handle, User32.GWL nIndex, long windowStyleLong )
     {
         if (IntPtr.Size == 4)
         {

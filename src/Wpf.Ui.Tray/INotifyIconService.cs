@@ -52,5 +52,5 @@ public interface INotifyIconService
     /// <summary>
     /// Sets parent window of the tray icon.
     /// </summary>
-    public void SetParentWindow(Window window);
+    public void SetParentWindow( Window window );
 }

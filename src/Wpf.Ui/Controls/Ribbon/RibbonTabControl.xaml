@@ -1,0 +1,130 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:Wpf.Ui.Controls"
+    xmlns:converters="clr-namespace:Wpf.Ui.Converters">
+
+
+    <ControlTemplate x:Key="controls.Templates.RibbonTabControl" TargetType="{x:Type controls:RibbonTabControl}">
+        <Grid
+            x:Name="ContentGrid"
+            VerticalAlignment="Top"
+            Background="{TemplateBinding Background}"
+            KeyboardNavigation.TabNavigation="Local">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition
+                    x:Name="contentRow"
+                    MinHeight="{TemplateBinding ContentHeight}"
+                    MaxHeight="{TemplateBinding ContentHeight}" />
+                <RowDefinition
+                    x:Name="contentGapRow"
+                    MinHeight="{TemplateBinding ContentGapHeight}"
+                    MaxHeight="{TemplateBinding ContentGapHeight}" />
+            </Grid.RowDefinitions>
+            <!--  Tab  -->
+            <Grid
+                x:Name="TabsGrid"
+                Grid.Row="0"
+                Margin="0,0,0,4"
+                HorizontalAlignment="Stretch"
+                Background="{TemplateBinding Background}"
+                KeyboardNavigation.TabIndex="1"
+                TextElement.Foreground="{TemplateBinding Foreground}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <ContentPresenter
+                    Grid.Column="0"
+                    VerticalAlignment="Stretch"
+                    ContentSource="Menu" />
+                <controls:RibbonScrollViewer
+                    Grid.Column="1"
+                    Margin="0"
+                    HorizontalAlignment="Left"
+                    HorizontalScrollBarVisibility="Auto"
+                    IsHitTestVisible="True"
+                    IsTabStop="False"
+                    Style="{DynamicResource DefaultRibbonTabScrollViewerStyle}"
+                    VerticalScrollBarVisibility="Disabled"
+                    Visibility="{Binding AreTabHeadersVisible, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <controls:RibbonTabsContainer
+                        x:Name="PART_TabsContainer"
+                        HorizontalAlignment="Stretch"
+                        IsItemsHost="True"
+                        KeyboardNavigation.TabIndex="1" />
+                </controls:RibbonScrollViewer>
+            </Grid>
+            <!--  Content  -->
+            <Border
+                Grid.Row="1"
+                Margin="8,0,8,0"
+                HorizontalAlignment="Stretch"
+                Background="{DynamicResource NavigationViewContentBackground}"
+                BorderBrush="{StaticResource NavigationViewContentGridBorderBrush}"
+                BorderThickness="0"
+                CornerRadius="{DynamicResource RibbonCornerRadius}"
+                KeyboardNavigation.DirectionalNavigation="Contained"
+                KeyboardNavigation.TabIndex="2"
+                KeyboardNavigation.TabNavigation="Local"
+                TextElement.Foreground="{TemplateBinding Foreground}">
+                <Grid>
+                    <!--  We must use a dedicated border to prevent the effect from affecting font rendering...  -->
+                    <Border
+                        Background="{DynamicResource NavigationViewItemBackground}"
+                        BorderBrush="{DynamicResource NavigationViewContentGridBorderBrush}"
+                        BorderThickness="0"
+                        CornerRadius="{DynamicResource RibbonCornerRadius}">
+                        <Border.Effect>
+                            <DropShadowEffect
+                                BlurRadius="20"
+                                Direction="270"
+                                Opacity="0.25"
+                                ShadowDepth="6" />
+                        </Border.Effect>
+                    </Border>
+
+                    <ContentControl
+                        x:Name="mainContentControl"
+                        Margin="0"
+                        Focusable="False">
+                        <controls:TransitioningControl
+                            x:Name="PART_SelectedContent"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            HorizontalContentAlignment="Stretch"
+                            VerticalContentAlignment="Stretch"
+                            NextContent="{Binding SelectedContent, RelativeSource={RelativeSource TemplatedParent}}"
+                            TransitionStoryboard="{DynamicResource ui.Ribbon.Storyboards.RibbonTabControl.Content.Transition}" />
+                    </ContentControl>
+                </Grid>
+            </Border>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMinimized" Value="True">
+                <Setter TargetName="contentGapRow" Property="MinHeight" Value="0" />
+                <Setter TargetName="contentRow" Property="MinHeight" Value="0" />
+                <!--  Switch content to popup  -->
+                <Setter TargetName="mainContentControl" Property="Content" Value="{x:Null}" />
+                <!--  Switch content to popup END  -->
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <Style x:Key="DefaultRibbonTabControlStyle" TargetType="{x:Type controls:RibbonTabControl}">
+        <Setter Property="Background" Value="{DynamicResource Background}" />
+        <Setter Property="CanMinimize" Value="{Binding CanMinimize, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:Ribbon}}, Mode=TwoWay}" />
+        <Setter Property="CanUseSimplified" Value="{Binding CanUseSimplified, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:Ribbon}}, Mode=TwoWay}" />
+        <Setter Property="ContentGapHeight" Value="{Binding ContentGapHeight, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:Ribbon}}}" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Foreground" Value="{DynamicResource CardForeground}" />
+        <Setter Property="IsMinimized" Value="{Binding IsMinimized, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:Ribbon}}, Mode=TwoWay}" />
+        <Setter Property="IsSimplified" Value="{Binding IsSimplified, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:Ribbon}}, Mode=TwoWay}" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="Template" Value="{DynamicResource controls.Templates.RibbonTabControl}" />
+    </Style>
+
+</ResourceDictionary>

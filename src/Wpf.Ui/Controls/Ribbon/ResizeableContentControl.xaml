@@ -1,0 +1,145 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:controls="clr-namespace:Wpf.Ui.Controls"
+                    mc:Ignorable="d">
+
+
+    <Style x:Key="DefaultResizeableContentControlStyles" TargetType="{x:Type controls:ResizeableContentControl}">
+        <Setter Property="Background" Value="{DynamicResource ComboBoxDropDownBackground}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource ComboBoxDropDownBorderBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Template" Value="{DynamicResource controls.Ribbon.Templates.ResizeableContentControl}" />
+    </Style>
+
+    <ControlTemplate x:Key="controls.Ribbon.Templates.ResizeableContentControl" TargetType="{x:Type controls:ResizeableContentControl}">
+        <Border x:Name="PART_DropDownBorder"
+                Margin="{TemplateBinding Padding}"
+                HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                SnapsToDevicePixels="True">
+
+            <Grid Margin="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <ContentPresenter />
+
+                <Border x:Name="resizeBorder"
+                        Grid.Row="1" Height="11" HorizontalAlignment="Stretch"
+                        VerticalAlignment="Top"
+                        Background="{DynamicResource NavigationViewContentBackground}"
+                        BorderBrush="{DynamicResource NavigationViewContentGridBorderBrush}"
+                        BorderThickness="0,1,0,0">
+                    <Grid>
+                        <Thumb x:Name="PART_ResizeVerticalThumb"
+                               Height="10" Margin="0,0,0,-90" HorizontalAlignment="Stretch"
+                               VerticalAlignment="Top" Cursor="SizeNS"
+                               Template="{DynamicResource controls.Ribbon.Templates.ResizeVerticalThumb}" />
+                        <Thumb x:Name="PART_ResizeBothThumb"
+                               Width="10" Height="10" Margin="0,0,0,-90"
+                               HorizontalAlignment="Right" VerticalAlignment="Top" Cursor="SizeNWSE"
+                               Template="{DynamicResource controls.Ribbon.Templates.ResizeBothThumb}" />
+                    </Grid>
+                </Border>
+            </Grid>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="ResizeMode" Value="None">
+                <Setter TargetName="resizeBorder" Property="Visibility" Value="Collapsed" />
+            </Trigger>
+            <Trigger Property="ResizeMode" Value="Both">
+                <Setter TargetName="PART_ResizeBothThumb" Property="Visibility" Value="Visible" />
+                <Setter TargetName="PART_ResizeVerticalThumb" Property="Visibility" Value="Collapsed" />
+                <Setter TargetName="resizeBorder" Property="Visibility" Value="Visible" />
+            </Trigger>
+            <Trigger Property="ResizeMode" Value="Vertical">
+                <Setter TargetName="PART_ResizeBothThumb" Property="Visibility" Value="Collapsed" />
+                <Setter TargetName="PART_ResizeVerticalThumb" Property="Visibility" Value="Visible" />
+                <Setter TargetName="resizeBorder" Property="Visibility" Value="Visible" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="controls.Ribbon.Templates.ResizeBothThumb" TargetType="{x:Type Thumb}">
+        <Grid Background="Transparent">
+            <Rectangle Width="2" Height="2" Margin="0,0,2,1"
+                       HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                       Fill="{DynamicResource controls.Ribbon.Brushes.White}"
+                       StrokeThickness="0" />
+            <Rectangle Width="2" Height="2" Margin="0,0,2,5"
+                       HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                       Fill="{DynamicResource controls.Ribbon.Brushes.White}"
+                       StrokeThickness="0" />
+            <Rectangle Width="2" Height="2" Margin="0,0,6,1"
+                       HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                       Fill="{DynamicResource controls.Ribbon.Brushes.White}"
+                       StrokeThickness="0" />
+            <Rectangle Width="2" Height="2" Margin="0,0,3,2"
+                       HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                       Fill="{DynamicResource controls.Ribbon.Brushes.Black}"
+                       StrokeThickness="0" />
+            <Rectangle Width="2" Height="2" Margin="0,0,3,6"
+                       HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                       Fill="{DynamicResource controls.Ribbon.Brushes.Black}"
+                       StrokeThickness="0" />
+            <Rectangle Width="2" Height="2" Margin="0,0,7,2"
+                       HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                       Fill="{DynamicResource controls.Ribbon.Brushes.Black}"
+                       StrokeThickness="0" />
+        </Grid>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="controls.Ribbon.Templates.ResizeVerticalThumb" TargetType="{x:Type Thumb}">
+        <Grid Background="Transparent">
+            <StackPanel Margin="0,1,0,0" HorizontalAlignment="Center" VerticalAlignment="Center"
+                        Orientation="Horizontal" d:LayoutOverrides="Height">
+                <Grid Margin="1,0,0,0" HorizontalAlignment="Left">
+                    <Rectangle Width="2" Height="2" Margin="0"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"
+                               Fill="{DynamicResource controls.Ribbon.Brushes.White}"
+                               StrokeThickness="0" />
+                    <Rectangle Width="2" Height="2" Margin="0,0,1,1"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"
+                               Fill="{DynamicResource controls.Ribbon.Brushes.Black}"
+                               StrokeThickness="0" />
+                </Grid>
+                <Grid Margin="1,0,0,0" HorizontalAlignment="Left">
+                    <Rectangle Width="2" Height="2" Margin="0"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"
+                               Fill="{DynamicResource controls.Ribbon.Brushes.White}"
+                               StrokeThickness="0" />
+                    <Rectangle Width="2" Height="2" Margin="0,0,1,1"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"
+                               Fill="{DynamicResource controls.Ribbon.Brushes.Black}"
+                               StrokeThickness="0" />
+                </Grid>
+                <Grid Margin="1,0,0,0" HorizontalAlignment="Left">
+                    <Rectangle Width="2" Height="2" Margin="0"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"
+                               Fill="{DynamicResource controls.Ribbon.Brushes.White}"
+                               StrokeThickness="0" />
+                    <Rectangle Width="2" Height="2" Margin="0,0,1,1"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"
+                               Fill="{DynamicResource controls.Ribbon.Brushes.Black}"
+                               StrokeThickness="0" />
+                </Grid>
+                <Grid Margin="1,0,0,0" HorizontalAlignment="Left">
+                    <Rectangle Width="2" Height="2" Margin="0"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"
+                               Fill="{DynamicResource controls.Ribbon.Brushes.White}"
+                               StrokeThickness="0" />
+                    <Rectangle Width="2" Height="2" Margin="0,0,1,1"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"
+                               Fill="{DynamicResource controls.Ribbon.Brushes.Black}"
+                               StrokeThickness="0" />
+                </Grid>
+            </StackPanel>
+        </Grid>
+    </ControlTemplate>
+</ResourceDictionary>

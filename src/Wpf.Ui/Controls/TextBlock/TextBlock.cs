@@ -20,7 +20,7 @@ public class TextBlock : System.Windows.Controls.TextBlock
         typeof(TextBlock),
         new PropertyMetadata(
             FontTypography.Body,
-            static (o, args) =>
+            static (o, args ) =>
             {
                 ((TextBlock)o).OnFontTypographyChanged((FontTypography)args.NewValue);
             }
@@ -34,7 +34,7 @@ public class TextBlock : System.Windows.Controls.TextBlock
         typeof(TextBlock),
         new PropertyMetadata(
             TextColor.Primary,
-            static (o, args) =>
+            static (o, args ) =>
             {
                 ((TextBlock)o).OnAppearanceChanged((TextColor)args.NewValue);
             }
@@ -59,12 +59,12 @@ public class TextBlock : System.Windows.Controls.TextBlock
         set => SetValue(AppearanceProperty, value);
     }
 
-    private void OnFontTypographyChanged(FontTypography newTypography)
+    private void OnFontTypographyChanged(FontTypography newTypography )
     {
         SetResourceReference(StyleProperty, newTypography.ToResourceValue());
     }
 
-    private void OnAppearanceChanged(TextColor textColor)
+    private void OnAppearanceChanged(TextColor textColor )
     {
         SetResourceReference(ForegroundProperty, textColor.ToResourceValue());
     }

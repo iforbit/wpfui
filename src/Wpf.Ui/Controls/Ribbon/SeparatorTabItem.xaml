@@ -1,0 +1,15 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:Wpf.Ui.Controls">
+
+    <Style x:Key="controls.Ribbon.Styles.SeparatorTabItem" TargetType="controls:SeparatorTabItem">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="controls:SeparatorTabItem">
+                    <ContentPresenter ContentSource="Header" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

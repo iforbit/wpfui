@@ -12,9 +12,11 @@ namespace Wpf.Ui.Tray;
 /// <summary>
 /// Base implementation of the notify icon service.
 /// </summary>
-public class NotifyIconService : INotifyIconService
+public class NotifyIconService : INotifyIconService, IDisposable
 {
     private readonly Internal.InternalNotifyIconManager internalNotifyIconManager;
+
+    private bool disposed;
 
     public Window ParentWindow { get; internal set; } = null!;
 
@@ -117,5 +119,31 @@ public class NotifyIconService : INotifyIconService
         internalNotifyIconManager.RightDoubleClick += OnRightDoubleClick;
         internalNotifyIconManager.MiddleClick += OnMiddleClick;
         internalNotifyIconManager.MiddleDoubleClick += OnMiddleDoubleClick;
+    }
+
+    // IDisposable 구현
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!disposed)
+        {
+            if (disposing)
+            {
+                // 관리되는 리소스 해제
+                internalNotifyIconManager.Dispose();
+                if (ParentWindow is not null)
+                {
+                    ParentWindow.Closing -= OnParentWindowClosing;
+                }
+            }
+
+            // 필요하면 비관리 리소스 해제
+            disposed = true;
+        }
     }
 }

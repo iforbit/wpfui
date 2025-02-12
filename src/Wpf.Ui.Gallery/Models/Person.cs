@@ -15,7 +15,7 @@ public record Person
 
     public string Company { get; init; }
 
-    public Person(string firstName, string lastName, string company)
+    public Person( string firstName, string lastName, string company )
     {
         FirstName = firstName;
         LastName = lastName;

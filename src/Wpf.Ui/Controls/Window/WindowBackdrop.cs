@@ -19,7 +19,7 @@ public static class WindowBackdrop
     /// Checks whether the selected backdrop type is supported on current platform.
     /// </summary>
     /// <returns><see langword="true"/> if the selected backdrop type is supported on current platform.</returns>
-    public static bool IsSupported(WindowBackdropType backdropType)
+    public static bool IsSupported( WindowBackdropType backdropType )
     {
         return backdropType switch
         {
@@ -38,7 +38,7 @@ public static class WindowBackdrop
     /// <param name="window">The window to which the backdrop effect will be applied.</param>
     /// <param name="backdropType">The type of backdrop effect to apply. Determines the visual appearance of the window's backdrop.</param>
     /// <returns><see langword="true"/> if the operation was successful; otherwise, <see langword="false"/>.</returns>
-    public static bool ApplyBackdrop(System.Windows.Window? window, WindowBackdropType backdropType)
+    public static bool ApplyBackdrop( System.Windows.Window? window, WindowBackdropType backdropType )
     {
         if (window is null)
         {
@@ -57,7 +57,7 @@ public static class WindowBackdrop
             return ApplyBackdrop(windowHandle, backdropType);
         }
 
-        window.Loaded += (sender, _1) =>
+        window.Loaded += ( sender, _1 ) =>
         {
             IntPtr windowHandle =
                 new WindowInteropHelper(sender as System.Windows.Window ?? null)?.Handle ?? IntPtr.Zero;
@@ -79,7 +79,7 @@ public static class WindowBackdrop
     /// <param name="hWnd">The window handle to which the backdrop effect will be applied.</param>
     /// <param name="backdropType">The type of backdrop effect to apply. This determines the visual appearance of the window's backdrop.</param>
     /// <returns><see langword="true"/> if the operation was successful; otherwise, <see langword="false"/>.</returns>
-    public static bool ApplyBackdrop(IntPtr hWnd, WindowBackdropType backdropType)
+    public static bool ApplyBackdrop( IntPtr hWnd, WindowBackdropType backdropType )
     {
         if (hWnd == IntPtr.Zero)
         {
@@ -128,7 +128,7 @@ public static class WindowBackdrop
     /// Tries to remove backdrop effects if they have been applied to the <see cref="Window"/>.
     /// </summary>
     /// <param name="window">The window from which the effect should be removed.</param>
-    public static bool RemoveBackdrop(System.Windows.Window? window)
+    public static bool RemoveBackdrop( System.Windows.Window? window )
     {
         if (window is null)
         {
@@ -144,7 +144,7 @@ public static class WindowBackdrop
     /// Tries to remove all effects if they have been applied to the <c>hWnd</c>.
     /// </summary>
     /// <param name="hWnd">Pointer to the window handle.</param>
-    public static bool RemoveBackdrop(IntPtr hWnd)
+    public static bool RemoveBackdrop( IntPtr hWnd )
     {
         if (hWnd == IntPtr.Zero)
         {
@@ -188,7 +188,7 @@ public static class WindowBackdrop
     /// </summary>
     /// <param name="window">Window to manipulate.</param>
     /// <returns><see langword="true"/> if operation was successful.</returns>
-    public static bool RemoveBackground(System.Windows.Window? window)
+    public static bool RemoveBackground( System.Windows.Window? window )
     {
         if (window is null)
         {
@@ -216,7 +216,7 @@ public static class WindowBackdrop
         return true;
     }
 
-    public static bool RemoveTitlebarBackground(System.Windows.Window? window)
+    public static bool RemoveTitlebarBackground( System.Windows.Window? window )
     {
         if (window is null)
         {
@@ -239,7 +239,7 @@ public static class WindowBackdrop
             // Specifying DWMWA_COLOR_DEFAULT (value 0xFFFFFFFF) for the color will reset the window back to using the system's default behavior for the caption color.
             uint titlebarPvAttribute = 0xFFFFFFFE;
 
-            Dwmapi.DwmSetWindowAttribute(
+            _ = Dwmapi.DwmSetWindowAttribute(
                 windowSource.Handle,
                 Dwmapi.DWMWINDOWATTRIBUTE.DWMWA_CAPTION_COLOR,
                 ref titlebarPvAttribute,
@@ -250,7 +250,7 @@ public static class WindowBackdrop
         return true;
     }
 
-    private static bool ApplyDwmwWindowAttrubute(IntPtr hWnd, Dwmapi.DWMSBT dwmSbt)
+    private static bool ApplyDwmwWindowAttrubute( IntPtr hWnd, Dwmapi.DWMSBT dwmSbt )
     {
         if (hWnd == IntPtr.Zero)
         {
@@ -274,7 +274,7 @@ public static class WindowBackdrop
         return dwmApiResult == HRESULT.S_OK;
     }
 
-    private static bool ApplyLegacyMicaBackdrop(IntPtr hWnd)
+    private static bool ApplyLegacyMicaBackdrop( IntPtr hWnd )
     {
         var backdropPvAttribute = 1; // Enable
 
@@ -294,7 +294,7 @@ public static class WindowBackdrop
         throw new NotImplementedException();
     }*/
 
-    private static bool RestoreContentBackground(IntPtr hWnd)
+    private static bool RestoreContentBackground( IntPtr hWnd )
     {
         if (hWnd == IntPtr.Zero)
         {

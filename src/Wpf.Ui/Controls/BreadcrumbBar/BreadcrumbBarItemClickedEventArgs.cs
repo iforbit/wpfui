@@ -11,7 +11,7 @@ namespace Wpf.Ui.Controls;
 
 public sealed class BreadcrumbBarItemClickedEventArgs : RoutedEventArgs
 {
-    public BreadcrumbBarItemClickedEventArgs(RoutedEvent routedEvent, object source, object item, int index)
+    public BreadcrumbBarItemClickedEventArgs(RoutedEvent routedEvent, object source, object item, int index )
         : base(routedEvent, source)
     {
         Item = item;

@@ -24,7 +24,7 @@ using Wpf.Ui.Gallery.Views.Pages.Windows;
 
 namespace Wpf.Ui.Gallery.ViewModels.Windows;
 
-public partial class MainWindowViewModel(IStringLocalizer<Translations> localizer) : ViewModel
+public partial class MainWindowViewModel( IStringLocalizer<Translations> localizer ) : ViewModel
 {
     [ObservableProperty]
     private string _applicationTitle = localizer["WPF UI Gallery"];
@@ -61,7 +61,7 @@ public partial class MainWindowViewModel(IStringLocalizer<Translations> localize
                 new NavigationViewItem(nameof(RadioButton), typeof(RadioButtonPage)),
                 new NavigationViewItem(nameof(RatingControl), typeof(RatingPage)),
                 new NavigationViewItem(nameof(ThumbRate), typeof(ThumbRatePage)),
-                new NavigationViewItem(nameof(SplitButton), typeof(SplitButtonPage)),
+                new NavigationViewItem(nameof(RibbonSplitButton), typeof(SplitButtonPage)),
                 new NavigationViewItem(nameof(Slider), typeof(SliderPage)),
             }
         },

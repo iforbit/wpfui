@@ -59,7 +59,7 @@ internal static class Hicon
     /// Tries to allocate an icon to memory and fetch a pointer to it.
     /// </summary>
     /// <param name="source">Image source.</param>
-    public static IntPtr FromSource(ImageSource source)
+    public static IntPtr FromSource( ImageSource source )
     {
         IntPtr hIcon = IntPtr.Zero;
         var bitmapFrame = source as BitmapFrame;

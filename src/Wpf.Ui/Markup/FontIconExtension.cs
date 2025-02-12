@@ -34,7 +34,7 @@ public class FontIconExtension : MarkupExtension
 {
     public FontIconExtension() { }
 
-    public FontIconExtension(string glyph)
+    public FontIconExtension( string glyph )
     {
         Glyph = glyph;
     }
@@ -47,9 +47,9 @@ public class FontIconExtension : MarkupExtension
 
     public double FontSize { get; set; }
 
-    public override object ProvideValue(IServiceProvider serviceProvider)
+    public override object ProvideValue( IServiceProvider serviceProvider )
     {
-        FontIcon fontIcon = new() { Glyph = Glyph, FontFamily = FontFamily };
+        FontIcon fontIcon = new() { Glyph = Glyph!, FontFamily = FontFamily };
 
         if (FontSize > 0)
         {

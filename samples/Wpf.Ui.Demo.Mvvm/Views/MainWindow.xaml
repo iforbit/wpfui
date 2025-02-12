@@ -1,47 +1,87 @@
-<ui:FluentWindow
-    x:Class="Wpf.Ui.Demo.Mvvm.Views.MainWindow"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:Wpf.Ui.Demo.Mvvm.Views"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:tray="http://schemas.lepo.co/wpfui/2022/xaml/tray"
-    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-    Title="{Binding ViewModel.ApplicationTitle, Mode=OneWay}"
-    Width="1100"
-    Height="650"
-    d:DataContext="{d:DesignInstance local:MainWindow,
-                                     IsDesignTimeCreatable=True}"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
-    ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
-    ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-    ExtendsContentIntoTitleBar="True"
-    Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-    WindowBackdropType="Mica"
-    WindowCornerPreference="Round"
-    WindowStartupLocation="CenterScreen"
-    mc:Ignorable="d">
+<ui:FluentWindow x:Class="Wpf.Ui.Demo.Mvvm.Views.MainWindow"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:Internal="clr-namespace:Wpf.Ui.Internal;assembly=Wpf.Ui"
+                 xmlns:converters="clr-namespace:Wpf.Ui.Demo.Mvvm.Converter"
+                 xmlns:local="clr-namespace:Wpf.Ui.Demo.Mvvm.Views"
+                 xmlns:templateSelectors="[templateSelectors ]clr-namespace:Wpf.Ui.Controls.TemplateSelectors;assembly=Wpf.Ui"
+                 xmlns:tray="http://schemas.lepo.co/wpfui/2022/xaml/tray"
+                 xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+                 Title="{Binding ViewModel.ApplicationTitle, Mode=OneWay}"
+                 Width="1100"
+                 Height="650"
+                 d:DataContext="{d:DesignInstance local:MainWindow,
+                                                  IsDesignTimeCreatable=True}"
+                 d:DesignHeight="450"
+                 d:DesignWidth="800"
+                 ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
+                 ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                 ExtendsContentIntoTitleBar="True"
+                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                 WindowBackdropType="Mica"
+                 WindowCornerPreference="Round"
+                 WindowStartupLocation="CenterScreen"
+                 mc:Ignorable="d">
 
+    <ui:FluentWindow.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries />
+
+        </ResourceDictionary>
+    </ui:FluentWindow.Resources>
     <ui:FluentWindow.InputBindings>
-        <KeyBinding
-            Key="F"
-            Command="{Binding ElementName=AutoSuggestBox, Path=FocusCommand}"
-            Modifiers="Control" />
+        <KeyBinding Key="F"
+                    Command="{Binding ElementName=AutoSuggestBox, Path=FocusCommand}"
+                    Modifiers="Control" />
     </ui:FluentWindow.InputBindings>
 
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+        <ui:TitleBar Title="{Binding ViewModel.ApplicationTitle, Mode=OneWay}"
+                     Grid.Row="0" Icon="pack://application:,,,/Assets/applicationIcon-256.png" />
 
-        <ui:NavigationView
-            x:Name="RootNavigation"
-            Grid.Row="1"
-            FooterMenuItemsSource="{Binding ViewModel.NavigationFooter, Mode=OneWay}"
-            PaneDisplayMode="Left"
-            MenuItemsSource="{Binding ViewModel.NavigationItems, Mode=OneWay}">
+        <tray:NotifyIcon Grid.Row="0" FocusOnLeftClick="True" Icon="pack://application:,,,/Assets/applicationIcon-256.png"
+                         MenuOnRightClick="True" TooltipText="WPF UI - MVVM Demo">
+            <tray:NotifyIcon.Menu>
+                <ContextMenu ItemsSource="{Binding ViewModel.TrayMenuItems, Mode=OneWay}" />
+            </tray:NotifyIcon.Menu>
+        </tray:NotifyIcon>
+
+        <!--<ui:Ribbon x:Name="MainRibbon" Grid.Row="1" AutomaticStateManagement="True" CanUseSimplified="True" SnapsToDevicePixels="True" ItemsSource="{Binding ViewModel.TabItems, Mode=OneWay}" >
+            <ui:RibbonTabItem Header="Tests" >
+                <ui:RibbonGroupBox Header="LongLongGroup"
+                             IsLauncherVisible="False"
+                             IsSeparatorVisible="False">
+                    <ui:Button >Text 1</ui:Button>
+                    <ui:Button >Text 2</ui:Button>
+                    <ui:Button >Text 3</ui:Button>
+                    <ui:Button >Text 4</ui:Button>
+                    <ui:Button >Text 5</ui:Button>
+                </ui:RibbonGroupBox>
+                <ui:RibbonGroupBox Header="TongTongGroup"
+                             IsLauncherVisible="False"
+                             IsSeparatorVisible="False">
+                    <ui:Button >Text 1</ui:Button>
+                    <ui:Button >Text 2</ui:Button>
+                    <ui:Button >Text 3</ui:Button>
+                    <ui:Button >Text 4</ui:Button>
+                    <ui:Button >Text 5</ui:Button>
+                </ui:RibbonGroupBox>
+            </ui:RibbonTabItem>
+        </ui:Ribbon>-->
+        <ContentControl x:Name="MainRibbonPlaceholder" Grid.Row="1" />
+
+        <ui:NavigationView x:Name="RootNavigation"
+                           Grid.Row="2"
+                           FooterMenuItemsSource="{Binding ViewModel.NavigationFooter, Mode=OneWay}"
+                           MenuItemsSource="{Binding ViewModel.NavigationItems, Mode=OneWay}"
+                           PaneDisplayMode="Left">
             <ui:NavigationView.AutoSuggestBox>
                 <ui:AutoSuggestBox x:Name="AutoSuggestBox" PlaceholderText="Search">
                     <ui:AutoSuggestBox.Icon>
@@ -52,27 +92,10 @@
                 </ui:AutoSuggestBox>
             </ui:NavigationView.AutoSuggestBox>
             <ui:NavigationView.Header>
-                <ui:BreadcrumbBar
-                    Margin="42,32,0,0"
-                    FontSize="28"
-                    FontWeight="DemiBold" />
+                <ui:BreadcrumbBar Margin="42,32,0,0" FontSize="28" FontWeight="DemiBold" />
             </ui:NavigationView.Header>
         </ui:NavigationView>
 
-        <ui:TitleBar
-            Title="{Binding ViewModel.ApplicationTitle, Mode=OneWay}"
-            Grid.Row="0"
-            Icon="pack://application:,,,/Assets/applicationIcon-256.png" />
 
-        <tray:NotifyIcon
-            Grid.Row="0"
-            FocusOnLeftClick="True"
-            Icon="pack://application:,,,/Assets/applicationIcon-256.png"
-            MenuOnRightClick="True"
-            TooltipText="WPF UI - MVVM Demo">
-            <tray:NotifyIcon.Menu>
-                <ContextMenu ItemsSource="{Binding ViewModel.TrayMenuItems, Mode=OneWay}" />
-            </tray:NotifyIcon.Menu>
-        </tray:NotifyIcon>
     </Grid>
 </ui:FluentWindow>

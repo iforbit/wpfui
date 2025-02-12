@@ -44,7 +44,7 @@ public class ListView : System.Windows.Controls.ListView
         set => SetValue(ViewStateProperty, value);
     }
 
-    private static void OnViewStateChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void OnViewStateChanged(DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
         if (d is not ListView self)
         {
@@ -54,7 +54,7 @@ public class ListView : System.Windows.Controls.ListView
         self.OnViewStateChanged(e);
     }
 
-    protected virtual void OnViewStateChanged(DependencyPropertyChangedEventArgs e)
+    protected virtual void OnViewStateChanged(DependencyPropertyChangedEventArgs e )
     {
         // Hook for derived classes to react to ViewState property changes
     }
@@ -64,7 +64,7 @@ public class ListView : System.Windows.Controls.ListView
         Loaded += OnLoaded;
     }
 
-    private void OnLoaded(object sender, RoutedEventArgs e)
+    private void OnLoaded(object sender, RoutedEventArgs e )
     {
         Loaded -= OnLoaded; // prevent memory leaks
 
@@ -77,7 +77,7 @@ public class ListView : System.Windows.Controls.ListView
         UpdateViewState(); // set the initial state
     }
 
-    private void OnViewPropertyChanged(object? sender, EventArgs e)
+    private void OnViewPropertyChanged(object? sender, EventArgs e )
     {
         UpdateViewState();
     }
@@ -107,7 +107,7 @@ public class ListView : System.Windows.Controls.ListView
         return new ListViewItem();
     }
 
-    protected override bool IsItemItsOwnContainerOverride(object item)
+    protected override bool IsItemItsOwnContainerOverride(object item )
     {
         return item is ListViewItem;
     }

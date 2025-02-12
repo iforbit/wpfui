@@ -2,7 +2,7 @@
 // If a copy of the MIT was not distributed with this file, You can obtain one at https://opensource.org/licenses/MIT.
 // Copyright (C) Leszek Pomianowski and WPF UI Contributors.
 // All Rights Reserved.
-namespace Wpf.Ui.Controls.Ribbon;
+namespace Wpf.Ui.Controls;
 
 /// <summary>
 /// Base interface for controls requiring simplified state

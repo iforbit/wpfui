@@ -2,14 +2,13 @@
 
   <PropertyGroup>
     <PackageId>WPF-UI</PackageId>
-    <TargetFrameworks>net6.0-windows;net8.0-windows;net9.0-windows</TargetFrameworks>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <TargetFrameworks>net8.0-windows;net9.0-windows</TargetFrameworks>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <Description>WPF UI provides the Fluent experience in your known and loved WPF framework. Intuitive design, themes, navigation and new immersive controls. All natively and effortlessly.</Description>
     <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
     <Configurations>Debug;Release;DLL빌드;DLL</Configurations>
-    <PackageProjectUrl>https://github.com/iforbit/WPFUI_4.0</PackageProjectUrl>
-    <PackageReleaseNotes>https://github.com/iforbit/WPFUI_4.0/releases</PackageReleaseNotes>
     <Authors>Entropysys.co</Authors>
     <Company>Entropysys.co</Company>
   </PropertyGroup>
@@ -18,10 +17,6 @@
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net7.0'">
-    <EnableAotAnalyzer>false</EnableAotAnalyzer>
-  </PropertyGroup>
-  
   <ItemGroup>
     <None Include="VisualStudioToolsManifest.xml" Pack="true" PackagePath="tools" />
   </ItemGroup>
@@ -73,6 +68,21 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="XAMLTools.MSBuild">
+      <IncludeAssets>build</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
   </ItemGroup>
+
+  <PropertyGroup>
+    <RibbonFilesForXamlCombine>Controls\Ribbon\*.xaml;</RibbonFilesForXamlCombine>
+  </PropertyGroup>
+  <ItemGroup>
+    <XAMLCombineItems Include="$(RibbonFilesForXamlCombine)">
+      <TargetFile>Resources\RibbonStyles.xaml</TargetFile>
+      <Visible>True</Visible>
+    </XAMLCombineItems>
+  </ItemGroup>
+  
 
 </Project>

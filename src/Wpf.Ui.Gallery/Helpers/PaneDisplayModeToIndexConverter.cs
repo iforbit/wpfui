@@ -9,7 +9,7 @@ namespace Wpf.Ui.Gallery.Helpers;
 
 internal sealed class PaneDisplayModeToIndexConverter : IValueConverter
 {
-    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object Convert( object? value, Type targetType, object? parameter, CultureInfo culture )
     {
         return value switch
         {
@@ -20,7 +20,7 @@ internal sealed class PaneDisplayModeToIndexConverter : IValueConverter
         };
     }
 
-    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object ConvertBack( object? value, Type targetType, object? parameter, CultureInfo culture )
     {
         return value switch
         {

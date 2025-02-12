@@ -13,17 +13,17 @@ public class SimpleContentDialogCreateOptions
     /// <summary>
     /// Gets or sets a name at the top of the content dialog.
     /// </summary>
-    public required string Title { get; set; }
+    required public string Title { get; set; }
 
     /// <summary>
     /// Gets or sets a message displayed in the content dialog.
     /// </summary>
-    public required object Content { get; set; }
+    required public object Content { get; set; }
 
     /// <summary>
     /// Gets or sets the name of the button that closes the content dialog.
     /// </summary>
-    public required string CloseButtonText { get; set; }
+    required public string CloseButtonText { get; set; }
 
     /// <summary>
     /// Gets or sets the default text of the primary button at the bottom of the content dialog.

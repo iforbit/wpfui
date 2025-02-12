@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <PackageId>WPF-UI.Abstractions</PackageId>
-    <TargetFrameworks>net6.0;net8.0;net9.0</TargetFrameworks>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <Description>Abstractions for the WPF UI.</Description>
     <CommonTags>$(CommonTags);abstractions;standard</CommonTags>
     <Configurations>Debug;Release;DLL빌드;DLL</Configurations>

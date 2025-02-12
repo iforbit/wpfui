@@ -464,31 +464,59 @@ public partial class NavigationView
         switch (e.Action)
         {
             case NotifyCollectionChangedAction.Add:
-                foreach (var item in e.NewItems)
+                // NewItems가 null이 아닌 경우에만 추가
+                if (e.NewItems is not null)
                 {
-                    collection.Add(item);
+                    foreach (var newItem in e.NewItems)
+                    {
+                        // 이미 해당 아이템이 없는 경우에만 추가
+                        if (!collection.Contains(newItem))
+                        {
+                            _ = collection.Add(newItem);
+                        }
+                    }
                 }
+
                 break;
 
             case NotifyCollectionChangedAction.Remove:
-                foreach (var item in e.OldItems)
+                if (e.OldItems is not null)
                 {
-                    if (!e.NewItems.Contains(item))
+                    // OldItems에 포함된 항목 중, NewItems에 없는 항목 제거
+                    foreach (var oldItem in e.OldItems)
                     {
-                        collection.Remove(item);
+                        // e.NewItems가 있을 때, 해당 항목이 포함되지 않은 경우에만 제거
+                        if (e.NewItems is null || !e.NewItems.Contains(oldItem))
+                        {
+                            collection.Remove(oldItem);
+                        }
                     }
                 }
+
                 break;
 
             case NotifyCollectionChangedAction.Move:
-                var moveItem = MenuItems[e.OldStartingIndex];
-                collection.RemoveAt(e.OldStartingIndex);
-                collection.Insert(e.NewStartingIndex, moveItem);
+                // Move 케이스는 대상 컬렉션의 인덱스 변경이므로, 인덱스 유효성 검사 추가
+                if (e.OldStartingIndex >= 0 && e.OldStartingIndex < collection.Count &&
+                    e.NewStartingIndex >= 0 && e.NewStartingIndex <= collection.Count)
+                {
+                    var movedItem = collection[e.OldStartingIndex];
+                    collection.RemoveAt(e.OldStartingIndex);
+                    collection.Insert(e.NewStartingIndex, movedItem);
+                }
+
                 break;
 
             case NotifyCollectionChangedAction.Replace:
-                collection.RemoveAt(e.OldStartingIndex);
-                collection.Insert(e.OldStartingIndex, e.NewItems[0]);
+                // Replace의 경우, e.NewItems와 e.OldItems 모두가 null이 아닌지 확인
+                if (e.OldItems is not null && e.NewItems is not null &&
+                    e.OldStartingIndex >= 0 && e.OldStartingIndex < collection.Count)
+                {
+                    // 기존 항목 제거 후, 새로운 항목 삽입
+                    collection.RemoveAt(e.OldStartingIndex);
+                    collection.Insert(e.OldStartingIndex, e.NewItems[0]);
+                }
+
                 break;
 
             case NotifyCollectionChangedAction.Reset:
@@ -497,7 +525,7 @@ public partial class NavigationView
         }
     }
 
-    private void OnMenuItems_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    private void OnMenuItems_CollectionChanged( object? sender, NotifyCollectionChangedEventArgs e )
     {
         if (e.NewItems is null)
         {
@@ -508,7 +536,7 @@ public partial class NavigationView
         AddItemsToDictionaries(e.NewItems);
     }
 
-    private static void OnMenuItemsSourceChanged(DependencyObject? d, DependencyPropertyChangedEventArgs e)
+    private static void OnMenuItemsSourceChanged( DependencyObject? d, DependencyPropertyChangedEventArgs e )
     {
         if (d is not NavigationView navigationView)
         {
@@ -521,22 +549,22 @@ public partial class NavigationView
         {
             foreach (var item in newItemsSource)
             {
-                navigationView.MenuItems.Add(item);
+                _ = navigationView.MenuItems.Add(item);
             }
         }
         else if (e.NewValue != null)
         {
-            navigationView.MenuItems.Add(e.NewValue);
+            _ = navigationView.MenuItems.Add(e.NewValue);
         }
 
         if (e.NewValue is INotifyCollectionChanged oc)
         {
-            oc.CollectionChanged += (s, e) =>
+            oc.CollectionChanged += ( s, e ) =>
                 navigationView.OnMenuItemsSource_CollectionChanged(oc, navigationView.MenuItems, e);
         }
     }
 
-    private void OnFooterMenuItems_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    private void OnFooterMenuItems_CollectionChanged( object? sender, NotifyCollectionChangedEventArgs e )
     {
         if (e.NewItems is null)
         {
@@ -563,22 +591,22 @@ public partial class NavigationView
         {
             foreach (var item in newItemsSource)
             {
-                navigationView.FooterMenuItems.Add(item);
+                _ = navigationView.FooterMenuItems.Add(item);
             }
         }
         else if (e.NewValue != null)
         {
-            navigationView.FooterMenuItems.Add(e.NewValue);
+            _ = navigationView.FooterMenuItems.Add(e.NewValue);
         }
 
         if (e.NewValue is INotifyCollectionChanged oc)
         {
-            oc.CollectionChanged += (s, e) =>
+            oc.CollectionChanged += ( s, e ) =>
                 navigationView.OnMenuItemsSource_CollectionChanged(oc, navigationView.FooterMenuItems, e);
         }
     }
 
-    private static void OnPaneDisplayModeChanged(DependencyObject? d, DependencyPropertyChangedEventArgs e)
+    private static void OnPaneDisplayModeChanged( DependencyObject? d, DependencyPropertyChangedEventArgs e )
     {
         if (d is not NavigationView navigationView)
         {
@@ -588,7 +616,7 @@ public partial class NavigationView
         navigationView.OnPaneDisplayModeChanged();
     }
 
-    private static void OnItemTemplateChanged(DependencyObject? d, DependencyPropertyChangedEventArgs e)
+    private static void OnItemTemplateChanged( DependencyObject? d, DependencyPropertyChangedEventArgs e )
     {
         if (d is not NavigationView navigationView)
         {
@@ -598,7 +626,7 @@ public partial class NavigationView
         navigationView.OnItemTemplateChanged();
     }
 
-    private static void OnIsPaneOpenChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void OnIsPaneOpenChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
         if (d is not NavigationView navigationView)
         {
@@ -629,7 +657,7 @@ public partial class NavigationView
         UpdateVisualState(navigationView);
     }
 
-    private static void OnTitleBarChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void OnTitleBarChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
         if (d is not NavigationView navigationView)
         {
@@ -663,7 +691,7 @@ public partial class NavigationView
         }
     }
 
-    private static void OnAutoSuggestBoxChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void OnAutoSuggestBoxChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
         if (d is not NavigationView navigationView)
         {
@@ -695,7 +723,7 @@ public partial class NavigationView
         }
     }
 
-    private static void OnBreadcrumbBarChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void OnBreadcrumbBarChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
         if (d is not NavigationView navigationView)
         {

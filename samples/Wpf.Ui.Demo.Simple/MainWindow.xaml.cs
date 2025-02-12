@@ -20,6 +20,6 @@ public partial class MainWindow
 
         InitializeComponent();
 
-        Loaded += (_, _) => RootNavigation.Navigate(typeof(DashboardPage));
+        Loaded += ( _, _ ) => RootNavigation.Navigate(typeof(DashboardPage));
     }
 }

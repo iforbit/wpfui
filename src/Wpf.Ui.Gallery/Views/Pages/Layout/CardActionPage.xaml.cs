@@ -15,7 +15,7 @@ namespace Wpf.Ui.Gallery.Views.Pages.Layout;
 [GalleryPage("Card action control.", SymbolRegular.Code24)]
 public partial class CardActionPage : INavigableView<CardActionViewModel>
 {
-    public CardActionPage(CardActionViewModel viewModel)
+    public CardActionPage( CardActionViewModel viewModel )
     {
         InitializeComponent();
         ViewModel = viewModel;

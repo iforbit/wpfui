@@ -7,10 +7,10 @@ using Wpf.Ui.Gallery.Helpers;
 
 namespace Wpf.Ui.Gallery.ViewModels.Pages;
 
-public partial class DashboardViewModel(INavigationService navigationService) : ViewModel
+public partial class DashboardViewModel( INavigationService navigationService ) : ViewModel
 {
     [RelayCommand]
-    private void OnCardClick(string parameter)
+    private void OnCardClick( string parameter )
     {
         if (string.IsNullOrWhiteSpace(parameter))
         {

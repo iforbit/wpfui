@@ -9,11 +9,11 @@ namespace Wpf.Ui.Demo.Console.Utilities;
 
 public static class ThemeUtilities
 {
-    public static void ApplyTheme(this FrameworkElement frameworkElement)
+    public static void ApplyTheme( this FrameworkElement frameworkElement )
     {
         ApplicationThemeManager.Apply(frameworkElement);
 
-        void themeChanged(ApplicationTheme sender, Color args)
+        void themeChanged( ApplicationTheme sender, Color args )
         {
             ApplicationThemeManager.Apply(frameworkElement);
             if (frameworkElement is Window window)
@@ -34,11 +34,11 @@ public static class ThemeUtilities
             ApplicationThemeManager.Changed += themeChanged;
         }
 
-        frameworkElement.Loaded += (s, e) =>
+        frameworkElement.Loaded += ( s, e ) =>
         {
             ApplicationThemeManager.Changed += themeChanged;
         };
-        frameworkElement.Unloaded += (s, e) =>
+        frameworkElement.Unloaded += ( s, e ) =>
         {
             ApplicationThemeManager.Changed -= themeChanged;
         };
@@ -46,7 +46,7 @@ public static class ThemeUtilities
 #if DEBUG
         if (frameworkElement is Window window)
         {
-            window.KeyDown += (s, e) =>
+            window.KeyDown += ( s, e ) =>
             {
                 if (e.Key == System.Windows.Input.Key.T)
                 {

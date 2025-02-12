@@ -19,6 +19,9 @@ public partial class MainWindowViewModel : ViewModel
     private ObservableCollection<object> _navigationItems = [];
 
     [ObservableProperty]
+    private ObservableCollection<object> _tabItems = [];
+
+    [ObservableProperty]
     private ObservableCollection<object> _navigationFooter = [];
 
     [ObservableProperty]

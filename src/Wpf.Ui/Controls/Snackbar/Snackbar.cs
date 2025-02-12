@@ -37,7 +37,7 @@ public class Snackbar : ContentControl, IAppearanceControl, IIconControl
         nameof(IsShown),
         typeof(bool),
         typeof(Snackbar),
-        new PropertyMetadata(false, (d, e) => (d as Snackbar)?.OnIsShownChanged(e))
+        new PropertyMetadata(false, ( d, e ) => (d as Snackbar)?.OnIsShownChanged(e))
     );
 
     /// <summary>Identifies the <see cref="Timeout"/> dependency property.</summary>
@@ -142,7 +142,7 @@ public class Snackbar : ContentControl, IAppearanceControl, IIconControl
         set => SetValue(IsShownProperty, value);
     }
 
-    protected void OnIsShownChanged(DependencyPropertyChangedEventArgs e)
+    protected void OnIsShownChanged( DependencyPropertyChangedEventArgs e )
     {
         bool newValue = (bool)e.NewValue;
 
@@ -241,7 +241,7 @@ public class Snackbar : ContentControl, IAppearanceControl, IIconControl
     /// Initializes a new instance of the <see cref="Snackbar"/> class with a specified presenter.
     /// </summary>
     /// <param name="presenter">The <see cref="SnackbarPresenter"/> to manage the snackbar's display and interactions.</param>
-    public Snackbar(SnackbarPresenter presenter)
+    public Snackbar( SnackbarPresenter presenter )
     {
         Presenter = presenter;
 
@@ -261,7 +261,7 @@ public class Snackbar : ContentControl, IAppearanceControl, IIconControl
     /// <summary>
     /// Shows the <see cref="Snackbar"/>
     /// </summary>
-    public virtual void Show(bool immediately)
+    public virtual void Show( bool immediately )
     {
         if (immediately)
         {
@@ -284,7 +284,7 @@ public class Snackbar : ContentControl, IAppearanceControl, IIconControl
     /// <summary>
     /// Shows the <see cref="Snackbar"/>.
     /// </summary>
-    public virtual async Task ShowAsync(bool immediately)
+    public virtual async Task ShowAsync( bool immediately )
     {
         if (immediately)
         {

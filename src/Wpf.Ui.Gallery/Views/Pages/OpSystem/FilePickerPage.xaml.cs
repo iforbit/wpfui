@@ -14,7 +14,7 @@ public partial class FilePickerPage : INavigableView<FilePickerViewModel>
 {
     public FilePickerViewModel ViewModel { get; }
 
-    public FilePickerPage(FilePickerViewModel viewModel)
+    public FilePickerPage( FilePickerViewModel viewModel )
     {
         ViewModel = viewModel;
         DataContext = this;

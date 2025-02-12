@@ -24,7 +24,7 @@ public partial class DashboardPage
         this.ApplyTheme();
     }
 
-    private void OnBaseButtonClick(object sender, RoutedEventArgs e)
+    private void OnBaseButtonClick( object sender, RoutedEventArgs e )
     {
         CounterTextBlock.SetCurrentValue(
             System.Windows.Controls.TextBlock.TextProperty,

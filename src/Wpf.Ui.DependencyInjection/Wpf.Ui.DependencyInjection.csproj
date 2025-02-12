@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <PackageId>WPF-UI.DependencyInjection</PackageId>
-    <TargetFrameworks>net6.0;net8.0;net9.0</TargetFrameworks>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <Description>Dependency injection for the WPF UI.</Description>
     <CommonTags>$(CommonTags);dependency;injection;abstractions;standard</CommonTags>
     <Configurations>Debug;Release;DLL빌드;DLL</Configurations>

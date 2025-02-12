@@ -41,7 +41,7 @@ public abstract partial class ViewModel : ObservableObject, INavigationAware
     /// <param name="action">The action to be dispatched.</param>
     /// <param name="cancellationToken">A cancellation token that can be used to cancel the operation.</param>
     /// <returns>A task that represents the asynchronous operation.</returns>
-    protected static async Task DispatchAsync(Action action, CancellationToken cancellationToken)
+    protected static async Task DispatchAsync( Action action, CancellationToken cancellationToken )
     {
         if (cancellationToken.IsCancellationRequested)
         {

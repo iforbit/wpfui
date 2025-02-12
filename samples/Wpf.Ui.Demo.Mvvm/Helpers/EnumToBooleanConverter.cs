@@ -9,7 +9,7 @@ namespace Wpf.Ui.Demo.Mvvm.Helpers;
 
 internal class EnumToBooleanConverter : IValueConverter
 {
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    public object Convert( object value, Type targetType, object parameter, CultureInfo culture )
     {
         if (parameter is not string enumString)
         {
@@ -26,7 +26,7 @@ internal class EnumToBooleanConverter : IValueConverter
         return enumValue.Equals(value);
     }
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    public object ConvertBack( object value, Type targetType, object parameter, CultureInfo culture )
     {
         if (parameter is not string enumString)
         {

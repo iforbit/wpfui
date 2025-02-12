@@ -27,12 +27,12 @@ public partial class NavigationView
     /// <param name="target"><see cref="FrameworkElement"/> to read <see cref="HeaderContentProperty"/> from.</param>
     /// <returns>HeaderContent property value.</returns>
     [AttachedPropertyBrowsableForType(typeof(FrameworkElement))]
-    public static object? GetHeaderContent(FrameworkElement target) => target.GetValue(HeaderContentProperty);
+    public static object? GetHeaderContent( FrameworkElement target ) => target.GetValue(HeaderContentProperty);
 
     /// <summary>Helper for setting <see cref="HeaderContentProperty"/> on <paramref name="target"/>.</summary>
     /// <param name="target"><see cref="FrameworkElement"/> to set <see cref="HeaderContentProperty"/> on.</param>
     /// <param name="headerContent">HeaderContent property value.</param>
-    public static void SetHeaderContent(FrameworkElement target, object? headerContent) =>
+    public static void SetHeaderContent( FrameworkElement target, object? headerContent ) =>
         target.SetValue(HeaderContentProperty, headerContent);
 
     // ============================================================
@@ -61,6 +61,6 @@ public partial class NavigationView
     /// <param name="navigationItem"><see cref="DependencyObject"/> to read <see cref="NavigationParentProperty"/> from.</param>
     /// <returns>NavigationParent property value.</returns>
     [AttachedPropertyBrowsableForType(typeof(DependencyObject))]
-    internal static NavigationView? GetNavigationParent(DependencyObject navigationItem) =>
+    internal static NavigationView? GetNavigationParent( DependencyObject navigationItem ) =>
         navigationItem.GetValue(NavigationParentProperty) as NavigationView;
 }

@@ -1,0 +1,30 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="clr-namespace:Wpf.Ui.Controls">
+
+    <Style x:Key="controls.Ribbon.Styles.MenuSeparator" TargetType="{x:Type Separator}">
+        <Setter Property="Template" Value="{DynamicResource controls.Ribbon.Templates.MenuSeparator}" />
+    </Style>
+
+    <ControlTemplate x:Key="controls.Ribbon.Templates.MenuSeparator" TargetType="{x:Type Separator}">
+        <Grid Height="Auto">
+            <Path Height="1" Margin="32,1,3,2" VerticalAlignment="Center"
+                  Data="M0,0L1,0"
+                  Fill="{x:Null}"
+                  Stretch="Fill" Stroke="#FFD8D8D9" StrokeDashArray="2 2" />
+        </Grid>
+    </ControlTemplate>
+
+    <Style x:Key="DefaultMenuGroupSeparatorStyles" TargetType="{x:Type controls:GroupSeparatorMenuItem}">
+        <Setter Property="Template" Value="{DynamicResource controls.Ribbon.Templates.MenuGroupSeparator}" />
+    </Style>
+
+    <ControlTemplate x:Key="controls.Ribbon.Templates.MenuGroupSeparator" TargetType="{x:Type controls:GroupSeparatorMenuItem}">
+        <Grid Height="Auto" Background="#FFD8D8D9">
+            <TextBlock Margin="7,0" HorizontalAlignment="Left" VerticalAlignment="Center"
+                       FontWeight="Bold"
+                       Text="{Binding Header, RelativeSource={RelativeSource TemplatedParent}}"
+                       TextWrapping="Wrap" />
+        </Grid>
+    </ControlTemplate>
+</ResourceDictionary>

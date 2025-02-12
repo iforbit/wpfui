@@ -45,7 +45,7 @@ public class Card : System.Windows.Controls.ContentControl
         internal set => SetValue(HasFooterProperty, value);
     }
 
-    private static void OnFooterChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void OnFooterChanged(DependencyObject d, DependencyPropertyChangedEventArgs e )
     {
         if (d is not Card control)
         {

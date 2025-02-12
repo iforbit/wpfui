@@ -32,7 +32,7 @@ internal struct HRESULT
     /// </summary>
     public const int S_FALSE = unchecked((int)0x00000001);
 
-    public static void Check(int hr)
+    public static void Check(int hr )
     {
         if (hr >= S_OK)
         {

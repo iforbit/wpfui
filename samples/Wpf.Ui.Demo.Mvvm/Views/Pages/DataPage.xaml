@@ -17,7 +17,97 @@
     Foreground="{DynamicResource TextFillColorPrimaryBrush}"
     ScrollViewer.CanContentScroll="False"
     mc:Ignorable="d">
-
+    <Page.Resources>
+        <ui:Ribbon x:Key="DataPageRibbon">
+            <!--  페이지에 필요한 RibbonTabItem, RibbonGroupBox, Button 등을 정의  -->
+            <ui:RibbonTabItem Header="Data">
+                <ui:RibbonGroupBox
+                    Header="Group 1"
+                    IsLauncherVisible="False"
+                    IsSeparatorVisible="False">
+                    <ui:Button Content="data 1" />
+                    <ui:Button Content="data 2" />
+                </ui:RibbonGroupBox>
+                <ui:RibbonGroupBox
+                    Header="Group 2"
+                    IsLauncherVisible="False"
+                    IsSeparatorVisible="False">
+                    <ui:Button Content="data 1" />
+                    <ui:Button Content="data 2" />
+                </ui:RibbonGroupBox>
+                <ui:RibbonGroupBox
+                    Header="Group 3"
+                    IsLauncherVisible="False"
+                    IsSeparatorVisible="False">
+                    <ui:Button Content="data 1" />
+                    <ui:Button Content="data 2" />
+                </ui:RibbonGroupBox>
+                <ui:RibbonGroupBox
+                    Header="Group 4"
+                    IsLauncherVisible="False"
+                    IsSeparatorVisible="False">
+                    <ui:Button Content="data 1" />
+                    <ui:Button Content="data 2" />
+                </ui:RibbonGroupBox>
+                <ui:RibbonGroupBox
+                    Header="Group 5"
+                    IsLauncherVisible="False"
+                    IsSeparatorVisible="False">
+                    <ui:Button Content="data 1" />
+                    <ui:Button Content="data 2" />
+                </ui:RibbonGroupBox>
+                <ui:RibbonGroupBox
+                    Header="Group 6"
+                    IsLauncherVisible="False"
+                    IsSeparatorVisible="False">
+                    <ui:Button Content="data 1" />
+                    <ui:Button Content="data 2" />
+                </ui:RibbonGroupBox>
+                <ui:RibbonGroupBox
+                    Header="Group 7"
+                    IsLauncherVisible="False"
+                    IsSeparatorVisible="False">
+                    <ui:Button Content="data 1" />
+                    <ui:Button Content="data 2" />
+                </ui:RibbonGroupBox>
+                <ui:RibbonGroupBox
+                    Header="Group 8"
+                    IsLauncherVisible="False"
+                    IsSeparatorVisible="False">
+                    <ui:Button Content="data 1" />
+                    <ui:Button Content="data 2" />
+                </ui:RibbonGroupBox>
+                <ui:RibbonGroupBox
+                    Header="Group 9"
+                    IsLauncherVisible="False"
+                    IsSeparatorVisible="False">
+                    <ui:Button Content="data 1" />
+                    <ui:Button Content="data 2" />
+                </ui:RibbonGroupBox>
+                <ui:RibbonGroupBox
+                    Header="Group 10"
+                    IsLauncherVisible="False"
+                    IsSeparatorVisible="False">
+                    <ui:Button Content="data 1" />
+                    <ui:Button Content="data 2" />
+                </ui:RibbonGroupBox>
+                <ui:RibbonGroupBox
+                    Header="Group 11"
+                    IsLauncherVisible="False"
+                    IsSeparatorVisible="False">
+                    <ui:Button Content="data 1" />
+                    <ui:Button Content="data 2" />
+                </ui:RibbonGroupBox>
+                <ui:RibbonGroupBox
+                    Header="Group 12"
+                    IsLauncherVisible="False"
+                    IsSeparatorVisible="False">
+                    <ui:Button Content="data 1" />
+                    <ui:Button Content="data 2" />
+                </ui:RibbonGroupBox>
+            </ui:RibbonTabItem>
+        </ui:Ribbon>
+    </Page.Resources>
     <Grid Margin="42">
         <ui:VirtualizingItemsControl
             Foreground="{DynamicResource TextFillColorSecondaryBrush}"

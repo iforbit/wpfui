@@ -35,7 +35,7 @@ public interface IThemeService
     /// </summary>
     /// <param name="applicationTheme">Theme type to set.</param>
     /// <returns><see langword="true"/> if the operation succeeds. <see langword="false"/> otherwise.</returns>
-    bool SetTheme(ApplicationTheme applicationTheme);
+    bool SetTheme(ApplicationTheme applicationTheme );
 
     /// <summary>
     /// Sets currently used Windows OS accent.
@@ -47,11 +47,11 @@ public interface IThemeService
     /// Sets current application accent.
     /// </summary>
     /// <returns><see langword="true"/> if the operation succeeds. <see langword="false"/> otherwise.</returns>
-    bool SetAccent(Color accentColor);
+    bool SetAccent(Color accentColor );
 
     /// <summary>
     /// Sets current application accent.
     /// </summary>
     /// <returns><see langword="true"/> if the operation succeeds. <see langword="false"/> otherwise.</returns>
-    bool SetAccent(SolidColorBrush accentSolidBrush);
+    bool SetAccent(SolidColorBrush accentSolidBrush );
 }

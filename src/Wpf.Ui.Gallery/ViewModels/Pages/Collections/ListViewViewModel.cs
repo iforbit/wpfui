@@ -91,7 +91,7 @@ public partial class ListViewViewModel : ViewModel
         return persons;
     }
 
-    private void UpdateListViewSelectionMode(int selectionModeIndex)
+    private void UpdateListViewSelectionMode( int selectionModeIndex )
     {
         ListViewSelectionMode = selectionModeIndex switch
         {

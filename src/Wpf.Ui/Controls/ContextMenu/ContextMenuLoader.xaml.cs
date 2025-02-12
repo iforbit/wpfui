@@ -36,7 +36,7 @@ public partial class ContextMenuLoader : ResourceDictionary
         AddEditorContextMenuDefaultStyle(currentAssembly);
     }
 
-    private void AddEditorContextMenuDefaultStyle(Assembly currentAssembly)
+    private void AddEditorContextMenuDefaultStyle( Assembly currentAssembly )
     {
         var editorContextMenuType = Type.GetType(
             "System.Windows.Documents.TextEditorContextMenu+EditorContextMenu, " + currentAssembly

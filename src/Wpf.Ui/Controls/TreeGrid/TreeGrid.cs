@@ -61,7 +61,7 @@ public class TreeGrid : System.Windows.Controls.Primitives.Selector
         */
     }
 
-    private void Headers_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    private void Headers_CollectionChanged( object? sender, NotifyCollectionChangedEventArgs e )
     {
         throw new NotImplementedException();
     }
@@ -91,7 +91,7 @@ public class TreeGrid : System.Windows.Controls.Primitives.Selector
             throw new InvalidOperationException($"{typeof(TreeGrid)} cannot have multiple content");
     }*/
 
-    protected virtual void OnHeadersChanged(DependencyPropertyChangedEventArgs e)
+    protected virtual void OnHeadersChanged( DependencyPropertyChangedEventArgs e )
     {
         // Headers changed
     }

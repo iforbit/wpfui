@@ -32,7 +32,7 @@ namespace Wpf.Ui.Markup;
 [MarkupExtensionReturnType(typeof(ImageIcon))]
 public class ImageIconExtension : MarkupExtension
 {
-    public ImageIconExtension(ImageSource? source)
+    public ImageIconExtension( ImageSource? source )
     {
         Source = source;
     }
@@ -44,7 +44,7 @@ public class ImageIconExtension : MarkupExtension
 
     public double Height { get; set; } = 16D;
 
-    public override object ProvideValue(IServiceProvider serviceProvider)
+    public override object ProvideValue( IServiceProvider serviceProvider )
     {
         var imageIcon = new ImageIcon
         {

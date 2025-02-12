@@ -1,365 +1,403 @@
-# Remove the line below if you want to inherit .editorconfig settings from higher directories
+# 상위 디렉터리의 .editorconfig 설정을 상속받지 않으려면 아래 줄을 제거합니다.
 root = true
 
-# All files
+# 모든 파일에 적용
 [*]
 
 #### Core EditorConfig Options ####
 
-# Encoding
+# 파일 인코딩 설정: 모든 파일을 UTF-8 인코딩으로 저장
 charset = utf-8
 
-# Indentation and spacing
-tab_width = 4
-indent_size = 4
-indent_style = space
+# 들여쓰기 및 공백 관련 설정
+tab_width = 4                          # 탭 폭을 4칸으로 지정 (탭 문자의 너비)
+indent_size = 4                        # 들여쓰기 시 공백 4칸 사용
+indent_style = space                   # 들여쓰기는 탭 대신 공백을 사용
 
-# New line preferences
-end_of_line = unset
-insert_final_newline = false
+# 줄바꿈 관련 설정
+end_of_line = unset                    # 줄바꿈 문자 형식을 지정하지 않음 (상위 또는 OS 기본값 사용)
+insert_final_newline = false           # 파일 마지막에 빈 줄(final newline)을 추가하지 않음
 
 #### Build files ####
 
-# Solution files
+# 솔루션 파일 (.sln, .slnx): 솔루션 파일에서는 탭 폭과 들여쓰기에 탭 사용
 [*.{sln,slnx}]
-tab_width = 4
-indent_size = 4
-indent_style = tab
+tab_width = 4                          # 솔루션 파일은 탭 폭 4칸
+indent_size = 4                        # 들여쓰기 크기 4칸
+indent_style = tab                     # 탭 문자를 사용
 
-# Configuration files
+# 구성 파일 (json, xml, yml, config, runsettings): 들여쓰기 크기를 2칸으로 설정
 [*.{json,xml,yml,config,runsettings}]
-indent_size = 2
+indent_size = 2                        # 구성 파일은 2칸 들여쓰기
 
-# MSBuild files
+# MSBuild 파일 (slnf, props, targets, projitems, csproj, shproj): 들여쓰기 크기를 2칸으로 설정
 [*.{slnf,props,targets,projitems,csproj,shproj}]
-indent_size = 2
+indent_size = 2                        # MSBuild 관련 파일은 2칸 들여쓰기
 
 #### Source files ####
 
-# Markdown files
+# Markdown 파일: 들여쓰기 크기를 2칸, 파일 마지막에 빈 줄 추가
 [*.md]
-indent_size = 2
-insert_final_newline = true
+indent_size = 2                        # Markdown 파일은 2칸 들여쓰기
+insert_final_newline = true            # Markdown 파일 끝에 빈 줄을 추가
 
-# C# files
+# C# 소스 파일: C# 파일에는 아래의 .NET 코딩 규칙들이 적용됩니다.
 [*.cs]
 
 #### File Header Template ####
+# 파일 헤더 템플릿: 각 소스 파일 상단에 삽입할 헤더 내용
 file_header_template = This Source Code Form is subject to the terms of the MIT License.\nIf a copy of the MIT was not distributed with this file, You can obtain one at https://opensource.org/licenses/MIT.\nCopyright (C) Leszek Pomianowski and WPF UI Contributors.\nAll Rights Reserved.
 
 #### .NET Coding Conventions ####
 
-# this. and Me. preferences
+# this. 또는 Me. 사용에 관한 선호도 (모든 이벤트, 필드, 메서드, 프로퍼티에 대해 명시적 this. 사용을 하지 않음)
 dotnet_style_qualification_for_event = false:silent
 dotnet_style_qualification_for_field = false:silent
 dotnet_style_qualification_for_method = false:silent
 dotnet_style_qualification_for_property = false:silent
 
-# Language keywords vs BCL types preferences
+# 지역 변수, 매개변수, 멤버 선언 시 미리 정의된(BCL) 타입 사용 선호: 기본 타입 사용을 권장하여 경고 표시
 dotnet_style_predefined_type_for_locals_parameters_members = true:warning
 dotnet_style_predefined_type_for_member_access = true:warning
 
-# Parentheses preferences
-dotnet_style_parentheses_in_arithmetic_binary_operators = always_for_clarity:silent
-dotnet_style_parentheses_in_other_binary_operators = always_for_clarity:silent
-dotnet_style_parentheses_in_other_operators = never_if_unnecessary:silent
-dotnet_style_parentheses_in_relational_binary_operators = always_for_clarity:silent
+# 산술 및 기타 이항 연산에서 괄호 사용 선호도
+dotnet_style_parentheses_in_arithmetic_binary_operators = always_for_clarity:silent  # 산술 연산 시 항상 괄호 사용 (명확성 위해)
+dotnet_style_parentheses_in_other_binary_operators = always_for_clarity:silent       # 그 외 이항 연산도 명확성을 위해 괄호 사용
+dotnet_style_parentheses_in_other_operators = never_if_unnecessary:silent             # 필요하지 않은 경우 괄호 사용 안 함
+dotnet_style_parentheses_in_relational_binary_operators = always_for_clarity:silent    # 비교 연산 시 명확성을 위해 괄호 사용
 
-# Modifier preferences (set to silent until https://github.com/dotnet/roslyn/issues/52904 is resolved)
+# 접근성 한정자(예: public, private 등) 사용 선호도: 인터페이스 외 멤버에는 명시적 접근성 한정자 사용 (여기서는 경고 수준 없음)
 dotnet_style_require_accessibility_modifiers = for_non_interface_members:silent
 
-# Code block preferences
+# 코드 블록 내 빈 줄 및 즉시 블록 다음 문장 사용 선호도: 여러 빈 줄이나 블록 직후 문장 사용 금지
 dotnet_style_allow_multiple_blank_lines_experimental = false:warning
 dotnet_style_allow_statement_immediately_after_block_experimental = false:warning
 
-# Expression-level preferences
-csharp_style_deconstructed_variable_declaration = true:suggestion
-csharp_style_inlined_variable_declaration = true:silent
-csharp_style_throw_expression = true:suggestion
-dotnet_style_coalesce_expression = true:suggestion
-dotnet_style_collection_initializer = true:suggestion
-dotnet_style_explicit_tuple_names = true:suggestion
-dotnet_style_null_propagation = true:suggestion
-dotnet_style_object_initializer = true:suggestion
-dotnet_style_prefer_auto_properties = true:silent
-dotnet_style_prefer_conditional_expression_over_assignment = true:silent
-dotnet_style_prefer_conditional_expression_over_return = true:silent
-dotnet_style_prefer_inferred_anonymous_type_member_names = true:suggestion
-dotnet_style_prefer_inferred_tuple_names = true:suggestion
-dotnet_style_prefer_is_null_check_over_reference_equality_method = true:warning
+# 표현식 관련 선호도 설정
+csharp_style_deconstructed_variable_declaration = true:suggestion      # 분해(Deconstruction) 선언 선호 (제안)
+csharp_style_inlined_variable_declaration = true:silent                # 변수 선언 시 inlined 선언 선호 (경고 없음)
+csharp_style_throw_expression = true:suggestion                        # throw 표현식을 선호 (제안)
+dotnet_style_coalesce_expression = true:suggestion                     # null 병합 연산자 사용 선호 (제안)
+dotnet_style_collection_initializer = true:suggestion                  # 컬렉션 초기화 구문 사용 선호 (제안)
+dotnet_style_explicit_tuple_names = true:suggestion                      # 튜플 멤버 이름을 명시하는 스타일 선호 (제안)
+dotnet_style_null_propagation = true:suggestion                          # null 전파(null propagation) 연산자 사용 선호 (제안)
+dotnet_style_object_initializer = true:suggestion                        # 객체 초기화 구문 사용 선호 (제안)
+dotnet_style_prefer_auto_properties = true:silent                        # 자동 프로퍼티 사용 선호 (경고 없음)
+dotnet_style_prefer_conditional_expression_over_assignment = true:silent   # 조건식 할당을 선호 (경고 없음)
+dotnet_style_prefer_conditional_expression_over_return = true:silent       # 조건식 반환을 선호 (경고 없음)
+dotnet_style_prefer_inferred_anonymous_type_member_names = true:suggestion   # 익명 타입 멤버 이름 추론 선호 (제안)
+dotnet_style_prefer_inferred_tuple_names = true:suggestion                 # 튜플 이름 추론 선호 (제안)
+dotnet_style_prefer_is_null_check_over_reference_equality_method = true:warning  # 참조 비교 대신 null 체크 선호 (경고)
 
-# Field preferences
+# 필드 관련 선호도: 읽기 전용 필드를 readonly로 선언
 dotnet_style_readonly_field = true:warning
 
 #### C# Coding Conventions ####
 
-# var preferences
+# var 사용 선호도: 내장형 타입이더라도 var를 사용하지 않는 것을 권장 (경고 발생)
 csharp_style_var_elsewhere = false:warning
 csharp_style_var_for_built_in_types = false:none
 csharp_style_var_when_type_is_apparent = false:none
 
-# Expression-bodied members
-csharp_style_expression_bodied_accessors = false:silent
-csharp_style_expression_bodied_constructors = false:silent
-csharp_style_expression_bodied_indexers = false:silent
-csharp_style_expression_bodied_lambdas = true:silent
-csharp_style_expression_bodied_methods = false:silent
-csharp_style_expression_bodied_operators = false:silent
-csharp_style_expression_bodied_properties = false:silent
+# 표현식 본문 멤버 관련 선호도 (접근자, 생성자, 인덱서, 람다, 메서드, 연산자, 프로퍼티)
+csharp_style_expression_bodied_accessors = false:silent             # 접근자는 표현식 본문 사용 안 함
+csharp_style_expression_bodied_constructors = false:silent          # 생성자는 표현식 본문 사용 안 함
+csharp_style_expression_bodied_indexers = false:silent              # 인덱서는 표현식 본문 사용 안 함
+csharp_style_expression_bodied_lambdas = true:silent                # 람다는 표현식 본문 사용 선호 (경고 없음)
+csharp_style_expression_bodied_methods = false:silent               # 메서드는 표현식 본문 사용 안 함
+csharp_style_expression_bodied_operators = false:silent             # 연산자는 표현식 본문 사용 안 함
+csharp_style_expression_bodied_properties = false:silent            # 프로퍼티는 표현식 본문 사용 안 함
 
-# Pattern matching preferences
-csharp_style_prefer_pattern_matching = true:suggestion
-csharp_style_pattern_matching_over_as_with_null_check = true:suggestion
-csharp_style_pattern_matching_over_is_with_cast_check = true:suggestion
+# 패턴 매칭 선호도 설정
+csharp_style_prefer_pattern_matching = true:suggestion               # 패턴 매칭 사용 선호 (제안)
+csharp_style_pattern_matching_over_as_with_null_check = true:suggestion # as와 null 체크 대신 패턴 매칭 선호 (제안)
+csharp_style_pattern_matching_over_is_with_cast_check = true:suggestion  # is와 캐스트 대신 패턴 매칭 선호 (제안)
 
-# Null-checking preferences
+# null 체크 관련 선호도 설정: 조건부 대리자 호출(Delegate Call) 시 null 체크 선호
 csharp_style_conditional_delegate_call = true:suggestion
 
-# Modifier preferences
+# 한정자(modifier) 순서 선호도: public, private, protected, internal, static 등 순서 지정
 csharp_preferred_modifier_order = public,private,protected,internal,static,extern,new,virtual,abstract,sealed,override,readonly,unsafe,volatile,async
 
-# Code-block preferences
+# 코드 블록 관련 선호도: 항상 중괄호 사용 선호
 csharp_prefer_braces = true:suggestion
+
+# using 지시문의 위치: 네임스페이스 외부에 위치하도록 권장 (경고 발생)
 csharp_using_directive_placement = outside_namespace:warning
+
+# 네임스페이스 선언 방식: 파일 스코프 네임스페이스 사용을 권장 (경고 발생)
 csharp_style_namespace_declarations = file_scoped:warning
+
+# 사용하지 않는 값 할당/표현식에서 discard 변수 사용 선호
 csharp_style_unused_value_assignment_preference = discard_variable:warning
 csharp_style_unused_value_expression_statement_preference = discard_variable:warning
+
+# 코드 블록 내 연속 중괄호 사이에 빈 줄 허용하지 않음 (경고 발생)
 csharp_style_allow_blank_lines_between_consecutive_braces_experimental = false:warning
 
-# Expression-level preferences
+# 단순 default 표현식 사용 선호: 예전의 default(T) 대신 new() 사용 권장 (제안)
 csharp_prefer_simple_default_expression = true:suggestion
+
+# 지역 함수에서 static 사용 선호 (경고 발생)
 csharp_prefer_static_local_function = true:warning
+
+# 람다 대신 패턴 지역 변수 선언 선호 (경고 발생)
 csharp_style_pattern_local_over_anonymous_function = true:warning
 
 #### C# Formatting Rules ####
 
-# New line preferences
-csharp_new_line_before_catch = true
-csharp_new_line_before_else = true
-csharp_new_line_before_finally = true
-csharp_new_line_before_members_in_anonymous_types = true
-csharp_new_line_before_members_in_object_initializers = true
-csharp_new_line_before_open_brace = all
-csharp_new_line_between_query_expression_clauses = true
+# 줄바꿈 관련 규칙
+csharp_new_line_before_catch = true                             # catch 블록 전에 줄바꿈
+csharp_new_line_before_else = true                              # else 블록 전에 줄바꿈
+csharp_new_line_before_finally = true                           # finally 블록 전에 줄바꿈
+csharp_new_line_before_members_in_anonymous_types = true        # 익명 타입의 멤버 앞에 줄바꿈
+csharp_new_line_before_members_in_object_initializers = true    # 객체 초기화 구문에서 멤버 앞에 줄바꿈
+csharp_new_line_before_open_brace = all                         # 모든 중괄호 열기 전에 줄바꿈
+csharp_new_line_between_query_expression_clauses = true         # LINQ 쿼리 절 사이에 줄바꿈
 
-# Indentation preferences
-csharp_indent_block_contents = true
-csharp_indent_braces = false
-csharp_indent_case_contents = true
-csharp_indent_case_contents_when_block = false
-csharp_indent_labels = no_change
-csharp_indent_switch_labels = true
+# 들여쓰기 관련 규칙
+csharp_indent_block_contents = true                             # 블록 내부 내용을 들여쓰기
+csharp_indent_braces = false                                    # 중괄호 자체는 들여쓰기하지 않음
+csharp_indent_case_contents = true                              # switch 케이스 내부 내용을 들여쓰기
+csharp_indent_case_contents_when_block = false                  # 케이스 블록이 중괄호로 감싸여 있을 경우 별도 들여쓰기 하지 않음
+csharp_indent_labels = no_change                                # 레이블 들여쓰기 변경 없음
+csharp_indent_switch_labels = true                              # switch의 레이블을 들여쓰기
 
-# Space preferences
-csharp_space_after_cast = false
-csharp_space_after_colon_in_inheritance_clause = true
-csharp_space_after_comma = true
-csharp_space_after_dot = false
-csharp_space_after_keywords_in_control_flow_statements = true
-csharp_space_after_semicolon_in_for_statement = true
-csharp_space_around_binary_operators = before_and_after
-csharp_space_around_declaration_statements = false
-csharp_space_before_colon_in_inheritance_clause = true
-csharp_space_before_comma = false
-csharp_space_before_dot = false
-csharp_space_before_open_square_brackets = false
-csharp_space_before_semicolon_in_for_statement = false
-csharp_space_between_empty_square_brackets = false
-csharp_space_between_method_call_empty_parameter_list_parentheses = false
-csharp_space_between_method_call_name_and_opening_parenthesis = false
-csharp_space_between_method_call_parameter_list_parentheses = false
-csharp_space_between_method_declaration_empty_parameter_list_parentheses = false
-csharp_space_between_method_declaration_name_and_open_parenthesis = false
-csharp_space_between_method_declaration_parameter_list_parentheses = false
-csharp_space_between_parentheses = false
-csharp_space_between_square_brackets = false
+# 공백 관련 규칙
+csharp_space_after_cast = false                                 # 캐스트 후 공백 없음
+csharp_space_after_colon_in_inheritance_clause = true           # 상속/인터페이스 구현 시 콜론 뒤에 공백
+csharp_space_after_comma = true                                 # 콤마 뒤에 공백
+csharp_space_after_dot = false                                  # 마침표(.) 뒤에 공백 없음
+csharp_space_after_keywords_in_control_flow_statements = true   # 제어문 (if, for 등) 키워드 뒤에 공백
+csharp_space_after_semicolon_in_for_statement = true            # for문의 세미콜론 뒤에 공백
+csharp_space_around_binary_operators = before_and_after          # 이항 연산자 양옆에 공백
+csharp_space_around_declaration_statements = false             # 선언문 주위에 불필요한 공백 없음
+csharp_space_before_colon_in_inheritance_clause = true          # 상속 구문에서 콜론 앞에 공백
+csharp_space_before_comma = false                               # 콤마 앞에 공백 없음
+csharp_space_before_dot = false                                 # 마침표 앞에 공백 없음
+csharp_space_before_open_square_brackets = false                # 여는 대괄호 앞에 공백 없음
+csharp_space_before_semicolon_in_for_statement = false          # for문 세미콜론 앞에 공백 없음
+csharp_space_between_empty_square_brackets = false              # 빈 대괄호 내부에 공백 없음
+csharp_space_between_method_call_empty_parameter_list_parentheses = false  # 메서드 호출 시 빈 괄호 내부에 공백 없음
+csharp_space_between_method_call_name_and_opening_parenthesis = false        # 메서드 호출 시 메서드 이름과 괄호 사이에 공백 없음
+csharp_space_between_method_call_parameter_list_parentheses = false          # 메서드 호출 파라미터 괄호 사이에 공백 없음
+csharp_space_between_method_call_parentheses = false                         # 메서드 호출 괄호 사이에 공백 없음
+csharp_space_between_method_declaration_empty_parameter_list_parentheses = false  # 메서드 선언 시 빈 괄호 내부 공백 없음
+csharp_space_between_method_declaration_name_and_open_parenthesis = false          # 메서드 선언 시 메서드 이름과 괄호 사이에 공백 없음
+csharp_space_between_method_declaration_parameter_list_parentheses = false          # 메서드 선언 시 파라미터 괄호 사이에 공백 있음
+csharp_space_between_parentheses = false                        # 괄호 내부에 불필요한 공백 없음
+csharp_space_between_square_brackets = false                    # 대괄호 내부에 불필요한 공백 없음
 
-# Wrapping preferences
-csharp_preserve_single_line_blocks = true
-csharp_preserve_single_line_statements = true
+# 줄바꿈 및 감싸기 관련 규칙
+csharp_preserve_single_line_blocks = true                      # 한 줄로 작성된 블록은 그대로 유지
+csharp_preserve_single_line_statements = true                   # 한 줄로 작성된 문장은 그대로 유지
 
-# Naming Symbols
+# Naming Symbols (명명 규칙을 적용할 심볼(대상) 그룹 정의)
 
-# constant_fields - Define constant fields
-dotnet_naming_symbols.constant_fields.applicable_kinds                            = field
-dotnet_naming_symbols.constant_fields.required_modifiers                          = const
-# non_private_readonly_fields - Define public, internal and protected readonly fields
-dotnet_naming_symbols.non_private_readonly_fields.applicable_accessibilities      = public, internal, protected
-dotnet_naming_symbols.non_private_readonly_fields.applicable_kinds                = field
-dotnet_naming_symbols.non_private_readonly_fields.required_modifiers              = readonly
-# static_readonly_fields - Define static and readonly fields
-dotnet_naming_symbols.static_readonly_fields.applicable_kinds                     = field
-dotnet_naming_symbols.static_readonly_fields.required_modifiers                   = static, readonly
-# private_readonly_fields - Define private readonly fields
-dotnet_naming_symbols.private_readonly_fields.applicable_accessibilities          = private
-dotnet_naming_symbols.private_readonly_fields.applicable_kinds                    = field
-dotnet_naming_symbols.private_readonly_fields.required_modifiers                  = readonly
-# public_internal_fields - Define public and internal fields
+# constant_fields - 상수 필드에 적용 (필드이며 const 키워드 사용)
+dotnet_naming_symbols.constant_fields.applicable_kinds = field
+dotnet_naming_symbols.constant_fields.required_modifiers = const
+
+# non_private_readonly_fields - public, internal, protected readonly 필드
+dotnet_naming_symbols.non_private_readonly_fields.applicable_accessibilities = public, internal, protected
+dotnet_naming_symbols.non_private_readonly_fields.applicable_kinds = field
+dotnet_naming_symbols.non_private_readonly_fields.required_modifiers = readonly
+
+# static_readonly_fields - static readonly 필드
+dotnet_naming_symbols.static_readonly_fields.applicable_kinds = field
+dotnet_naming_symbols.static_readonly_fields.required_modifiers = static, readonly
+
+# private_readonly_fields - private readonly 필드
+dotnet_naming_symbols.private_readonly_fields.applicable_accessibilities = private
+dotnet_naming_symbols.private_readonly_fields.applicable_kinds = field
+dotnet_naming_symbols.private_readonly_fields.required_modifiers = readonly
+
+# public_internal_fields - public, internal, protected 필드
 dotnet_naming_symbols.public_internal_protected_fields.applicable_accessibilities = public, internal, protected
-dotnet_naming_symbols.public_internal_protected_fields.applicable_kinds           = field
-# private_protected_fields - Define private and protected fields
-dotnet_naming_symbols.private_protected_fields.applicable_accessibilities         = private, protected
-dotnet_naming_symbols.private_protected_fields.applicable_kinds                   = field
-# public_symbols - Define any public symbol
-dotnet_naming_symbols.public_symbols.applicable_accessibilities                   = public, internal, protected, protected_internal
-dotnet_naming_symbols.public_symbols.applicable_kinds                             = method, property, event, delegate
-# parameters - Defines any parameter
-dotnet_naming_symbols.parameters.applicable_kinds                                 = parameter
-# non_interface_types - Defines class, struct, enum and delegate types
-dotnet_naming_symbols.non_interface_types.applicable_kinds                        = class, struct, enum, delegate
-# interface_types - Defines interfaces
-dotnet_naming_symbols.interface_types.applicable_kinds                            = interface
+dotnet_naming_symbols.public_internal_protected_fields.applicable_kinds = field
 
-# Naming Styles
+# private_protected_fields - private, protected 필드
+dotnet_naming_symbols.private_protected_fields.applicable_accessibilities = private, protected
+dotnet_naming_symbols.private_protected_fields.applicable_kinds = field
 
-# camel_case - Define the camelCase style
-dotnet_naming_style.camel_case.capitalization                                     = camel_case
-# pascal_case - Define the Pascal_case style
-dotnet_naming_style.pascal_case.capitalization                                    = pascal_case
-# first_upper - The first character must start with an upper-case character
-dotnet_naming_style.first_upper.capitalization                                    = first_word_upper
-# prefix_interface_interface_with_i - Interfaces must be PascalCase and the first character of an interface must be an 'I'
-dotnet_naming_style.prefix_interface_interface_with_i.capitalization              = pascal_case
-dotnet_naming_style.prefix_interface_interface_with_i.required_prefix             = I
+# public_symbols - public, internal, protected, protected_internal 멤버 (메서드, 프로퍼티, 이벤트, 델리게이트)
+dotnet_naming_symbols.public_symbols.applicable_accessibilities = public, internal, protected, protected_internal
+dotnet_naming_symbols.public_symbols.applicable_kinds = method, property, event, delegate
 
-# Naming Rules
+# parameters - 모든 매개변수
+dotnet_naming_symbols.parameters.applicable_kinds = parameter
 
-# Async
-dotnet_naming_rule.async_methods_end_in_async.severity                            = silent
-dotnet_naming_rule.async_methods_end_in_async.symbols                             = any_async_methods
-dotnet_naming_rule.async_methods_end_in_async.style                               = end_in_async
+# non_interface_types - 클래스, 구조체, 열거형, 델리게이트
+dotnet_naming_symbols.non_interface_types.applicable_kinds = class, struct, enum, delegate
 
-dotnet_naming_symbols.any_async_methods.applicable_kinds                          = method
-dotnet_naming_symbols.any_async_methods.applicable_accessibilities                = *
-dotnet_naming_symbols.any_async_methods.required_modifiers                        = async
+# interface_types - 인터페이스
+dotnet_naming_symbols.interface_types.applicable_kinds = interface
 
-dotnet_naming_style.end_in_async.required_suffix                                  = Async
-dotnet_naming_style.end_in_async.capitalization                                   = pascal_case
+# Naming Styles (명명 스타일 정의)
 
-# Constant fields must be PascalCase
-dotnet_naming_rule.constant_fields_must_be_pascal_case.severity                   = silent
-dotnet_naming_rule.constant_fields_must_be_pascal_case.symbols                    = constant_fields
-dotnet_naming_rule.constant_fields_must_be_pascal_case.style                      = pascal_case
-# Public, internal and protected readonly fields must be PascalCase
-dotnet_naming_rule.non_private_readonly_fields_must_be_pascal_case.severity       = silent
-dotnet_naming_rule.non_private_readonly_fields_must_be_pascal_case.symbols        = non_private_readonly_fields
-dotnet_naming_rule.non_private_readonly_fields_must_be_pascal_case.style          = pascal_case
-# Static readonly fields must be PascalCase
-dotnet_naming_rule.static_readonly_fields_must_be_pascal_case.severity            = silent
-dotnet_naming_rule.static_readonly_fields_must_be_pascal_case.symbols             = static_readonly_fields
-dotnet_naming_rule.static_readonly_fields_must_be_pascal_case.style               = pascal_case
-# Private readonly fields must be camelCase
-dotnet_naming_rule.private_readonly_fields_must_be_camel_case.severity            = silent
-dotnet_naming_rule.private_readonly_fields_must_be_camel_case.symbols             = private_readonly_fields
-dotnet_naming_rule.private_readonly_fields_must_be_camel_case.style               = camel_case
-# Public and internal fields must be PascalCase
-dotnet_naming_rule.public_internal_protected_fields_must_be_pascal_case.severity  = silent
-dotnet_naming_rule.public_internal_protected_fields_must_be_pascal_case.symbols   = public_internal_protected_fields
-dotnet_naming_rule.public_internal_protected_fields_must_be_pascal_case.style     = pascal_case
-# Private and protected fields must be camelCase
-dotnet_naming_rule.private_fields_must_be_camel_case.severity                     = silent
-dotnet_naming_rule.private_fields_must_be_camel_case.symbols                      = private_protected_fields
-dotnet_naming_rule.private_fields_must_be_camel_case.style                        = prefix_private_field_with_underscore
-# Public members must be capitalized
-dotnet_naming_rule.public_members_must_be_capitalized.severity                    = silent
-dotnet_naming_rule.public_members_must_be_capitalized.symbols                     = public_symbols
-dotnet_naming_rule.public_members_must_be_capitalized.style                       = first_upper
-# Parameters must be camelCase
-dotnet_naming_rule.parameters_must_be_camel_case.severity                         = silent
-dotnet_naming_rule.parameters_must_be_camel_case.symbols                          = parameters
-dotnet_naming_rule.parameters_must_be_camel_case.style                            = camel_case
-# Class, struct, enum and delegates must be PascalCase
-dotnet_naming_rule.non_interface_types_must_be_pascal_case.severity               = silent
-dotnet_naming_rule.non_interface_types_must_be_pascal_case.symbols                = non_interface_types
-dotnet_naming_rule.non_interface_types_must_be_pascal_case.style                  = pascal_case
-# Interfaces must be PascalCase and start with an 'I'
-dotnet_naming_rule.interface_types_must_be_prefixed_with_i.severity               = silent
-dotnet_naming_rule.interface_types_must_be_prefixed_with_i.symbols                = interface_types
-dotnet_naming_rule.interface_types_must_be_prefixed_with_i.style                  = prefix_interface_interface_with_i
-# prefix_private_field_with_underscore - Private fields must be prefixed with _
-dotnet_naming_style.prefix_private_field_with_underscore.capitalization           = camel_case
-dotnet_naming_style.prefix_private_field_with_underscore.required_prefix          = _
+# camel_case - camelCase 스타일 (첫 글자 소문자, 이후 단어 시작 시 대문자)
+dotnet_naming_style.camel_case.capitalization = camel_case
 
-# .NET Code Analysis
+# pascal_case - PascalCase 스타일 (모든 단어의 첫 글자가 대문자)
+dotnet_naming_style.pascal_case.capitalization = pascal_case
 
-dotnet_diagnostic.CA1001.severity = warning
-dotnet_diagnostic.CA1009.severity = warning
-dotnet_diagnostic.CA1016.severity = warning
-dotnet_diagnostic.CA1033.severity = warning
-dotnet_diagnostic.CA1049.severity = warning
-dotnet_diagnostic.CA1060.severity = warning
-dotnet_diagnostic.CA1061.severity = warning
-dotnet_diagnostic.CA1063.severity = warning
-dotnet_diagnostic.CA1065.severity = warning
-dotnet_diagnostic.CA1301.severity = warning
-dotnet_diagnostic.CA1400.severity = warning
-dotnet_diagnostic.CA1401.severity = warning
-dotnet_diagnostic.CA1403.severity = warning
-dotnet_diagnostic.CA1404.severity = warning
-dotnet_diagnostic.CA1405.severity = warning
-dotnet_diagnostic.CA1410.severity = warning
-dotnet_diagnostic.CA1415.severity = warning
-dotnet_diagnostic.CA1821.severity = warning
-dotnet_diagnostic.CA1900.severity = warning
-dotnet_diagnostic.CA1901.severity = warning
-dotnet_diagnostic.CA2002.severity = warning
-dotnet_diagnostic.CA2100.severity = warning
-dotnet_diagnostic.CA2101.severity = warning
-dotnet_diagnostic.CA2108.severity = warning
-dotnet_diagnostic.CA2111.severity = warning
-dotnet_diagnostic.CA2112.severity = warning
-dotnet_diagnostic.CA2114.severity = warning
-dotnet_diagnostic.CA2116.severity = warning
-dotnet_diagnostic.CA2117.severity = warning
-dotnet_diagnostic.CA2122.severity = warning
-dotnet_diagnostic.CA2123.severity = warning
-dotnet_diagnostic.CA2124.severity = warning
-dotnet_diagnostic.CA2126.severity = warning
-dotnet_diagnostic.CA2131.severity = warning
-dotnet_diagnostic.CA2132.severity = warning
-dotnet_diagnostic.CA2133.severity = warning
-dotnet_diagnostic.CA2134.severity = warning
-dotnet_diagnostic.CA2137.severity = warning
-dotnet_diagnostic.CA2138.severity = warning
-dotnet_diagnostic.CA2140.severity = warning
-dotnet_diagnostic.CA2141.severity = warning
-dotnet_diagnostic.CA2146.severity = warning
-dotnet_diagnostic.CA2147.severity = warning
-dotnet_diagnostic.CA2149.severity = warning
-dotnet_diagnostic.CA2200.severity = warning
-dotnet_diagnostic.CA2202.severity = warning
-dotnet_diagnostic.CA2207.severity = warning
-dotnet_diagnostic.CA2212.severity = warning
-dotnet_diagnostic.CA2213.severity = warning
-dotnet_diagnostic.CA2214.severity = warning
-dotnet_diagnostic.CA2216.severity = warning
-dotnet_diagnostic.CA2220.severity = warning
-dotnet_diagnostic.CA2229.severity = warning
-dotnet_diagnostic.CA2231.severity = warning
-dotnet_diagnostic.CA2232.severity = warning
-dotnet_diagnostic.CA2235.severity = warning
-dotnet_diagnostic.CA2236.severity = warning
-dotnet_diagnostic.CA2237.severity = warning
-dotnet_diagnostic.CA2238.severity = warning
-dotnet_diagnostic.CA2240.severity = warning
-dotnet_diagnostic.CA2241.severity = warning
-dotnet_diagnostic.CA2242.severity = warning
+# first_upper - 첫 글자가 대문자인 스타일
+dotnet_naming_style.first_upper.capitalization = first_word_upper
 
-# Require file header OR A source file contains a header that does not match the required text
-dotnet_diagnostic.IDE0073.severity = error
+# prefix_interface_interface_with_i - 인터페이스 이름은 PascalCase이며 'I' 접두사 필요
+dotnet_naming_style.prefix_interface_interface_with_i.capitalization = pascal_case
+dotnet_naming_style.prefix_interface_interface_with_i.required_prefix = I
 
-# StyleCop Code Analysis
+# Naming Rules (명명 규칙 정의)
 
-# Closing parenthesis should be spaced correctly: "foo()!"
+# Async 메서드는 이름이 Async로 끝나야 함 (현재는 경고 수준 'silent'로 설정)
+dotnet_naming_rule.async_methods_end_in_async.severity = silent
+dotnet_naming_rule.async_methods_end_in_async.symbols = any_async_methods
+dotnet_naming_rule.async_methods_end_in_async.style = end_in_async
+
+dotnet_naming_symbols.any_async_methods.applicable_kinds = method
+dotnet_naming_symbols.any_async_methods.applicable_accessibilities = *
+dotnet_naming_symbols.any_async_methods.required_modifiers = async
+
+dotnet_naming_style.end_in_async.required_suffix = Async
+dotnet_naming_style.end_in_async.capitalization = pascal_case
+
+# 상수 필드는 PascalCase여야 함 (경고 없음)
+dotnet_naming_rule.constant_fields_must_be_pascal_case.severity = silent
+dotnet_naming_rule.constant_fields_must_be_pascal_case.symbols = constant_fields
+dotnet_naming_rule.constant_fields_must_be_pascal_case.style = pascal_case
+
+# public, internal, protected readonly 필드는 PascalCase여야 함 (경고 없음)
+dotnet_naming_rule.non_private_readonly_fields_must_be_pascal_case.severity = silent
+dotnet_naming_rule.non_private_readonly_fields_must_be_pascal_case.symbols = non_private_readonly_fields
+dotnet_naming_rule.non_private_readonly_fields_must_be_pascal_case.style = pascal_case
+
+# static readonly 필드는 PascalCase여야 함 (경고 없음)
+dotnet_naming_rule.static_readonly_fields_must_be_pascal_case.severity = silent
+dotnet_naming_rule.static_readonly_fields_must_be_pascal_case.symbols = static_readonly_fields
+dotnet_naming_rule.static_readonly_fields_must_be_pascal_case.style = pascal_case
+
+# private readonly 필드는 camelCase여야 함 (경고 없음)
+dotnet_naming_rule.private_readonly_fields_must_be_camel_case.severity = silent
+dotnet_naming_rule.private_readonly_fields_must_be_camel_case.symbols = private_readonly_fields
+dotnet_naming_rule.private_readonly_fields_must_be_camel_case.style = camel_case
+
+# public 및 internal, protected 필드는 PascalCase여야 함 (경고 없음)
+dotnet_naming_rule.public_internal_protected_fields_must_be_pascal_case.severity = silent
+dotnet_naming_rule.public_internal_protected_fields_must_be_pascal_case.symbols = public_internal_protected_fields
+dotnet_naming_rule.public_internal_protected_fields_must_be_pascal_case.style = pascal_case
+
+# private 및 protected 필드는 camelCase여야 함 (경고 없음, '_' 접두사 포함)
+dotnet_naming_rule.private_fields_must_be_camel_case.severity = silent
+dotnet_naming_rule.private_fields_must_be_camel_case.symbols = private_protected_fields
+dotnet_naming_rule.private_fields_must_be_camel_case.style = prefix_private_field_with_underscore
+
+# public 멤버는 첫 글자가 대문자여야 함 (경고 없음)
+dotnet_naming_rule.public_members_must_be_capitalized.severity = silent
+dotnet_naming_rule.public_members_must_be_capitalized.symbols = public_symbols
+dotnet_naming_rule.public_members_must_be_capitalized.style = first_upper
+
+# 매개변수는 camelCase여야 함 (경고 없음)
+dotnet_naming_rule.parameters_must_be_camel_case.severity = silent
+dotnet_naming_rule.parameters_must_be_camel_case.symbols = parameters
+dotnet_naming_rule.parameters_must_be_camel_case.style = camel_case
+
+# 클래스, 구조체, 열거형, 델리게이트는 PascalCase여야 함 (경고 없음)
+dotnet_naming_rule.non_interface_types_must_be_pascal_case.severity = silent
+dotnet_naming_rule.non_interface_types_must_be_pascal_case.symbols = non_interface_types
+dotnet_naming_rule.non_interface_types_must_be_pascal_case.style = pascal_case
+
+# 인터페이스는 PascalCase이며 'I' 접두사가 있어야 함 (경고 없음)
+dotnet_naming_rule.interface_types_must_be_prefixed_with_i.severity = silent
+dotnet_naming_rule.interface_types_must_be_prefixed_with_i.symbols = interface_types
+dotnet_naming_rule.interface_types_must_be_prefixed_with_i.style = prefix_interface_interface_with_i
+
+# private 필드는 '_' 접두사 사용 (camelCase로 변환)
+dotnet_naming_style.prefix_private_field_with_underscore.capitalization = camel_case
+dotnet_naming_style.prefix_private_field_with_underscore.required_prefix = _
+
+#### .NET Code Analysis ####
+# 아래 항목들은 .NET 코드 분석 도구의 특정 경고 수준을 설정합니다.
+dotnet_diagnostic.CA1001.severity = warning # CA1001: IDisposable 필드를 소유하는 타입은 IDisposable을 구현해야 함  
+dotnet_diagnostic.CA1009.severity = warning # CA1009: 이벤트 제공자(Event Provider)는 static으로 선언하라는 권고  
+dotnet_diagnostic.CA1016.severity = warning # CA1016: 어셈블리에 CLSCompliant 특성을 지정하라는 경고  
+dotnet_diagnostic.CA1033.severity = warning # CA1033: 인터페이스 멤버를 명시적으로 구현할 때 주의하라는 경고  
+dotnet_diagnostic.CA1049.severity = warning # CA1049: IDisposable 필드를 소유하는 타입은 IDisposable을 올바르게 구현하라는 경고  
+dotnet_diagnostic.CA1060.severity = warning # CA1060: Dispose 메서드의 시그니처 및 동작이 올바른지 확인하라는 경고  
+dotnet_diagnostic.CA1061.severity = warning # CA1061: 메서드 매개변수의 이름이나 개수에 관련된 규칙을 위반했을 때 발생하는 경고  
+dotnet_diagnostic.CA1063.severity = warning # CA1063: IDisposable 구현 시 올바른 패턴(Dispose 패턴)을 따르라는 경고  
+dotnet_diagnostic.CA1065.severity = warning # CA1065: 시스템 예외(System Exception) catch를 피하라는 경고  
+dotnet_diagnostic.CA1301.severity = warning # CA1301: 문화(Culture)-민감한 연산에서 명시적 Culture 정보를 사용하라는 경고  
+dotnet_diagnostic.CA1400.severity = warning # CA1400: 관리되지 않는(unmanaged) 리소스를 열 때 올바른 예외 처리를 하라는 경고  
+dotnet_diagnostic.CA1401.severity = warning # CA1401: 관리되지 않는 리소스를 사용하는 경우, IDisposable 구현을 올바르게 하라는 경고  
+dotnet_diagnostic.CA1403.severity = warning # CA1403: 관리되지 않는 리소스를 공개적으로 노출하지 말라는 경고  
+dotnet_diagnostic.CA1404.severity = warning # CA1404: 관리되지 않는 리소스를 안전하게 처리하라는 경고  
+dotnet_diagnostic.CA1405.severity = warning # CA1405: 관리되지 않는 코드 호출 시 안전 장치를 마련하라는 경고  
+dotnet_diagnostic.CA1410.severity = warning # CA1410: 플랫폼 호환성을 위해 특정 API 호출 사용을 피하라는 경고  
+dotnet_diagnostic.CA1415.severity = warning # CA1415: 교차 플랫폼 환경에서 지원되지 않는 API 사용을 피하라는 경고  
+dotnet_diagnostic.CA1821.severity = warning # CA1821: 불필요한 finalizer(소멸자)를 제거하라는 경고  
+dotnet_diagnostic.CA1900.severity = warning # CA1900: 네이티브 API 호출과 관련하여 성능 또는 보안 문제가 발생할 수 있음을 경고  
+dotnet_diagnostic.CA1901.severity = warning # CA1901: P/Invoke(플랫폼 호출)와 관련된 보안 위험 및 올바른 사용법을 경고  
+dotnet_diagnostic.CA2002.severity = warning # CA2002: 외부에서 접근 가능한(public) 객체에 대해 잠금(lock) 사용을 피하라는 경고  
+dotnet_diagnostic.CA2100.severity = warning # CA2100: SQL 쿼리 문자열을 동적으로 생성할 경우 SQL 인젝션 위험에 대해 경고  
+dotnet_diagnostic.CA2101.severity = warning # CA2101: 동적 코드 실행이나 네이티브 코드 호출과 관련된 보안 위험을 경고  
+dotnet_diagnostic.CA2108.severity = warning # CA2108: 위험할 수 있는 API 사용(예: 문자열 포맷 등)에 대해 검토하라는 경고  
+dotnet_diagnostic.CA2111.severity = warning # CA2111: 생성자에서 가상(virtual) 메서드를 호출하면 안 된다는 경고  
+dotnet_diagnostic.CA2112.severity = warning # CA2112: IDisposable 구현 시 기반 클래스의 Dispose 호출 방식에 주의하라는 경고  
+dotnet_diagnostic.CA2114.severity = warning # CA2114: 불필요하게 특정 예외를 catch하지 말라는 경고  
+dotnet_diagnostic.CA2116.severity = warning # CA2116: Dispose 메서드에서 base.Dispose 호출을 올바르게 하라는 경고  
+dotnet_diagnostic.CA2117.severity = warning # CA2117: 이벤트를 안전하게 노출하라는 경고 (예: delegate 누출 주의)  
+dotnet_diagnostic.CA2122.severity = warning # CA2122: 위험한 매개변수를 사용하는 메서드를 공개하지 말라는 경고  
+dotnet_diagnostic.CA2123.severity = warning # CA2123: Equals 메서드 오버로드 시 주의사항에 관한 경고  
+dotnet_diagnostic.CA2124.severity = warning # CA2124: 파생 클래스에서 재정의 가능한 멤버를 안전하게 노출하라는 경고  
+dotnet_diagnostic.CA2126.severity = warning # CA2126: 메서드 인수에 대해 올바른 유효성 검사를 하라는 경고  
+dotnet_diagnostic.CA2131.severity = warning # CA2131: IEnumerable 컬렉션을 반복(enumerate)할 때 다중 열거를 피하라는 경고  
+dotnet_diagnostic.CA2132.severity = warning # CA2132: LINQ 쿼리가 한 번만 실행되도록 하라는 경고  
+dotnet_diagnostic.CA2133.severity = warning # CA2133: LINQ 쿼리에서 불필요한 중간 컬렉션 생성을 피하라는 경고  
+dotnet_diagnostic.CA2134.severity = warning # CA2134: 비동기(async) 코드에서 차단(blocking) 동작을 피하라는 경고  
+dotnet_diagnostic.CA2137.severity = warning # CA2137: 비동기 메서드를 동기적으로 호출하지 말라는 경고  
+dotnet_diagnostic.CA2138.severity = warning # CA2138: 비동기 메서드는 반드시 await를 사용하라는 경고  
+dotnet_diagnostic.CA2140.severity = warning # CA2140: 리플렉션(reflection)을 통해 타입 안전성을 우회하지 말라는 경고  
+dotnet_diagnostic.CA2141.severity = warning # CA2141: 안전하지 않은(unsafe) 코드 사용 시 주의하라는 경고  
+dotnet_diagnostic.CA2146.severity = warning # CA2146: GC.SuppressFinalize를 올바르게 호출하라는 경고  
+dotnet_diagnostic.CA2147.severity = warning # CA2147: 예외 처리 시 보안 관련 주의사항을 검토하라는 경고  
+dotnet_diagnostic.CA2149.severity = warning # CA2149: 안전한 핸들(SafeHandle) 사용을 올바르게 구현하라는 경고  
+dotnet_diagnostic.CA2200.severity = warning # CA2200: 예외를 재던질 때 원래의 스택 추적을 보존하라는 경고  
+dotnet_diagnostic.CA2202.severity = warning # CA2202: 동일 객체를 여러 번 Dispose 하지 말라는 경고  
+dotnet_diagnostic.CA2207.severity = warning # CA2207: 예외를 다시 던질 때 'throw'만 사용하여 스택 추적을 보존하라는 경고  
+dotnet_diagnostic.CA2212.severity = warning # CA2212: 외부에서 접근 가능한 객체에 대해 'this'나 공개 객체를 잠그지 말라는 경고  
+dotnet_diagnostic.CA2213.severity = warning # CA2213: IDisposable 필드를 소유하는 타입은 IDisposable을 구현하라는 경고  
+dotnet_diagnostic.CA2214.severity = warning # CA2214: 이벤트를 virtual로 선언하지 말라는 경고  
+dotnet_diagnostic.CA2216.severity = warning # CA2216: IDisposable.Dispose를 오버라이드할 경우 메서드를 sealed로 선언하라는 경고  
+dotnet_diagnostic.CA2220.severity = warning # CA2220: 불필요한 finalizer(소멸자)를 제거하라는 경고  
+dotnet_diagnostic.CA2229.severity = warning # CA2229: 필요하지 않은 가비지 컬렉션 finalizer 사용을 피하라는 경고  
+dotnet_diagnostic.CA2231.severity = warning # CA2231: 인터페이스 멤버 구현 시 올바른 패턴을 따르라는 경고  
+dotnet_diagnostic.CA2232.severity = warning # CA2232: Windows Forms 관련 메서드에 올바른 특성을 지정하라는 경고  
+dotnet_diagnostic.CA2235.severity = warning # CA2235: 상속된 멤버를 숨기기 위해 'new' 키워드를 사용하지 말라는 경고  
+dotnet_diagnostic.CA2236.severity = warning # CA2236: 상속된 멤버를 숨길 때 충분한 이유가 없는 경우 피하라는 경고  
+dotnet_diagnostic.CA2237.severity = warning # CA2237: 사용자 정의 예외 대신 표준 예외를 사용하라는 권고  
+dotnet_diagnostic.CA2238.severity = warning # CA2238: Equals 메서드 구현 시 주의사항을 따르라는 경고  
+dotnet_diagnostic.CA2240.severity = warning # CA2240: 특성(Attribute)으로 사용되는 타입은 public이어야 한다는 경고  
+dotnet_diagnostic.CA2241.severity = warning # CA2241: 프로퍼티 getter에서 새로운 예외를 생성하지 말라는 경고  
+dotnet_diagnostic.CA2242.severity = warning # CA2242: 인덱서를 정의할 때 올바른 오버로드를 사용하라는 경고  
+
+dotnet_diagnostic.IDE0055.severity = silent # 자동 코드 포맷팅 관련 경고(IDE0055): 포맷팅 문제 경고를 표시하지 않음
+dotnet_diagnostic.IDE0073.severity = error # 파일 헤더가 필요하거나 헤더가 지정한 텍스트와 일치하지 않으면 오류 처리
+
+
+# StyleCop Code Analysis (스타일콥 관련 경고 설정)
+
+# 닫는 괄호 처음 공백 처리 경고 (SA1008)
+dotnet_diagnostic.SA1008.severity = none
+# 닫는 괄호 마지막 공백 관련 경고 (SA1009): 사용하지 않음
 dotnet_diagnostic.SA1009.severity = none
 
-# Hide warnings when using the new() expression from C# 9.
+# C# 9의 new() 표현식 사용 시 발생하는 경고 숨김
 dotnet_diagnostic.SA1000.severity = none
 
 dotnet_diagnostic.SA1011.severity = none
-dotnet_diagnostic.SA1101.severity = none
 
-# Hide warnings when accessing properties without "this".
+# using 지시문 관련 경고 숨김
 dotnet_diagnostic.SA1101.severity = none
 dotnet_diagnostic.SA1118.severity = none
 dotnet_diagnostic.SA1200.severity = none
@@ -367,30 +405,26 @@ dotnet_diagnostic.SA1201.severity = none
 dotnet_diagnostic.SA1202.severity = none
 dotnet_diagnostic.SA1309.severity = none
 dotnet_diagnostic.SA1310.severity = none
-
-# Hide warnings for record parameters.
+# 닫는 괄호 관련 경고 숨김
+dotnet_diagnostic.SA1013.severity = none
+# record 매개변수 관련 경고 숨김
 dotnet_diagnostic.SA1313.severity = none
 
-# TypeParameterNamesMustBeginWithT: We do have a few templates that don't start with T. We need to double check that changing this is not a breaking change. If not, we can re-enable this.
-dotnet_diagnostic.SA1314.severity = none
-
-# UseTrailingCommasInMultiLineInitializers: This would also mean a lot of changes at the end of all multiline initializers. It's also debatable if we want this or not.
+# 여러 줄 초기화 구문에서 끝에 쉼표 사용 경고 (SA1413) 숨김
 dotnet_diagnostic.SA1413.severity = none
 
 dotnet_diagnostic.SA1600.severity = none
 dotnet_diagnostic.SA1602.severity = none
 dotnet_diagnostic.SA1611.severity = none
 
-# DocumentationTextMustEndWithAPeriod: Let's enable this rule back when we shift to WinUI3 (v8.x). If we do it now, it would mean more than 400 file changes.
+# 문서 주석은 마침표로 끝나야 함(SA1629): WinUI3 전환 시점에 활성화할 예정
 dotnet_diagnostic.SA1629.severity = none
 
 dotnet_diagnostic.SA1633.severity = none
 dotnet_diagnostic.SA1634.severity = none
 dotnet_diagnostic.SA1652.severity = none
 
-
-
-# Additional Stylecop Analyzers
+# Additional Stylecop Analyzers (추가 StyleCop 분석기 경고)
 dotnet_diagnostic.SA1111.severity = none
 dotnet_diagnostic.SA1121.severity = none
 dotnet_diagnostic.SA1204.severity = none
@@ -398,18 +432,16 @@ dotnet_diagnostic.SA1208.severity = none
 dotnet_diagnostic.SA1518.severity = none
 dotnet_diagnostic.SA1615.severity = none
 dotnet_diagnostic.SA1502.severity = none
-dotnet_diagnostic.SA1010.severity = none # Opening square brackets should not be preceded by a space
-                                         # conflicts with collection expressions and IDE0028
+dotnet_diagnostic.SA1010.severity = none  # 여는 대괄호 앞 공백 경고 (컬렉션 표현식과 충돌)
 
-# Suppress some ValueConverter warnings
-dotnet_diagnostic.WPF0073.severity = none # Add ValueConversion attribute (unknown types)
-dotnet_diagnostic.WPF0071.severity = none # Add ValueConversion attribute
-dotnet_diagnostic.WPF0070.severity = none # Add default field to converter
+# ValueConverter 관련 경고 숨김: ValueConversion 어트리뷰트 추가 권장 관련
+dotnet_diagnostic.WPF0073.severity = none  # ValueConversion 어트리뷰트 추가 권장 (알 수 없는 타입)
+dotnet_diagnostic.WPF0071.severity = none  # ValueConversion 어트리뷰트 추가 권장
+dotnet_diagnostic.WPF0070.severity = none  # 기본 필드 추가 권장
 
-# Suppress some IDE warnings
-dotnet_diagnostic.IDE0290.severity = none # Use primary constructor
-dotnet_diagnostic.CS1591.severity = none # Missing XML comment for publicly visible type or member
-                                         # 15000+ warnings in the solution
-dotnet_diagnostic.CA1510.severity = none # Use ArgumentNullException throw helper
-                                         # doesn't work with older versions of .NET
-                                         
+# 일부 IDE 경고 숨김
+dotnet_diagnostic.IDE0290.severity = none  # 주 생성자(primary constructor) 사용 권장 경고 숨김
+dotnet_diagnostic.CS1591.severity = none  # 공개 타입/멤버의 XML 주석 누락 경고 숨김 (경고 수가 매우 많음)
+dotnet_diagnostic.CA1510.severity = none  # ArgumentNullException 헬퍼 사용 권장 경고 숨김 (이전 .NET 버전과의 호환성 문제)
+
+dotnet_diagnostic.SA1117.severity = warning

@@ -1,4 +1,4 @@
-﻿// This Source Code Form is subject to the terms of the MIT License.
+// This Source Code Form is subject to the terms of the MIT License.
 // If a copy of the MIT was not distributed with this file, You can obtain one at https://opensource.org/licenses/MIT.
 // Copyright (C) Leszek Pomianowski and WPF UI Contributors.
 // All Rights Reserved.
@@ -15,7 +15,7 @@ public partial class IconsPage : INavigableView<IconsViewModel>
 {
     public IconsViewModel ViewModel { get; }
 
-    public IconsPage(IconsViewModel viewModel)
+    public IconsPage( IconsViewModel viewModel )
     {
         ViewModel = viewModel;
         DataContext = this;

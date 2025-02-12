@@ -38,7 +38,7 @@ public class ThemeResourceExtension : DynamicResourceExtension
     /// Initializes a new instance of the <see cref="ThemeResourceExtension"/> class.
     /// Takes the resource key that this is a static reference to.
     /// </summary>
-    public ThemeResourceExtension(ThemeResource resourceKey)
+    public ThemeResourceExtension(ThemeResource resourceKey )
     {
         if (resourceKey == ThemeResource.Unknown)
         {

@@ -7,7 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using Wpf.Ui.Internal;
 
-namespace Wpf.Ui.Controls.Ribbon;
+namespace Wpf.Ui.Controls;
 
 public class RibbonScrollViewer : ScrollViewer
 {
