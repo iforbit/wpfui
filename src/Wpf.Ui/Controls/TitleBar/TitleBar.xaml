@@ -177,8 +177,8 @@
                                 <controls:TitleBarButton
                                     x:Name="PART_MaximizeButton"
                                     Grid.Column="2"
-                                    ButtonType="Maximize" 
-                                    IsHitTestVisible="False"/>
+                                    ButtonType="Maximize"
+                                    IsHitTestVisible="False" />
 
                                 <controls:TitleBarButton
                                     x:Name="PART_CloseButton"

@@ -17,7 +17,7 @@
     <PackageVersion Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.2428" />
     <PackageVersion Include="NativeMethods" Version="0.0.3" />
     <PackageVersion Include="NSubstitute" Version="5.1.0" />
-    <PackageVersion Include="PolySharp" Version="1.14.1" />
+    <PackageVersion Include="PolySharp" Version="1.15.0" />
     <PackageVersion Include="ReflectionEventing" Version="3.0.1" />
     <PackageVersion Include="ReflectionEventing.DependencyInjection" Version="3.0.1" />
     <PackageVersion Include="StyleCop.Analyzers" Version="1.1.118" />

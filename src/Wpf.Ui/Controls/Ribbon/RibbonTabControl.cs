@@ -56,10 +56,6 @@ public class RibbonTabControl : Selector, IDropDownControl, ILogicalChildSupport
     private ObservableCollection<UIElement>? toolBarItems;
 
     // ToolBar panel
-
-    /// <summary>
-    /// Event which is fired when the, maybe listening, <see cref="Backstage"/> should be closed
-    /// </summary>
     public event EventHandler? RequestBackstageClose;
 
     /// <inheritdoc />

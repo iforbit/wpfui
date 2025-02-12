@@ -7,11 +7,11 @@ using System.Collections;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Markup;
 using Wpf.Ui.Controls.Collections;
 using Wpf.Ui.Controls.Data;
 using Wpf.Ui.Controls.Helpers;
-using Wpf.Ui.Extensions;
 using Wpf.Ui.Internal.KnowBoxes;
 
 namespace Wpf.Ui.Controls;
@@ -40,6 +40,16 @@ public class Ribbon : Control, ILogicalChildSupport
     }
 
     /// <summary>
+    /// Minimal width of ribbon parent window
+    /// </summary>
+    public const double MinimalVisibleWidth = 300;
+
+    /// <summary>
+    /// Minimal height of ribbon parent window
+    /// </summary>
+    public const double MinimalVisibleHeight = 250;
+
+    /// <summary>
     /// gets collection of ribbon tabs
     /// </summary>
     private ObservableCollection<RibbonTabItem>? tabs;
@@ -63,94 +73,11 @@ public class Ribbon : Control, ILogicalChildSupport
     }
 
     /// <summary>
-    /// Handles collection of ribbon tab items changes
+    /// Gets or sets the source of items used to generate the content of the Ribbon.
     /// </summary>
-    /// <param name="sender">Sender</param>
-    /// <param name="e">The event data</param>
-    private void OnTabItemsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    public IEnumerable? ItemsSource
     {
-        switch (e.Action)
-        {
-            case NotifyCollectionChangedAction.Add:
-            case NotifyCollectionChangedAction.Replace:
-            {
-                var isSimplified = this.IsSimplified;
-                foreach (ISimplifiedStateControl item in e.NewItems.NullSafe().OfType<ISimplifiedStateControl>())
-                {
-                    item.UpdateSimplifiedState(isSimplified);
-                }
-            }
-
-            break;
-
-            case NotifyCollectionChangedAction.Reset:
-            {
-                var isSimplified = this.IsSimplified;
-                foreach (ISimplifiedStateControl item in this.Tabs.OfType<ISimplifiedStateControl>())
-                {
-                    item.UpdateSimplifiedState(isSimplified);
-                }
-            }
-
-            break;
-        }
-    }
-
-    /// <summary>Identifies the <see cref="ItemsSource"/> dependency property.</summary>
-    public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.Register(
-        nameof(ItemsSource),
-        typeof(object),
-        typeof(Ribbon),
-        new FrameworkPropertyMetadata(null, OnItemsSourceChanged)
-    );
-
-    private static void OnItemsSourceChanged(DependencyObject? d, DependencyPropertyChangedEventArgs e)
-    {
-        if (d is not Ribbon ribbon)
-        {
-            return;
-        }
-
-        ribbon.Tabs.Clear();
-
-        if (e.NewValue is IEnumerable newItemsSource and not string)
-        {
-            foreach (var item in newItemsSource)
-            {
-                if (item is RibbonTabItem tabItem)
-                {
-                    ribbon.Tabs.Add(tabItem);
-                }
-                else
-                {
-                    // 로그 남기거나 예외 처리
-                }
-            }
-        }
-        else if (e.NewValue != null)
-        {
-            if (e.NewValue is RibbonTabItem tabItem)
-            {
-                ribbon.Tabs.Add(tabItem);
-            }
-            else
-            {
-                // 로그 남기거나 예외 처리
-            }
-        }
-
-        if (e.NewValue is INotifyCollectionChanged oc)
-        {
-            oc.CollectionChanged += (s, e) =>
-                ribbon.OnTabItemsCollectionChanged(ribbon.Tabs, e);
-        }
-    }
-
-    /// <inheritdoc/>
-    [Bindable(true)]
-    public object? ItemsSource
-    {
-        get => GetValue(ItemsSourceProperty);
+        get => (IEnumerable?)GetValue(ItemsSourceProperty);
         set
         {
             if (value is null)
@@ -161,6 +88,115 @@ public class Ribbon : Control, ILogicalChildSupport
             {
                 SetValue(ItemsSourceProperty, value);
             }
+        }
+    }
+
+    /// <summary>
+    /// ItemsSource 속성을 추가하여 RibbonTabItem 리스트를 바인딩할 수 있도록 합니다.
+    /// </summary>
+    public static readonly DependencyProperty ItemsSourceProperty =
+        DependencyProperty.Register(
+            nameof(ItemsSource),
+            typeof(IEnumerable),
+            typeof(Ribbon),
+            new PropertyMetadata(null, OnItemsSourceChanged));
+
+    private static void OnItemsSourceChanged(DependencyObject? d, DependencyPropertyChangedEventArgs e)
+    {
+        if (d is not Ribbon ribbon)
+        {
+            return;
+        }
+
+        // 기존 탭 초기화
+        ribbon.Tabs.Clear();
+
+        // 새 ItemsSource가 IEnumerable일 경우, RibbonTabItem만 필터링하여 추가
+        if (e.NewValue is IEnumerable newItems)
+        {
+            foreach (var item in newItems)
+            {
+                if (item is RibbonTabItem tabItem)
+                {
+                    ribbon.Tabs.Add(tabItem);
+                }
+            }
+
+            // 만약 ItemsSource가 INotifyCollectionChanged를 구현한다면,
+            // CollectionChanged 이벤트를 구독하여 동적으로 변경 내용을 반영하도록 할 수 있습니다.
+            if (e.NewValue is INotifyCollectionChanged notifyCollection)
+            {
+                // 이벤트 구독 예제 (구독 해제 로직도 필요)
+                notifyCollection.CollectionChanged += ribbon.OnItemsSourceCollectionChanged;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Handles CollectionChanged events raised from ItemsSource.
+    /// </summary>
+    private void OnItemsSourceCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        // 간단한 예시로 Reset 시 전체 새로고침, Add 시 개별 추가 등으로 처리합니다.
+        // 실제 구현 시 추가/제거, 교체, 이동 등의 경우를 세분화해서 처리할 수 있습니다.
+        if (e.Action == NotifyCollectionChangedAction.Reset)
+        {
+            this.Tabs.Clear();
+            if (sender is IEnumerable newItems)
+            {
+                foreach (RibbonTabItem item in newItems.OfType<RibbonTabItem>())
+                {
+                    this.Tabs.Add(item);
+                }
+            }
+        }
+        else if (e.Action == NotifyCollectionChangedAction.Add && e.NewItems != null)
+        {
+            foreach (RibbonTabItem item in e.NewItems.OfType<RibbonTabItem>())
+            {
+                this.Tabs.Add(item);
+            }
+        }
+
+        // 필요한 경우 Remove, Replace, Move에 대한 처리 추가 가능
+    }
+
+    /// <summary>
+    /// Handles changes in the Tabs collection.
+    /// </summary>
+    private void OnTabItemsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        bool isSimplified = this.IsSimplified;
+        switch (e.Action)
+        {
+            case NotifyCollectionChangedAction.Add:
+            case NotifyCollectionChangedAction.Replace:
+                if (e.NewItems != null)
+                {
+                    foreach (var item in e.NewItems)
+                    {
+                        if (item is ISimplifiedStateControl simplifiedControl)
+                        {
+                            simplifiedControl.UpdateSimplifiedState(isSimplified);
+                        }
+                    }
+                }
+
+                break;
+            case NotifyCollectionChangedAction.Reset:
+                foreach (RibbonTabItem item in this.Tabs)
+                {
+                    if (item is ISimplifiedStateControl simplifiedControl)
+                    {
+                        simplifiedControl.UpdateSimplifiedState(isSimplified);
+                    }
+                }
+
+                break;
+
+            // 필요에 따라 Remove, Move 액션에 대한 처리 추가 가능
+            default:
+                break;
         }
     }
 
@@ -431,14 +467,43 @@ public class Ribbon : Control, ILogicalChildSupport
         ribbon.IsCollapsedChanged?.Invoke(ribbon, e);
     }
 
+    /// <summary>
+    /// Gets or sets a value indicating whether defines if the Ribbon should automatically set <see cref="IsCollapsed"/> when the width or height of the owner window drop under <see cref="MinimalVisibleWidth"/> or <see cref="MinimalVisibleHeight"/>
+    /// </summary>
+    public bool IsAutomaticCollapseEnabled
+    {
+        get => (bool)this.GetValue(IsAutomaticCollapseEnabledProperty);
+        set => this.SetValue(IsAutomaticCollapseEnabledProperty, BooleanBoxes.Box(value));
+    }
+
+    /// <summary>Identifies the <see cref="IsAutomaticCollapseEnabled"/> dependency property.</summary>
+    public static readonly DependencyProperty IsAutomaticCollapseEnabledProperty =
+        DependencyProperty.Register(nameof(IsAutomaticCollapseEnabled), typeof(bool), typeof(Ribbon), new PropertyMetadata(BooleanBoxes.TrueBox, OnIsAutomaticCollapseEnabledChanged));
+
+    /// <summary>
+    /// Gets toggle ribbon minimize command
+    /// </summary>
+    public static readonly RoutedCommand ToggleMinimizeTheRibbonCommand = new(nameof(ToggleMinimizeTheRibbonCommand), typeof(Ribbon));
+
+    /// <summary>
+    /// Gets Switch to classic ribbon command
+    /// </summary>
+    public static readonly RoutedCommand SwitchToTheClassicRibbonCommand = new(nameof(SwitchToTheClassicRibbonCommand), typeof(Ribbon));
+
+    /// <summary>
+    /// Gets Switch to simplified ribbon command
+    /// </summary>
+    public static readonly RoutedCommand SwitchToTheSimplifiedRibbonCommand = new(nameof(SwitchToTheSimplifiedRibbonCommand), typeof(Ribbon));
+
     static Ribbon()
     {
         DefaultStyleKeyProperty.OverrideMetadata(typeof(Ribbon), new FrameworkPropertyMetadata(typeof(Ribbon)));
 
         // Subscribe to menu commands
-        // CommandManager.RegisterClassCommandBinding(typeof(Ribbon), new CommandBinding(ToggleMinimizeTheRibbonCommand, OnToggleMinimizeTheRibbonCommandExecuted, OnToggleMinimizeTheRibbonCommandCanExecute));
-        // CommandManager.RegisterClassCommandBinding(typeof(Ribbon), new CommandBinding(SwitchToTheClassicRibbonCommand, OnSwitchToTheClassicRibbonCommandExecuted, OnSwitchTheRibbonCommandCanExecute));
-        // CommandManager.RegisterClassCommandBinding(typeof(Ribbon), new CommandBinding(SwitchToTheSimplifiedRibbonCommand, OnSwitchToTheSimplifiedRibbonCommandExecuted, OnSwitchTheRibbonCommandCanExecute));
+        CommandManager.RegisterClassCommandBinding(typeof(Ribbon), new CommandBinding(ToggleMinimizeTheRibbonCommand, OnToggleMinimizeTheRibbonCommandExecuted, OnToggleMinimizeTheRibbonCommandCanExecute));
+        CommandManager.RegisterClassCommandBinding(typeof(Ribbon), new CommandBinding(SwitchToTheClassicRibbonCommand, OnSwitchToTheClassicRibbonCommandExecuted, OnSwitchTheRibbonCommandCanExecute));
+        CommandManager.RegisterClassCommandBinding(typeof(Ribbon), new CommandBinding(SwitchToTheSimplifiedRibbonCommand, OnSwitchToTheSimplifiedRibbonCommandExecuted, OnSwitchTheRibbonCommandCanExecute));
+
         // CommandManager.RegisterClassCommandBinding(typeof(Ribbon), new CommandBinding(CustomizeTheRibbonCommand, OnCustomizeTheRibbonCommandExecuted, OnCustomizeTheRibbonCommandCanExecute));
     }
 
@@ -448,6 +513,71 @@ public class Ribbon : Control, ILogicalChildSupport
         this.VerticalAlignment = VerticalAlignment.Top;
         this.Loaded += this.OnLoaded;
         this.Unloaded += this.OnUnloaded;
+    }
+
+    private void OnSizeChanged(object sender, SizeChangedEventArgs e)
+    {
+        this.MaintainIsCollapsed();
+    }
+
+    private static void OnIsAutomaticCollapseEnabledChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        ((Ribbon)d).MaintainIsCollapsed();
+    }
+
+    private void MaintainIsCollapsed()
+    {
+        if (this.IsAutomaticCollapseEnabled == false
+            || this.ownerWindow is null)
+        {
+            return;
+        }
+
+        if (this.ownerWindow.ActualWidth < MinimalVisibleWidth
+            || this.ownerWindow.ActualHeight < MinimalVisibleHeight)
+        {
+            this.SetCurrentValue(IsCollapsedProperty, BooleanBoxes.TrueBox);
+        }
+        else
+        {
+            this.SetCurrentValue(IsCollapsedProperty, BooleanBoxes.FalseBox);
+        }
+    }
+
+    /// <inheritdoc />
+    protected override void OnGotFocus(RoutedEventArgs e)
+    {
+        var ribbonTabItem = (RibbonTabItem?)this.TabControl?.SelectedItem;
+        _ = ribbonTabItem?.Focus();
+    }
+
+    /// <inheritdoc />
+    public override void OnApplyTemplate()
+    {
+        // 기존 TabControl 이벤트 해제 및 CollectionSyncHelper Dispose
+        if (this.TabControl != null)
+        {
+            this.TabControl.SelectionChanged -= this.OnTabControlSelectionChanged;
+            this.tabsSync = null;
+        }
+
+        this.layoutRoot = this.GetTemplateChild("PART_LayoutRoot") as Panel;
+        this.TabControl = this.GetTemplateChild("PART_RibbonTabControl") as RibbonTabControl;
+
+        if (this.TabControl == null)
+        {
+            throw new InvalidOperationException("PART_RibbonTabControl not found in the template.");
+        }
+
+        this.TabControl.SelectionChanged += this.OnTabControlSelectionChanged;
+        this.tabsSync = new CollectionSyncHelper<RibbonTabItem>(this.Tabs, this.TabControl.Items);
+
+        // 이전 선택된 탭 복원 (있다면)
+        RibbonTabItem? selectedTab = this.SelectedTabItem ?? this.TabControl.SelectedItem as RibbonTabItem;
+        if (selectedTab != null)
+        {
+            this.TabControl.SetCurrentValue(System.Windows.Controls.Primitives.Selector.SelectedItemProperty, selectedTab);
+        }
     }
 
     public static void OnLogicalChildPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -497,32 +627,6 @@ public class Ribbon : Control, ILogicalChildSupport
         }
     }
 
-    /// <inheritdoc />
-    public override void OnApplyTemplate()
-    {
-        this.layoutRoot = this.GetTemplateChild("PART_LayoutRoot") as Panel;
-
-        RibbonTabItem? selectedTab = this.SelectedTabItem;
-        if (this.TabControl is not null)
-        {
-            this.TabControl.SelectionChanged -= this.OnTabControlSelectionChanged;
-            selectedTab = this.TabControl.SelectedItem as RibbonTabItem;
-
-            this.tabsSync?.Target.Clear();
-        }
-
-        this.TabControl = this.GetTemplateChild("PART_RibbonTabControl") as RibbonTabControl;
-
-        if (this.TabControl is not null)
-        {
-            this.TabControl.SelectionChanged += this.OnTabControlSelectionChanged;
-
-            this.tabsSync = new CollectionSyncHelper<RibbonTabItem>(this.Tabs, this.TabControl.Items);
-
-            this.TabControl.SetCurrentValue(System.Windows.Controls.Primitives.Selector.SelectedItemProperty, selectedTab);
-        }
-    }
-
     /// <summary>
     /// Called when the <see cref="ownerWindow"/> is closed, so that we set it to null.
     /// </summary>
@@ -540,6 +644,7 @@ public class Ribbon : Control, ILogicalChildSupport
         if (this.ownerWindow is not null)
         {
             this.ownerWindow.Closed += this.OnOwnerWindowClosed;
+            this.ownerWindow.SizeChanged += this.OnSizeChanged;
         }
     }
 
@@ -552,6 +657,7 @@ public class Ribbon : Control, ILogicalChildSupport
             this.ribbonStateStorage = null;
 
             this.ownerWindow.Closed -= this.OnOwnerWindowClosed;
+            this.ownerWindow.SizeChanged -= this.OnSizeChanged;
         }
 
         this.ownerWindow = null;
@@ -574,19 +680,19 @@ public class Ribbon : Control, ILogicalChildSupport
     public bool AutomaticStateManagement
     {
         get => (bool)this.GetValue(AutomaticStateManagementProperty);
-        set => this.SetValue(AutomaticStateManagementProperty, value);
+        set => this.SetValue(AutomaticStateManagementProperty, BooleanBoxes.Box(value));
     }
 
     /// <summary>Identifies the <see cref="AutomaticStateManagement"/> dependency property.</summary>
     public static readonly DependencyProperty AutomaticStateManagementProperty =
-        DependencyProperty.Register(nameof(AutomaticStateManagement), typeof(bool), typeof(Ribbon), new PropertyMetadata(true, OnAutomaticStateManagementChanged, CoerceAutomaticStateManagement));
+        DependencyProperty.Register(nameof(AutomaticStateManagement), typeof(bool), typeof(Ribbon), new PropertyMetadata(BooleanBoxes.TrueBox, OnAutomaticStateManagementChanged, CoerceAutomaticStateManagement));
 
     private static object? CoerceAutomaticStateManagement(DependencyObject d, object? basevalue)
     {
         var ribbon = (Ribbon)d;
         if (ribbon.RibbonStateStorage.IsLoading)
         {
-            return false;
+            return BooleanBoxes.FalseBox;
         }
 
         return basevalue;
@@ -642,6 +748,51 @@ public class Ribbon : Control, ILogicalChildSupport
             {
                 yield return this.layoutRoot;
             }
+        }
+    }
+
+    // Occurs when customize toggle minimize command can execute handles
+    private static void OnToggleMinimizeTheRibbonCommandCanExecute(object sender, CanExecuteRoutedEventArgs e)
+    {
+        if (sender is Ribbon ribbon)
+        {
+            e.CanExecute = ribbon.CanMinimize;
+        }
+    }
+
+    // Occurs when toggle minimize command executed
+    private static void OnToggleMinimizeTheRibbonCommandExecuted(object sender, ExecutedRoutedEventArgs e)
+    {
+        if (sender is Ribbon ribbon)
+        {
+            ribbon.IsMinimized = !ribbon.IsMinimized;
+        }
+    }
+
+    // Occurs when customize switch ribbon command can execute handles
+    private static void OnSwitchTheRibbonCommandCanExecute(object sender, CanExecuteRoutedEventArgs e)
+    {
+        if (sender is Ribbon ribbon)
+        {
+            e.CanExecute = ribbon.CanUseSimplified;
+        }
+    }
+
+    // Occurs when switch ribbon command executed
+    private static void OnSwitchToTheClassicRibbonCommandExecuted(object sender, ExecutedRoutedEventArgs e)
+    {
+        if (sender is Ribbon ribbon)
+        {
+            ribbon.IsSimplified = false;
+        }
+    }
+
+    // Occurs when switch ribbon command executed
+    private static void OnSwitchToTheSimplifiedRibbonCommandExecuted(object sender, ExecutedRoutedEventArgs e)
+    {
+        if (sender is Ribbon ribbon)
+        {
+            ribbon.IsSimplified = true;
         }
     }
 }

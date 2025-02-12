@@ -61,7 +61,7 @@ public partial class MainWindowViewModel( IStringLocalizer<Translations> localiz
                 new NavigationViewItem(nameof(RadioButton), typeof(RadioButtonPage)),
                 new NavigationViewItem(nameof(RatingControl), typeof(RatingPage)),
                 new NavigationViewItem(nameof(ThumbRate), typeof(ThumbRatePage)),
-                new NavigationViewItem(nameof(SplitButton), typeof(SplitButtonPage)),
+                new NavigationViewItem(nameof(RibbonSplitButton), typeof(SplitButtonPage)),
                 new NavigationViewItem(nameof(Slider), typeof(SliderPage)),
             }
         },

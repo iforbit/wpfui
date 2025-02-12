@@ -5,7 +5,7 @@
 
 using System.Windows.Data;
 
-namespace Wpf.Ui.Controls.Converter;
+namespace Wpf.Ui.Converters;
 
 /// <summary>
 /// Used to convert from four double values to <see cref="CornerRadius"/>

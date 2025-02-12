@@ -3,7 +3,7 @@
 // Copyright (C) Leszek Pomianowski and WPF UI Contributors.
 // All Rights Reserved.
 
-namespace Wpf.Ui.Controls.Converter;
+namespace Wpf.Ui.Converters;
 
 /// <summary>
 /// Hold static instances of several commonly used converters.
@@ -19,4 +19,9 @@ public static class StaticConverters
     /// Get a static instance of <see cref="CornerRadiusConverter"/>
     /// </summary>
     public static readonly CornerRadiusConverter CornerRadiusConverter = new();
+
+    /// <summary>
+    /// Get a static instance of <see cref="ObjectToImageConverter"/>
+    /// </summary>
+    public static readonly ObjectToImageConverter ObjectToImageConverter = new();
 }

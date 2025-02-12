@@ -7,6 +7,8 @@ namespace Wpf.Ui.Demo.Mvvm.ViewModels;
 
 public partial class DashboardViewModel : ViewModel
 {
+    private readonly bool _isInitialized = false;
+
     [ObservableProperty]
     private int _counter = 0;
 
@@ -14,5 +16,16 @@ public partial class DashboardViewModel : ViewModel
     private void OnCounterIncrement()
     {
         Counter++;
+    }
+
+    public override void OnNavigatedTo()
+    {
+        if (!_isInitialized)
+        {
+            InitializeViewModel();
+        }
+    }
+    private void InitializeViewModel()
+    {
     }
 }

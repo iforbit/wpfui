@@ -69,7 +69,7 @@ public class SplitButton : Wpf.Ui.Controls.Button
 
     public SplitButton()
     {
-        Unloaded += static (sender, _ ) =>
+        Unloaded += static (sender, _) =>
         {
             var self = (SplitButton)sender;
 
@@ -77,7 +77,7 @@ public class SplitButton : Wpf.Ui.Controls.Button
         };
     }
 
-    private static void OnFlyoutChanged(DependencyObject d, DependencyPropertyChangedEventArgs e )
+    private static void OnFlyoutChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if (d is SplitButton dropDownButton)
         {
@@ -87,7 +87,7 @@ public class SplitButton : Wpf.Ui.Controls.Button
 
     /// <summary>This method is invoked when the <see cref="FlyoutProperty"/> changes.</summary>
     /// <param name="value">The new value of <see cref="FlyoutProperty"/>.</param>
-    protected virtual void OnFlyoutChanged(object value )
+    protected virtual void OnFlyoutChanged(object value)
     {
         if (value is ContextMenu contextMenu)
         {
@@ -97,7 +97,7 @@ public class SplitButton : Wpf.Ui.Controls.Button
         }
     }
 
-    private static void OnIsDropDownOpenChanged(DependencyObject d, DependencyPropertyChangedEventArgs e )
+    private static void OnIsDropDownOpenChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if (d is SplitButton dropDownButton)
         {
@@ -105,19 +105,19 @@ public class SplitButton : Wpf.Ui.Controls.Button
         }
     }
 
-    protected virtual void OnContextMenuClosed(object sender, RoutedEventArgs e )
+    protected virtual void OnContextMenuClosed(object sender, RoutedEventArgs e)
     {
         SetCurrentValue(IsDropDownOpenProperty, false);
     }
 
-    protected virtual void OnContextMenuOpened(object sender, RoutedEventArgs e )
+    protected virtual void OnContextMenuOpened(object sender, RoutedEventArgs e)
     {
         SetCurrentValue(IsDropDownOpenProperty, true);
     }
 
     /// <summary>This method is invoked when the <see cref="IsDropDownOpenProperty"/> changes.</summary>
     /// <param name="currentValue">The new value of <see cref="IsDropDownOpenProperty"/>.</param>
-    protected virtual void OnIsDropDownOpenChanged(bool currentValue ) { }
+    protected virtual void OnIsDropDownOpenChanged(bool currentValue) { }
 
     /// <inheritdoc />
     public override void OnApplyTemplate()
@@ -147,7 +147,7 @@ public class SplitButton : Wpf.Ui.Controls.Button
         SplitButtonToggleButton.Click -= OnSplitButtonToggleButtonOnClick;
     }
 
-    private void OnSplitButtonToggleButtonOnClick(object sender, RoutedEventArgs e )
+    private void OnSplitButtonToggleButtonOnClick(object sender, RoutedEventArgs e)
     {
         if (sender is not ToggleButton || _contextMenu is null)
         {

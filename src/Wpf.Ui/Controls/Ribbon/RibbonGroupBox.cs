@@ -8,8 +8,10 @@ using System.Collections.Specialized;
 using System.Windows.Automation.Peers;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 using System.Windows.Threading;
 using Wpf.Ui.Controls.Helpers;
 using Wpf.Ui.Extensions;
@@ -29,7 +31,6 @@ namespace Wpf.Ui.Controls;
 [TemplatePart(Name = "PART_ParentPanel", Type = typeof(Panel))]
 [TemplatePart(Name = "PART_SnappedImage", Type = typeof(Image))]
 [System.Diagnostics.DebuggerDisplay("{GetType().FullName}: Header = {Header}, Items.Count = {Items.Count}, State = {State}, IsSimplified = {IsSimplified}")]
-
 public class RibbonGroupBox : HeaderedItemsControl, IDropDownControl, IHeaderedControl, ILogicalChildSupport, IMediumIconProvider, ISimplifiedStateControl, ILargeIconProvider
 {
     private readonly ItemContainerGeneratorAction updateChildSizesItemContainerGeneratorAction;
@@ -153,7 +154,11 @@ public class RibbonGroupBox : HeaderedItemsControl, IDropDownControl, IHeaderedC
 
     /// <summary>Identifies the <see cref="State"/> dependency property.</summary>
     public static readonly DependencyProperty StateProperty =
-        DependencyProperty.Register(nameof(State), typeof(RibbonGroupBoxState), typeof(RibbonGroupBox), new PropertyMetadata(RibbonGroupBoxState.Large, OnStateChanged));
+        DependencyProperty.Register(
+            nameof(State),
+            typeof(RibbonGroupBoxState),
+            typeof(RibbonGroupBox),
+            new PropertyMetadata(RibbonGroupBoxState.Large, OnStateChanged));
 
     /// <summary>
     /// On state property changed
@@ -492,7 +497,11 @@ public class RibbonGroupBox : HeaderedItemsControl, IDropDownControl, IHeaderedC
 
     /// <summary>Identifies the <see cref="IsSeparatorVisible"/> dependency property.</summary>
     public static readonly DependencyProperty IsSeparatorVisibleProperty =
-        DependencyProperty.Register(nameof(IsSeparatorVisible), typeof(bool), typeof(RibbonGroupBox), new PropertyMetadata(BooleanBoxes.TrueBox));
+        DependencyProperty.Register(
+            nameof(IsSeparatorVisible),
+            typeof(bool),
+            typeof(RibbonGroupBox),
+            new PropertyMetadata(BooleanBoxes.TrueBox));
 
     /// <summary>
     /// Gets a value indicating whether gets or sets whether or not the ribbon is in simplified mode.
@@ -527,6 +536,11 @@ public class RibbonGroupBox : HeaderedItemsControl, IDropDownControl, IHeaderedC
         }
     }
 
+    /// <summary>
+    /// Dialog launcher btton click event
+    /// </summary>
+    public event RoutedEventHandler? LauncherClick;
+
     /// <inheritdoc />
     public event EventHandler? DropDownOpened;
 
@@ -546,6 +560,8 @@ public class RibbonGroupBox : HeaderedItemsControl, IDropDownControl, IHeaderedC
         _ = FontFamilyProperty.AddOwner(type, new FrameworkPropertyMetadata(OnFontFamilyChanged));
 
         PopupService.Attach(type);
+
+        // ContextMenuService.Attach(type);
     }
 
     private static void OnVisibilityChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -880,6 +896,16 @@ public class RibbonGroupBox : HeaderedItemsControl, IDropDownControl, IHeaderedC
     }
 
     /// <summary>
+    /// Dialog launcher button click handler
+    /// </summary>
+    /// <param name="sender">Sender</param>
+    /// <param name="e">the event data</param>
+    private void OnDialogLauncherButtonClick(object sender, RoutedEventArgs e)
+    {
+        this.LauncherClick?.Invoke(this, e);
+    }
+
+    /// <summary>
     /// Handles IsOpen propertyu changes
     /// </summary>
     /// <param name="d">Object</param>
@@ -906,8 +932,7 @@ public class RibbonGroupBox : HeaderedItemsControl, IDropDownControl, IHeaderedC
                     () =>
                     {
                         DependencyObject container = groupBox.ItemContainerGenerator.ContainerFromIndex(0);
-
-                        // DropDownButton.NavigateToContainer(container);
+                        RibbonDropDownButton.NavigateToContainer(container);
 
                         // Edge case: Whole dropdown content is disabled
                         if (groupBox.IsKeyboardFocusWithin == false)
@@ -952,6 +977,102 @@ public class RibbonGroupBox : HeaderedItemsControl, IDropDownControl, IHeaderedC
         this.RunInDispatcherAsync(() => Mouse.Capture(this, CaptureMode.SubTree), DispatcherPriority.Loaded);
     }
 
+    public virtual FrameworkElement CreateQuickAccessItem()
+    {
+        var groupBox = new RibbonGroupBox();
+
+        RibbonControl.BindQuickAccessItem(this, groupBox);
+
+        groupBox.DropDownOpened += this.OnQuickAccessOpened;
+        groupBox.DropDownClosed += this.OnQuickAccessClosed;
+
+        groupBox.State = RibbonGroupBoxState.QuickAccess;
+
+        RibbonControl.Bind(this, groupBox, nameof(this.ItemTemplateSelector), ItemTemplateSelectorProperty, BindingMode.OneWay);
+        RibbonControl.Bind(this, groupBox, nameof(this.ItemTemplate), ItemTemplateProperty, BindingMode.OneWay);
+        RibbonControl.Bind(this, groupBox, nameof(this.ItemsSource), ItemsSourceProperty, BindingMode.OneWay);
+        RibbonControl.Bind(this, groupBox, nameof(this.LauncherCommandParameter), LauncherCommandParameterProperty, BindingMode.OneWay);
+        RibbonControl.Bind(this, groupBox, nameof(this.LauncherCommand), LauncherCommandProperty, BindingMode.OneWay);
+        RibbonControl.Bind(this, groupBox, nameof(this.LauncherCommandTarget), LauncherCommandTargetProperty, BindingMode.OneWay);
+        RibbonControl.Bind(this, groupBox, nameof(this.LauncherText), LauncherTextProperty, BindingMode.OneWay);
+        RibbonControl.Bind(this, groupBox, nameof(this.LauncherToolTip), LauncherToolTipProperty, BindingMode.OneWay);
+        RibbonControl.Bind(this, groupBox, nameof(this.IsLauncherEnabled), IsLauncherEnabledProperty, BindingMode.OneWay);
+        RibbonControl.Bind(this, groupBox, nameof(this.IsLauncherVisible), IsLauncherVisibleProperty, BindingMode.OneWay);
+        groupBox.LauncherClick += this.LauncherClick;
+
+        if (this.Icon is not null)
+        {
+            if (this.Icon is Visual iconVisual)
+            {
+                var rect = new Rectangle
+                {
+                    Width = 16,
+                    Height = 16,
+                    Fill = new VisualBrush(iconVisual)
+                };
+                groupBox.Icon = rect;
+            }
+            else
+            {
+                RibbonControl.Bind(this, groupBox, nameof(this.Icon), RibbonControl.IconProperty, BindingMode.OneWay);
+            }
+        }
+
+        return groupBox;
+    }
+
+    private void OnQuickAccessOpened(object? sender, EventArgs e)
+    {
+        if (this.IsDropDownOpen == false
+            && this.IsSnapped == false)
+        {
+            var groupBox = (RibbonGroupBox?)sender;
+
+            // Save state
+            this.IsSnapped = true;
+
+            if (this.ItemsSource is null)
+            {
+                for (var i = 0; i < this.Items.Count; i++)
+                {
+                    var item = this.Items[0];
+                    this.Items.Remove(item);
+                    _ = groupBox?.Items.Add(item);
+                    i--;
+                }
+            }
+        }
+    }
+
+    private void OnQuickAccessClosed(object? sender, EventArgs e)
+    {
+        var groupBox = (RibbonGroupBox?)sender;
+
+        if (this.ItemsSource is null
+            && groupBox is not null)
+        {
+            for (var i = 0; i < groupBox.Items.Count; i++)
+            {
+                var item = groupBox.Items[0];
+                groupBox.Items.Remove(item);
+                _ = this.Items.Add(item);
+                i--;
+            }
+        }
+
+        this.IsSnapped = false;
+    }
+
+    public bool CanAddToQuickAccessToolBar
+    {
+        get => (bool)this.GetValue(CanAddToQuickAccessToolBarProperty);
+        set => this.SetValue(CanAddToQuickAccessToolBarProperty, BooleanBoxes.Box(value));
+    }
+
+    /// <summary>Identifies the <see cref="CanAddToQuickAccessToolBar"/> dependency property.</summary>
+    public static readonly DependencyProperty CanAddToQuickAccessToolBarProperty =
+        DependencyProperty.Register(nameof(CanAddToQuickAccessToolBar), typeof(bool), typeof(RibbonGroupBox), new PropertyMetadata(BooleanBoxes.TrueBox, RibbonControl.OnCanAddToQuickAccessToolBarChanged));
+
     /// <inheritdoc />
     public void UpdateSimplifiedState(bool isSimplified)
     {
@@ -975,7 +1096,7 @@ public class RibbonGroupBox : HeaderedItemsControl, IDropDownControl, IHeaderedC
     {
         get
         {
-            System.Collections.IEnumerator baseEnumerator = base.LogicalChildren;
+            IEnumerator baseEnumerator = base.LogicalChildren;
             while (baseEnumerator?.MoveNext() == true)
             {
                 yield return baseEnumerator.Current;

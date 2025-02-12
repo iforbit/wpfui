@@ -269,8 +269,9 @@ public class RibbonGroupBoxWrapPanel : Panel
                     curLineSize = new(this.Orientation);
                 }
             }
-            else // continue to accumulate a line
+            else
             {
+                // continue to accumulate a line
                 curLineSize.U += sz.U;
                 curLineSize.V = Math.Max(sz.V, curLineSize.V);
             }
@@ -408,8 +409,9 @@ public class RibbonGroupBoxWrapPanel : Panel
                 firstInLine = i;
                 ++currentColumn;
             }
-            else // continue to accumulate a line
+            else
             {
+                // continue to accumulate a line
                 curLineSize.U += sz.U;
                 curLineSize.V = Math.Max(sz.V, curLineSize.V);
             }

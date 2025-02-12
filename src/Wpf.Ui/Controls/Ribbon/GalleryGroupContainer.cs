@@ -1,0 +1,132 @@
+// This Source Code Form is subject to the terms of the MIT License.
+// If a copy of the MIT was not distributed with this file, You can obtain one at https://opensource.org/licenses/MIT.
+// Copyright (C) Leszek Pomianowski and WPF UI Contributors.
+// All Rights Reserved.
+
+using System.Windows.Controls;
+using Wpf.Ui.Internal.KnowBoxes;
+
+namespace Wpf.Ui.Controls;
+
+/// <summary>
+/// Represents container of grouped gallery items in GalleryPanel or Gallery
+/// </summary>
+public class GalleryGroupContainer : HeaderedItemsControl
+{
+    /// <summary>
+    /// Gets or sets a value indicating whether gets or sets whether the header must be shown.
+    /// When the property is false this control uses to show all items without grouping
+    /// </summary>
+    public bool IsHeadered
+    {
+        get => (bool)this.GetValue(IsHeaderedProperty);
+        set => this.SetValue(IsHeaderedProperty, BooleanBoxes.Box(value));
+    }
+
+    /// <summary>Identifies the <see cref="IsHeadered"/> dependency property.</summary>
+    public static readonly DependencyProperty IsHeaderedProperty =
+        DependencyProperty.Register(
+            nameof(IsHeadered),
+            typeof(bool),
+            typeof(GalleryGroupContainer),
+            new PropertyMetadata(BooleanBoxes.TrueBox));
+
+    /// <summary>
+    /// Gets or sets panel orientation
+    /// </summary>
+    public Orientation Orientation
+    {
+        get => (Orientation)this.GetValue(OrientationProperty);
+        set => this.SetValue(OrientationProperty, value);
+    }
+
+    /// <summary>Identifies the <see cref="Orientation"/> dependency property.</summary>
+    public static readonly DependencyProperty OrientationProperty =
+        DependencyProperty.Register(
+            nameof(Orientation),
+            typeof(Orientation),
+            typeof(GalleryGroupContainer),
+            new PropertyMetadata(Orientation.Horizontal));
+
+    /// <summary>
+    /// Gets or sets a value that specifies the width of
+    /// all items that are contained within
+    /// </summary>
+    public double ItemWidth
+    {
+        get => (double)this.GetValue(ItemWidthProperty);
+        set => this.SetValue(ItemWidthProperty, value);
+    }
+
+    /// <summary>Identifies the <see cref="ItemWidth"/> dependency property.</summary>
+    public static readonly DependencyProperty ItemWidthProperty =
+        DependencyProperty.Register(
+            nameof(ItemWidth),
+            typeof(double),
+            typeof(GalleryGroupContainer),
+            new PropertyMetadata(DoubleBoxes.NaN));
+
+    /// <summary>
+    /// Gets or sets a value that specifies the height of
+    /// all items that are contained within
+    /// </summary>
+    public double ItemHeight
+    {
+        get => (double)this.GetValue(ItemHeightProperty);
+        set => this.SetValue(ItemHeightProperty, value);
+    }
+
+    /// <summary>Identifies the <see cref="ItemHeight"/> dependency property.</summary>
+    public static readonly DependencyProperty ItemHeightProperty =
+        DependencyProperty.Register(
+            nameof(ItemHeight),
+            typeof(double),
+            typeof(GalleryGroupContainer),
+            new PropertyMetadata(DoubleBoxes.NaN));
+
+    /// <summary>
+    /// Gets or sets minimum items in which should be placed in one row.
+    /// </summary>
+    public int MinItemsInRow
+    {
+        get => (int)this.GetValue(MinItemsInRowProperty);
+        set => this.SetValue(MinItemsInRowProperty, value);
+    }
+
+    /// <summary>Identifies the <see cref="MinItemsInRow"/> dependency property.</summary>
+    public static readonly DependencyProperty MinItemsInRowProperty =
+        DependencyProperty.Register(
+            nameof(MinItemsInRow),
+            typeof(int),
+            typeof(GalleryGroupContainer),
+            new FrameworkPropertyMetadata(IntBoxes.Zero, FrameworkPropertyMetadataOptions.AffectsMeasure));
+
+    /// <summary>
+    /// Gets or sets maximum items in which should be placed in one row.
+    /// </summary>
+    public int MaxItemsInRow
+    {
+        get => (int)this.GetValue(MaxItemsInRowProperty);
+        set => this.SetValue(MaxItemsInRowProperty, value);
+    }
+
+    /// <summary>Identifies the <see cref="MaxItemsInRow"/> dependency property.</summary>
+    public static readonly DependencyProperty MaxItemsInRowProperty = DependencyProperty.Register(nameof(MaxItemsInRow), typeof(int), typeof(GalleryGroupContainer), new FrameworkPropertyMetadata(IntBoxes.Zero, FrameworkPropertyMetadataOptions.AffectsMeasure));
+
+    /// <summary>
+    /// Initializes static members of the <see cref="GalleryGroupContainer"/> class.
+    /// Static constructor
+    /// </summary>
+    static GalleryGroupContainer()
+    {
+        DefaultStyleKeyProperty.OverrideMetadata(typeof(GalleryGroupContainer), new FrameworkPropertyMetadata(typeof(GalleryGroupContainer)));
+    }
+
+    /// <inheritdoc />
+    protected override void OnItemsPanelChanged(ItemsPanelTemplate oldItemsPanel, ItemsPanelTemplate newItemsPanel)
+    {
+        base.OnItemsPanelChanged(oldItemsPanel, newItemsPanel);
+
+        this.InvalidateMeasure();
+    }
+}

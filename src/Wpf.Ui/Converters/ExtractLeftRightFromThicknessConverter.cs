@@ -5,7 +5,7 @@
 
 using System.Windows.Data;
 
-namespace Wpf.Ui.Controls.Converter;
+namespace Wpf.Ui.Converters;
 
 /// <summary>
 /// Used to convert the left and right values from an input <see cref="Thickness"/> to an output <see cref="Thickness"/>.

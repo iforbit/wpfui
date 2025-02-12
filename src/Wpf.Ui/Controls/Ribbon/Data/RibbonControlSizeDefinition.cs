@@ -3,7 +3,7 @@
 // Copyright (C) Leszek Pomianowski and WPF UI Contributors.
 // All Rights Reserved.
 
-using Wpf.Ui.Controls.Converter;
+using Wpf.Ui.Converters;
 
 namespace Wpf.Ui.Controls;
 

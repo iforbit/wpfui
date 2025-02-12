@@ -3,12 +3,14 @@
 // Copyright (C) Leszek Pomianowski and WPF UI Contributors.
 // All Rights Reserved.
 
-namespace Wpf.Ui.Controls.Converter;
+using Wpf.Ui.Controls;
+
+namespace Wpf.Ui.Converters;
 
 /// <summary>
-/// Class which enables conversion from <see cref="string"/> to <see cref="RibbonControlSizeDefinition"/>
+/// Class which enables conversion from <see cref="string"/> to <see cref="RibbonGroupBoxStateDefinition"/>
 /// </summary>
-public class SizeDefinitionConverter : TypeConverter
+public class RibbonGroupBoxStateDefinitionConverter : TypeConverter
 {
     /// <inheritdoc />
     public override bool CanConvertFrom(ITypeDescriptorContext? context, Type sourceType)
@@ -19,6 +21,6 @@ public class SizeDefinitionConverter : TypeConverter
     /// <inheritdoc />
     public override object ConvertFrom(ITypeDescriptorContext? context, CultureInfo? culture, object value)
     {
-        return new RibbonControlSizeDefinition(value as string);
+        return new RibbonGroupBoxStateDefinition(value as string);
     }
 }

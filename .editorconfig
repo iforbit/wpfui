@@ -443,3 +443,5 @@ dotnet_diagnostic.WPF0070.severity = none  # 기본 필드 추가 권장
 dotnet_diagnostic.IDE0290.severity = none  # 주 생성자(primary constructor) 사용 권장 경고 숨김
 dotnet_diagnostic.CS1591.severity = none  # 공개 타입/멤버의 XML 주석 누락 경고 숨김 (경고 수가 매우 많음)
 dotnet_diagnostic.CA1510.severity = none  # ArgumentNullException 헬퍼 사용 권장 경고 숨김 (이전 .NET 버전과의 호환성 문제)
+
+dotnet_diagnostic.SA1117.severity = warning
