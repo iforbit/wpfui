@@ -40,7 +40,7 @@ public class GrayscaleEffect : ShaderEffect
 
     private PixelShader CreatePixelShader()
     {
-        var pixelShader = new PixelShader { UriSource = new Uri("pack://application:,,,/Wpf.Ui.Demo.Mvvm;component/Themes/Effects/Grayscale.ps", UriKind.RelativeOrAbsolute) };
+        var pixelShader = new PixelShader { UriSource = new Uri("pack://application:,,,/Wpf.Ui;component/Resources/Theme/Effects/Grayscale.ps", UriKind.RelativeOrAbsolute) };
 
         return pixelShader;
     }

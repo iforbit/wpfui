@@ -24,6 +24,7 @@
   <ItemGroup>
     <Resource Include="Resources\Fonts\FluentSystemIcons-Filled.ttf" />
     <Resource Include="Resources\Fonts\FluentSystemIcons-Regular.ttf" />
+    <Resource Include="Resources\Theme\Effects\Grayscale.ps" />
   </ItemGroup>
 
   <ItemGroup>

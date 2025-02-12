@@ -65,7 +65,6 @@
     <None Remove="Images\Underline.png" />
     <None Remove="Images\Yellow.png" />
     <None Remove="Images\YellowLarge.png" />
-    <None Remove="Themes\Effects\Grayscale.ps" />
   </ItemGroup>
 
   <ItemGroup>
@@ -124,7 +123,10 @@
     <Resource Include="Images\VectorIcons.xaml" />
     <Resource Include="Images\Yellow.png" />
     <Resource Include="Images\YellowLarge.png" />
-    <Resource Include="Themes\Effects\Grayscale.ps" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Themes\" />
   </ItemGroup>
 
 </Project>
