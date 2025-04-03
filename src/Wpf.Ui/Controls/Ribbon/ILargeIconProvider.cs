@@ -32,5 +32,9 @@ public class LargeIconProviderProperties : DependencyObject
     /// <summary>
     /// <see cref="DependencyProperty"/> for <see cref="ILargeIconProvider.LargeIcon"/>.
     /// </summary>
-    public static readonly DependencyProperty LargeIconProperty = DependencyProperty.Register(nameof(ILargeIconProvider.LargeIcon), typeof(object), typeof(LargeIconProviderProperties), new PropertyMetadata(LogicalChildSupportHelper.OnLogicalChildPropertyChanged));
+    public static readonly DependencyProperty LargeIconProperty = DependencyProperty.Register(nameof(ILargeIconProvider.LargeIcon), typeof(object), typeof(LargeIconProviderProperties), new FrameworkPropertyMetadata(
+            default,
+            FrameworkPropertyMetadataOptions.None,
+            LogicalChildSupportHelper.OnLogicalChildPropertyChanged,
+            IconElement.Coerce));
 }

@@ -25,6 +25,7 @@ public enum ThemeResource
     SystemAccentColorPrimary,
     SystemAccentColorSecondary,
     SystemAccentColorTertiary,
+    SystemAccentColorBrush,
     SystemAccentColorPrimaryBrush,
     SystemAccentColorSecondaryBrush,
     SystemAccentColorTertiaryBrush,

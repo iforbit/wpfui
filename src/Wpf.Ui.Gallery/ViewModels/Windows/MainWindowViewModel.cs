@@ -3,9 +3,11 @@
 // Copyright (C) Leszek Pomianowski and WPF UI Contributors.
 // All Rights Reserved.
 
+using Microsoft.Extensions.Localization;
+
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using Microsoft.Extensions.Localization;
+
 using Wpf.Ui.Controls;
 using Wpf.Ui.Gallery.Resources;
 using Wpf.Ui.Gallery.Views.Pages;
@@ -24,7 +26,7 @@ using Wpf.Ui.Gallery.Views.Pages.Windows;
 
 namespace Wpf.Ui.Gallery.ViewModels.Windows;
 
-public partial class MainWindowViewModel( IStringLocalizer<Translations> localizer ) : ViewModel
+public partial class MainWindowViewModel(IStringLocalizer<Translations> localizer) : ViewModel
 {
     [ObservableProperty]
     private string _applicationTitle = localizer["WPF UI Gallery"];
@@ -57,11 +59,11 @@ public partial class MainWindowViewModel( IStringLocalizer<Translations> localiz
                 new NavigationViewItem(nameof(ToggleButton), typeof(ToggleButtonPage)),
                 new NavigationViewItem(nameof(ToggleSwitch), typeof(ToggleSwitchPage)),
                 new NavigationViewItem(nameof(CheckBox), typeof(CheckBoxPage)),
-                new NavigationViewItem(nameof(ComboBox), typeof(ComboBoxPage)),
+                new NavigationViewItem(nameof(Wpf.Ui.Controls.ComboBox), typeof(ComboBoxPage)),
                 new NavigationViewItem(nameof(RadioButton), typeof(RadioButtonPage)),
                 new NavigationViewItem(nameof(RatingControl), typeof(RatingPage)),
                 new NavigationViewItem(nameof(ThumbRate), typeof(ThumbRatePage)),
-                new NavigationViewItem(nameof(RibbonSplitButton), typeof(SplitButtonPage)),
+                new NavigationViewItem(nameof(SplitButton), typeof(SplitButtonPage)),
                 new NavigationViewItem(nameof(Slider), typeof(SliderPage)),
             }
         },

@@ -3,10 +3,11 @@
 // Copyright (C) Leszek Pomianowski and WPF UI Contributors.
 // All Rights Reserved.
 
-using System.Reflection;
 using Wpf.Ui.Input;
 using Wpf.Ui.Interop;
+
 using Size = System.Windows.Size;
+
 #if NET8_0_OR_GREATER
 using System.Runtime.CompilerServices;
 #endif
@@ -251,9 +252,9 @@ public class MessageBox : System.Windows.Window
         Topmost = true;
         SetValue(TemplateButtonCommandProperty, new RelayCommand<MessageBoxButton>(OnButtonClick));
 
-        PreviewMouseDoubleClick += static (_, args ) => args.Handled = true;
+        PreviewMouseDoubleClick += static (_, args) => args.Handled = true;
 
-        Loaded += static (sender, _ ) =>
+        Loaded += static (sender, _) =>
         {
             var self = (MessageBox)sender;
             self.OnLoaded();
@@ -321,6 +322,66 @@ public class MessageBox : System.Windows.Window
         }
     }
 
+    public MessageBoxResult ShowDialog(MessageBoxButton buttons)
+    {
+        // 버튼 텍스트 자동 설정
+        switch (buttons)
+        {
+            case MessageBoxButton.OK:
+                SetCurrentValue(CloseButtonTextProperty, "OK");
+                break;
+            case MessageBoxButton.OKCancel:
+                SetCurrentValue(PrimaryButtonTextProperty, "OK");
+                SetCurrentValue(CloseButtonTextProperty, "Cancel");
+                break;
+            case MessageBoxButton.YesNo:
+                SetCurrentValue(PrimaryButtonTextProperty, "Yes");
+                SetCurrentValue(CloseButtonTextProperty, "No");
+                break;
+            case MessageBoxButton.YesNoCancel:
+                SetCurrentValue(PrimaryButtonTextProperty, "Yes");
+                SetCurrentValue(CloseButtonTextProperty, "No");
+
+                // Close 버튼을 Cancel로 사용하도록 설정
+                SetCurrentValue(CloseButtonTextProperty, "Cancel");
+                break;
+            default:
+                SetCurrentValue(CloseButtonTextProperty, "OK");
+                break;
+        }
+
+        // ShowDialogAsync()는 비동기 메서드이므로 동기 호출 처리
+        MessageBoxResult result = ShowDialogAsync().GetAwaiter().GetResult();
+
+        // 버튼 구성에 따라 결과 변환
+        switch (buttons)
+        {
+            case MessageBoxButton.OK:
+                return result;
+            case MessageBoxButton.OKCancel:
+                // Primary 클릭 시 OK, Secondary 클릭 시 Cancel로 간주
+                return result == MessageBoxResult.Primary ? MessageBoxResult.OK : MessageBoxResult.Cancel;
+            case MessageBoxButton.YesNo:
+                return result == MessageBoxResult.Primary ? MessageBoxResult.Yes : MessageBoxResult.No;
+            case MessageBoxButton.YesNoCancel:
+                if (result == MessageBoxResult.Primary)
+                {
+                    return MessageBoxResult.Yes;
+                }
+                else if (result == MessageBoxResult.Secondary)
+                {
+                    return MessageBoxResult.No;
+                }
+                else
+                {
+                    return MessageBoxResult.Cancel;
+                }
+
+            default:
+                return result;
+        }
+    }
+
     /// <summary>
     /// Occurs after Loading event
     /// </summary>
@@ -367,14 +428,14 @@ public class MessageBox : System.Windows.Window
 
 #if NET8_0_OR_GREATER
     [UnsafeAccessor(UnsafeAccessorKind.Method, Name = "get_CanCenterOverWPFOwner")]
-    private static extern bool CanCenterOverWPFOwnerAccessor(Window w );
+    private static extern bool CanCenterOverWPFOwnerAccessor(Window w);
 #endif
 
     /// <summary>
     /// Resizes the MessageBox to fit the content's size, including margins.
     /// </summary>
     /// <param name="rootElement">The root element of the MessageBox</param>
-    protected virtual void ResizeToContentSize(UIElement rootElement )
+    protected virtual void ResizeToContentSize(UIElement rootElement)
     {
         Size desiredSize = rootElement.DesiredSize;
 
@@ -388,7 +449,7 @@ public class MessageBox : System.Windows.Window
         ResizeHeight(rootElement);
     }
 
-    protected override void OnClosing(CancelEventArgs e )
+    protected override void OnClosing(CancelEventArgs e)
     {
         base.OnClosing(e);
 
@@ -422,7 +483,7 @@ public class MessageBox : System.Windows.Window
     /// Occurs after the <see cref="MessageBoxButton"/> is clicked
     /// </summary>
     /// <param name="button">The MessageBox button</param>
-    protected virtual void OnButtonClick(MessageBoxButton button )
+    protected virtual void OnButtonClick(MessageBoxButton button)
     {
         MessageBoxResult result = button switch
         {
@@ -441,7 +502,7 @@ public class MessageBox : System.Windows.Window
         _ = WindowBackdrop.ApplyBackdrop(this, WindowBackdropType.Mica);
     }
 
-    private void ResizeWidth(UIElement element )
+    private void ResizeWidth(UIElement element)
     {
         if (Width <= MaxWidth)
         {
@@ -459,7 +520,7 @@ public class MessageBox : System.Windows.Window
         }
     }
 
-    private void ResizeHeight(UIElement element )
+    private void ResizeHeight(UIElement element)
     {
         if (Height <= MaxHeight)
         {

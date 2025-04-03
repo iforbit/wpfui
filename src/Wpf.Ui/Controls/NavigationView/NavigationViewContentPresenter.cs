@@ -8,6 +8,7 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Navigation;
+
 using Wpf.Ui.Abstractions.Controls;
 using Wpf.Ui.Animations;
 
@@ -97,7 +98,7 @@ public class NavigationViewContentPresenter : Frame
 
     public NavigationViewContentPresenter()
     {
-        Navigating += static (sender, eventArgs ) =>
+        Navigating += static (sender, eventArgs) =>
         {
             if (eventArgs.Content is null)
             {
@@ -108,7 +109,7 @@ public class NavigationViewContentPresenter : Frame
             self.OnNavigating(eventArgs);
         };
 
-        Navigated += static (sender, eventArgs ) =>
+        Navigated += static (sender, eventArgs) =>
         {
             var self = (NavigationViewContentPresenter)sender;
 
@@ -121,12 +122,12 @@ public class NavigationViewContentPresenter : Frame
         };
     }
 
-    protected override void OnInitialized(EventArgs e )
+    protected override void OnInitialized(EventArgs e)
     {
         base.OnInitialized(e);
 
         // REVIEW: I didn't understand something, but why is it necessary?
-        Unloaded += static (sender, _ ) =>
+        Unloaded += static (sender, _) =>
         {
             if (sender is NavigationViewContentPresenter navigator)
             {
@@ -135,7 +136,7 @@ public class NavigationViewContentPresenter : Frame
         };
     }
 
-    protected override void OnMouseDown(MouseButtonEventArgs e )
+    protected override void OnMouseDown(MouseButtonEventArgs e)
     {
         if (e.ChangedButton is MouseButton.XButton1 or MouseButton.XButton2)
         {
@@ -146,7 +147,7 @@ public class NavigationViewContentPresenter : Frame
         base.OnMouseDown(e);
     }
 
-    protected override void OnPreviewKeyDown(KeyEventArgs e )
+    protected override void OnPreviewKeyDown(KeyEventArgs e)
     {
         if (e.Key == Key.F5)
         {
@@ -157,7 +158,7 @@ public class NavigationViewContentPresenter : Frame
         base.OnPreviewKeyDown(e);
     }
 
-    protected virtual void OnNavigating(System.Windows.Navigation.NavigatingCancelEventArgs eventArgs )
+    protected virtual void OnNavigating(System.Windows.Navigation.NavigatingCancelEventArgs eventArgs)
     {
         NotifyContentAboutNavigatingTo(eventArgs.Content);
 
@@ -169,11 +170,17 @@ public class NavigationViewContentPresenter : Frame
         NotifyContentAboutNavigatingFrom(navigator.Content);
     }
 
-    protected virtual void OnNavigated(NavigationEventArgs eventArgs )
+    protected virtual void OnNavigated(NavigationEventArgs eventArgs)
     {
         ApplyTransitionEffectToNavigatedPage(eventArgs.Content);
 
         if (eventArgs.Content is not DependencyObject dependencyObject)
+        {
+            return;
+        }
+
+        // 만약 동적 스크롤 비활성화 옵션이 이미 적용되어 있다면 값을 덮어쓰지 않음
+        if ((bool)GetValue(IsDynamicScrollViewerEnabledProperty) == false)
         {
             return;
         }
@@ -184,7 +191,7 @@ public class NavigationViewContentPresenter : Frame
         );
     }
 
-    private void ApplyTransitionEffectToNavigatedPage(object content )
+    private void ApplyTransitionEffectToNavigatedPage(object content)
     {
         if (TransitionDuration < 1)
         {
@@ -194,12 +201,12 @@ public class NavigationViewContentPresenter : Frame
         _ = TransitionAnimationProvider.ApplyTransition(content, Transition, TransitionDuration);
     }
 
-    private static void NotifyContentAboutNavigatingTo(object content )
+    private static void NotifyContentAboutNavigatingTo(object content)
     {
         NotifyContentAboutNavigating(content, navigationAware => navigationAware.OnNavigatedToAsync());
     }
 
-    private static void NotifyContentAboutNavigatingFrom(object content )
+    private static void NotifyContentAboutNavigatingFrom(object content)
     {
         NotifyContentAboutNavigating(content, navigationAware => navigationAware.OnNavigatedFromAsync());
     }
@@ -209,7 +216,7 @@ public class NavigationViewContentPresenter : Frame
         "SuspiciousTypeConversion.Global",
         Justification = "The library user might make a class inherit from both FrameworkElement and INavigationAware at the same time."
     )]
-    private static void NotifyContentAboutNavigating(object content, Func<INavigationAware, Task> function )
+    private static void NotifyContentAboutNavigating(object content, Func<INavigationAware, Task> function)
     {
         switch (content)
         {

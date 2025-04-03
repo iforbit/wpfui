@@ -5,6 +5,7 @@
 
 using System.Net.Http;
 using System.Net.Http.Json;
+
 using Wpf.Ui.FontMapper;
 
 Console.WriteLine("Fluent System Icons Mapper");
@@ -27,6 +28,20 @@ var filledIcons = new FontSource(
     "generated\\SymbolFilled.cs"
 );
 
+var segoeFluentIcons = new FontSource(
+    "SegoeFluentIcons",
+    "Segoe Fluent Icons 폰트를 사용한 아이콘 집합입니다.",
+    @"경로\to\segoefluenticons.json", // 준비한 메타데이터 파일 경로
+    "generated\\SegoeFluentIcons.cs"
+);
+
+var materiaIcons = new FontSource(
+    "MaterialIcons-Regular",
+    "Segoe Fluent Icons 폰트를 사용한 아이콘 집합입니다.",
+    @"경로\to\MaterialIcons-Regular.json", // 준비한 메타데이터 파일 경로
+    "generated\\MaterialIcons-Regular.cs"
+);
+
 async Task<string> FetchVersion()
 {
     using var httpClient = new HttpClient();
@@ -42,7 +57,7 @@ async Task<string> FetchVersion()
             .Trim() ?? throw new Exception("Unable to parse the version string");
 }
 
-string FormatIconName( string rawIconName )
+string FormatIconName(string rawIconName)
 {
     rawIconName = rawIconName
         .Replace("ic_fluent_", string.Empty)
@@ -62,7 +77,7 @@ string FormatIconName( string rawIconName )
     return iconName;
 }
 
-async Task FetchFontContents( FontSource source, string version )
+async Task FetchFontContents(FontSource source, string version)
 {
     using var httpClient = new HttpClient();
     httpClient.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (compatible; AcmeInc/1.0)");
@@ -96,7 +111,7 @@ foreach (var key in keysToRemove)
     Console.WriteLine($"Deleted key \"{key}\" because no duplicate found in all lists");
 }
 
-async Task WriteToFile( FontSource singleFont, string fileRootDirectory )
+async Task WriteToFile(FontSource singleFont, string fileRootDirectory)
 {
     var destinationPath = Path.Combine(fileRootDirectory, singleFont.DestinationPath);
 

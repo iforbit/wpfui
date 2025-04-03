@@ -436,7 +436,8 @@
                         Grid.Row="1"
                         Padding="{TemplateBinding Padding}"
                         Transition="{TemplateBinding Transition}"
-                        TransitionDuration="{TemplateBinding TransitionDuration}" />
+                        TransitionDuration="{TemplateBinding TransitionDuration}"
+                        />
 
                     <!--  Overlay  -->
                     <ContentPresenter

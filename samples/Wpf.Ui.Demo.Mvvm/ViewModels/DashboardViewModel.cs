@@ -10,14 +10,22 @@ public partial class DashboardViewModel : ViewModel
     private readonly bool _isInitialized = false;
 
     [ObservableProperty]
-    private int _counter = 0;
+    private object? _counter = 0.00001458;
+
+    [ObservableProperty]
+    private string? _message = string.Empty;
 
     [RelayCommand]
-    private void OnCounterIncrement()
+    private void messageTest()
     {
-        Counter++;
-    }
+        var uiMessageBox = new Controls.MessageBox
+        {
+            Title = "tttt",
+            Content = "TTTT",
+        };
 
+        _ = uiMessageBox.ShowDialog(Controls.MessageBoxButton.YesNo);
+    }
     public override void OnNavigatedTo()
     {
         if (!_isInitialized)

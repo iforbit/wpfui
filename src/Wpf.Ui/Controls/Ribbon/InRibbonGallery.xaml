@@ -415,7 +415,7 @@
                     <controls:RibbonToggleButton x:Name="PART_ExpandButton"
                                                  Width="17" Height="17" Margin="0"
                                                  HorizontalAlignment="Right" VerticalAlignment="Bottom" BorderThickness="1,1,0,0"
-                                                 CanAddToQuickAccessToolBar="False" ClickMode="Press"
+                                                 ClickMode="Press"
                                                  Header="{TemplateBinding ExpandButtonContent}"
                                                  HeaderTemplate="{TemplateBinding ExpandButtonContentTemplate}"
                                                  IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
@@ -477,7 +477,7 @@
             </Border>
 
             <controls:RibbonToggleButton x:Name="PART_DropDownButton"
-                                         Margin="0,0,0,0" CanAddToQuickAccessToolBar="False" ClickMode="Press"
+                                         Margin="0,0,0,0" ClickMode="Press"
                                          Header="{Binding Path=Header, RelativeSource={RelativeSource TemplatedParent}}"
                                          Icon="{Binding Path=Icon, RelativeSource={RelativeSource TemplatedParent}}"
                                          IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"

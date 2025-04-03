@@ -21,7 +21,7 @@ public struct RibbonControlSizeDefinition : IEquatable<RibbonControlSizeDefiniti
     /// Initializes a new instance of the <see cref="RibbonControlSizeDefinition"/> struct.
     /// Creates a new instance
     /// </summary>
-    public RibbonControlSizeDefinition(RibbonControlSize large, RibbonControlSize middle, RibbonControlSize small )
+    public RibbonControlSizeDefinition(RibbonControlSize large, RibbonControlSize middle, RibbonControlSize small)
         : this()
     {
         this.Large = large;
@@ -33,7 +33,7 @@ public struct RibbonControlSizeDefinition : IEquatable<RibbonControlSizeDefiniti
     /// Initializes a new instance of the <see cref="RibbonControlSizeDefinition"/> struct.
     /// Creates a new instance
     /// </summary>
-    public RibbonControlSizeDefinition(string? sizeDefinition )
+    public RibbonControlSizeDefinition(string? sizeDefinition)
         : this()
     {
         if (string.IsNullOrEmpty(sizeDefinition))
@@ -44,7 +44,7 @@ public struct RibbonControlSizeDefinition : IEquatable<RibbonControlSizeDefiniti
             return;
         }
 
-        var sizeDefinitionParts = sizeDefinition!.Split(SizeDefinitionSeparators, MaxSizeDefinitionParts, StringSplitOptions.RemoveEmptyEntries).ToList();
+        List<string> sizeDefinitionParts = sizeDefinition!.Split(SizeDefinitionSeparators, MaxSizeDefinitionParts, StringSplitOptions.RemoveEmptyEntries).ToList();
 
         if (sizeDefinitionParts.Count == 0)
         {
@@ -83,7 +83,7 @@ public struct RibbonControlSizeDefinition : IEquatable<RibbonControlSizeDefiniti
     /// <summary>
     /// Converts from <see cref="string"/> to <see cref="RibbonControlSizeDefinition"/>
     /// </summary>
-    public static RibbonControlSizeDefinition FromString(string sizeDefinition )
+    public static RibbonControlSizeDefinition FromString(string sizeDefinition)
     {
         return new RibbonControlSizeDefinition(sizeDefinition);
     }
@@ -91,7 +91,7 @@ public struct RibbonControlSizeDefinition : IEquatable<RibbonControlSizeDefiniti
     /// <summary>
     /// Converts from <see cref="string"/> to <see cref="RibbonControlSizeDefinition"/>
     /// </summary>
-    public static implicit operator RibbonControlSizeDefinition(string sizeDefinition )
+    public static implicit operator RibbonControlSizeDefinition(string sizeDefinition)
     {
         return FromString(sizeDefinition);
     }
@@ -99,7 +99,7 @@ public struct RibbonControlSizeDefinition : IEquatable<RibbonControlSizeDefiniti
     /// <summary>
     /// Converts from <see cref="RibbonControlSizeDefinition"/> to <see cref="string"/>
     /// </summary>
-    public static implicit operator string(RibbonControlSizeDefinition sizeDefinition )
+    public static implicit operator string(RibbonControlSizeDefinition sizeDefinition)
     {
         return sizeDefinition.ToString();
     }
@@ -107,7 +107,7 @@ public struct RibbonControlSizeDefinition : IEquatable<RibbonControlSizeDefiniti
     /// <summary>
     /// Converts from <see cref="string"/> to <see cref="RibbonControlSize"/>
     /// </summary>
-    public static RibbonControlSize ToRibbonControlSize(string ribbonControlSize )
+    public static RibbonControlSize ToRibbonControlSize(string ribbonControlSize)
     {
         return Enum.TryParse(ribbonControlSize, true, out RibbonControlSize result)
             ? result
@@ -117,7 +117,7 @@ public struct RibbonControlSizeDefinition : IEquatable<RibbonControlSizeDefiniti
     /// <summary>
     /// Gets the appropriate <see cref="RibbonControlSize"/> from <see cref="Large"/>, <see cref="Middle"/> or <see cref="Small"/> depending on <paramref name="ribbonGroupBoxState"/>
     /// </summary>
-    public RibbonControlSize GetSize(RibbonGroupBoxState ribbonGroupBoxState )
+    public RibbonControlSize GetSize(RibbonGroupBoxState ribbonGroupBoxState)
     {
         switch (ribbonGroupBoxState)
         {
@@ -142,7 +142,7 @@ public struct RibbonControlSizeDefinition : IEquatable<RibbonControlSizeDefiniti
     /// <summary>
     /// Gets the appropriate <see cref="RibbonControlSize"/> from <see cref="Large"/>, <see cref="Middle"/> or <see cref="Small"/> depending on <paramref name="ribbonControlSize"/>
     /// </summary>
-    public RibbonControlSize GetSize(RibbonControlSize ribbonControlSize )
+    public RibbonControlSize GetSize(RibbonControlSize ribbonControlSize)
     {
         switch (ribbonControlSize)
         {
@@ -161,7 +161,7 @@ public struct RibbonControlSizeDefinition : IEquatable<RibbonControlSizeDefiniti
     }
 
     /// <inheritdoc />
-    public override bool Equals(object? obj )
+    public override bool Equals(object? obj)
     {
         if (obj is null)
         {
@@ -173,7 +173,7 @@ public struct RibbonControlSizeDefinition : IEquatable<RibbonControlSizeDefiniti
     }
 
     /// <inheritdoc />
-    public bool Equals(RibbonControlSizeDefinition other )
+    public bool Equals(RibbonControlSizeDefinition other)
     {
         return this.Large == other.Large && this.Middle == other.Middle && this.Small == other.Small;
     }
@@ -194,7 +194,7 @@ public struct RibbonControlSizeDefinition : IEquatable<RibbonControlSizeDefiniti
     /// <param name="left">The first object to compare. </param>
     /// <param name="right">The second object to compare. </param>
     /// <returns>true if the objects are considered equal; otherwise, false. If both <paramref name="left" /> and <paramref name="right" /> are null, the method returns true.</returns>
-    public static bool operator ==(RibbonControlSizeDefinition left, RibbonControlSizeDefinition right )
+    public static bool operator ==(RibbonControlSizeDefinition left, RibbonControlSizeDefinition right)
     {
         return left.Equals(right);
     }
@@ -203,7 +203,7 @@ public struct RibbonControlSizeDefinition : IEquatable<RibbonControlSizeDefiniti
     /// <param name="left">The first object to compare.</param>
     /// <param name="right">The second object to compare.</param>
     /// <returns>true if the objects are not considered equal; otherwise, false. If both <paramref name="left" /> and <paramref name="right" /> are null, the method returns false.</returns>
-    public static bool operator !=(RibbonControlSizeDefinition left, RibbonControlSizeDefinition right )
+    public static bool operator !=(RibbonControlSizeDefinition left, RibbonControlSizeDefinition right)
     {
         return !left.Equals(right);
     }

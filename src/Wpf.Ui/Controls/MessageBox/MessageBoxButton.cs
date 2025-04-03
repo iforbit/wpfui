@@ -24,5 +24,9 @@ public enum MessageBoxButton
     /// <summary>
     /// The close button
     /// </summary>
-    Close
+    Close,
+    OK,
+    OKCancel,
+    YesNo,
+    YesNoCancel
 }

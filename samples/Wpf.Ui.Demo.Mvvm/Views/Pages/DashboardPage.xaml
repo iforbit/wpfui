@@ -3,6 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:ctrlHelper="clr-namespace:Wpf.Ui.Demo.Mvvm.Helpers"
       xmlns:local="clr-namespace:Wpf.Ui.Demo.Mvvm.Views.Pages"
       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
       Title="DashboardPage"
@@ -12,6 +13,7 @@
       d:DesignWidth="800"
       ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
       ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+      Cursor=""
       Foreground="{DynamicResource TextFillColorPrimaryBrush}"
       mc:Ignorable="d">
 
@@ -20,15 +22,39 @@
             <!--  페이지에 필요한 RibbonTabItem, RibbonGroupBox, Button 등을 정의  -->
             <ui:RibbonTabItem Header="Dashboard">
                 <ui:RibbonGroupBox Header="Group 1" IsLauncherVisible="False" IsSeparatorVisible="False">
-                    <ui:RibbonButton Header="Grey" Icon="pack://application:,,,/Wpf.Ui.Demo.Mvvm;component/Images/Gray.png" LargeIcon="pack://application:,,,/Wpf.Ui.Demo.Mvvm;component/Images/GrayLarge.png"
+                    <ui:RibbonButton Header="Grey"
+                                     Icon="{ui:SymbolIcon Mail28}"
+                                     LargeIcon="{ui:SymbolIcon Mail28,
+                                                               FontSize='32'}"
                                      SizeDefinition="Large" />
-                    <ui:RibbonButton Header="Grey" Icon="pack://application:,,,/Wpf.Ui.Demo.Mvvm;component/Images/Yellow.png" LargeIcon="pack://application:,,,/Wpf.Ui.Demo.Mvvm;component/Images/YellowLarge.png"
+                    <ui:RibbonButton Header="Grey"
+                                     Icon="{ui:ImageIcon 'pack://application:,,,/Wpf.Ui.Demo.Mvvm;component/Images/Yellow.png'}"
+                                     LargeIcon="{ui:ImageIcon 'pack://application:,,,/Wpf.Ui.Demo.Mvvm;component/Images/YellowLarge.png',
+                                                              Height='32',
+                                                              Width='32'}"
                                      SizeDefinition="Large" />
+
+
+                    <ComboBox MinWidth="140" SelectedIndex="0">
+                        <ComboBoxItem Content="Attention" />
+                        <ComboBoxItem Content="Informational" />
+                        <ComboBoxItem Content="Success" />
+                        <ComboBoxItem Content="Caution" />
+                        <ComboBoxItem Content="Critical" />
+                    </ComboBox>
+                    <ui:RibbonCheckBox Header="CheckBox" />
+                    <ui:RibbonButton Header="Grey"
+                                     Icon="{ui:ImageIcon 'pack://application:,,,/Wpf.Ui.Demo.Mvvm;component/Images/Yellow.png'}"
+                                     LargeIcon="{ui:ImageIcon 'pack://application:,,,/Wpf.Ui.Demo.Mvvm;component/Images/YellowLarge.png',
+                                                              Height='32',
+                                                              Width='32'}"
+                                     SizeDefinition="Middle" />
                 </ui:RibbonGroupBox>
             </ui:RibbonTabItem>
+
             <ui:RibbonTabItem Header="Dashboard2">
                 <ui:RibbonGroupBox Header="Group 1" IsLauncherVisible="False" IsSeparatorVisible="True">
-                    <ui:RibbonSplitButton x:Name="pasteButton"
+                    <!--    <ui:RibbonSplitButton x:Name="pasteButton"
                                           Command="ApplicationCommands.Paste" FocusManager.IsFocusScope="True" Header="Paste"
                                           Icon="pack://application:,,,/Wpf.Ui.Demo.Mvvm;component/Images/PasteImage.png" LargeIcon="pack://application:,,,/Wpf.Ui.Demo.Mvvm;component/Images/PasteImage.png" SizeDefinition="Large">
                         <ui:Gallery GroupBy="Tag" ItemHeight="32" ItemWidth="32"
@@ -55,19 +81,8 @@
                             </ui:GalleryItem>
                         </ui:Gallery>
                     </ui:RibbonSplitButton>
-                    <ui:RibbonButton x:Name="cutButton"
-                                     Command="Cut" FocusManager.IsFocusScope="True" Header="Cut"
-                                     Icon="{DynamicResource Fluent.Ribbon.Images.Cut}"
-                                     SizeDefinition="Middle,Small" />
-                    <ui:RibbonButton x:Name="copyButton"
-                                     Command="Copy" FocusManager.IsFocusScope="True" Header="Copy"
-                                     Icon="{DynamicResource Fluent.Ribbon.Images.Copy}">
-                        <ui:RibbonButton.SizeDefinition>
-                            <ui:RibbonControlSizeDefinition Large="Middle" Middle="Small" />
-                        </ui:RibbonButton.SizeDefinition>
-                    </ui:RibbonButton>
-                    <ui:RibbonButton Header="Format Painter" Icon="pack://application:,,,/Wpf.Ui.Demo.Mvvm;component/Images/FormatPainter.png" SizeDefinition="Middle,Small" />
 
+                    <ui:RibbonButton Header="Format Painter" Icon="pack://application:,,,/Wpf.Ui.Demo.Mvvm;component/Images/FormatPainter.png" SizeDefinition="Middle,Small" />-->
                     <ui:RibbonDropDownButton Name="buttonWatermark" Header="DropDownButton" Icon="pack://application:,,,/Wpf.Ui.Demo.Mvvm;component/Images/Red.png"
                                              IsEnabled="True" LargeIcon="pack://application:,,,/Wpf.Ui.Demo.Mvvm;component/Images/RedLarge.png" ResizeMode="Both">
                         <ui:Gallery x:Name="WatermarkGallery"
@@ -193,21 +208,39 @@
                 </ui:RibbonGroupBox>
             </ui:RibbonTabItem>
         </ui:Ribbon>
+        <ctrlHelper:FixedPointFormatter x:Key="FixedPointFormatter" />
+
     </Page.Resources>
 
     <Grid Margin="42" VerticalAlignment="Top">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto " />
+            <RowDefinition Height="auto " />
+
+            <RowDefinition Height="auto " />
+            <RowDefinition Height="auto " />
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
 
-
-        <ui:Button Grid.Column="0"
-                   Command="{Binding ViewModel.CounterIncrementCommand, Mode=OneWay}"
-                   Content="Click me!"
-                   Icon="{ui:SymbolIcon Fluent24}" />
-        <TextBlock Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center"
+        <TextBlock Margin="12,0,0,0" VerticalAlignment="Center"
                    Text="{Binding ViewModel.Counter, Mode=OneWay}" />
+        <!--  MAC 주소 형식의 입력 예시  -->
+        <ui:MacAddressTextBox Grid.Row="1" Margin="20" Mask="[0-9A-Fa-f]{2}(:[0-9A-Fa-f]{2}){5}"
+                              MaskType="RegEx" PromptChar="_"
+                              Text="{Binding ViewModel.Message}"
+                              Watermark="e.g. FF:FF:FF:FF:FF:FF" />
+        <ui:TextBlock Grid.Row="1" Grid.Column="1"
+                      Text="{Binding ViewModel.Message}" />
+        <ui:PasswordBox Grid.Row="2"
+                        Icon="{ui:SymbolIcon Password24}"
+                        PlaceholderEnabled="True" PlaceholderText="Password..." />
+        <ui:TextBox Grid.Row="3" />
     </Grid>
 </Page>

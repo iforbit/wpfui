@@ -101,6 +101,7 @@ public partial class NavigationView
         NavigationViewContentPresenter = GetTemplateChild<NavigationViewContentPresenter>(
             TemplateElementNavigationViewContentPresenter
         );
+
         MenuItemsItemsControl = GetTemplateChild<System.Windows.Controls.ItemsControl>(
             TemplateElementMenuItemsItemsControl
         );
@@ -151,7 +152,7 @@ public partial class NavigationView
         }
     }
 
-    protected T GetTemplateChild<T>( string name )
+    protected T GetTemplateChild<T>(string name)
         where T : DependencyObject
     {
         if (GetTemplateChild(name) is not T dependencyObject)

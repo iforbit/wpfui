@@ -8,11 +8,10 @@ using System.Collections.Specialized;
 using System.Windows.Automation.Peers;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using System.Windows.Threading;
+
 using Wpf.Ui.Controls.Helpers;
 using Wpf.Ui.Extensions;
 using Wpf.Ui.Internal;
@@ -976,102 +975,6 @@ public class RibbonGroupBox : HeaderedItemsControl, IDropDownControl, IHeaderedC
         // IsHitTestVisible = false;
         this.RunInDispatcherAsync(() => Mouse.Capture(this, CaptureMode.SubTree), DispatcherPriority.Loaded);
     }
-
-    public virtual FrameworkElement CreateQuickAccessItem()
-    {
-        var groupBox = new RibbonGroupBox();
-
-        RibbonControl.BindQuickAccessItem(this, groupBox);
-
-        groupBox.DropDownOpened += this.OnQuickAccessOpened;
-        groupBox.DropDownClosed += this.OnQuickAccessClosed;
-
-        groupBox.State = RibbonGroupBoxState.QuickAccess;
-
-        RibbonControl.Bind(this, groupBox, nameof(this.ItemTemplateSelector), ItemTemplateSelectorProperty, BindingMode.OneWay);
-        RibbonControl.Bind(this, groupBox, nameof(this.ItemTemplate), ItemTemplateProperty, BindingMode.OneWay);
-        RibbonControl.Bind(this, groupBox, nameof(this.ItemsSource), ItemsSourceProperty, BindingMode.OneWay);
-        RibbonControl.Bind(this, groupBox, nameof(this.LauncherCommandParameter), LauncherCommandParameterProperty, BindingMode.OneWay);
-        RibbonControl.Bind(this, groupBox, nameof(this.LauncherCommand), LauncherCommandProperty, BindingMode.OneWay);
-        RibbonControl.Bind(this, groupBox, nameof(this.LauncherCommandTarget), LauncherCommandTargetProperty, BindingMode.OneWay);
-        RibbonControl.Bind(this, groupBox, nameof(this.LauncherText), LauncherTextProperty, BindingMode.OneWay);
-        RibbonControl.Bind(this, groupBox, nameof(this.LauncherToolTip), LauncherToolTipProperty, BindingMode.OneWay);
-        RibbonControl.Bind(this, groupBox, nameof(this.IsLauncherEnabled), IsLauncherEnabledProperty, BindingMode.OneWay);
-        RibbonControl.Bind(this, groupBox, nameof(this.IsLauncherVisible), IsLauncherVisibleProperty, BindingMode.OneWay);
-        groupBox.LauncherClick += this.LauncherClick;
-
-        if (this.Icon is not null)
-        {
-            if (this.Icon is Visual iconVisual)
-            {
-                var rect = new Rectangle
-                {
-                    Width = 16,
-                    Height = 16,
-                    Fill = new VisualBrush(iconVisual)
-                };
-                groupBox.Icon = rect;
-            }
-            else
-            {
-                RibbonControl.Bind(this, groupBox, nameof(this.Icon), RibbonControl.IconProperty, BindingMode.OneWay);
-            }
-        }
-
-        return groupBox;
-    }
-
-    private void OnQuickAccessOpened(object? sender, EventArgs e)
-    {
-        if (this.IsDropDownOpen == false
-            && this.IsSnapped == false)
-        {
-            var groupBox = (RibbonGroupBox?)sender;
-
-            // Save state
-            this.IsSnapped = true;
-
-            if (this.ItemsSource is null)
-            {
-                for (var i = 0; i < this.Items.Count; i++)
-                {
-                    var item = this.Items[0];
-                    this.Items.Remove(item);
-                    _ = groupBox?.Items.Add(item);
-                    i--;
-                }
-            }
-        }
-    }
-
-    private void OnQuickAccessClosed(object? sender, EventArgs e)
-    {
-        var groupBox = (RibbonGroupBox?)sender;
-
-        if (this.ItemsSource is null
-            && groupBox is not null)
-        {
-            for (var i = 0; i < groupBox.Items.Count; i++)
-            {
-                var item = groupBox.Items[0];
-                groupBox.Items.Remove(item);
-                _ = this.Items.Add(item);
-                i--;
-            }
-        }
-
-        this.IsSnapped = false;
-    }
-
-    public bool CanAddToQuickAccessToolBar
-    {
-        get => (bool)this.GetValue(CanAddToQuickAccessToolBarProperty);
-        set => this.SetValue(CanAddToQuickAccessToolBarProperty, BooleanBoxes.Box(value));
-    }
-
-    /// <summary>Identifies the <see cref="CanAddToQuickAccessToolBar"/> dependency property.</summary>
-    public static readonly DependencyProperty CanAddToQuickAccessToolBarProperty =
-        DependencyProperty.Register(nameof(CanAddToQuickAccessToolBar), typeof(bool), typeof(RibbonGroupBox), new PropertyMetadata(BooleanBoxes.TrueBox, RibbonControl.OnCanAddToQuickAccessToolBarChanged));
 
     /// <inheritdoc />
     public void UpdateSimplifiedState(bool isSimplified)

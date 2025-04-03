@@ -7,6 +7,7 @@
 
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+
 using Wpf.Ui.Abstractions;
 
 // ReSharper disable once CheckNamespace
@@ -38,14 +39,14 @@ public partial class NavigationView
     public bool CanGoBack => Journal.Count > 1 && _currentIndexInJournal >= 0;
 
     /// <inheritdoc />
-    public void SetPageProviderService(INavigationViewPageProvider navigationViewPageProvider ) =>
+    public void SetPageProviderService(INavigationViewPageProvider navigationViewPageProvider) =>
         _pageService = navigationViewPageProvider;
 
     /// <inheritdoc />
-    public void SetServiceProvider(IServiceProvider serviceProvider ) => _serviceProvider = serviceProvider;
+    public void SetServiceProvider(IServiceProvider serviceProvider) => _serviceProvider = serviceProvider;
 
     /// <inheritdoc />
-    public virtual bool Navigate(Type pageType, object? dataContext = null )
+    public virtual bool Navigate(Type pageType, object? dataContext = null)
     {
         if (
             PageTypeNavigationViewsDictionary.TryGetValue(
@@ -61,7 +62,7 @@ public partial class NavigationView
     }
 
     /// <inheritdoc />
-    public virtual bool Navigate(string pageIdOrTargetTag, object? dataContext = null )
+    public virtual bool Navigate(string pageIdOrTargetTag, object? dataContext = null)
     {
         if (
             PageIdOrTargetTagNavigationViewsDictionary.TryGetValue(
@@ -77,7 +78,7 @@ public partial class NavigationView
     }
 
     /// <inheritdoc />
-    public virtual bool NavigateWithHierarchy(Type pageType, object? dataContext = null )
+    public virtual bool NavigateWithHierarchy(Type pageType, object? dataContext = null)
     {
         if (
             PageTypeNavigationViewsDictionary.TryGetValue(
@@ -93,7 +94,7 @@ public partial class NavigationView
     }
 
     /// <inheritdoc />
-    public virtual bool ReplaceContent(Type? pageTypeToEmbed )
+    public virtual bool ReplaceContent(Type? pageTypeToEmbed)
     {
         if (pageTypeToEmbed == null)
         {
@@ -118,7 +119,7 @@ public partial class NavigationView
     }
 
     /// <inheritdoc />
-    public virtual bool ReplaceContent(UIElement pageInstanceToEmbed, object? dataContext = null )
+    public virtual bool ReplaceContent(UIElement pageInstanceToEmbed, object? dataContext = null)
     {
         UpdateContent(pageInstanceToEmbed, dataContext);
 
@@ -218,6 +219,16 @@ public partial class NavigationView
         ApplyAttachedProperties(viewItem, pageInstance);
         UpdateContent(pageInstance, dataContext);
 
+        // 여기서 NavigationViewItem에 설정한 IsDynamicScrollEnabled 옵션을
+        // NavigationViewContentPresenter에 전달합니다.
+        if (viewItem is NavigationViewItem navItem && NavigationViewContentPresenter != null)
+        {
+            NavigationViewContentPresenter.SetCurrentValue(
+                NavigationViewContentPresenter.IsDynamicScrollViewerEnabledProperty,
+                navItem.IsDynamicScrollEnabled
+            );
+        }
+
         AddToNavigationStack(viewItem, addToNavigationStack, isBackwardsNavigated);
         AddToJournal(viewItem, isBackwardsNavigated);
 
@@ -230,7 +241,7 @@ public partial class NavigationView
         return true;
     }
 
-    private void AddToJournal(INavigationViewItem viewItem, bool isBackwardsNavigated )
+    private void AddToJournal(INavigationViewItem viewItem, bool isBackwardsNavigated)
     {
         if (isBackwardsNavigated)
         {
@@ -253,7 +264,7 @@ public partial class NavigationView
         }
     }
 
-    private object GetNavigationItemInstance(INavigationViewItem viewItem )
+    private object GetNavigationItemInstance(INavigationViewItem viewItem)
     {
         if (viewItem.TargetPageType is null)
         {
@@ -290,7 +301,7 @@ public partial class NavigationView
         object? ComputeCachedNavigationInstance() => GetPageInstanceFromCache(viewItem.TargetPageType);
     }
 
-    private object? GetPageInstanceFromCache(Type? targetPageType )
+    private object? GetPageInstanceFromCache(Type? targetPageType)
     {
         if (targetPageType is null)
         {
@@ -325,7 +336,7 @@ public partial class NavigationView
             ?? throw new InvalidOperationException("Failed to create instance of the page");
     }
 
-    private static void ApplyAttachedProperties(INavigationViewItem viewItem, object pageInstance )
+    private static void ApplyAttachedProperties(INavigationViewItem viewItem, object pageInstance)
     {
         if (
             pageInstance is FrameworkElement frameworkElement
@@ -336,7 +347,7 @@ public partial class NavigationView
         }
     }
 
-    private void UpdateContent(object? content, object? dataContext = null )
+    private void UpdateContent(object? content, object? dataContext = null)
     {
         if (dataContext is not null && content is FrameworkElement frameworkViewContent)
         {
@@ -387,7 +398,7 @@ public partial class NavigationView
         ClearNavigationStack(viewItem);
     }
 
-    private void UpdateCurrentNavigationStackItem(INavigationViewItem viewItem )
+    private void UpdateCurrentNavigationStackItem(INavigationViewItem viewItem)
     {
         if (NavigationStack.Contains(viewItem))
         {
@@ -412,7 +423,7 @@ public partial class NavigationView
         ClearNavigationStack(1);
     }
 
-    private void RecreateNavigationStackFromHistory(INavigationViewItem item )
+    private void RecreateNavigationStackFromHistory(INavigationViewItem item)
     {
         List<INavigationViewItem?[]>? historyList;
         if (!_complexNavigationStackHistory.TryGetValue(item, out historyList) || historyList.Count == 0)
@@ -451,7 +462,7 @@ public partial class NavigationView
         AddToNavigationStack(item, true, false);
     }
 
-    private void AddToNavigationStackHistory(INavigationViewItem viewItem )
+    private void AddToNavigationStackHistory(INavigationViewItem viewItem)
     {
         INavigationViewItem lastItem = NavigationStack[^1];
         var startIndex = NavigationStack.IndexOf(viewItem);
@@ -490,7 +501,7 @@ public partial class NavigationView
         }
     }
 
-    private void ClearNavigationStack(int navigationStackItemIndex )
+    private void ClearNavigationStack(int navigationStackItemIndex)
     {
         var navigationStackCount = NavigationStack.Count;
         var length = navigationStackCount - navigationStackItemIndex;
@@ -506,7 +517,7 @@ public partial class NavigationView
         }
     }
 
-    private void ClearNavigationStack(INavigationViewItem item )
+    private void ClearNavigationStack(INavigationViewItem item)
     {
         var navigationStackCount = NavigationStack.Count;
         if (navigationStackCount <= 1)
@@ -524,7 +535,7 @@ public partial class NavigationView
         ClearNavigationStack(++index);
     }
 
-    private void ReplaceThirstElementInNavigationStack(INavigationViewItem newItem )
+    private void ReplaceThirstElementInNavigationStack(INavigationViewItem newItem)
     {
         NavigationStack[0].Deactivate(this);
         NavigationStack[0] = newItem;

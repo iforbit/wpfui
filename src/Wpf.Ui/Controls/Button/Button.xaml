@@ -12,9 +12,11 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:controls="clr-namespace:Wpf.Ui.Controls">
 
+
     <Thickness x:Key="ButtonPadding">11,5,11,6</Thickness>
     <Thickness x:Key="ButtonBorderThemeThickness">1</Thickness>
     <Thickness x:Key="ButtonIconMargin">0,0,8,0</Thickness>
+
 
     <Style x:Key="DefaultRepeatButtonStyle" TargetType="{x:Type RepeatButton}">
         <!--  Universal WPF UI focus  -->

@@ -4,6 +4,7 @@
 // All Rights Reserved.
 
 using System.Collections.ObjectModel;
+
 using Wpf.Ui.Controls;
 
 namespace Wpf.Ui.Demo.Mvvm.ViewModels;
@@ -57,6 +58,7 @@ public partial class MainWindowViewModel : ViewModel
                 Content = "Data",
                 Icon = new SymbolIcon { Symbol = SymbolRegular.DataHistogram24 },
                 TargetPageType = typeof(Views.Pages.DataPage)
+
             },
         ];
 

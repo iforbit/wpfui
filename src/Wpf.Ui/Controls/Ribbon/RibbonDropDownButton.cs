@@ -8,10 +8,8 @@ using System.Diagnostics;
 using System.Windows.Automation.Peers;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Markup;
-using System.Windows.Threading;
 
 using Wpf.Ui.Controls.Helpers;
 using Wpf.Ui.Extensions;
@@ -703,106 +701,6 @@ public class RibbonDropDownButton : ItemsControl, IRibbonControl, IDropDownContr
 
         this.DropDownClosed?.Invoke(this, EventArgs.Empty);
     }
-
-    public virtual FrameworkElement CreateQuickAccessItem()
-    {
-        var button = new RibbonDropDownButton
-        {
-            Size = RibbonControlSize.Small
-        };
-
-        this.BindQuickAccessItem(button);
-        RibbonControl.Bind(this, button, nameof(this.DisplayMemberPath), DisplayMemberPathProperty, BindingMode.OneWay);
-        RibbonControl.Bind(this, button, nameof(this.GroupStyleSelector), GroupStyleSelectorProperty, BindingMode.OneWay);
-        RibbonControl.Bind(this, button, nameof(this.ItemContainerStyle), ItemContainerStyleProperty, BindingMode.OneWay);
-        RibbonControl.Bind(this, button, nameof(this.ItemsPanel), ItemsPanelProperty, BindingMode.OneWay);
-        RibbonControl.Bind(this, button, nameof(this.ItemStringFormat), ItemStringFormatProperty, BindingMode.OneWay);
-        RibbonControl.Bind(this, button, nameof(this.ItemTemplate), ItemTemplateProperty, BindingMode.OneWay);
-
-        RibbonControl.Bind(this, button, nameof(this.MaxDropDownHeight), MaxDropDownHeightProperty, BindingMode.OneWay);
-
-        this.BindQuickAccessItemDropDownEvents(button);
-
-        button.DropDownOpened += this.OnQuickAccessOpened;
-        return button;
-    }
-
-    /// <summary>
-    /// Handles quick access button drop down menu opened
-    /// </summary>
-    protected void OnQuickAccessOpened(object? sender, EventArgs e)
-    {
-        var buttonInQuickAccess = (RibbonDropDownButton?)sender;
-
-        if (buttonInQuickAccess is null)
-        {
-            return;
-        }
-
-        buttonInQuickAccess.DropDownClosed += this.OnQuickAccessMenuClosedOrUnloaded;
-        buttonInQuickAccess.Unloaded += this.OnQuickAccessMenuClosedOrUnloaded;
-
-        ItemsControlHelper.MoveItemsToDifferentControl(this, buttonInQuickAccess);
-    }
-
-    /// <summary>
-    /// Handles quick access button drop down menu closed
-    /// </summary>
-    protected void OnQuickAccessMenuClosedOrUnloaded(object? sender, EventArgs e)
-    {
-        var buttonInQuickAccess = (RibbonDropDownButton?)sender;
-
-        if (buttonInQuickAccess is null)
-        {
-            return;
-        }
-
-        buttonInQuickAccess.DropDownClosed -= this.OnQuickAccessMenuClosedOrUnloaded;
-        buttonInQuickAccess.Unloaded -= this.OnQuickAccessMenuClosedOrUnloaded;
-        this.RunInDispatcherAsync(
-            () =>
-        {
-            ItemsControlHelper.MoveItemsToDifferentControl(buttonInQuickAccess, this);
-        }, DispatcherPriority.Loaded);
-    }
-
-    /// <summary>
-    /// This method must be overridden to bind properties to use in quick access creating
-    /// </summary>
-    /// <param name="element">Toolbar item</param>
-    protected virtual void BindQuickAccessItem(FrameworkElement element)
-    {
-        RibbonControl.BindQuickAccessItem(this, element);
-        RibbonControl.Bind(this, element, nameof(this.ResizeMode), ResizeModeProperty, BindingMode.Default);
-        RibbonControl.Bind(this, element, nameof(this.MaxDropDownHeight), MaxDropDownHeightProperty, BindingMode.Default);
-        RibbonControl.Bind(this, element, nameof(this.HasTriangle), HasTriangleProperty, BindingMode.Default);
-    }
-
-    /// <summary>
-    /// Binds the DropDownClosed and DropDownOpened events to the created quick access item
-    /// </summary>
-    /// <param name="button">Toolbar item</param>
-    protected void BindQuickAccessItemDropDownEvents(RibbonDropDownButton button)
-    {
-        if (this.DropDownClosed is not null)
-        {
-            button.DropDownClosed += this.DropDownClosed;
-        }
-
-        if (this.DropDownOpened is not null)
-        {
-            button.DropDownOpened += this.DropDownOpened;
-        }
-    }
-
-    public bool CanAddToQuickAccessToolBar
-    {
-        get => (bool)this.GetValue(CanAddToQuickAccessToolBarProperty);
-        set => this.SetValue(CanAddToQuickAccessToolBarProperty, BooleanBoxes.Box(value));
-    }
-
-    /// <summary>Identifies the <see cref="CanAddToQuickAccessToolBar"/> dependency property.</summary>
-    public static readonly DependencyProperty CanAddToQuickAccessToolBarProperty = RibbonControl.CanAddToQuickAccessToolBarProperty.AddOwner(typeof(RibbonDropDownButton), new PropertyMetadata(BooleanBoxes.TrueBox, RibbonControl.OnCanAddToQuickAccessToolBarChanged));
 
     /// <inheritdoc />
     protected override AutomationPeer OnCreateAutomationPeer() => new Wpf.Ui.Controls.Automation.Peers.RibbonDropDownButtonAutomationPeer(this);

@@ -85,6 +85,7 @@
     <Style BasedOn="{StaticResource DefaultRibbonTabItemStyle}" TargetType="{x:Type controls:RibbonTabItem}" />
     <Style BasedOn="{StaticResource DefaultRibbonGroupBoxStyle}" TargetType="{x:Type controls:RibbonGroupBox}" />
     <Style BasedOn="{StaticResource DefaultRibbonButtonStyle}" TargetType="{x:Type controls:RibbonButton}" />
+    <Style BasedOn="{StaticResource DefaultRibbonCheckBoxStyles}" TargetType="{x:Type controls:RibbonCheckBox}" />
 
     <Style BasedOn="{StaticResource DefaultTransitioningControlStyle}" TargetType="{x:Type controls:TransitioningControl}" />
     <Style BasedOn="{StaticResource DefaultRibbonTwoLineLabelStyle}" TargetType="{x:Type controls:TwoLineLabel}" />

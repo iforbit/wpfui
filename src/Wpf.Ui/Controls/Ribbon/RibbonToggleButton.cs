@@ -7,8 +7,8 @@ using System.Collections;
 using System.Diagnostics;
 using System.Windows.Automation.Peers;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Markup;
+
 using Wpf.Ui.Controls.Helpers;
 using Wpf.Ui.Extensions;
 using Wpf.Ui.Internal.KnowBoxes;
@@ -224,26 +224,6 @@ public class RibbonToggleButton : System.Windows.Controls.Primitives.ToggleButto
     {
         this.OnClick();
     }
-
-    public virtual FrameworkElement CreateQuickAccessItem()
-    {
-        var button = new RibbonToggleButton();
-
-        RibbonControl.Bind(this, button, nameof(this.IsChecked), IsCheckedProperty, BindingMode.TwoWay);
-        button.Click += (sender, e) => this.RaiseEvent(e);
-        RibbonControl.BindQuickAccessItem(this, button);
-
-        return button;
-    }
-
-    public bool CanAddToQuickAccessToolBar
-    {
-        get => (bool)this.GetValue(CanAddToQuickAccessToolBarProperty);
-        set => this.SetValue(CanAddToQuickAccessToolBarProperty, BooleanBoxes.Box(value));
-    }
-
-    /// <summary>Identifies the <see cref="CanAddToQuickAccessToolBar"/> dependency property.</summary>
-    public static readonly DependencyProperty CanAddToQuickAccessToolBarProperty = RibbonControl.CanAddToQuickAccessToolBarProperty.AddOwner(typeof(RibbonToggleButton), new PropertyMetadata(BooleanBoxes.TrueBox, RibbonControl.OnCanAddToQuickAccessToolBarChanged));
 
     /// <inheritdoc />
     public void UpdateSimplifiedState(bool isSimplified)

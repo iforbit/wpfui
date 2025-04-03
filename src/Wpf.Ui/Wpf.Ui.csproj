@@ -18,12 +18,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Fonts\MaterialIcons-Regular.ttf" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="VisualStudioToolsManifest.xml" Pack="true" PackagePath="tools" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="Resources\Fonts\FluentSystemIcons-Filled.ttf" />
     <Resource Include="Resources\Fonts\FluentSystemIcons-Regular.ttf" />
+    <Resource Include="Resources\Fonts\MaterialIcons-Regular.ttf" />
+    <Resource Include="Resources\Fonts\SegoeFluentIcons.ttf" />
     <Resource Include="Resources\Theme\Effects\Grayscale.ps" />
   </ItemGroup>
 
@@ -78,12 +84,11 @@
   <PropertyGroup>
     <RibbonFilesForXamlCombine>Controls\Ribbon\*.xaml;</RibbonFilesForXamlCombine>
   </PropertyGroup>
+
   <ItemGroup>
     <XAMLCombineItems Include="$(RibbonFilesForXamlCombine)">
       <TargetFile>Resources\RibbonStyles.xaml</TargetFile>
       <Visible>True</Visible>
     </XAMLCombineItems>
   </ItemGroup>
-  
-
 </Project>

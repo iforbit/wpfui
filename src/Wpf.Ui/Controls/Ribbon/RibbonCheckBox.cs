@@ -4,7 +4,6 @@
 // All Rights Reserved.
 
 using System.Collections;
-using System.Diagnostics;
 using System.Windows.Automation.Peers;
 using System.Windows.Controls;
 using System.Windows.Markup;
@@ -15,11 +14,10 @@ using Wpf.Ui.Internal.KnowBoxes;
 namespace Wpf.Ui.Controls;
 
 /// <summary>
-/// Represents button
+/// Represents Fluent UI specific CheckBox
 /// </summary>
 [ContentProperty(nameof(Header))]
-[DebuggerDisplay("{GetType().FullName}: Header = {Header}, Size = {Size}, IsSimplified = {IsSimplified}")]
-public class RibbonButton : System.Windows.Controls.Button, IRibbonControl, ILargeIconProvider, IMediumIconProvider, ISimplifiedRibbonControl
+public class RibbonCheckBox : System.Windows.Controls.CheckBox, IRibbonControl, ILargeIconProvider, IMediumIconProvider, ISimplifiedRibbonControl
 {
     /// <inheritdoc />
     public RibbonControlSize Size
@@ -29,7 +27,7 @@ public class RibbonButton : System.Windows.Controls.Button, IRibbonControl, ILar
     }
 
     /// <summary>Identifies the <see cref="Size"/> dependency property.</summary>
-    public static readonly DependencyProperty SizeProperty = RibbonProperties.SizeProperty.AddOwner(typeof(RibbonButton));
+    public static readonly DependencyProperty SizeProperty = RibbonProperties.SizeProperty.AddOwner(typeof(RibbonCheckBox));
 
     /// <inheritdoc />
     public RibbonControlSizeDefinition SizeDefinition
@@ -39,7 +37,7 @@ public class RibbonButton : System.Windows.Controls.Button, IRibbonControl, ILar
     }
 
     /// <summary>Identifies the <see cref="SizeDefinition"/> dependency property.</summary>
-    public static readonly DependencyProperty SizeDefinitionProperty = RibbonProperties.SizeDefinitionProperty.AddOwner(typeof(RibbonButton));
+    public static readonly DependencyProperty SizeDefinitionProperty = RibbonProperties.SizeDefinitionProperty.AddOwner(typeof(RibbonCheckBox));
 
     /// <inheritdoc />
     public RibbonControlSizeDefinition SimplifiedSizeDefinition
@@ -49,7 +47,7 @@ public class RibbonButton : System.Windows.Controls.Button, IRibbonControl, ILar
     }
 
     /// <summary>Identifies the <see cref="SimplifiedSizeDefinition"/> dependency property.</summary>
-    public static readonly DependencyProperty SimplifiedSizeDefinitionProperty = RibbonProperties.SimplifiedSizeDefinitionProperty.AddOwner(typeof(RibbonButton));
+    public static readonly DependencyProperty SimplifiedSizeDefinitionProperty = RibbonProperties.SimplifiedSizeDefinitionProperty.AddOwner(typeof(RibbonCheckBox));
 
     /// <inheritdoc />
     public object? Header
@@ -59,7 +57,7 @@ public class RibbonButton : System.Windows.Controls.Button, IRibbonControl, ILar
     }
 
     /// <summary>Identifies the <see cref="Header"/> dependency property.</summary>
-    public static readonly DependencyProperty HeaderProperty = RibbonControl.HeaderProperty.AddOwner(typeof(RibbonButton), new PropertyMetadata(LogicalChildSupportHelper.OnLogicalChildPropertyChanged));
+    public static readonly DependencyProperty HeaderProperty = RibbonControl.HeaderProperty.AddOwner(typeof(RibbonCheckBox), new PropertyMetadata(LogicalChildSupportHelper.OnLogicalChildPropertyChanged));
 
     /// <inheritdoc />
     public DataTemplate? HeaderTemplate
@@ -69,7 +67,7 @@ public class RibbonButton : System.Windows.Controls.Button, IRibbonControl, ILar
     }
 
     /// <summary>Identifies the <see cref="HeaderTemplate"/> dependency property.</summary>
-    public static readonly DependencyProperty HeaderTemplateProperty = RibbonControl.HeaderTemplateProperty.AddOwner(typeof(RibbonButton), new PropertyMetadata());
+    public static readonly DependencyProperty HeaderTemplateProperty = RibbonControl.HeaderTemplateProperty.AddOwner(typeof(RibbonCheckBox), new PropertyMetadata());
 
     /// <inheritdoc />
     public DataTemplateSelector? HeaderTemplateSelector
@@ -79,23 +77,19 @@ public class RibbonButton : System.Windows.Controls.Button, IRibbonControl, ILar
     }
 
     /// <summary>Identifies the <see cref="HeaderTemplateSelector"/> dependency property.</summary>
-    public static readonly DependencyProperty HeaderTemplateSelectorProperty = RibbonControl.HeaderTemplateSelectorProperty.AddOwner(typeof(RibbonButton), new PropertyMetadata());
+    public static readonly DependencyProperty HeaderTemplateSelectorProperty = RibbonControl.HeaderTemplateSelectorProperty.AddOwner(typeof(RibbonCheckBox), new PropertyMetadata());
 
     /// <inheritdoc />
     [Localizability(LocalizationCategory.NeverLocalize)]
     [Localizable(false)]
     public object? Icon
     {
-        get => GetValue(IconProperty);
-        set => SetValue(IconProperty, value);
+        get => this.GetValue(IconProperty);
+        set => this.SetValue(IconProperty, value);
     }
 
     /// <summary>Identifies the <see cref="Icon"/> dependency property.</summary>
-    public static readonly DependencyProperty IconProperty = RibbonControl.IconProperty.AddOwner(typeof(RibbonButton), new FrameworkPropertyMetadata(
-            default(object),
-            FrameworkPropertyMetadataOptions.None,
-            LogicalChildSupportHelper.OnLogicalChildPropertyChanged,
-            IconElement.Coerce));
+    public static readonly DependencyProperty IconProperty = RibbonControl.IconProperty.AddOwner(typeof(RibbonCheckBox), new PropertyMetadata(LogicalChildSupportHelper.OnLogicalChildPropertyChanged));
 
     /// <inheritdoc />
     [Localizability(LocalizationCategory.NeverLocalize)]
@@ -107,11 +101,7 @@ public class RibbonButton : System.Windows.Controls.Button, IRibbonControl, ILar
     }
 
     /// <summary>Identifies the <see cref="LargeIcon"/> dependency property.</summary>
-    public static readonly DependencyProperty LargeIconProperty = LargeIconProviderProperties.LargeIconProperty.AddOwner(typeof(RibbonButton), new FrameworkPropertyMetadata(
-            default,
-            FrameworkPropertyMetadataOptions.None,
-            LogicalChildSupportHelper.OnLogicalChildPropertyChanged,
-            IconElement.Coerce));
+    public static readonly DependencyProperty LargeIconProperty = LargeIconProviderProperties.LargeIconProperty.AddOwner(typeof(RibbonCheckBox), new PropertyMetadata(LogicalChildSupportHelper.OnLogicalChildPropertyChanged));
 
     /// <inheritdoc />
     [Localizability(LocalizationCategory.NeverLocalize)]
@@ -123,20 +113,7 @@ public class RibbonButton : System.Windows.Controls.Button, IRibbonControl, ILar
     }
 
     /// <summary>Identifies the <see cref="MediumIcon"/> dependency property.</summary>
-    public static readonly DependencyProperty MediumIconProperty = MediumIconProviderProperties.MediumIconProperty.AddOwner(typeof(RibbonButton), new PropertyMetadata(LogicalChildSupportHelper.OnLogicalChildPropertyChanged));
-
-    /// <summary>
-    /// Gets or sets a value indicating whether gets or sets whether ribbon control click must close backstage
-    /// </summary>
-    public bool IsDefinitive
-    {
-        get => (bool)this.GetValue(IsDefinitiveProperty);
-        set => this.SetValue(IsDefinitiveProperty, BooleanBoxes.Box(value));
-    }
-
-    /// <summary>Identifies the <see cref="IsDefinitive"/> dependency property.</summary>
-    public static readonly DependencyProperty IsDefinitiveProperty =
-        DependencyProperty.Register(nameof(IsDefinitive), typeof(bool), typeof(RibbonButton), new PropertyMetadata(BooleanBoxes.TrueBox));
+    public static readonly DependencyProperty MediumIconProperty = MediumIconProviderProperties.MediumIconProperty.AddOwner(typeof(RibbonCheckBox), new PropertyMetadata(LogicalChildSupportHelper.OnLogicalChildPropertyChanged));
 
     /// <summary>
     /// Gets a value indicating whether gets or sets whether or not the ribbon is in Simplified mode
@@ -148,63 +125,28 @@ public class RibbonButton : System.Windows.Controls.Button, IRibbonControl, ILar
     }
 
     private static readonly DependencyPropertyKey IsSimplifiedPropertyKey =
-        DependencyProperty.RegisterReadOnly(nameof(IsSimplified), typeof(bool), typeof(RibbonButton), new PropertyMetadata(BooleanBoxes.FalseBox));
+        DependencyProperty.RegisterReadOnly(nameof(IsSimplified), typeof(bool), typeof(RibbonCheckBox), new PropertyMetadata(BooleanBoxes.FalseBox));
 
     /// <summary>Identifies the <see cref="IsSimplified"/> dependency property.</summary>
     public static readonly DependencyProperty IsSimplifiedProperty = IsSimplifiedPropertyKey.DependencyProperty;
 
-    /// <summary>Identifies the <see cref="CornerRadius"/> dependency property.</summary>
-    public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
-        nameof(CornerRadius),
-        typeof(CornerRadius),
-        typeof(RibbonButton),
-        new FrameworkPropertyMetadata(
-            default(CornerRadius),
-            FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsRender
-        )
-    );
-
     /// <summary>
-    /// Gets or sets a value that represents the degree to which the corners of a <see cref="T:System.Windows.Controls.Border" /> are rounded.
-    /// </summary>
-    public CornerRadius CornerRadius
-    {
-        get => (CornerRadius)GetValue(CornerRadiusProperty);
-        set => SetValue(CornerRadiusProperty, (object)value);
-    }
-
-    /// <summary>
-    /// Initializes static members of the <see cref="RibbonButton"/> class.
+    /// Initializes static members of the <see cref="RibbonCheckBox"/> class.
     /// Static constructor
     /// </summary>
-    static RibbonButton()
+    static RibbonCheckBox()
     {
-        Type type = typeof(Button);
+        Type type = typeof(RibbonCheckBox);
         DefaultStyleKeyProperty.OverrideMetadata(type, new FrameworkPropertyMetadata(type));
-
-        // ContextMenuService.Attach(type);
-        // ToolTipService.Attach(type);
+        ToolTipService.Attach(type);
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="RibbonButton"/> class.
+    /// Initializes a new instance of the <see cref="RibbonCheckBox"/> class.
     /// Default constructor
     /// </summary>
-    public RibbonButton()
+    public RibbonCheckBox()
     {
-        // ContextMenuService.Coerce(this);
-    }
-
-    /// <inheritdoc />
-    protected override void OnClick()
-    {
-        // Close popup on click
-        if (this.IsDefinitive)
-        {
-            PopupService.RaiseDismissPopupEvent(this, DismissPopupMode.Always);
-        }
-
-        base.OnClick();
     }
 
     /// <inheritdoc />
@@ -259,5 +201,5 @@ public class RibbonButton : System.Windows.Controls.Button, IRibbonControl, ILar
     }
 
     /// <inheritdoc />
-    protected override AutomationPeer OnCreateAutomationPeer() => new Wpf.Ui.Controls.Automation.Peers.RibbonButtonAutomationPeer(this);
+    protected override AutomationPeer OnCreateAutomationPeer() => new Wpf.Ui.Controls.Automation.Peers.RibbonCheckBoxAutomationPeer(this);
 }

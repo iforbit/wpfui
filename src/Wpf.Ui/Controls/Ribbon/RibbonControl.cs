@@ -9,11 +9,10 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Forms;
 using System.Windows.Input;
-using System.Windows.Shapes;
+
 using Wpf.Ui.Controls.Helpers;
 using Wpf.Ui.Extensions;
 using Wpf.Ui.Internal;
-using Wpf.Ui.Internal.KnowBoxes;
 
 namespace Wpf.Ui.Controls;
 
@@ -75,12 +74,17 @@ public abstract class RibbonControl : System.Windows.Controls.Control, ICommandS
     [Localizable(false)]
     public object? Icon
     {
-        get => this.GetValue(IconProperty);
-        set => this.SetValue(IconProperty, value);
+        get => GetValue(IconProperty);
+        set => SetValue(IconProperty, value);
     }
 
     /// <summary>Identifies the <see cref="Icon"/> dependency property.</summary>
-    public static readonly DependencyProperty IconProperty = DependencyProperty.Register(nameof(Icon), typeof(object), typeof(RibbonControl), new PropertyMetadata(LogicalChildSupportHelper.OnLogicalChildPropertyChanged));
+    public static readonly DependencyProperty IconProperty = DependencyProperty.Register(nameof(Icon), typeof(object), typeof(RibbonControl), new FrameworkPropertyMetadata(
+            default,
+            FrameworkPropertyMetadataOptions.None,
+            LogicalChildSupportHelper.OnLogicalChildPropertyChanged,
+            IconElement.Coerce));
+
     private bool currentCanExecute = true;
 
     /// <inheritdoc />
@@ -215,115 +219,6 @@ public abstract class RibbonControl : System.Windows.Controls.Control, ICommandS
     protected RibbonControl()
     {
         // ContextMenuService.Coerce(this);
-    }
-
-    public abstract FrameworkElement CreateQuickAccessItem();
-
-    /// <summary>
-    /// Binds default properties of control to quick access element
-    /// </summary>
-    /// <param name="source">Source item</param>
-    /// <param name="element">Toolbar item</param>
-    public static void BindQuickAccessItem(FrameworkElement source, FrameworkElement element)
-    {
-        Bind(source, element, nameof(source.DataContext), DataContextProperty, BindingMode.OneWay);
-
-        if (source is ICommandSource)
-        {
-            if (source is MenuItem)
-            {
-                Bind(source, element, nameof(ICommandSource.CommandParameter), System.Windows.Controls.MenuItem.CommandParameterProperty, BindingMode.OneWay);
-                Bind(source, element, nameof(ICommandSource.CommandTarget), System.Windows.Controls.MenuItem.CommandTargetProperty, BindingMode.OneWay);
-                Bind(source, element, nameof(ICommandSource.Command), System.Windows.Controls.MenuItem.CommandProperty, BindingMode.OneWay);
-            }
-            else
-            {
-                Bind(source, element, nameof(ICommandSource.CommandParameter), System.Windows.Controls.Primitives.ButtonBase.CommandParameterProperty, BindingMode.OneWay);
-                Bind(source, element, nameof(ICommandSource.CommandTarget), System.Windows.Controls.Primitives.ButtonBase.CommandTargetProperty, BindingMode.OneWay);
-                Bind(source, element, nameof(ICommandSource.Command), System.Windows.Controls.Primitives.ButtonBase.CommandProperty, BindingMode.OneWay);
-            }
-        }
-
-        Bind(source, element, nameof(FontFamily), FontFamilyProperty, BindingMode.OneWay);
-        Bind(source, element, nameof(FontSize), FontSizeProperty, BindingMode.OneWay);
-        Bind(source, element, nameof(FontStretch), FontStretchProperty, BindingMode.OneWay);
-        Bind(source, element, nameof(FontStyle), FontStyleProperty, BindingMode.OneWay);
-        Bind(source, element, nameof(FontWeight), FontWeightProperty, BindingMode.OneWay);
-
-        Bind(source, element, nameof(Foreground), ForegroundProperty, BindingMode.OneWay);
-        Bind(source, element, nameof(IsEnabled), IsEnabledProperty, BindingMode.OneWay);
-        Bind(source, element, nameof(Opacity), OpacityProperty, BindingMode.OneWay);
-        Bind(source, element, nameof(SnapsToDevicePixels), SnapsToDevicePixelsProperty, BindingMode.OneWay);
-
-        Bind(source, element, new PropertyPath(FocusManager.IsFocusScopeProperty), FocusManager.IsFocusScopeProperty, BindingMode.OneWay);
-
-        Bind(source, element, new PropertyPath(InputControlProperties.InputMinWidthProperty), InputControlProperties.InputMinWidthProperty, BindingMode.OneWay);
-        Bind(source, element, new PropertyPath(InputControlProperties.InputWidthProperty), InputControlProperties.InputWidthProperty, BindingMode.OneWay);
-        Bind(source, element, new PropertyPath(InputControlProperties.InputHeightProperty), InputControlProperties.InputHeightProperty, BindingMode.OneWay);
-
-        if (source is IHeaderedControl headeredControl)
-        {
-            if (headeredControl is HeaderedItemsControl)
-            {
-                Bind(source, element, nameof(HeaderedItemsControl.Header), HeaderedItemsControl.HeaderProperty, BindingMode.OneWay);
-                Bind(source, element, nameof(HeaderedItemsControl.HeaderStringFormat), HeaderedItemsControl.HeaderStringFormatProperty, BindingMode.OneWay);
-                Bind(source, element, nameof(HeaderedItemsControl.HeaderTemplate), HeaderedItemsControl.HeaderTemplateProperty, BindingMode.OneWay);
-                Bind(source, element, nameof(HeaderedItemsControl.HeaderTemplateSelector), HeaderedItemsControl.HeaderTemplateSelectorProperty, BindingMode.OneWay);
-            }
-            else
-            {
-                Bind(source, element, nameof(IHeaderedControl.Header), HeaderProperty, BindingMode.OneWay);
-            }
-
-            if (source.ToolTip is not null
-                || BindingOperations.IsDataBound(source, ToolTipProperty))
-            {
-                Bind(source, element, nameof(ToolTip), ToolTipProperty, BindingMode.OneWay);
-            }
-            else
-            {
-                Bind(source, element, nameof(IHeaderedControl.Header), ToolTipProperty, BindingMode.OneWay);
-            }
-        }
-
-        var ribbonControl = source as IRibbonControl;
-        if (ribbonControl?.Icon is not null)
-        {
-            if (ribbonControl.Icon is Visual iconVisual)
-            {
-                var rect = new Rectangle
-                {
-                    Width = 16,
-                    Height = 16,
-                    Fill = new VisualBrush(iconVisual)
-                };
-                ((IRibbonControl)element).Icon = rect;
-            }
-            else
-            {
-                Bind(source, element, nameof(IRibbonControl.Icon), IconProperty, BindingMode.OneWay);
-            }
-        }
-
-        RibbonProperties.SetSize(element, RibbonControlSize.Small);
-    }
-
-    public bool CanAddToQuickAccessToolBar
-    {
-        get => (bool)this.GetValue(CanAddToQuickAccessToolBarProperty);
-        set => this.SetValue(CanAddToQuickAccessToolBarProperty, BooleanBoxes.Box(value));
-    }
-
-    /// <summary>Identifies the <see cref="CanAddToQuickAccessToolBar"/> dependency property.</summary>
-    public static readonly DependencyProperty CanAddToQuickAccessToolBarProperty =
-        DependencyProperty.Register(nameof(CanAddToQuickAccessToolBar), typeof(bool), typeof(RibbonControl), new PropertyMetadata(BooleanBoxes.TrueBox, OnCanAddToQuickAccessToolBarChanged));
-
-    /// <summary>
-    /// Occurs then CanAddToQuickAccessToolBar property changed
-    /// </summary>
-    public static void OnCanAddToQuickAccessToolBarChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-    {
-        d.CoerceValue(ContextMenuProperty);
     }
 
     internal static void Bind(object source, FrameworkElement target, string path, DependencyProperty property, BindingMode mode)

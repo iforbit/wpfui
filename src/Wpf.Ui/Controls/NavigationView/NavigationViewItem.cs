@@ -121,6 +121,21 @@ public class NavigationViewItem
         new FrameworkPropertyMetadata(NavigationCacheMode.Disabled)
     );
 
+    // 동적 스크롤 제어 옵션 – 기본값은 true (필요에 따라 변경 가능)
+    public static readonly DependencyProperty IsDynamicScrollEnabledProperty =
+        DependencyProperty.Register(
+            nameof(IsDynamicScrollEnabled),
+            typeof(bool),
+            typeof(NavigationViewItem),
+            new PropertyMetadata(true)
+        );
+
+    public bool IsDynamicScrollEnabled
+    {
+        get => (bool)GetValue(IsDynamicScrollEnabledProperty);
+        set => SetValue(IsDynamicScrollEnabledProperty, value);
+    }
+
     /// <inheritdoc/>
     public IList MenuItems => (ObservableCollection<object>)GetValue(MenuItemsProperty);
 
@@ -237,12 +252,12 @@ public class NavigationViewItem
     {
         Id = Guid.NewGuid().ToString("n");
 
-        Unloaded += static (sender, _ ) =>
+        Unloaded += static (sender, _) =>
         {
             ((NavigationViewItem)sender).NavigationViewItemParent = null;
         };
 
-        Loaded += (_, _ ) => InitializeNavigationViewEvents();
+        Loaded += (_, _) => InitializeNavigationViewEvents();
 
         // Initialize the `Items` collection
         var menuItems = new ObservableCollection<object>();
@@ -250,26 +265,26 @@ public class NavigationViewItem
         SetValue(MenuItemsPropertyKey, menuItems);
     }
 
-    public NavigationViewItem(Type targetPageType )
+    public NavigationViewItem(Type targetPageType)
         : this()
     {
         SetValue(TargetPageTypeProperty, targetPageType);
     }
 
-    public NavigationViewItem(string name, Type targetPageType )
+    public NavigationViewItem(string name, Type targetPageType)
         : this(targetPageType)
     {
         SetValue(ContentProperty, name);
     }
 
-    public NavigationViewItem(string name, SymbolRegular icon, Type targetPageType )
+    public NavigationViewItem(string name, SymbolRegular icon, Type targetPageType)
         : this(targetPageType)
     {
         SetValue(ContentProperty, name);
         SetValue(IconProperty, new SymbolIcon { Symbol = icon });
     }
 
-    public NavigationViewItem(string name, SymbolRegular icon, Type targetPageType, IList menuItems )
+    public NavigationViewItem(string name, SymbolRegular icon, Type targetPageType, IList menuItems)
         : this(name, icon, targetPageType)
     {
         SetValue(MenuItemsSourceProperty, menuItems);
@@ -278,7 +293,7 @@ public class NavigationViewItem
     /// <summary>
     /// Correctly activates
     /// </summary>
-    public virtual void Activate(INavigationView navigationView )
+    public virtual void Activate(INavigationView navigationView)
     {
         SetCurrentValue(IsActiveProperty, true);
 
@@ -314,7 +329,7 @@ public class NavigationViewItem
     /// <summary>
     /// Correctly deactivates
     /// </summary>
-    public virtual void Deactivate(INavigationView navigationView )
+    public virtual void Deactivate(INavigationView navigationView)
     {
         SetCurrentValue(IsActiveProperty, false);
         NavigationViewItemParent?.Deactivate(navigationView);
@@ -345,7 +360,7 @@ public class NavigationViewItem
     }
 
     /// <inheritdoc />
-    protected override void OnInitialized(EventArgs e )
+    protected override void OnInitialized(EventArgs e)
     {
         base.OnInitialized(e);
 
@@ -382,7 +397,7 @@ public class NavigationViewItem
     /// <summary>
     /// Is called when mouse is clicked down.
     /// </summary>
-    protected override void OnMouseDown(MouseButtonEventArgs e )
+    protected override void OnMouseDown(MouseButtonEventArgs e)
     {
         if (!HasMenuItems || e.LeftButton != MouseButtonState.Pressed)
         {
@@ -438,7 +453,7 @@ public class NavigationViewItem
         e.Handled = true;
     }
 
-    private void OnMenuItems_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e )
+    private void OnMenuItems_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
         SetValue(HasMenuItemsPropertyKey, MenuItems.Count > 0);
 
@@ -448,7 +463,7 @@ public class NavigationViewItem
         }
     }
 
-    private static void OnMenuItemsSourceChanged(DependencyObject? d, DependencyPropertyChangedEventArgs e )
+    private static void OnMenuItemsSourceChanged(DependencyObject? d, DependencyPropertyChangedEventArgs e)
     {
         if (d is not NavigationViewItem navigationViewItem)
         {
@@ -476,8 +491,8 @@ public class NavigationViewItem
         {
             SetCurrentValue(IsPaneOpenProperty, navigationView.IsPaneOpen);
 
-            navigationView.PaneOpened += (_, _ ) => SetCurrentValue(IsPaneOpenProperty, true);
-            navigationView.PaneClosed += (_, _ ) => SetCurrentValue(IsPaneOpenProperty, false);
+            navigationView.PaneOpened += (_, _) => SetCurrentValue(IsPaneOpenProperty, true);
+            navigationView.PaneClosed += (_, _) => SetCurrentValue(IsPaneOpenProperty, false);
         }
     }
 }
