@@ -15,6 +15,7 @@
     <PackageVersion Include="Microsoft.VSSDK.BuildTools" Version="17.11.414" />
     <PackageVersion Include="Microsoft.Web.WebView2" Version="1.0.2592.51" />
     <PackageVersion Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.2428" />
+    <PackageVersion Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
     <PackageVersion Include="NativeMethods" Version="0.0.3" />
     <PackageVersion Include="NSubstitute" Version="5.1.0" />
     <PackageVersion Include="PolySharp" Version="1.15.0" />

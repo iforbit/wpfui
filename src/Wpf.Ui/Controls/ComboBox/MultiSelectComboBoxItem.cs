@@ -44,4 +44,9 @@ public class MultiSelectComboBoxItem : ComboBoxItem
 
         base.OnUnselected(e);
     }
+
+    public override string ToString()
+    {
+        return Content?.ToString() ?? base.ToString();
+    }
 }

@@ -5,6 +5,7 @@
 
 using System.Diagnostics;
 using System.Windows.Input;
+
 using Wpf.Ui.Designer;
 using Wpf.Ui.Extensions;
 using Wpf.Ui.Input;
@@ -192,6 +193,20 @@ public class TitleBar : System.Windows.Controls.Control, IThemeControl
         typeof(TitleBar),
         new PropertyMetadata(null)
     );
+
+    public static readonly DependencyProperty ShowCloseConfirmationProperty =
+    DependencyProperty.Register(
+        nameof(ShowCloseConfirmation),
+        typeof(bool),
+        typeof(TitleBar),
+        new PropertyMetadata(true) // 기본값은 true로, 확인 메시지 박스를 표시합니다.
+    );
+
+    public bool ShowCloseConfirmation
+    {
+        get => (bool)GetValue(ShowCloseConfirmationProperty);
+        set => SetValue(ShowCloseConfirmationProperty, value);
+    }
 
     /// <inheritdoc />
     public Appearance.ApplicationTheme ApplicationTheme
@@ -392,7 +407,7 @@ public class TitleBar : System.Windows.Controls.Control, IThemeControl
     }
 
     /// <inheritdoc />
-    protected override void OnInitialized(EventArgs e )
+    protected override void OnInitialized(EventArgs e)
     {
         base.OnInitialized(e);
 
@@ -400,7 +415,7 @@ public class TitleBar : System.Windows.Controls.Control, IThemeControl
         Appearance.ApplicationThemeManager.Changed += OnThemeChanged;
     }
 
-    protected virtual void OnLoaded(object sender, RoutedEventArgs e )
+    protected virtual void OnLoaded(object sender, RoutedEventArgs e)
     {
         if (DesignerHelper.IsInDesignMode)
         {
@@ -413,7 +428,7 @@ public class TitleBar : System.Windows.Controls.Control, IThemeControl
         _currentWindow.ContentRendered += OnWindowContentRendered;
     }
 
-    private void OnUnloaded(object sender, RoutedEventArgs e )
+    private void OnUnloaded(object sender, RoutedEventArgs e)
     {
         Loaded -= OnLoaded;
         Unloaded -= OnUnloaded;
@@ -470,8 +485,24 @@ public class TitleBar : System.Windows.Controls.Control, IThemeControl
 
     private void CloseWindow()
     {
+        // ShowCloseConfirmation이 true인 경우에만 확인 메시지 박스를 표시
+        if (ShowCloseConfirmation)
+        {
+            var result = new MessageBox
+            {
+                Content = "Do you really want to close the window?",
+                Title = "Close Confirmation"
+            };
+
+            if (!result.ShowDialog(MessageBoxButton.YesNo).Equals(MessageBoxResult.Yes))
+            {
+                // 사용자가 "Yes"를 선택하지 않으면 창을 닫지 않고 메서드 종료
+                return;
+            }
+        }
+
         Debug.WriteLine(
-            $"INFO | {typeof(TitleBar)}.CloseWindow:ForceShutdown -  {ForceShutdown}",
+            $"INFO | {typeof(TitleBar)}.CloseWindow:ForceShutdown - {ForceShutdown}",
             "Wpf.Ui.TitleBar"
         );
 
@@ -522,7 +553,7 @@ public class TitleBar : System.Windows.Controls.Control, IThemeControl
         }
     }
 
-    private void OnParentWindowStateChanged(object? sender, EventArgs e )
+    private void OnParentWindowStateChanged(object? sender, EventArgs e)
     {
         if (IsMaximized != (_currentWindow.WindowState == WindowState.Maximized))
         {
@@ -530,7 +561,7 @@ public class TitleBar : System.Windows.Controls.Control, IThemeControl
         }
     }
 
-    private void OnTemplateButtonClick(TitleBarButtonType buttonType )
+    private void OnTemplateButtonClick(TitleBarButtonType buttonType)
     {
         switch (buttonType)
         {
@@ -559,7 +590,7 @@ public class TitleBar : System.Windows.Controls.Control, IThemeControl
     /// <summary>
     ///     Listening window hooks after rendering window content to SizeToContent support
     /// </summary>
-    private void OnWindowContentRendered(object? sender, EventArgs e )
+    private void OnWindowContentRendered(object? sender, EventArgs e)
     {
         if (sender is not Window window)
         {
@@ -574,7 +605,7 @@ public class TitleBar : System.Windows.Controls.Control, IThemeControl
         windowSource.AddHook(HwndSourceHook);
     }
 
-    private IntPtr HwndSourceHook(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled )
+    private IntPtr HwndSourceHook(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
     {
         var message = (User32.WM)msg;
 
@@ -640,7 +671,7 @@ public class TitleBar : System.Windows.Controls.Control, IThemeControl
     /// <summary>
     /// Show 'SystemMenu' on mouse right button up.
     /// </summary>
-    private void TitleBar_MouseRightButtonUp(object sender, MouseButtonEventArgs e )
+    private void TitleBar_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
     {
         Point point = PointToScreen(e.GetPosition(this));
 
@@ -655,7 +686,7 @@ public class TitleBar : System.Windows.Controls.Control, IThemeControl
         );
     }
 
-    private T GetTemplateChild<T>(string name )
+    private T GetTemplateChild<T>(string name)
         where T : DependencyObject
     {
         DependencyObject element = GetTemplateChild(name);

@@ -4,8 +4,11 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:ctrlHelper="clr-namespace:Wpf.Ui.Demo.Mvvm.Helpers"
+      xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
       xmlns:local="clr-namespace:Wpf.Ui.Demo.Mvvm.Views.Pages"
+      xmlns:sys="clr-namespace:System;assembly=mscorlib"
       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      xmlns:vm="clr-namespace:Wpf.Ui.Demo.Mvvm.ViewModels"
       Title="DashboardPage"
       d:DataContext="{d:DesignInstance local:DashboardPage,
                                        IsDesignTimeCreatable=True}"
@@ -210,6 +213,10 @@
         </ui:Ribbon>
         <ctrlHelper:FixedPointFormatter x:Key="FixedPointFormatter" />
 
+        <sys:Int16 x:Key="Num_1">1</sys:Int16>
+        <sys:Int16 x:Key="Num_2">2</sys:Int16>
+        <sys:Int16 x:Key="Num_3">3</sys:Int16>
+        <sys:Int16 x:Key="Num_4">4</sys:Int16>
     </Page.Resources>
 
     <Grid Margin="42" VerticalAlignment="Top">
@@ -228,19 +235,22 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
+        <ui:NumberBox SpinButtonPlacementMode="Hidden" Width="200" Value="{Binding ViewModel.Counter, Mode=TwoWay, StringFormat={}{0:F7}, UpdateSourceTrigger=LostFocus}" />
 
-        <TextBlock Margin="12,0,0,0" VerticalAlignment="Center"
-                   Text="{Binding ViewModel.Counter, Mode=OneWay}" />
-        <!--  MAC 주소 형식의 입력 예시  -->
-        <ui:MacAddressTextBox Grid.Row="1" Margin="20" Mask="[0-9A-Fa-f]{2}(:[0-9A-Fa-f]{2}){5}"
-                              MaskType="RegEx" PromptChar="_"
-                              Text="{Binding ViewModel.Message}"
-                              Watermark="e.g. FF:FF:FF:FF:FF:FF" />
-        <ui:TextBlock Grid.Row="1" Grid.Column="1"
-                      Text="{Binding ViewModel.Message}" />
-        <ui:PasswordBox Grid.Row="2"
-                        Icon="{ui:SymbolIcon Password24}"
-                        PlaceholderEnabled="True" PlaceholderText="Password..." />
-        <ui:TextBox Grid.Row="3" />
+        <ui:ComboBox x:Name="MultiSelectCombo"
+                     Grid.Row="3" Margin="10,0" Padding="5"
+                     AllowMultipleSelection="True"
+                     FinalSelectedItems="{Binding ViewModel.tESTlIST, UpdateSourceTrigger=PropertyChanged}">
+            <ui:MultiSelectComboBoxItem Content="{StaticResource Num_1}" />
+            <ui:MultiSelectComboBoxItem Content="{StaticResource Num_2}" />
+            <ui:MultiSelectComboBoxItem Content="{StaticResource Num_3}" />
+            <ui:MultiSelectComboBoxItem Content="{StaticResource Num_4}" />
+            <i:Interaction.Triggers>
+                <!--  DropDownClosed 이벤트가 한 번만 발생하므로, 최종 선택 상태만 전달됨  -->
+                <i:EventTrigger EventName="DropDownClosed">
+                    <i:InvokeCommandAction Command="{Binding ViewModel.ComboTestCommand}" CommandParameter="{Binding ElementName=MultiSelectCombo, Path=FinalSelectedItems}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </ui:ComboBox>
     </Grid>
 </Page>

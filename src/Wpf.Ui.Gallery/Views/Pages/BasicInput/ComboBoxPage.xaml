@@ -28,8 +28,12 @@
         </controls:ControlExample>
 
         <controls:ControlExample Margin="0,32,0,0" HeaderText="A ComboBox with ItemsSource set." XamlCode="&lt;ComboBox ItemsSource=&quot;{Binding FontFamilies}&quot; /&gt;">
-            <ui:ComboBox MinWidth="200" HorizontalAlignment="Left" AllowMultipleSelection="True"
-                         ItemsSource="{Binding ViewModel.ComboBoxFontFamilies, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:ComboBoxPage}, Mode=OneWay}" />
+            <ui:ComboBox MinWidth="200" HorizontalAlignment="Left" AllowMultipleSelection="True">
+                <ui:MultiSelectComboBoxItem Content="Blue" />
+                <ui:MultiSelectComboBoxItem Content="Green" />
+                <ui:MultiSelectComboBoxItem Content="Red" />
+                <ui:MultiSelectComboBoxItem Content="Yellow" />
+            </ui:ComboBox>
         </controls:ControlExample>
 
         <controls:ControlExample Margin="0,32,0,0" HeaderText="An editable ComboBox." XamlCode="&lt;ComboBox IsEditable=&quot;True&quot; /&gt;">

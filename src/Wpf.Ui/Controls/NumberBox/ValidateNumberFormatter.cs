@@ -51,8 +51,9 @@ public class ValidateNumberFormatter : INumberFormatter, INumberParser
 
     private static string GetFormatSpecifier()
     {
-        // return "G";
-        return "R";
+        return "G";
+
+        // return "R";
     }
 
     private static CultureInfo GetCurrentCultureConverter()
