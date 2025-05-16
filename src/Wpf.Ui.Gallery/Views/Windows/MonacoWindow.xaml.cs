@@ -11,7 +11,7 @@ public partial class MonacoWindow
 {
     public MonacoWindowViewModel ViewModel { get; init; }
 
-    public MonacoWindow( MonacoWindowViewModel viewModel )
+    public MonacoWindow(MonacoWindowViewModel viewModel)
     {
         ViewModel = viewModel;
         DataContext = this;

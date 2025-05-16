@@ -3,18 +3,10 @@
   <PropertyGroup>
     <PackageId>WPF-UI.Abstractions</PackageId>
     <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
-    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Abstractions for the WPF UI.</Description>
     <CommonTags>$(CommonTags);abstractions;standard</CommonTags>
-    <Configurations>Debug;Release;DLL빌드;DLL</Configurations>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)' == 'DLL빌드'">
-    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net7.0'">
-    <EnableAotAnalyzer>false</EnableAotAnalyzer>
+    <_SilenceIsAotCompatibleUnsupportedWarning>true</_SilenceIsAotCompatibleUnsupportedWarning>
   </PropertyGroup>
 
   <ItemGroup>

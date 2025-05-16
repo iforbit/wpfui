@@ -470,7 +470,7 @@ public class ContentDialog : ContentControl
     {
         SetValue(TemplateButtonCommandProperty, new RelayCommand<ContentDialogButton>(OnButtonClick));
 
-        Loaded += static ( sender, _ ) =>
+        Loaded += static (sender, _) =>
         {
             var self = (ContentDialog)sender;
             self.OnLoaded();
@@ -481,7 +481,7 @@ public class ContentDialog : ContentControl
     /// Initializes a new instance of the <see cref="ContentDialog"/> class.
     /// </summary>
     /// <param name="dialogHost"><see cref="DialogHost"/> inside of which the dialogue will be placed. The new <see cref="ContentDialog"/> will replace the current <see cref="ContentPresenter.Content"/>.</param>
-    public ContentDialog( ContentPresenter? dialogHost )
+    public ContentDialog(ContentPresenter? dialogHost)
     {
         if (dialogHost is null)
         {
@@ -492,7 +492,7 @@ public class ContentDialog : ContentControl
 
         SetValue(TemplateButtonCommandProperty, new RelayCommand<ContentDialogButton>(OnButtonClick));
 
-        Loaded += static ( sender, _ ) =>
+        Loaded += static (sender, _) =>
         {
             var self = (ContentDialog)sender;
             self.OnLoaded();
@@ -517,7 +517,7 @@ public class ContentDialog : ContentControl
         "WPF0041:Set mutable dependency properties using SetCurrentValue",
         Justification = "SetCurrentValue(ContentProperty, ...) will not work"
     )]
-    public async Task<ContentDialogResult> ShowAsync( CancellationToken cancellationToken = default )
+    public async Task<ContentDialogResult> ShowAsync(CancellationToken cancellationToken = default)
     {
         if (DialogHost is null)
         {
@@ -554,7 +554,7 @@ public class ContentDialog : ContentControl
     /// <summary>
     /// Hides the dialog with result
     /// </summary>
-    public virtual void Hide( ContentDialogResult result = ContentDialogResult.None )
+    public virtual void Hide(ContentDialogResult result = ContentDialogResult.None)
     {
         var closingEventArgs = new ContentDialogClosingEventArgs(ClosingEvent, this) { Result = result };
 
@@ -569,7 +569,7 @@ public class ContentDialog : ContentControl
     /// <summary>
     /// Occurs after ContentPresenter.Content = null
     /// </summary>
-    protected virtual void OnClosed( ContentDialogResult result )
+    protected virtual void OnClosed(ContentDialogResult result)
     {
         var closedEventArgs = new ContentDialogClosedEventArgs(ClosedEvent, this) { Result = result };
 
@@ -580,11 +580,11 @@ public class ContentDialog : ContentControl
     /// Invoked when a <see cref="ContentDialogButton"/> is clicked.
     /// </summary>
     /// <param name="button">The button that was clicked.</param>
-    protected virtual void OnButtonClick( ContentDialogButton button )
+    protected virtual void OnButtonClick(ContentDialogButton button)
     {
         var buttonClickEventArgs = new ContentDialogButtonClickEventArgs(ButtonClickedEvent, this)
         {
-            Button = button
+            Button = button,
         };
 
         RaiseEvent(buttonClickEventArgs);
@@ -593,13 +593,13 @@ public class ContentDialog : ContentControl
         {
             ContentDialogButton.Primary => ContentDialogResult.Primary,
             ContentDialogButton.Secondary => ContentDialogResult.Secondary,
-            _ => ContentDialogResult.None
+            _ => ContentDialogResult.None,
         };
 
         Hide(result);
     }
 
-    protected override Size MeasureOverride( Size availableSize )
+    protected override Size MeasureOverride(Size availableSize)
     {
         var rootElement = (UIElement)GetVisualChild(0)!;
 
@@ -627,7 +627,7 @@ public class ContentDialog : ContentControl
         RaiseEvent(new RoutedEventArgs(OpenedEvent));
     }
 
-    private Size GetNewDialogSize( Size desiredSize )
+    private Size GetNewDialogSize(Size desiredSize)
     {
         // TODO: Handle negative values
         var paddingWidth = Padding.Left + Padding.Right;
@@ -642,7 +642,7 @@ public class ContentDialog : ContentControl
         return new Size(width, height);
     }
 
-    private void ResizeWidth( UIElement element )
+    private void ResizeWidth(UIElement element)
     {
         if (DialogWidth <= DialogMaxWidth)
         {
@@ -661,7 +661,7 @@ public class ContentDialog : ContentControl
         }
     }
 
-    private void ResizeHeight( UIElement element )
+    private void ResizeHeight(UIElement element)
     {
         if (DialogHeight <= DialogMaxHeight)
         {

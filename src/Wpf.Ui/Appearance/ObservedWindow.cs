@@ -20,7 +20,7 @@ internal class ObservedWindow
     /// <param name="handle">The handle of the window.</param>
     /// <param name="backdrop">The backdrop type of the window.</param>
     /// <param name="updateAccents">Indicates whether to update accents.</param>
-    public ObservedWindow(IntPtr handle, WindowBackdropType backdrop, bool updateAccents )
+    public ObservedWindow(IntPtr handle, WindowBackdropType backdrop, bool updateAccents)
     {
         Handle = handle;
         Backdrop = backdrop;
@@ -61,7 +61,7 @@ internal class ObservedWindow
     /// Adds a hook to the window.
     /// </summary>
     /// <param name="hook">The hook to add.</param>
-    public void AddHook(HwndSourceHook hook )
+    public void AddHook(HwndSourceHook hook)
     {
         _source.AddHook(hook);
 
@@ -72,7 +72,7 @@ internal class ObservedWindow
     /// Removes a hook from the window.
     /// </summary>
     /// <param name="hook">The hook to remove.</param>
-    public void RemoveHook(HwndSourceHook hook )
+    public void RemoveHook(HwndSourceHook hook)
     {
         _source.RemoveHook(hook);
 

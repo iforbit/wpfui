@@ -9,7 +9,7 @@ public class WindowsProviderService
 {
     private readonly IServiceProvider _serviceProvider;
 
-    public WindowsProviderService( IServiceProvider serviceProvider )
+    public WindowsProviderService(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
     }

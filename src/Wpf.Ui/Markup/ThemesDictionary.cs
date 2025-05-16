@@ -43,13 +43,13 @@ public class ThemesDictionary : ResourceDictionary
         SetSourceBasedOnSelectedTheme(ApplicationTheme.Light);
     }
 
-    private void SetSourceBasedOnSelectedTheme( ApplicationTheme? selectedApplicationTheme )
+    private void SetSourceBasedOnSelectedTheme(ApplicationTheme? selectedApplicationTheme)
     {
         var themeName = selectedApplicationTheme switch
         {
             ApplicationTheme.Dark => "Dark",
             ApplicationTheme.HighContrast => "HighContrast",
-            _ => "Light"
+            _ => "Light",
         };
 
         Source = new Uri($"{ApplicationThemeManager.ThemesDictionaryPath}{themeName}.xaml", UriKind.Absolute);

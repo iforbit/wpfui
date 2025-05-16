@@ -25,7 +25,7 @@ public class TypographyControl : Control
         typeof(TypographyControl),
         new PropertyMetadata(
             FontTypography.Body,
-            static ( o, args ) =>
+            static (o, args) =>
             {
                 ((TypographyControl)o).OnExampleFontTypographyChanged((FontTypography)args.NewValue);
             }
@@ -86,7 +86,7 @@ public class TypographyControl : Control
         set => SetValue(FontTypographyStyleProperty, value);
     }
 
-    private void OnExampleFontTypographyChanged( FontTypography fontTypography )
+    private void OnExampleFontTypographyChanged(FontTypography fontTypography)
     {
         SetCurrentValue(FontTypographyStyleProperty, fontTypography.ToString());
     }

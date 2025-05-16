@@ -13,7 +13,7 @@ public partial class ToggleSwitchViewModel : ViewModel
     private bool _isToggleSwitchEnabled = true;
 
     [RelayCommand]
-    private void OnToggleSwitchCheckboxChecked( object sender )
+    private void OnToggleSwitchCheckboxChecked(object sender)
     {
         if (sender is not CheckBox checkbox)
         {

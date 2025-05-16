@@ -15,7 +15,7 @@ namespace Wpf.Ui.Gallery.Views.Pages.Layout;
 [GalleryPage("Card control.", SymbolRegular.CheckboxIndeterminate24)]
 public partial class CardControlPage : INavigableView<CardControlViewModel>
 {
-    public CardControlPage( CardControlViewModel viewModel )
+    public CardControlPage(CardControlViewModel viewModel)
     {
         InitializeComponent();
         ViewModel = viewModel;

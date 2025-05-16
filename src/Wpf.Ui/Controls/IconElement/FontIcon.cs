@@ -112,14 +112,18 @@ public class FontIcon : IconElement
 
     protected override UIElement InitializeChildren()
     {
-        if (VisualParent is not null)
-        {
-            SetCurrentValue(FontSizeProperty, TextElement.GetFontSize(VisualParent));
-        }
-
         if (FontSize.Equals(SystemFonts.MessageFontSize))
         {
             SetResourceReference(FontSizeProperty, "DefaultIconFontSize");
+
+            // If the FontSize is the default, set it to the parent's FontSize.
+            if (
+                VisualParent is not null
+                && TextElement.GetFontSize(VisualParent) != SystemFonts.MessageFontSize
+            )
+            {
+                SetCurrentValue(FontSizeProperty, TextElement.GetFontSize(VisualParent));
+            }
         }
 
         TextBlock = new TextBlock
@@ -142,7 +146,7 @@ public class FontIcon : IconElement
         return TextBlock;
     }
 
-    private static void OnFontFamilyChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
+    private static void OnFontFamilyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         var self = (FontIcon)d;
         if (self.TextBlock is null)
@@ -156,7 +160,7 @@ public class FontIcon : IconElement
         );
     }
 
-    private static void OnFontSizeChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
+    private static void OnFontSizeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         var self = (FontIcon)d;
         if (self.TextBlock is null)
@@ -170,7 +174,7 @@ public class FontIcon : IconElement
         );
     }
 
-    private static void OnFontStyleChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
+    private static void OnFontStyleChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         var self = (FontIcon)d;
         if (self.TextBlock is null)
@@ -184,7 +188,7 @@ public class FontIcon : IconElement
         );
     }
 
-    private static void OnFontWeightChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
+    private static void OnFontWeightChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         var self = (FontIcon)d;
         if (self.TextBlock is null)
@@ -198,7 +202,7 @@ public class FontIcon : IconElement
         );
     }
 
-    private static void OnGlyphChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
+    private static void OnGlyphChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         var self = (FontIcon)d;
         if (self.TextBlock is null)

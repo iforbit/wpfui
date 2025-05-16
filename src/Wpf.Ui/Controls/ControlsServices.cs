@@ -16,7 +16,7 @@ public static class ControlsServices
     /// <summary>
     /// Accepts a ServiceProvider for configuring dependency injection.
     /// </summary>
-    public static void Initialize( IServiceProvider? serviceProvider )
+    public static void Initialize(IServiceProvider? serviceProvider)
     {
         if (serviceProvider == null)
         {

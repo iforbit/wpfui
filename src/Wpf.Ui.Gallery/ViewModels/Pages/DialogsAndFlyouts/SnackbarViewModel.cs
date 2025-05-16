@@ -7,7 +7,7 @@ using Wpf.Ui.Controls;
 
 namespace Wpf.Ui.Gallery.ViewModels.Pages.DialogsAndFlyouts;
 
-public partial class SnackbarViewModel( ISnackbarService snackbarService ) : ViewModel
+public partial class SnackbarViewModel(ISnackbarService snackbarService) : ViewModel
 {
     private ControlAppearance _snackbarAppearance = ControlAppearance.Secondary;
 
@@ -27,7 +27,7 @@ public partial class SnackbarViewModel( ISnackbarService snackbarService ) : Vie
     }
 
     [RelayCommand]
-    private void OnOpenSnackbar( object sender )
+    private void OnOpenSnackbar(object sender)
     {
         snackbarService.Show(
             "Don't Blame Yourself.",
@@ -38,7 +38,7 @@ public partial class SnackbarViewModel( ISnackbarService snackbarService ) : Vie
         );
     }
 
-    private void UpdateSnackbarAppearance( int appearanceIndex )
+    private void UpdateSnackbarAppearance(int appearanceIndex)
     {
         _snackbarAppearance = appearanceIndex switch
         {
@@ -50,7 +50,7 @@ public partial class SnackbarViewModel( ISnackbarService snackbarService ) : Vie
             6 => ControlAppearance.Light,
             7 => ControlAppearance.Dark,
             8 => ControlAppearance.Transparent,
-            _ => ControlAppearance.Primary
+            _ => ControlAppearance.Primary,
         };
     }
 }

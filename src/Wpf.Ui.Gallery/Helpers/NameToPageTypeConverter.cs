@@ -13,7 +13,7 @@ internal sealed class NameToPageTypeConverter
         .Where(t => t.Namespace?.StartsWith("Wpf.Ui.Gallery.Views.Pages") ?? false)
         .ToArray();
 
-    public static Type? Convert( string pageName )
+    public static Type? Convert(string pageName)
     {
         pageName = pageName.Trim().ToLower() + "page";
 

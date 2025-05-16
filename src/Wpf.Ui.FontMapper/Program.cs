@@ -5,7 +5,6 @@
 
 using System.Net.Http;
 using System.Net.Http.Json;
-
 using Wpf.Ui.FontMapper;
 
 Console.WriteLine("Fluent System Icons Mapper");
@@ -26,20 +25,6 @@ var filledIcons = new FontSource(
     "Represents a list of filled Fluent System Icons <c>v.{{FLUENT_SYSTEM_ICONS_VERSION}}</c>.\n<para>May be converted to <see langword=\"char\"/> using <c>GetGlyph()</c> or to <see langword=\"string\"/> using <c>GetString()</c></para>",
     @"https://raw.githubusercontent.com/microsoft/fluentui-system-icons/main/fonts/FluentSystemIcons-Filled.json",
     "generated\\SymbolFilled.cs"
-);
-
-var segoeFluentIcons = new FontSource(
-    "SegoeFluentIcons",
-    "Segoe Fluent Icons 폰트를 사용한 아이콘 집합입니다.",
-    @"경로\to\segoefluenticons.json", // 준비한 메타데이터 파일 경로
-    "generated\\SegoeFluentIcons.cs"
-);
-
-var materiaIcons = new FontSource(
-    "MaterialIcons-Regular",
-    "Segoe Fluent Icons 폰트를 사용한 아이콘 집합입니다.",
-    @"경로\to\MaterialIcons-Regular.json", // 준비한 메타데이터 파일 경로
-    "generated\\MaterialIcons-Regular.cs"
 );
 
 async Task<string> FetchVersion()

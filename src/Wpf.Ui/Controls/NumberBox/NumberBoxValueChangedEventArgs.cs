@@ -3,8 +3,14 @@
 // Copyright (C) Leszek Pomianowski and WPF UI Contributors.
 // All Rights Reserved.
 
+// This Source Code is partially based on the source code provided by the .NET Foundation.
+
+// ReSharper disable once CheckNamespace
 namespace Wpf.Ui.Controls;
 
+/// <summary>
+/// Provides information for the <see cref="NumberBox.ValueChanged" /> event.
+/// </summary>
 public class NumberBoxValueChangedEventArgs : RoutedEventArgs
 {
     /// <summary>

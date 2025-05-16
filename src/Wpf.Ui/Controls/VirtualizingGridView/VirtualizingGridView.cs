@@ -85,7 +85,7 @@ public class VirtualizingGridView : ListView
         VirtualizingPanel.SetIsVirtualizingWhenGrouping(this, true);
     }
 
-    protected override void OnInitialized( EventArgs e )
+    protected override void OnInitialized(EventArgs e)
     {
         base.OnInitialized(e);
 
@@ -105,7 +105,7 @@ public class VirtualizingGridView : ListView
             {
                 Source = this,
                 Path = new PropertyPath(nameof(Orientation)),
-                Mode = BindingMode.OneWay
+                Mode = BindingMode.OneWay,
             }
         );
         factory.SetBinding(
@@ -114,7 +114,7 @@ public class VirtualizingGridView : ListView
             {
                 Source = this,
                 Path = new PropertyPath(nameof(SpacingMode)),
-                Mode = BindingMode.OneWay
+                Mode = BindingMode.OneWay,
             }
         );
         factory.SetBinding(
@@ -123,7 +123,7 @@ public class VirtualizingGridView : ListView
             {
                 Source = this,
                 Path = new PropertyPath(nameof(StretchItems)),
-                Mode = BindingMode.OneWay
+                Mode = BindingMode.OneWay,
             }
         );
 

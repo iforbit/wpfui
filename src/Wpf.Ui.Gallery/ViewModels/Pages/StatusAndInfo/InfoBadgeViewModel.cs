@@ -24,7 +24,7 @@ public partial class InfoBadgeViewModel : ViewModel
         }
     }
 
-    private static InfoBadgeSeverity ConvertIndexToInfoBadgeSeverity( int value )
+    private static InfoBadgeSeverity ConvertIndexToInfoBadgeSeverity(int value)
     {
         return value switch
         {
@@ -32,7 +32,7 @@ public partial class InfoBadgeViewModel : ViewModel
             2 => InfoBadgeSeverity.Success,
             3 => InfoBadgeSeverity.Caution,
             4 => InfoBadgeSeverity.Critical,
-            _ => InfoBadgeSeverity.Attention
+            _ => InfoBadgeSeverity.Attention,
         };
     }
 }

@@ -117,7 +117,7 @@ public partial class PasswordBox : Wpf.Ui.Controls.TextBox
     }
 
     /// <inheritdoc />
-    protected override void OnTextChanged(TextChangedEventArgs e )
+    protected override void OnTextChanged(TextChangedEventArgs e)
     {
         UpdateTextContents(true);
 
@@ -176,7 +176,7 @@ public partial class PasswordBox : Wpf.Ui.Controls.TextBox
     /// Triggered by clicking a button in the control template.
     /// </summary>
     /// <param name="parameter">Additional parameters.</param>
-    protected override void OnTemplateButtonClick(string? parameter )
+    protected override void OnTemplateButtonClick(string? parameter)
     {
         System.Diagnostics.Debug.WriteLine(
             $"INFO: {typeof(PasswordBox)} button clicked with param: {parameter}",
@@ -196,7 +196,7 @@ public partial class PasswordBox : Wpf.Ui.Controls.TextBox
         }
     }
 
-    private void UpdateTextContents(bool isTriggeredByTextInput )
+    private void UpdateTextContents(bool isTriggeredByTextInput)
     {
         if (_lockUpdatingContents)
         {
@@ -251,7 +251,7 @@ public partial class PasswordBox : Wpf.Ui.Controls.TextBox
     /// <summary>
     /// Called when <see cref="Password"/> is changed.
     /// </summary>
-    private static void OnPasswordChanged(DependencyObject d, DependencyPropertyChangedEventArgs e )
+    private static void OnPasswordChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if (d is not PasswordBox control)
         {
@@ -264,7 +264,7 @@ public partial class PasswordBox : Wpf.Ui.Controls.TextBox
     /// <summary>
     /// Called if the character is changed in the during the run.
     /// </summary>
-    private static void OnPasswordCharChanged(DependencyObject d, DependencyPropertyChangedEventArgs e )
+    private static void OnPasswordCharChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if (d is not PasswordBox control)
         {
@@ -277,7 +277,7 @@ public partial class PasswordBox : Wpf.Ui.Controls.TextBox
     /// <summary>
     /// Called if the reveal mode is changed in the during the run.
     /// </summary>
-    private static void OnIsPasswordRevealedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e )
+    private static void OnIsPasswordRevealedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if (d is not PasswordBox control)
         {

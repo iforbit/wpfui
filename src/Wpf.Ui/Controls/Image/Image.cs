@@ -121,7 +121,7 @@ public class Image : Control
     /// </summary>
     internal CornerRadius InnerCornerRadius => (CornerRadius)GetValue(InnerCornerRadiusProperty);
 
-    private static void OnCornerRadiusChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
+    private static void OnCornerRadiusChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         var thickness = (Thickness)d.GetValue(BorderThicknessProperty);
         var outerRarius = (CornerRadius)e.NewValue;

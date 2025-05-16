@@ -10,7 +10,7 @@ namespace Wpf.Ui.Converters;
 
 internal class BackButtonVisibilityToVisibilityConverter : IValueConverter
 {
-    public object Convert( object? value, Type targetType, object? parameter, CultureInfo culture )
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         return value switch
         {
@@ -18,11 +18,11 @@ internal class BackButtonVisibilityToVisibilityConverter : IValueConverter
             NavigationViewBackButtonVisible.Collapsed => Visibility.Collapsed,
             NavigationViewBackButtonVisible.Visible => Visibility.Visible,
             NavigationViewBackButtonVisible.Auto => Visibility.Visible,
-            _ => Visibility.Collapsed
+            _ => Visibility.Collapsed,
         };
     }
 
-    public object ConvertBack( object? value, Type targetType, object? parameter, CultureInfo culture )
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         throw new NotImplementedException();
     }

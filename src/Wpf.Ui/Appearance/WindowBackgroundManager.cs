@@ -25,7 +25,7 @@ public static class WindowBackgroundManager
     /// <summary>
     /// Tries to apply dark theme to <see cref="Window"/>.
     /// </summary>
-    public static void ApplyDarkThemeToWindow(Window? window )
+    public static void ApplyDarkThemeToWindow(Window? window)
     {
         if (window is null)
         {
@@ -37,13 +37,13 @@ public static class WindowBackgroundManager
             _ = UnsafeNativeMethods.ApplyWindowDarkMode(window);
         }
 
-        window.Loaded += (sender, _ ) => UnsafeNativeMethods.ApplyWindowDarkMode(sender as Window);
+        window.Loaded += (sender, _) => UnsafeNativeMethods.ApplyWindowDarkMode(sender as Window);
     }
 
     /// <summary>
     /// Tries to remove dark theme from <see cref="Window"/>.
     /// </summary>
-    public static void RemoveDarkThemeFromWindow(Window? window )
+    public static void RemoveDarkThemeFromWindow(Window? window)
     {
         if (window is null)
         {
@@ -55,7 +55,7 @@ public static class WindowBackgroundManager
             _ = UnsafeNativeMethods.RemoveWindowDarkMode(window);
         }
 
-        window.Loaded += (sender, _ ) => UnsafeNativeMethods.RemoveWindowDarkMode(sender as Window);
+        window.Loaded += (sender, _) => UnsafeNativeMethods.RemoveWindowDarkMode(sender as Window);
     }
 
     [Obsolete("Use UpdateBackground(Window, ApplicationTheme, WindowBackdropType) instead.")]

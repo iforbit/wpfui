@@ -3,6 +3,8 @@
 // Copyright (C) Leszek Pomianowski and WPF UI Contributors.
 // All Rights Reserved.
 
+using CommunityToolkit.Mvvm.Messaging;
+
 using Microsoft.Xaml.Behaviors;
 
 using System.Collections.ObjectModel;
@@ -11,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Threading;
 
 using Wpf.Ui.Controls;
+using Wpf.Ui.Demo.Mvvm.Message;
 
 namespace Wpf.Ui.Demo.Mvvm.ViewModels;
 
@@ -35,13 +38,7 @@ public partial class DashboardViewModel : ViewModel
     [RelayCommand]
     private void messageTest()
     {
-        var uiMessageBox = new Controls.MessageBox
-        {
-            Title = "tttt",
-            Content = "TTTT",
-        };
-
-        _ = uiMessageBox.ShowDialog(Controls.MessageBoxButton.YesNo);
+        _ = WeakReferenceMessenger.Default.Send(new ChildAddMessage("Child"));
     }
     public override void OnNavigatedTo()
     {

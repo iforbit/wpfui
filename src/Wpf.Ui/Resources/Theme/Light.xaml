@@ -7,7 +7,8 @@
     Based on Microsoft XAML for Win UI
     Copyright (c) Microsoft Corporation. All Rights Reserved.
 -->
-<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <!--
         Microsoft UI XAML
@@ -101,6 +102,9 @@
     <Color x:Key="LayerFillColorAlt">#FFFFFF</Color>
     <Color x:Key="LayerOnAcrylicFillColorDefault">#40FFFFFF</Color>
     <Color x:Key="LayerOnAccentAcrylicFillColorDefault">#40FFFFFF</Color>
+
+    <Color x:Key="SnowflakeGradientTop">#2E4053</Color>
+    <Color x:Key="SnowflakeGradientBottom">#CCCCCC</Color>
 
     <!--  Fallback color for missing Acrylic used for e.g. Flyouts  -->
     <Color x:Key="AcrylicBackgroundFillColorDefault">#F9F9F9</Color>
@@ -241,7 +245,7 @@
 
     <!--  Elevation border brushes  -->
 
-    <LinearGradientBrush x:Key="ControlElevationBorderBrush" MappingMode="Absolute" StartPoint="0,0" EndPoint="0,3">
+    <LinearGradientBrush x:Key="ControlElevationBorderBrush" x:Shared="false" MappingMode="Absolute" StartPoint="0,0" EndPoint="0,3">
         <LinearGradientBrush.RelativeTransform>
             <ScaleTransform CenterY="0.5" ScaleY="-1" />
         </LinearGradientBrush.RelativeTransform>
@@ -258,7 +262,7 @@
         </LinearGradientBrush.GradientStops>
     </LinearGradientBrush>
 
-    <LinearGradientBrush x:Key="AccentControlElevationBorderBrush" MappingMode="Absolute" StartPoint="0,0" EndPoint="0,3">
+    <LinearGradientBrush x:Key="AccentControlElevationBorderBrush" x:Shared="false" MappingMode="Absolute" StartPoint="0,0" EndPoint="0,3">
         <LinearGradientBrush.RelativeTransform>
             <ScaleTransform CenterY="0.5" ScaleY="-1" />
         </LinearGradientBrush.RelativeTransform>
@@ -268,19 +272,19 @@
         </LinearGradientBrush.GradientStops>
     </LinearGradientBrush>
 
-    <LinearGradientBrush x:Key="TextControlElevationBorderBrush" MappingMode="RelativeToBoundingBox" StartPoint="0,0" EndPoint="0,2">
+    <LinearGradientBrush x:Key="TextControlElevationBorderBrush" x:Shared="false" MappingMode="Absolute" StartPoint="0,0" EndPoint="0,3">
+        <LinearGradientBrush.RelativeTransform>
+            <ScaleTransform CenterY="0.5" ScaleY="-1" />
+        </LinearGradientBrush.RelativeTransform>
         <LinearGradientBrush.GradientStops>
-            <GradientStop Offset="0.0" Color="{StaticResource ControlStrokeColorDefault}" />
-            <GradientStop Offset="1.0" Color="{StaticResource ControlStrongStrokeColorDefault}" />
+            <GradientStop Offset="0.33" Color="{StaticResource ControlStrokeColorSecondary}" />
+            <GradientStop Offset="1.0" Color="{StaticResource ControlStrokeColorDefault}" />
         </LinearGradientBrush.GradientStops>
     </LinearGradientBrush>
 
-    <DrawingBrush
-        x:Key="StripedBackgroundBrush"
-        Stretch="UniformToFill"
-        TileMode="Tile"
-        Viewport="0,0,10,10"
-        ViewportUnits="Absolute">
+    <DrawingBrush x:Key="StripedBackgroundBrush"
+                  Stretch="UniformToFill" TileMode="Tile" Viewport="0,0,10,10"
+                  ViewportUnits="Absolute">
         <DrawingBrush.Drawing>
             <DrawingGroup>
                 <DrawingGroup.Children>
@@ -576,6 +580,24 @@
     <!--  StatusBar  -->
     <!--  TO DO  -->
 
+    <!--  Ribbon  -->
+    <!--  선택된 탭 배경  -->
+    <SolidColorBrush x:Key="RibbonItemBackgroundSelected" Color="#FFF0F0F0" />
+    <!--  마우스 오버 시 탭 배경  -->
+    <SolidColorBrush x:Key="RibbonItemBackgroundPointerOver" Color="#FFE5E5E5" />
+    <!--  일반 탭 글자 색  -->
+    <SolidColorBrush x:Key="RibbonItemForeground" Color="#FF000000" />
+    <!--  마우스 오버 시 탭 글자 색  -->
+    <SolidColorBrush x:Key="RibbonItemForegroundPointerOver" Color="#FF1A1A1A" />
+    <!--  선택된 탭 글자 색  -->
+    <SolidColorBrush x:Key="RibbonItemForegroundSelected" Color="#FF0078D7" />
+    <!--  선택된 탭 하단 인디케이터/경계 색  -->
+    <SolidColorBrush x:Key="RibbonSelectionIndicatorForeground" Color="#FF0078D7" />
+    <!--  탭 경계(아이템 구분선) 색  -->
+    <SolidColorBrush x:Key="RibbonBorderBrush" Color="Transparent" />
+    <!--  리본에서 쓰는 기본 ActiveTabBorderBrush  -->
+    <SolidColorBrush x:Key="RibbonSelectedItemBorderBrush" Color="#FF0078D7" />
+
     <!--  TabControl / TabView  -->
     <SolidColorBrush x:Key="TabViewBackground" Color="{StaticResource SubtleFillColorTransparent}" />
     <SolidColorBrush x:Key="TabViewForeground" Color="{StaticResource TextFillColorPrimary}" />
@@ -595,7 +617,7 @@
     <SolidColorBrush x:Key="TextControlForegroundDisabled" Color="{StaticResource TextFillColorDisabled}" />
     <SolidColorBrush x:Key="TextControlFocusedBorderBrush" Color="{DynamicResource SystemAccentColorPrimary}" />
     <SolidColorBrush x:Key="TextControlBorderBrushDisabled" Color="{StaticResource ControlStrokeColorDefault}" />
-    <SolidColorBrush x:Key="TextControlPlaceholderForeground" Color="{StaticResource TextFillColorSecondary}" />
+    <SolidColorBrush x:Key="TextControlPlaceholderForeground" Color="{StaticResource TextPlaceholderColor}" />
     <SolidColorBrush x:Key="TextControlButtonForeground" Color="{StaticResource TextFillColorSecondary}" />
 
     <!--  ThumbRate  -->

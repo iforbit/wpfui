@@ -36,19 +36,16 @@ public partial class ContextMenuLoader : ResourceDictionary
         AddEditorContextMenuDefaultStyle(currentAssembly);
     }
 
-    private void AddEditorContextMenuDefaultStyle( Assembly currentAssembly )
+    private void AddEditorContextMenuDefaultStyle(Assembly currentAssembly)
     {
         var editorContextMenuType = Type.GetType(
             "System.Windows.Documents.TextEditorContextMenu+EditorContextMenu, " + currentAssembly
         );
 
-        ResourceDictionary resourceDict =
-            new()
-            {
-                Source = new Uri(
-                    "pack://application:,,,/Wpf.Ui;component/Controls/ContextMenu/ContextMenu.xaml"
-                )
-            };
+        ResourceDictionary resourceDict = new()
+        {
+            Source = new Uri("pack://application:,,,/Wpf.Ui;component/Controls/ContextMenu/ContextMenu.xaml"),
+        };
 
         Style contextMenuStyle = (Style)resourceDict["UiContextMenu"];
 

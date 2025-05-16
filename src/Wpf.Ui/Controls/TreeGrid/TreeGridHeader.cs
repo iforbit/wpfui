@@ -62,7 +62,7 @@ public class TreeGridHeader : System.Windows.FrameworkElement
         SetCurrentValue(GroupProperty, title.ToLower().Trim());
     }
 
-    private static void OnTitleChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
+    private static void OnTitleChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if (d is not TreeGridHeader header)
         {

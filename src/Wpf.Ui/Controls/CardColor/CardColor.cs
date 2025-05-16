@@ -134,7 +134,7 @@ public class CardColor : System.Windows.Controls.Control
         SetCurrentValue(CardBrushProperty, Brush);
     }
 
-    private static void OnSubtitleChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
+    private static void OnSubtitleChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if (d is not CardColor cardColor)
         {
@@ -144,7 +144,7 @@ public class CardColor : System.Windows.Controls.Control
         cardColor.OnSubtitlePropertyChanged();
     }
 
-    private static void OnColorChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
+    private static void OnColorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if (d is not CardColor cardColor)
         {
@@ -154,7 +154,7 @@ public class CardColor : System.Windows.Controls.Control
         cardColor.OnColorPropertyChanged();
     }
 
-    private static void OnBrushChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
+    private static void OnBrushChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if (d is not CardColor cardColor)
         {

@@ -32,7 +32,6 @@
     <Resource Include="Resources\Fonts\SegoeFluentIcons.ttf" />
     <Resource Include="Resources\Theme\Effects\Grayscale.ps" />
   </ItemGroup>
-
   <ItemGroup>
     <EmbeddedResource Include="Controls\Anchor\Anchor.bmp" />
     <EmbeddedResource Include="Controls\Arc\Arc.bmp" />

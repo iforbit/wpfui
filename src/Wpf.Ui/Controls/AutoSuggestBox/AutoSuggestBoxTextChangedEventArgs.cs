@@ -11,10 +11,10 @@ namespace Wpf.Ui.Controls;
 /// </summary>
 public sealed class AutoSuggestBoxTextChangedEventArgs : RoutedEventArgs
 {
-    public AutoSuggestBoxTextChangedEventArgs( RoutedEvent eventArgs, object sender )
+    public AutoSuggestBoxTextChangedEventArgs(RoutedEvent eventArgs, object sender)
         : base(eventArgs, sender) { }
 
-    required public string Text { get; init; }
+    public required string Text { get; init; }
 
-    required public AutoSuggestionBoxTextChangeReason Reason { get; init; }
+    public required AutoSuggestionBoxTextChangeReason Reason { get; init; }
 }

@@ -126,7 +126,7 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
     /// <summary>
     /// Private callback for <see cref="OrientationProperty"/>.
     /// </summary>
-    private static void OnOrientationChanged(DependencyObject d, DependencyPropertyChangedEventArgs e )
+    private static void OnOrientationChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if (d is not VirtualizingWrapPanel panel)
         {
@@ -137,7 +137,7 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
     }
 
     /// <inheritdoc />
-    protected override Size MeasureOverride(Size availableSize )
+    protected override Size MeasureOverride(Size availableSize)
     {
         UpdateChildSize(availableSize);
 
@@ -147,7 +147,7 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
     /// <summary>
     /// Updates child size of <see cref="ItemSize"/>.
     /// </summary>
-    private void UpdateChildSize(Size availableSize )
+    private void UpdateChildSize(Size availableSize)
     {
         if (
             ItemsOwner is IHierarchicalVirtualizationAndScrollInfo groupItem
@@ -189,7 +189,7 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
     /// <summary>
     /// Calculates child size.
     /// </summary>
-    private Size CalculateChildSize(Size _ )
+    private Size CalculateChildSize(Size _)
     {
         // REVIEW: this method comes with side effects. code smell
         if (Items.Count == 0)
@@ -214,7 +214,7 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
     }
 
     /// <inheritdoc />
-    protected override Size CalculateExtent(Size availableSize )
+    protected override Size CalculateExtent(Size availableSize)
     {
         var extentWidth =
             SpacingMode != SpacingMode.None && !double.IsInfinity(GetWidth(availableSize))
@@ -237,7 +237,7 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
     /// <summary>
     /// Calculates desired spacing between items.
     /// </summary>
-    protected void CalculateSpacing(Size finalSize, out double innerSpacing, out double outerSpacing )
+    protected void CalculateSpacing(Size finalSize, out double innerSpacing, out double outerSpacing)
     {
         Size childSize = CalculateChildArrangeSize(finalSize);
 
@@ -273,7 +273,7 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
     }
 
     /// <inheritdoc />
-    protected override Size ArrangeOverride(Size finalSize )
+    protected override Size ArrangeOverride(Size finalSize)
     {
         var offsetX = GetX(Offset);
         var offsetY = GetY(Offset);
@@ -320,7 +320,7 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
     /// <summary>
     /// Calculates desired child arrange size.
     /// </summary>
-    protected Size CalculateChildArrangeSize(Size finalSize )
+    protected Size CalculateChildArrangeSize(Size finalSize)
     {
         if (!StretchItems)
         {
@@ -350,7 +350,7 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
     /// <param name="property">The <see cref="DependencyProperty"/> to retrieve the value for.</param>
     /// <param name="fallbackValue">The value to return if the property is not set.</param>
     /// <returns>The value of the specified property if found; otherwise, the <paramref name="fallbackValue"/>.</returns>
-    private T ReadItemContainerStyle<T>(DependencyProperty property, T fallbackValue )
+    private T ReadItemContainerStyle<T>(DependencyProperty property, T fallbackValue)
         where T : notnull
     {
         var value = ItemsControl
@@ -425,7 +425,8 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
                 int rowCountInCacheBefore = (int)(cacheBeforeInPixel / GetHeight(ChildSize));
                 int rowCountInCacheAfter =
                     (
-                        (int)Math.Ceiling(
+                        (int)
+                            Math.Ceiling(
                                 (offsetInPixel + viewportHeight + cacheAfterInPixel) / GetHeight(ChildSize)
                             )
                     ) - (int)Math.Ceiling((offsetInPixel + viewportHeight) / GetHeight(ChildSize));
@@ -478,7 +479,7 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
     /// <summary>
     /// Gets item row index.
     /// </summary>
-    private int GetRowIndex(double location )
+    private int GetRowIndex(double location)
     {
         var calculatedRowIndex = (int)Math.Floor(location / GetHeight(ChildSize));
         var maxRowIndex = (int)Math.Ceiling((double)Items.Count / (double)ItemsPerRowCount);
@@ -487,7 +488,7 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
     }
 
     /// <inheritdoc />
-    protected override void BringIndexIntoView(int index )
+    protected override void BringIndexIntoView(int index)
     {
         if (index < 0 || index >= Items.Count)
         {
@@ -563,32 +564,32 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
     /// <summary>
     /// Gets X panel orientation.
     /// </summary>
-    protected double GetX(Point point ) => Orientation == Orientation.Vertical ? point.X : point.Y;
+    protected double GetX(Point point) => Orientation == Orientation.Vertical ? point.X : point.Y;
 
     /// <summary>
     /// Gets Y panel orientation.
     /// </summary>
-    protected double GetY(Point point ) => Orientation == Orientation.Vertical ? point.Y : point.X;
+    protected double GetY(Point point) => Orientation == Orientation.Vertical ? point.Y : point.X;
 
     /// <summary>
     /// Gets panel width.
     /// </summary>
-    protected double GetWidth(Size size ) => Orientation == Orientation.Vertical ? size.Width : size.Height;
+    protected double GetWidth(Size size) => Orientation == Orientation.Vertical ? size.Width : size.Height;
 
     /// <summary>
     /// Gets panel height.
     /// </summary>
-    protected double GetHeight(Size size ) => Orientation == Orientation.Vertical ? size.Height : size.Width;
+    protected double GetHeight(Size size) => Orientation == Orientation.Vertical ? size.Height : size.Width;
 
     /// <summary>
     /// Defines panel size.
     /// </summary>
-    protected Size CreateSize(double width, double height ) =>
+    protected Size CreateSize(double width, double height) =>
         Orientation == Orientation.Vertical ? new Size(width, height) : new Size(height, width);
 
     /// <summary>
     /// Defines panel coordinates and size.
     /// </summary>
-    protected Rect CreateRect(double x, double y, double width, double height ) =>
+    protected Rect CreateRect(double x, double y, double width, double height) =>
         Orientation == Orientation.Vertical ? new Rect(x, y, width, height) : new Rect(y, x, width, height);
 }

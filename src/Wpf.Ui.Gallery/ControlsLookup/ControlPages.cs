@@ -32,7 +32,7 @@ internal static class ControlPages
         }
     }
 
-    public static IEnumerable<GalleryPage> FromNamespace( string namespaceName )
+    public static IEnumerable<GalleryPage> FromNamespace(string namespaceName)
     {
         return All().Where(t => t.PageType?.Namespace?.StartsWith(namespaceName) ?? false);
     }

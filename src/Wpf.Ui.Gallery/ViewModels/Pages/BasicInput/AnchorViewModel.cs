@@ -13,7 +13,7 @@ public partial class AnchorViewModel : ViewModel
     private bool _isAnchorEnabled = true;
 
     [RelayCommand]
-    private void OnAnchorCheckboxChecked( object sender )
+    private void OnAnchorCheckboxChecked(object sender)
     {
         if (sender is not CheckBox checkbox)
         {

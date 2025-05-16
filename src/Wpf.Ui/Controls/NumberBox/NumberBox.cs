@@ -14,8 +14,6 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 
-using static System.Net.Mime.MediaTypeNames;
-
 // ReSharper disable once CheckNamespace
 namespace Wpf.Ui.Controls;
 

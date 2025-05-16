@@ -3,8 +3,6 @@
 // Copyright (C) Leszek Pomianowski and WPF UI Contributors.
 // All Rights Reserved.
 
-using Wpf.Ui.Extensions;
-
 namespace Wpf.Ui.Controls;
 
 /// <summary>
@@ -31,7 +29,7 @@ internal class EventIdentifier
     /// <summary>
     /// Checks if the identifiers are the same.
     /// </summary>
-    public bool IsEqual( long storedId ) => Current == storedId;
+    public bool IsEqual(long storedId) => Current == storedId;
 
     /// <summary>
     /// Creates and assigns a random value with an extra time code if possible.

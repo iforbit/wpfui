@@ -30,7 +30,7 @@ public class PassiveScrollViewer : ScrollViewer
         set { SetValue(IsScrollSpillEnabledProperty, value); }
     }
 
-    protected override void OnMouseWheel( MouseWheelEventArgs e )
+    protected override void OnMouseWheel(MouseWheelEventArgs e)
     {
         if (
             IsVerticalScrollingDisabled
@@ -48,7 +48,7 @@ public class PassiveScrollViewer : ScrollViewer
 
     private bool IsContentSmallerThanViewport => ScrollableHeight <= 0;
 
-    private bool HasReachedEndOfScrolling( MouseWheelEventArgs e )
+    private bool HasReachedEndOfScrolling(MouseWheelEventArgs e)
     {
         var isScrollingUp = e.Delta > 0;
         var isScrollingDown = e.Delta < 0;

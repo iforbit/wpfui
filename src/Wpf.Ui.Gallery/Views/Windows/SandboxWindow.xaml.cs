@@ -13,20 +13,20 @@ public partial class SandboxWindow
 {
     public SandboxWindowViewModel ViewModel { get; init; }
 
-    public SandboxWindow( SandboxWindowViewModel viewModel )
+    public SandboxWindow(SandboxWindowViewModel viewModel)
     {
         ViewModel = viewModel;
         DataContext = this;
 
         InitializeComponent();
 
-        MyTestNavigationView.Loaded += ( sender, args ) =>
+        MyTestNavigationView.Loaded += (sender, args) =>
         {
             MyTestNavigationView.SetCurrentValue(
                 NavigationView.MenuItemsSourceProperty,
                 new ObservableCollection<object>()
                 {
-                    new NavigationViewItem("Home", SymbolRegular.Home24, typeof(SamplePage1))
+                    new NavigationViewItem("Home", SymbolRegular.Home24, typeof(SamplePage1)),
                 }
             );
 
@@ -41,7 +41,7 @@ public partial class SandboxWindow
         };
     }
 
-    private void OnAutoSuggestBoxTextChanged( AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args )
+    private void OnAutoSuggestBoxTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
     {
         Debug.WriteLine(
             $"OnAutoSuggestBoxTextChanged: {sender.Text} (ViewModel.AutoSuggestBoxText: {ViewModel.AutoSuggestBoxText})"

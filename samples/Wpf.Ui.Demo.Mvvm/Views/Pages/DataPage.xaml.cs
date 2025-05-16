@@ -28,6 +28,7 @@ public partial class DataPage : INavigableView<ViewModels.DataViewModel>, IRibbo
     {
         get
         {
+
             // 예를 들어, 리소스에서 Ribbon을 찾거나,
             // 또는 페이지의 특정 이름을 가진 Ribbon 요소를 찾아 반환합니다.
             return this.FindResource("DataPageRibbon");

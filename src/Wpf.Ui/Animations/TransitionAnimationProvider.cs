@@ -27,7 +27,7 @@ public static class TransitionAnimationProvider
     /// <param name="type">Selected transition type.</param>
     /// <param name="duration">Transition duration.</param>
     /// <returns>Returns <see langword="true"/> if the transition was applied. Otherwise <see langword="false"/>.</returns>
-    public static bool ApplyTransition(object? element, Transition type, int duration )
+    public static bool ApplyTransition(object? element, Transition type, int duration)
     {
         if (
             type == Transition.None
@@ -72,7 +72,7 @@ public static class TransitionAnimationProvider
         return true;
     }
 
-    private static void FadeInTransition(UIElement animatedUiElement, Duration duration )
+    private static void FadeInTransition(UIElement animatedUiElement, Duration duration)
     {
         var opacityDoubleAnimation = new DoubleAnimation
         {
@@ -85,7 +85,7 @@ public static class TransitionAnimationProvider
         animatedUiElement.BeginAnimation(UIElement.OpacityProperty, opacityDoubleAnimation);
     }
 
-    private static void FadeInWithSlideTransition(UIElement animatedUiElement, Duration duration )
+    private static void FadeInWithSlideTransition(UIElement animatedUiElement, Duration duration)
     {
         var translateDoubleAnimation = new DoubleAnimation
         {
@@ -124,7 +124,7 @@ public static class TransitionAnimationProvider
         animatedUiElement.BeginAnimation(UIElement.OpacityProperty, opacityDoubleAnimation);
     }
 
-    private static void SlideBottomTransition(UIElement animatedUiElement, Duration duration )
+    private static void SlideBottomTransition(UIElement animatedUiElement, Duration duration)
     {
         var translateDoubleAnimation = new DoubleAnimation
         {
@@ -153,7 +153,7 @@ public static class TransitionAnimationProvider
         );
     }
 
-    private static void SlideRightTransition(UIElement animatedUiElement, Duration duration )
+    private static void SlideRightTransition(UIElement animatedUiElement, Duration duration)
     {
         var translateDoubleAnimation = new DoubleAnimation
         {
@@ -182,7 +182,7 @@ public static class TransitionAnimationProvider
         );
     }
 
-    private static void SlideLeftTransition(UIElement animatedUiElement, Duration duration )
+    private static void SlideLeftTransition(UIElement animatedUiElement, Duration duration)
     {
         var translateDoubleAnimation = new DoubleAnimation
         {

@@ -155,7 +155,7 @@ public class ProgressRing : System.Windows.Controls.Control
     /// <summary>
     /// Validates the entered <see cref="Progress"/> and redraws the <see cref="Arc"/>.
     /// </summary>
-    protected static void OnProgressChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
+    protected static void OnProgressChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if (d is not ProgressRing control)
         {

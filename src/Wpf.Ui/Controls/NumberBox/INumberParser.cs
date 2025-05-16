@@ -16,15 +16,15 @@ public interface INumberParser
     /// <summary>
     /// Attempts to parse a string representation of a <see cref="double"/> numeric value.
     /// </summary>
-    double? ParseDouble(string? value );
+    double? ParseDouble(string? value);
 
     /// <summary>
     /// Attempts to parse a string representation of an <see cref="int"/> numeric value.
     /// </summary>
-    int? ParseInt(string? value );
+    int? ParseInt(string? value);
 
     /// <summary>
     /// Attempts to parse a string representation of an <see cref="uint"/> numeric value.
     /// </summary>
-    uint? ParseUInt(string? value );
+    uint? ParseUInt(string? value);
 }

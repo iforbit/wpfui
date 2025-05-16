@@ -28,24 +28,24 @@ public class PageControlDocumentation : Control
     /// <param name="target"><see cref="FrameworkElement"/> to read <see cref="ShowProperty"/> from.</param>
     /// <returns>Show property value.</returns>
     [AttachedPropertyBrowsableForType(typeof(FrameworkElement))]
-    public static bool GetShow( FrameworkElement target ) => (bool)target.GetValue(ShowProperty);
+    public static bool GetShow(FrameworkElement target) => (bool)target.GetValue(ShowProperty);
 
     /// <summary>Helper for setting <see cref="ShowProperty"/> on <paramref name="target"/>.</summary>
     /// <param name="target"><see cref="FrameworkElement"/> to set <see cref="ShowProperty"/> on.</param>
     /// <param name="show">Show property value.</param>
-    public static void SetShow( FrameworkElement target, bool show ) => target.SetValue(ShowProperty, show);
+    public static void SetShow(FrameworkElement target, bool show) => target.SetValue(ShowProperty, show);
 
     /// <summary>Helper for getting <see cref="DocumentationTypeProperty"/> from <paramref name="target"/>.</summary>
     /// <param name="target"><see cref="FrameworkElement"/> to read <see cref="DocumentationTypeProperty"/> from.</param>
     /// <returns>DocumentationType property value.</returns>
     [AttachedPropertyBrowsableForType(typeof(FrameworkElement))]
-    public static Type? GetDocumentationType( FrameworkElement target ) =>
+    public static Type? GetDocumentationType(FrameworkElement target) =>
         (Type?)target.GetValue(DocumentationTypeProperty);
 
     /// <summary>Helper for setting <see cref="DocumentationTypeProperty"/> on <paramref name="target"/>.</summary>
     /// <param name="target"><see cref="FrameworkElement"/> to set <see cref="DocumentationTypeProperty"/> on.</param>
     /// <param name="type">DocumentationType property value.</param>
-    public static void SetDocumentationType( FrameworkElement target, Type? type ) =>
+    public static void SetDocumentationType(FrameworkElement target, Type? type) =>
         target.SetValue(DocumentationTypeProperty, type);
 
     /// <summary>Identifies the <see cref="NavigationView"/> dependency property.</summary>
@@ -89,8 +89,8 @@ public class PageControlDocumentation : Control
 
     public PageControlDocumentation()
     {
-        Loaded += static ( sender, _ ) => ((PageControlDocumentation)sender).OnLoaded();
-        Unloaded += static ( sender, _ ) => ((PageControlDocumentation)sender).OnUnloaded();
+        Loaded += static (sender, _) => ((PageControlDocumentation)sender).OnLoaded();
+        Unloaded += static (sender, _) => ((PageControlDocumentation)sender).OnUnloaded();
 
         SetValue(
             TemplateButtonCommandProperty,
@@ -116,7 +116,7 @@ public class PageControlDocumentation : Control
         _page = null;
     }
 
-    private void NavigationViewOnNavigated( NavigationView sender, NavigatedEventArgs args )
+    private void NavigationViewOnNavigated(NavigationView sender, NavigatedEventArgs args)
     {
         SetCurrentValue(IsDocumentationLinkVisibleProperty, Visibility.Collapsed);
 
@@ -135,7 +135,7 @@ public class PageControlDocumentation : Control
         }
     }
 
-    private void OnClick( string? param )
+    private void OnClick(string? param)
     {
         if (string.IsNullOrWhiteSpace(param) || _page is null)
         {
@@ -151,11 +151,12 @@ public class PageControlDocumentation : Control
 
         string navigationUrl = param switch
         {
-            "doc" when GetDocumentationType(_page) is { } documentationType
-                => CreateUrlForDocumentation(documentationType),
+            "doc" when GetDocumentationType(_page) is { } documentationType => CreateUrlForDocumentation(
+                documentationType
+            ),
             "xaml" => CreateUrlForGithub(_page.GetType(), ".xaml"),
             "c#" => CreateUrlForGithub(_page.GetType(), ".xaml.cs"),
-            _ => string.Empty
+            _ => string.Empty,
         };
 
         if (string.IsNullOrEmpty(navigationUrl))
@@ -175,9 +176,9 @@ public class PageControlDocumentation : Control
         }
     }
 
-    private static string CreateUrlForGithub( Type pageType, ReadOnlySpan<char> fileExtension )
+    private static string CreateUrlForGithub(Type pageType, ReadOnlySpan<char> fileExtension)
     {
-        const string baseUrl = "https://github.com/iforbit/WPFUI_4.0/tree/main/src/Wpf.Ui.Gallery/";
+        const string baseUrl = "https://github.com/lepoco/wpfui/tree/main/src/Wpf.Ui.Gallery/";
         const string baseNamespace = "Wpf.Ui.Gallery";
 
         ReadOnlySpan<char> pageFullNameWithoutBaseNamespace = pageType.FullName.AsSpan()[
@@ -198,7 +199,7 @@ public class PageControlDocumentation : Control
         return string.Concat(baseUrl, pageUrl, fileExtension);
     }
 
-    private static string CreateUrlForDocumentation( Type type )
+    private static string CreateUrlForDocumentation(Type type)
     {
         const string baseUrl = "https://wpfui.lepo.co/api/";
 

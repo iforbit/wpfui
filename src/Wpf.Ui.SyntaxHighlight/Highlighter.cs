@@ -4,6 +4,7 @@
 // All Rights Reserved.
 
 // TODO: This class is work in progress.
+//
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -47,7 +48,9 @@ internal static class Highlighter
     //    "\b(true|false)\b";
 
     // private const string AttributePattern = /* language=regex */
-    //    "(\\s*)([a-zA-Z\\d\\-:]+)=(\" | ')(.*?)\\3";
+    //     "(\\s*)([a-zA-Z\\d\\-:]+)=(\" | ')(.*?)\\3";
+    ////
+
     public static Paragraph FormatAsParagraph(
         string code,
         SyntaxLanguage language = SyntaxLanguage.Autodetect
@@ -165,7 +168,7 @@ internal static class Highlighter
         return paragraph;
     }
 
-    public static string Clean(string code )
+    public static string Clean(string code)
     {
         code = code.Replace(@"\n", "\n");
         code = code.Replace(@"\t", "\t");
@@ -178,7 +181,7 @@ internal static class Highlighter
         return code;
     }
 
-    private static Run Line(string line, SolidColorBrush brush )
+    private static Run Line(string line, SolidColorBrush brush)
     {
         return new Run(line) { Foreground = brush };
     }
@@ -200,7 +203,7 @@ internal static class Highlighter
         "IDE0060:Remove unused parameter",
         Justification = "WIP"
     )]
-    private static string GetPattern(SyntaxLanguage language, string code )
+    private static string GetPattern(SyntaxLanguage language, string code)
     {
         var pattern = string.Empty;
 

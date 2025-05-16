@@ -13,7 +13,7 @@ public partial class HyperlinkButtonViewModel : ViewModel
     private bool _isHyperlinkEnabled = true;
 
     [RelayCommand]
-    private void OnHyperlinkCheckboxChecked( object sender )
+    private void OnHyperlinkCheckboxChecked(object sender)
     {
         if (sender is not CheckBox checkbox)
         {

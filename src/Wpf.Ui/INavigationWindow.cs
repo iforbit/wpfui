@@ -25,19 +25,19 @@ public interface INavigationWindow
     /// </summary>
     /// <param name="pageType"><see langword="Type"/> of the page.</param>
     /// <returns><see langword="true"/> if the operation succeeds. <see langword="false"/> otherwise.</returns>
-    bool Navigate(Type pageType );
+    bool Navigate(Type pageType);
 
     /// <summary>
     /// Lets you attach the service provider that delivers page instances to <see cref="INavigationView"/>.
     /// </summary>
     /// <param name="serviceProvider">Instance of the <see cref="IServiceProvider"/>.</param>
-    void SetServiceProvider(IServiceProvider serviceProvider );
+    void SetServiceProvider(IServiceProvider serviceProvider);
 
     /// <summary>
     /// Lets you attach the service that delivers page instances to <see cref="INavigationView"/>.
     /// </summary>
     /// <param name="navigationViewPageProvider">Instance of the <see cref="INavigationViewPageProvider"/> with attached service provider.</param>
-    void SetPageService(INavigationViewPageProvider navigationViewPageProvider );
+    void SetPageService(INavigationViewPageProvider navigationViewPageProvider);
 
     /// <summary>
     /// Triggers the command to open a window.

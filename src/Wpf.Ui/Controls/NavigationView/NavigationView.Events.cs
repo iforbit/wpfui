@@ -162,7 +162,7 @@ public partial class NavigationView
     /// <summary>
     /// Raises the navigating requested event.
     /// </summary>
-    protected virtual bool OnNavigating( object sourcePage )
+    protected virtual bool OnNavigating(object sourcePage)
     {
         var eventArgs = new NavigatingCancelEventArgs(NavigatingEvent, this) { Page = sourcePage };
 
@@ -174,7 +174,7 @@ public partial class NavigationView
     /// <summary>
     /// Raises the navigated requested event.
     /// </summary>
-    protected virtual void OnNavigated( object page )
+    protected virtual void OnNavigated(object page)
     {
         var eventArgs = new NavigatedEventArgs(NavigatedEvent, this) { Page = page };
 

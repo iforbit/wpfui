@@ -10,7 +10,7 @@ using Wpf.Ui.Gallery.Views.Windows;
 
 namespace Wpf.Ui.Gallery.ViewModels.Pages.Windows;
 
-public partial class WindowsViewModel( WindowsProviderService windowsProviderService ) : ViewModel
+public partial class WindowsViewModel(WindowsProviderService windowsProviderService) : ViewModel
 {
     [ObservableProperty]
     private WindowCard[] _windowCards =
@@ -23,7 +23,7 @@ public partial class WindowsViewModel( WindowsProviderService windowsProviderSer
     ];
 
     [RelayCommand]
-    public void OnOpenWindow( string value )
+    public void OnOpenWindow(string value)
     {
         if (string.IsNullOrEmpty(value))
         {

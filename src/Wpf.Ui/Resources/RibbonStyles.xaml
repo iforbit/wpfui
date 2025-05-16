@@ -1473,8 +1473,8 @@ Controls\Ribbon\TwoLineLabel.xaml
         <Setter Property="Foreground" Value="{Binding Group.TabItemForeground, RelativeSource={RelativeSource Self}}" />
       </Trigger>
       <Trigger Property="IsSelected" Value="True">
-        <Setter Property="controls:RibbonProperties.MouseOverForeground" Value="{DynamicResource TabViewItemForegroundSelected}" />
-        <Setter TargetName="underlineBorder" Property="BorderBrush" Value="{DynamicResource NavigationViewSelectionIndicatorForeground}" />
+        <Setter Property="controls:RibbonProperties.MouseOverForeground" Value="{DynamicResource RibbonItemForegroundSelected}" />
+        <Setter TargetName="underlineBorder" Property="BorderBrush" Value="{DynamicResource RibbonSelectionIndicatorForeground}" />
         <Setter TargetName="underlineBorder" Property="Visibility" Value="Visible" />
       </Trigger>
       <Trigger Property="IsEnabled" Value="False">
@@ -1487,12 +1487,12 @@ Controls\Ribbon\TwoLineLabel.xaml
         <Setter TargetName="groupBorder" Property="Visibility" Value="Collapsed" />
       </Trigger>
       <Trigger Property="IsMouseOver" Value="True">
-        <Setter TargetName="underlineBorder" Property="BorderBrush" Value="{DynamicResource NavigationViewItemBackgroundPointerOver}" />
+        <Setter TargetName="underlineBorder" Property="BorderBrush" Value="{DynamicResource RibbonItemBackgroundPointerOver}" />
         <Setter TargetName="underlineBorder" Property="Visibility" Value="Visible" />
         <!--<Setter TargetName="underlineContainerBorder" Property="Visibility" Value="Visible" />-->
       </Trigger>
       <Trigger Property="Selector.IsSelected" Value="True">
-        <Setter TargetName="underlineBorder" Property="BorderBrush" Value="{DynamicResource NavigationViewSelectionIndicatorForeground}" />
+        <Setter TargetName="underlineBorder" Property="BorderBrush" Value="{DynamicResource RibbonSelectionIndicatorForeground}" />
         <Setter TargetName="underlineBorder" Property="Visibility" Value="Visible" />
         <!--<Setter TargetName="underlineContainerBorder" Property="Visibility" Value="Visible" />-->
       </Trigger>
@@ -1506,7 +1506,7 @@ Controls\Ribbon\TwoLineLabel.xaml
           <Condition Property="Selector.IsSelected" Value="True" />
           <Condition Property="IsContextual" Value="False" />
         </MultiTrigger.Conditions>
-        <Setter Property="Foreground" Value="{DynamicResource TabViewItemForegroundSelected}" />
+        <Setter Property="Foreground" Value="{DynamicResource RibbonItemForegroundSelected}" />
       </MultiTrigger>
       <!--  Background and foreground for MouseOver, with group  -->
       <MultiTrigger>
@@ -1551,13 +1551,13 @@ Controls\Ribbon\TwoLineLabel.xaml
     </ControlTemplate.Triggers>
   </ControlTemplate>
   <Style x:Key="DefaultRibbonTabItemStyle" TargetType="{x:Type controls:RibbonTabItem}">
-    <Setter Property="ActiveTabBackground" Value="{DynamicResource NavigationViewItemBackgroundSelected}" />
-    <Setter Property="ActiveTabBorderBrush" Value="{DynamicResource TabViewSelectedItemBorderBrush}" />
-    <Setter Property="BorderBrush" Value="{DynamicResource NavigationViewItemBorderBrush}" />
-    <Setter Property="controls:RibbonProperties.MouseOverBackground" Value="{DynamicResource NavigationViewItemBackgroundPointerOver}" />
-    <Setter Property="controls:RibbonProperties.MouseOverForeground" Value="{DynamicResource NavigationViewItemForegroundPointerOver}" />
+    <Setter Property="ActiveTabBackground" Value="{DynamicResource RibbonItemBackgroundSelected}" />
+    <Setter Property="ActiveTabBorderBrush" Value="{DynamicResource RibbonSelectedItemBorderBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource RibbonBorderBrush}" />
+    <Setter Property="controls:RibbonProperties.MouseOverBackground" Value="{DynamicResource RibbonItemBackgroundPointerOver}" />
+    <Setter Property="controls:RibbonProperties.MouseOverForeground" Value="{DynamicResource RibbonItemForegroundPointerOver}" />
     <Setter Property="FocusVisualStyle" Value="{DynamicResource DefaultControlFocusVisualStyle}" />
-    <Setter Property="Foreground" Value="{DynamicResource NavigationViewItemForeground}" />
+    <Setter Property="Foreground" Value="{DynamicResource RibbonItemForeground}" />
     <Setter Property="HeaderTemplate">
       <Setter.Value>
         <DataTemplate>

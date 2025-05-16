@@ -19,7 +19,7 @@ public class GridViewHeaderRowPresenter : System.Windows.Controls.GridViewHeader
         Loaded += OnLoaded;
     }
 
-    protected override Size ArrangeOverride( Size arrangeSize )
+    protected override Size ArrangeOverride(Size arrangeSize)
     {
         // update the desired width of each column (clamps desiredwidth to MinWidth and MaxWidth)
         if (Columns != null)
@@ -33,7 +33,7 @@ public class GridViewHeaderRowPresenter : System.Windows.Controls.GridViewHeader
         return base.ArrangeOverride(arrangeSize);
     }
 
-    protected override Size MeasureOverride( Size constraint )
+    protected override Size MeasureOverride(Size constraint)
     {
         if (Columns != null)
         {
@@ -46,7 +46,7 @@ public class GridViewHeaderRowPresenter : System.Windows.Controls.GridViewHeader
         return base.MeasureOverride(constraint);
     }
 
-    private void OnLoaded( object sender, RoutedEventArgs e )
+    private void OnLoaded(object sender, RoutedEventArgs e)
     {
         UpdateIndicatorStyle();
     }
@@ -69,14 +69,13 @@ public class GridViewHeaderRowPresenter : System.Windows.Controls.GridViewHeader
             indicator.Margin = new Thickness(0);
             indicator.Width = 3.0;
 
-            ResourceDictionary resourceDictionary =
-                new()
-                {
-                    Source = new Uri(
-                        "pack://application:,,,/Wpf.Ui;component/Controls/GridView/GridViewHeaderRowIndicator.xaml",
-                        UriKind.Absolute
-                    )
-                };
+            ResourceDictionary resourceDictionary = new()
+            {
+                Source = new Uri(
+                    "pack://application:,,,/Wpf.Ui;component/Controls/GridView/GridViewHeaderRowIndicator.xaml",
+                    UriKind.Absolute
+                ),
+            };
 
             if (resourceDictionary["GridViewHeaderRowIndicatorTemplate"] is ControlTemplate template)
             {

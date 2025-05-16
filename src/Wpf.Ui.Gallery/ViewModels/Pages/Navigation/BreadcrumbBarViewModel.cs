@@ -27,7 +27,7 @@ public partial class BreadcrumbBarViewModel : ViewModel
         "Images",
         "Folder1",
         "Folder2",
-        "Folder3"
+        "Folder3",
     ];
 
     [ObservableProperty]
@@ -39,10 +39,10 @@ public partial class BreadcrumbBarViewModel : ViewModel
     }
 
     [RelayCommand]
-    private void OnStringSelected( object item ) { }
+    private void OnStringSelected(object item) { }
 
     [RelayCommand]
-    private void OnFolderSelected( object item )
+    private void OnFolderSelected(object item)
     {
         if (item is not Folder selectedFolder)
         {

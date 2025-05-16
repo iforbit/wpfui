@@ -16,7 +16,7 @@ public partial class ButtonViewModel : ViewModel
     private bool _isUiButtonEnabled = true;
 
     [RelayCommand]
-    private void OnSimpleButtonCheckboxChecked( object sender )
+    private void OnSimpleButtonCheckboxChecked(object sender)
     {
         if (sender is not CheckBox checkbox)
         {
@@ -27,7 +27,7 @@ public partial class ButtonViewModel : ViewModel
     }
 
     [RelayCommand]
-    private void OnUiButtonCheckboxChecked( object sender )
+    private void OnUiButtonCheckboxChecked(object sender)
     {
         if (sender is not CheckBox checkbox)
         {

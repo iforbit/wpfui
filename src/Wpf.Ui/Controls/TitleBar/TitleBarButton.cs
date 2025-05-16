@@ -5,7 +5,6 @@
 
 using System.Windows.Automation.Peers;
 using System.Windows.Automation.Provider;
-using Wpf.Ui.Extensions;
 using Wpf.Ui.Interop;
 
 // ReSharper disable once CheckNamespace
@@ -98,14 +97,14 @@ public class TitleBarButton : Wpf.Ui.Controls.Button
         Unloaded += TitleBarButton_Unloaded;
     }
 
-    private void TitleBarButton_Unloaded( object sender, RoutedEventArgs e )
+    private void TitleBarButton_Unloaded(object sender, RoutedEventArgs e)
     {
         DependencyPropertyDescriptor
             .FromProperty(ButtonsForegroundProperty, typeof(Brush))
             .RemoveValueChanged(this, OnButtonsForegroundChanged);
     }
 
-    private void TitleBarButton_Loaded( object sender, RoutedEventArgs e )
+    private void TitleBarButton_Loaded(object sender, RoutedEventArgs e)
     {
         SetCurrentValue(RenderButtonsForegroundProperty, ButtonsForeground);
         DependencyPropertyDescriptor
@@ -113,7 +112,7 @@ public class TitleBarButton : Wpf.Ui.Controls.Button
             .AddValueChanged(this, OnButtonsForegroundChanged);
     }
 
-    private void OnButtonsForegroundChanged( object? sender, EventArgs e )
+    private void OnButtonsForegroundChanged(object? sender, EventArgs e)
     {
         SetCurrentValue(
             RenderButtonsForegroundProperty,
@@ -173,7 +172,7 @@ public class TitleBarButton : Wpf.Ui.Controls.Button
         _isClickedDown = false;
     }
 
-    internal bool ReactToHwndHook( User32.WM msg, IntPtr lParam, out IntPtr returnIntPtr )
+    internal bool ReactToHwndHook(User32.WM msg, IntPtr lParam, out IntPtr returnIntPtr)
     {
         returnIntPtr = IntPtr.Zero;
 
@@ -204,7 +203,7 @@ public class TitleBarButton : Wpf.Ui.Controls.Button
         }
     }
 
-    private static void OnButtonTypeChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
+    private static void OnButtonTypeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if (d is not TitleBarButton titleBarButton)
         {
@@ -214,7 +213,7 @@ public class TitleBarButton : Wpf.Ui.Controls.Button
         titleBarButton.OnButtonTypeChanged(e);
     }
 
-    protected void OnButtonTypeChanged( DependencyPropertyChangedEventArgs e )
+    protected void OnButtonTypeChanged(DependencyPropertyChangedEventArgs e)
     {
         var buttonType = (TitleBarButtonType)e.NewValue;
 
@@ -226,12 +225,11 @@ public class TitleBarButton : Wpf.Ui.Controls.Button
             TitleBarButtonType.Close => User32.WM_NCHITTEST.HTCLOSE,
             TitleBarButtonType.Restore => User32.WM_NCHITTEST.HTMAXBUTTON,
             TitleBarButtonType.Maximize => User32.WM_NCHITTEST.HTMAXBUTTON,
-            _
-                => throw new ArgumentOutOfRangeException(
-                    "e.NewValue",
-                    buttonType,
-                    $"Unsupported button type: {buttonType}."
-                )
+            _ => throw new ArgumentOutOfRangeException(
+                "e.NewValue",
+                buttonType,
+                $"Unsupported button type: {buttonType}."
+            ),
         };
     }
 }

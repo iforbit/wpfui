@@ -55,7 +55,7 @@ public class DropDownButton : Button
         set => SetValue(IsDropDownOpenProperty, value);
     }
 
-    private static void OnFlyoutChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
+    private static void OnFlyoutChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if (d is DropDownButton dropDownButton)
         {
@@ -65,7 +65,7 @@ public class DropDownButton : Button
 
     /// <summary>This method is invoked when the <see cref="FlyoutProperty"/> changes.</summary>
     /// <param name="value">The new value of <see cref="FlyoutProperty"/>.</param>
-    protected virtual void OnFlyoutChanged( object value )
+    protected virtual void OnFlyoutChanged(object value)
     {
         if (value is ContextMenu contextMenu)
         {
@@ -75,17 +75,17 @@ public class DropDownButton : Button
         }
     }
 
-    protected virtual void OnContextMenuClosed( object sender, RoutedEventArgs e )
+    protected virtual void OnContextMenuClosed(object sender, RoutedEventArgs e)
     {
         SetCurrentValue(IsDropDownOpenProperty, false);
     }
 
-    protected virtual void OnContextMenuOpened( object sender, RoutedEventArgs e )
+    protected virtual void OnContextMenuOpened(object sender, RoutedEventArgs e)
     {
         SetCurrentValue(IsDropDownOpenProperty, true);
     }
 
-    protected virtual void OnIsDropDownOpenChanged( bool currentValue ) { }
+    protected virtual void OnIsDropDownOpenChanged(bool currentValue) { }
 
     protected override void OnClick()
     {

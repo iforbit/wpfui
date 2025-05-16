@@ -100,7 +100,7 @@ public class FluentWindow : System.Windows.Window
     }
 
     /// <inheritdoc />
-    protected override void OnSourceInitialized( EventArgs e )
+    protected override void OnSourceInitialized(EventArgs e)
     {
         OnCornerPreferenceChanged(default, WindowCornerPreference);
         OnExtendsContentIntoTitleBarChanged(default, ExtendsContentIntoTitleBar);
@@ -152,7 +152,7 @@ public class FluentWindow : System.Windows.Window
     /// <summary>
     /// Private <see cref="WindowBackdropType"/> property callback.
     /// </summary>
-    private static void OnWindowBackdropTypeChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
+    private static void OnWindowBackdropTypeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if (d is not FluentWindow window)
         {
@@ -170,7 +170,7 @@ public class FluentWindow : System.Windows.Window
     /// <summary>
     /// This virtual method is called when <see cref="WindowBackdropType"/> is changed.
     /// </summary>
-    protected virtual void OnBackdropTypeChanged( WindowBackdropType oldValue, WindowBackdropType newValue )
+    protected virtual void OnBackdropTypeChanged(WindowBackdropType oldValue, WindowBackdropType newValue)
     {
         if (Appearance.ApplicationThemeManager.GetAppTheme() == Appearance.ApplicationTheme.HighContrast)
         {
@@ -228,7 +228,7 @@ public class FluentWindow : System.Windows.Window
     /// <summary>
     /// This virtual method is called when <see cref="ExtendsContentIntoTitleBar"/> is changed.
     /// </summary>
-    protected virtual void OnExtendsContentIntoTitleBarChanged( bool oldValue, bool newValue )
+    protected virtual void OnExtendsContentIntoTitleBarChanged(bool oldValue, bool newValue)
     {
         // AllowsTransparency = true;
         SetCurrentValue(WindowStyleProperty, WindowStyle.SingleBorderWindow);
@@ -241,7 +241,7 @@ public class FluentWindow : System.Windows.Window
                 CornerRadius = default,
                 GlassFrameThickness = new Thickness(-1),
                 ResizeBorderThickness = ResizeMode == ResizeMode.NoResize ? default : new Thickness(4),
-                UseAeroCaptionButtons = false
+                UseAeroCaptionButtons = false,
             }
         );
 

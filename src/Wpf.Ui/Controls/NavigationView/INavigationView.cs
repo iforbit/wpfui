@@ -200,28 +200,28 @@ public interface INavigationView
     /// Synchronously navigates current navigation Frame to the
     /// given Element.
     /// </summary>
-    bool Navigate(Type pageType, object? dataContext = null );
+    bool Navigate(Type pageType, object? dataContext = null);
 
     /// <summary>
     /// Synchronously navigates current navigation Frame to the
     /// given Element.
     /// </summary>
-    bool Navigate(string pageIdOrTargetTag, object? dataContext = null );
+    bool Navigate(string pageIdOrTargetTag, object? dataContext = null);
 
     /// <summary>
     /// Synchronously adds an element to the navigation stack and navigates current navigation Frame to the
     /// </summary>
-    bool NavigateWithHierarchy(Type pageType, object? dataContext = null );
+    bool NavigateWithHierarchy(Type pageType, object? dataContext = null);
 
     /// <summary>
     /// Replaces the contents of the navigation frame, without changing the currently selected item or triggering an <see cref="SelectionChanged"/>.
     /// </summary>
-    bool ReplaceContent(Type pageTypeToEmbed );
+    bool ReplaceContent(Type pageTypeToEmbed);
 
     /// <summary>
     /// Replaces the contents of the navigation frame, without changing the currently selected item or triggering an <see cref="SelectionChanged"/>.
     /// </summary>
-    bool ReplaceContent(UIElement pageInstanceToEmbed, object? dataContext = null );
+    bool ReplaceContent(UIElement pageInstanceToEmbed, object? dataContext = null);
 
     /// <summary>
     /// Navigates the NavigationView to the next journal entry.
@@ -243,10 +243,10 @@ public interface INavigationView
     /// <summary>
     /// Allows you to assign to the NavigationView a special service responsible for retrieving the page instances.
     /// </summary>
-    void SetPageProviderService(INavigationViewPageProvider navigationViewPageProvider );
+    void SetPageProviderService(INavigationViewPageProvider navigationViewPageProvider);
 
     /// <summary>
     /// Allows you to assign a general <see cref="IServiceProvider"/> to the NavigationView that will be used to retrieve page instances and view models.
     /// </summary>
-    void SetServiceProvider(IServiceProvider serviceProvider );
+    void SetServiceProvider(IServiceProvider serviceProvider);
 }

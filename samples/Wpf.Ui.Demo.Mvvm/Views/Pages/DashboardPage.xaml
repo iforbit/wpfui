@@ -25,191 +25,18 @@
             <!--  페이지에 필요한 RibbonTabItem, RibbonGroupBox, Button 등을 정의  -->
             <ui:RibbonTabItem Header="Dashboard">
                 <ui:RibbonGroupBox Header="Group 1" IsLauncherVisible="False" IsSeparatorVisible="False">
-                    <ui:RibbonButton Header="Grey"
+                    <ui:RibbonButton Command="{Binding ViewModel.messageTestCommand}"
+                                     Header="Grey"
                                      Icon="{ui:SymbolIcon Mail28}"
                                      LargeIcon="{ui:SymbolIcon Mail28,
                                                                FontSize='32'}"
                                      SizeDefinition="Large" />
-                    <ui:RibbonButton Header="Grey"
-                                     Icon="{ui:ImageIcon 'pack://application:,,,/Wpf.Ui.Demo.Mvvm;component/Images/Yellow.png'}"
-                                     LargeIcon="{ui:ImageIcon 'pack://application:,,,/Wpf.Ui.Demo.Mvvm;component/Images/YellowLarge.png',
-                                                              Height='32',
-                                                              Width='32'}"
-                                     SizeDefinition="Large" />
 
 
-                    <ComboBox MinWidth="140" SelectedIndex="0">
-                        <ComboBoxItem Content="Attention" />
-                        <ComboBoxItem Content="Informational" />
-                        <ComboBoxItem Content="Success" />
-                        <ComboBoxItem Content="Caution" />
-                        <ComboBoxItem Content="Critical" />
-                    </ComboBox>
-                    <ui:RibbonCheckBox Header="CheckBox" />
-                    <ui:RibbonButton Header="Grey"
-                                     Icon="{ui:ImageIcon 'pack://application:,,,/Wpf.Ui.Demo.Mvvm;component/Images/Yellow.png'}"
-                                     LargeIcon="{ui:ImageIcon 'pack://application:,,,/Wpf.Ui.Demo.Mvvm;component/Images/YellowLarge.png',
-                                                              Height='32',
-                                                              Width='32'}"
-                                     SizeDefinition="Middle" />
                 </ui:RibbonGroupBox>
             </ui:RibbonTabItem>
 
-            <ui:RibbonTabItem Header="Dashboard2">
-                <ui:RibbonGroupBox Header="Group 1" IsLauncherVisible="False" IsSeparatorVisible="True">
-                    <!--    <ui:RibbonSplitButton x:Name="pasteButton"
-                                          Command="ApplicationCommands.Paste" FocusManager.IsFocusScope="True" Header="Paste"
-                                          Icon="pack://application:,,,/Wpf.Ui.Demo.Mvvm;component/Images/PasteImage.png" LargeIcon="pack://application:,,,/Wpf.Ui.Demo.Mvvm;component/Images/PasteImage.png" SizeDefinition="Large">
-                        <ui:Gallery GroupBy="Tag" ItemHeight="32" ItemWidth="32"
-                                    Orientation="Horizontal" ScrollViewer.VerticalScrollBarVisibility="Hidden" Selectable="False">
-                            <ui:GalleryItem Command="Paste">
-                                <Image Width="24" Height="24" Source="pack://application:,,,/Wpf.Ui.Demo.Mvvm;component/Images/PasteImage.png"
-                                       Tag="Paste Options:" />
-                            </ui:GalleryItem>
-                            <ui:GalleryItem Command="Paste">
-                                <Image Width="24" Height="24" Source="pack://application:,,,/Wpf.Ui.Demo.Mvvm;component/Images/PasteText.png"
-                                       Tag="Paste Options:" />
-                            </ui:GalleryItem>
-                            <ui:GalleryItem Command="Paste">
-                                <Image Width="24" Height="24" Source="pack://application:,,,/Wpf.Ui.Demo.Mvvm;component/Images/PasteTextOnly.png"
-                                       Tag="Paste Options:" />
-                            </ui:GalleryItem>
-                            <ui:GalleryItem Command="Paste">
-                                <Image Width="24" Height="24" Source="pack://application:,,,/Wpf.Ui.Demo.Mvvm;component/Images/PasteFormating.png"
-                                       Tag="Paste Options:" />
-                            </ui:GalleryItem>
-                            <ui:GalleryItem Command="Paste">
-                                <Image Width="24" Height="24" Source="pack://application:,,,/Wpf.Ui.Demo.Mvvm;component/Images/PasteSourceFormating.png"
-                                       Tag="Paste Options:" />
-                            </ui:GalleryItem>
-                        </ui:Gallery>
-                    </ui:RibbonSplitButton>
 
-                    <ui:RibbonButton Header="Format Painter" Icon="pack://application:,,,/Wpf.Ui.Demo.Mvvm;component/Images/FormatPainter.png" SizeDefinition="Middle,Small" />-->
-                    <ui:RibbonDropDownButton Name="buttonWatermark" Header="DropDownButton" Icon="pack://application:,,,/Wpf.Ui.Demo.Mvvm;component/Images/Red.png"
-                                             IsEnabled="True" LargeIcon="pack://application:,,,/Wpf.Ui.Demo.Mvvm;component/Images/RedLarge.png" ResizeMode="Both">
-                        <ui:Gallery x:Name="WatermarkGallery"
-                                    GroupBy="Tag" IsGrouped="True" ItemHeight="100"
-                                    ItemWidth="100" MaxItemsInRow="3" MinItemsInRow="1"
-                                    Orientation="Horizontal"
-                                    SelectedFilter="{Binding ElementName=galleryFilterAll3}">
-                            <ui:Gallery.Filters>
-                                <ui:GalleryGroupFilter x:Name="galleryFilterAll3"
-                                                       Title="All" Groups="Confidential,Disclaimers,Urgent" />
-                                <ui:GalleryGroupFilter Title="Confidential" Groups="Confidential" />
-                                <ui:GalleryGroupFilter Title="Disclaimers" Groups="Disclaimers" />
-                                <ui:GalleryGroupFilter Title="Urgent" Groups="Urgent" />
-                            </ui:Gallery.Filters>
-
-
-                            <!--  Confidential group items  -->
-
-                            <Border BorderBrush="Transparent" BorderThickness="4" Tag="Confidential">
-                                <StackPanel>
-                                    <Image VerticalAlignment="Top" Source="pack://application:,,,/Wpf.Ui.Demo.Mvvm;component/Images/GreenLarge.png" Stretch="None" />
-                                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Bottom" Text="CONFIDENTIAL 1" />
-                                </StackPanel>
-                            </Border>
-                            <Border BorderBrush="Transparent" BorderThickness="4" Tag="Confidential">
-                                <StackPanel>
-                                    <Image VerticalAlignment="Top" Source="pack://application:,,,/Wpf.Ui.Demo.Mvvm;component/Images/YellowLarge.png" Stretch="None" />
-                                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Bottom" Text="CONFIDENTIAL 2" />
-                                </StackPanel>
-                            </Border>
-                            <Border BorderBrush="Transparent" BorderThickness="4" Tag="Confidential">
-                                <StackPanel>
-                                    <Image VerticalAlignment="Top" Source="pack://application:,,,/Wpf.Ui.Demo.Mvvm;component/Images/PinkLarge.png" Stretch="None" />
-                                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Bottom" Text="DO NOT COPY 1" />
-                                </StackPanel>
-                            </Border>
-                            <Border BorderBrush="Transparent" BorderThickness="4" Tag="Confidential">
-                                <StackPanel>
-                                    <Image VerticalAlignment="Top" Source="pack://application:,,,/Wpf.Ui.Demo.Mvvm;component/Images/GrayLarge.png" Stretch="None" />
-                                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Bottom" Text="DO NOT COPY 2" />
-                                </StackPanel>
-                            </Border>
-
-
-                            <!--  Disclaimers group items  -->
-
-                            <Border x:Name="Disclaimers"
-                                    BorderBrush="Transparent" BorderThickness="4" Tag="Disclaimers">
-                                <StackPanel>
-                                    <Image VerticalAlignment="Top" Source="pack://application:,,,/Wpf.Ui.Demo.Mvvm;component/Images/BrownLarge.png" Stretch="None" />
-                                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Bottom" Text="DRAFT 1" />
-                                </StackPanel>
-                            </Border>
-                            <Border BorderBrush="Transparent" BorderThickness="4" Tag="Disclaimers">
-                                <StackPanel>
-                                    <Image VerticalAlignment="Top" Source="pack://application:,,,/Wpf.Ui.Demo.Mvvm;component/Images/OrangeLarge.png" Stretch="None" />
-                                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Bottom" Text="DRAFT 2" />
-                                </StackPanel>
-                            </Border>
-                            <Border BorderBrush="Transparent" BorderThickness="4" Tag="Disclaimers">
-                                <StackPanel>
-                                    <Image VerticalAlignment="Top" Source="pack://application:,,,/Wpf.Ui.Demo.Mvvm;component/Images/BlueLarge.png" Stretch="None" />
-                                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Bottom" Text="SAMPLE 1" />
-                                </StackPanel>
-                            </Border>
-                            <Border BorderBrush="Transparent" BorderThickness="4" Tag="Disclaimers">
-                                <StackPanel>
-                                    <Image VerticalAlignment="Top" Source="pack://application:,,,/Wpf.Ui.Demo.Mvvm;component/Images/RedLarge.png" Stretch="None" />
-                                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Bottom" Text="SAMPLE 2" />
-                                </StackPanel>
-                            </Border>
-
-
-                            <!--  Disclaimers group items  -->
-
-                            <Border x:Name="Urgent"
-                                    BorderBrush="Transparent" BorderThickness="4" Tag="Urgent">
-                                <StackPanel>
-                                    <Image VerticalAlignment="Top" Source="pack://application:,,,/Wpf.Ui.Demo.Mvvm;component/Images/RedLarge.png" Stretch="None" />
-                                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Bottom" Text="ASAP 1" />
-                                </StackPanel>
-                            </Border>
-                            <Border BorderBrush="Transparent" BorderThickness="4" Tag="Urgent">
-                                <StackPanel>
-                                    <Image VerticalAlignment="Top" Source="pack://application:,,,/Wpf.Ui.Demo.Mvvm;component/Images/RedLarge.png" Stretch="None" />
-                                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Bottom" Text="ASAP 2" />
-                                </StackPanel>
-                            </Border>
-                            <Border BorderBrush="Transparent" BorderThickness="4" Tag="Urgent">
-                                <StackPanel>
-                                    <Image VerticalAlignment="Top" Source="pack://application:,,,/Wpf.Ui.Demo.Mvvm;component/Images/RedLarge.png" Stretch="None" />
-                                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Bottom" Text="URGENT 1" />
-                                </StackPanel>
-                            </Border>
-                            <Border BorderBrush="Transparent" BorderThickness="4" Tag="Urgent">
-                                <StackPanel>
-                                    <Image VerticalAlignment="Top" Source="pack://application:,,,/Wpf.Ui.Demo.Mvvm;component/Images/RedLarge.png" Stretch="None" />
-                                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Bottom" Text="URGENT 2" />
-                                </StackPanel>
-                            </Border>
-                        </ui:Gallery>
-                    </ui:RibbonDropDownButton>
-                </ui:RibbonGroupBox>
-                <ui:RibbonGroupBox Header="Group g" IsLauncherVisible="False" IsSeparatorVisible="False">
-                    <ui:Button Content="gAction 1" />
-                    <ui:Button Content="gAction 2" />
-                    <ui:Button Content="gAction 3" />
-                    <ui:Button Content="gAction 4" />
-                </ui:RibbonGroupBox>
-                <ui:RibbonGroupBox Header="Group t" IsLauncherVisible="False" IsSeparatorVisible="False">
-                    <ui:Button Content="tAction 1" />
-                    <ui:Button Content="tAction 2" />
-                    <ui:Button Content="tAction 3" />
-                    <ui:Button Content="tAction 4" />
-                </ui:RibbonGroupBox>
-            </ui:RibbonTabItem>
-            <ui:RibbonTabItem Header="Dashboard3">
-                <ui:RibbonGroupBox Header="Group 1" IsLauncherVisible="False" IsSeparatorVisible="False">
-                    <ui:Button Content="jAction 1" />
-                    <ui:Button Content="jAction 2" />
-                    <ui:Button Content="jAction 3" />
-                    <ui:Button Content="jAction 4" />
-                </ui:RibbonGroupBox>
-            </ui:RibbonTabItem>
         </ui:Ribbon>
         <ctrlHelper:FixedPointFormatter x:Key="FixedPointFormatter" />
 
@@ -234,23 +61,7 @@
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
+        <ui:Button Command="{Binding ViewModel.messageTestCommand}" Content="Add" />
 
-        <ui:NumberBox SpinButtonPlacementMode="Hidden" Width="200" Value="{Binding ViewModel.Counter, Mode=TwoWay, StringFormat={}{0:F7}, UpdateSourceTrigger=LostFocus}" />
-
-        <ui:ComboBox x:Name="MultiSelectCombo"
-                     Grid.Row="3" Margin="10,0" Padding="5"
-                     AllowMultipleSelection="True"
-                     FinalSelectedItems="{Binding ViewModel.tESTlIST, UpdateSourceTrigger=PropertyChanged}">
-            <ui:MultiSelectComboBoxItem Content="{StaticResource Num_1}" />
-            <ui:MultiSelectComboBoxItem Content="{StaticResource Num_2}" />
-            <ui:MultiSelectComboBoxItem Content="{StaticResource Num_3}" />
-            <ui:MultiSelectComboBoxItem Content="{StaticResource Num_4}" />
-            <i:Interaction.Triggers>
-                <!--  DropDownClosed 이벤트가 한 번만 발생하므로, 최종 선택 상태만 전달됨  -->
-                <i:EventTrigger EventName="DropDownClosed">
-                    <i:InvokeCommandAction Command="{Binding ViewModel.ComboTestCommand}" CommandParameter="{Binding ElementName=MultiSelectCombo, Path=FinalSelectedItems}" />
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-        </ui:ComboBox>
     </Grid>
 </Page>

@@ -17,7 +17,7 @@ public static class FrameExtensions
     /// </summary>
     /// <param name="frame">Selected frame.</param>
     /// <returns>DataContext of currently active element, otherwise <see langword="null"/>.</returns>
-    public static object? GetDataContext( this Frame frame )
+    public static object? GetDataContext(this Frame frame)
     {
         return frame.Content is not FrameworkElement element ? null : element.DataContext;
     }
@@ -26,7 +26,7 @@ public static class FrameExtensions
     /// Cleans <see cref="Frame"/> journal.
     /// </summary>
     /// <param name="frame">Selected frame.</param>
-    public static void CleanNavigation( this Frame frame )
+    public static void CleanNavigation(this Frame frame)
     {
         while (frame.CanGoBack)
         {

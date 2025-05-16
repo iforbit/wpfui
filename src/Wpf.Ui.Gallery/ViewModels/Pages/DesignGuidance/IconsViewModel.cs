@@ -73,7 +73,7 @@ public partial class IconsViewModel : ViewModel
                         Name = iconName,
                         Icon = icon,
                         Symbol = ((char)icon).ToString(),
-                        Code = ((int)icon).ToString("X4")
+                        Code = ((int)icon).ToString("X4"),
                     }
                 );
             }
@@ -92,7 +92,7 @@ public partial class IconsViewModel : ViewModel
     }
 
     [RelayCommand]
-    public void OnIconSelected( int parameter )
+    public void OnIconSelected(int parameter)
     {
         _selectedIconId = parameter;
 
@@ -100,7 +100,7 @@ public partial class IconsViewModel : ViewModel
     }
 
     [RelayCommand]
-    public void OnCheckboxChecked( object sender )
+    public void OnCheckboxChecked(object sender)
     {
         if (sender is not CheckBox checkbox)
         {
@@ -129,7 +129,7 @@ public partial class IconsViewModel : ViewModel
             $"<ui:SymbolIcon Symbol=\"{selectedSymbol.Name}\"{(IsIconFilled ? " Filled=\"True\"" : string.Empty)}/>";
     }
 
-    private void UpdateSearchResults( string searchedText )
+    private void UpdateSearchResults(string searchedText)
     {
         _ = Task.Run(() =>
         {

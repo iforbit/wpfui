@@ -2,23 +2,17 @@
 
   <PropertyGroup>
     <PackageId>WPF-UI.ToastNotifications</PackageId>
-    <TargetFrameworks>net8.0-windows;net9.0-windows</TargetFrameworks>
+    <TargetFrameworks>net6.0-windows;net8.0-windows;net9.0-windows</TargetFrameworks>
     <Description>Native tast notification support for WPF using the WPF UI library.</Description>
     <CommonTags>$(CommonTags);toast;notifications</CommonTags>
     <UseWPF>true</UseWPF>
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <Configurations>Debug;Release;DLL빌드;DLL</Configurations>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)' == 'DLL빌드'">
-    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
-  </PropertyGroup>
-  
   <ItemGroup>
     <None Include="VisualStudioToolsManifest.xml" Pack="true" PackagePath="tools" />
   </ItemGroup>
-
 
   <ItemGroup>
     <PackageReference Include="PolySharp">

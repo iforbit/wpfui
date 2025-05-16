@@ -59,7 +59,20 @@ public partial class NavigationService(INavigationViewPageProvider pageProvider)
     {
         ThrowIfNavigationControlIsNull();
 
-        return NavigationControl!.Navigate(pageType, dataContext);
+        // 1) 실제 네비게이션 시도
+        var result = NavigationControl!.Navigate(pageType, dataContext);
+
+        // 2) 성공했다면 SelectedItem 의 TargetPageTag 를 읽어서 이벤트 발생
+        if (result)
+        {
+            var tag = NavigationControl.SelectedItem?.TargetPageTag;
+            if (!string.IsNullOrEmpty(tag))
+            {
+                UpdateCurrentPage(tag);
+            }
+        }
+
+        return result;
     }
 
     /// <inheritdoc />

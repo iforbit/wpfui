@@ -17,7 +17,7 @@ internal class ResourceDictionaryManager
     /// </summary>
     public string SearchNamespace { get; }
 
-    public ResourceDictionaryManager(string searchNamespace )
+    public ResourceDictionaryManager(string searchNamespace)
     {
         SearchNamespace = searchNamespace;
     }
@@ -27,7 +27,7 @@ internal class ResourceDictionaryManager
     /// </summary>
     /// <param name="resourceLookup">Any part of the resource name.</param>
     /// <returns><see langword="false"/> if it doesn't exist.</returns>
-    public bool HasDictionary(string resourceLookup )
+    public bool HasDictionary(string resourceLookup)
     {
         return GetDictionary(resourceLookup) != null;
     }
@@ -37,7 +37,7 @@ internal class ResourceDictionaryManager
     /// </summary>
     /// <param name="resourceLookup">Any part of the resource name.</param>
     /// <returns><see cref="ResourceDictionary"/>, <see langword="null"/> if it doesn't exist.</returns>
-    public ResourceDictionary? GetDictionary(string resourceLookup )
+    public ResourceDictionary? GetDictionary(string resourceLookup)
     {
         Collection<ResourceDictionary> applicationDictionaries = GetApplicationMergedDictionaries();
 
@@ -46,19 +46,17 @@ internal class ResourceDictionaryManager
             return null;
         }
 
-        resourceLookup = resourceLookup.ToLower().Trim();
-
         foreach (ResourceDictionary t in applicationDictionaries)
         {
             string resourceDictionaryUri;
 
             if (t?.Source != null)
             {
-                resourceDictionaryUri = t.Source.ToString().ToLower().Trim();
+                resourceDictionaryUri = t.Source.ToString();
 
                 if (
-                    resourceDictionaryUri.Contains(SearchNamespace)
-                    && resourceDictionaryUri.Contains(resourceLookup)
+                    resourceDictionaryUri.Contains(SearchNamespace, StringComparison.OrdinalIgnoreCase)
+                    && resourceDictionaryUri.Contains(resourceLookup, StringComparison.OrdinalIgnoreCase)
                 )
                 {
                     return t;
@@ -72,11 +70,11 @@ internal class ResourceDictionaryManager
                     continue;
                 }
 
-                resourceDictionaryUri = t1.Source.ToString().ToLower().Trim();
+                resourceDictionaryUri = t1.Source.ToString();
 
                 if (
-                    !resourceDictionaryUri.Contains(SearchNamespace)
-                    || !resourceDictionaryUri.Contains(resourceLookup)
+                    !resourceDictionaryUri.Contains(SearchNamespace, StringComparison.OrdinalIgnoreCase)
+                    || !resourceDictionaryUri.Contains(resourceLookup, StringComparison.OrdinalIgnoreCase)
                 )
                 {
                     continue;
@@ -95,7 +93,7 @@ internal class ResourceDictionaryManager
     /// <param name="resourceLookup">Any part of the resource name.</param>
     /// <param name="newResourceUri">A valid <see cref="Uri"/> for the replaced resource.</param>
     /// <returns><see langword="true"/> if the dictionary <see cref="Uri"/> was updated. <see langword="false"/> otherwise.</returns>
-    public bool UpdateDictionary(string resourceLookup, Uri? newResourceUri )
+    public bool UpdateDictionary(string resourceLookup, Uri? newResourceUri)
     {
         Collection<ResourceDictionary> applicationDictionaries = UiApplication
             .Current
@@ -107,17 +105,18 @@ internal class ResourceDictionaryManager
             return false;
         }
 
-        resourceLookup = resourceLookup.ToLower().Trim();
-
         for (var i = 0; i < applicationDictionaries.Count; i++)
         {
             string sourceUri;
 
             if (applicationDictionaries[i]?.Source != null)
             {
-                sourceUri = applicationDictionaries[i].Source.ToString().ToLower().Trim();
+                sourceUri = applicationDictionaries[i].Source.ToString();
 
-                if (sourceUri.Contains(SearchNamespace) && sourceUri.Contains(resourceLookup))
+                if (
+                    sourceUri.Contains(SearchNamespace, StringComparison.OrdinalIgnoreCase)
+                    && sourceUri.Contains(resourceLookup, StringComparison.OrdinalIgnoreCase)
+                )
                 {
                     applicationDictionaries[i] = new() { Source = newResourceUri };
 
@@ -132,13 +131,12 @@ internal class ResourceDictionaryManager
                     continue;
                 }
 
-                sourceUri = applicationDictionaries[i]
-                    .MergedDictionaries[j]
-                    .Source.ToString()
-                    .ToLower()
-                    .Trim();
+                sourceUri = applicationDictionaries[i].MergedDictionaries[j].Source.ToString();
 
-                if (!sourceUri.Contains(SearchNamespace) || !sourceUri.Contains(resourceLookup))
+                if (
+                    !sourceUri.Contains(SearchNamespace, StringComparison.OrdinalIgnoreCase)
+                    || !sourceUri.Contains(resourceLookup, StringComparison.OrdinalIgnoreCase)
+                )
                 {
                     continue;
                 }

@@ -117,7 +117,7 @@ public class ClientAreaBorder : System.Windows.Controls.Border, IThemeControl
         Appearance.ApplicationThemeManager.Changed += OnThemeChanged;
     }
 
-    private void OnThemeChanged( ApplicationTheme currentApplicationTheme, Color systemAccent )
+    private void OnThemeChanged(ApplicationTheme currentApplicationTheme, Color systemAccent)
     {
         ApplicationTheme = currentApplicationTheme;
 
@@ -130,7 +130,7 @@ public class ClientAreaBorder : System.Windows.Controls.Border, IThemeControl
     }
 
     /// <inheritdoc />
-    protected override void OnVisualParentChanged( DependencyObject oldParent )
+    protected override void OnVisualParentChanged(DependencyObject oldParent)
     {
         base.OnVisualParentChanged(oldParent);
 
@@ -154,7 +154,7 @@ public class ClientAreaBorder : System.Windows.Controls.Border, IThemeControl
         ApplyDefaultWindowBorder();
     }
 
-    private void OnWindowClosing( object? sender, CancelEventArgs e )
+    private void OnWindowClosing(object? sender, CancelEventArgs e)
     {
         Appearance.ApplicationThemeManager.Changed -= OnThemeChanged;
         if (_oldWindow != null)
@@ -163,7 +163,7 @@ public class ClientAreaBorder : System.Windows.Controls.Border, IThemeControl
         }
     }
 
-    private void OnWindowStateChanged( object? sender, EventArgs e )
+    private void OnWindowStateChanged(object? sender, EventArgs e)
     {
         if (sender is not System.Windows.Window window)
         {

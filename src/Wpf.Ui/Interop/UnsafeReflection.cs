@@ -20,7 +20,7 @@ internal static class UnsafeReflection
     /// <summary>
     /// Casts <see cref="WindowBackdropType"/> to <see cref="Dwmapi.DWMSBT"/>.
     /// </summary>
-    public static Dwmapi.DWMSBT Cast( WindowBackdropType backgroundType )
+    public static Dwmapi.DWMSBT Cast(WindowBackdropType backgroundType)
     {
         return backgroundType switch
         {
@@ -28,28 +28,28 @@ internal static class UnsafeReflection
             WindowBackdropType.Mica => Dwmapi.DWMSBT.DWMSBT_MAINWINDOW,
             WindowBackdropType.Acrylic => Dwmapi.DWMSBT.DWMSBT_TRANSIENTWINDOW,
             WindowBackdropType.Tabbed => Dwmapi.DWMSBT.DWMSBT_TABBEDWINDOW,
-            _ => Dwmapi.DWMSBT.DWMSBT_DISABLE
+            _ => Dwmapi.DWMSBT.DWMSBT_DISABLE,
         };
     }
 
     /// <summary>
     /// Casts <see cref="WindowCornerPreference"/> to <see cref="Dwmapi.DWM_WINDOW_CORNER_PREFERENCE"/>.
     /// </summary>
-    public static Dwmapi.DWM_WINDOW_CORNER_PREFERENCE Cast( WindowCornerPreference cornerPreference )
+    public static Dwmapi.DWM_WINDOW_CORNER_PREFERENCE Cast(WindowCornerPreference cornerPreference)
     {
         return cornerPreference switch
         {
             WindowCornerPreference.Round => Dwmapi.DWM_WINDOW_CORNER_PREFERENCE.ROUND,
             WindowCornerPreference.RoundSmall => Dwmapi.DWM_WINDOW_CORNER_PREFERENCE.ROUNDSMALL,
             WindowCornerPreference.DoNotRound => Dwmapi.DWM_WINDOW_CORNER_PREFERENCE.DONOTROUND,
-            _ => Dwmapi.DWM_WINDOW_CORNER_PREFERENCE.DEFAULT
+            _ => Dwmapi.DWM_WINDOW_CORNER_PREFERENCE.DEFAULT,
         };
     }
 
     /// <summary>
     /// Casts <see cref="TaskBarProgressState"/> to <see cref="ShObjIdl.TBPFLAG"/>.
     /// </summary>
-    public static ShObjIdl.TBPFLAG Cast( TaskBarProgressState taskBarProgressState )
+    public static ShObjIdl.TBPFLAG Cast(TaskBarProgressState taskBarProgressState)
     {
         return taskBarProgressState switch
         {
@@ -57,14 +57,14 @@ internal static class UnsafeReflection
             TaskBarProgressState.Error => ShObjIdl.TBPFLAG.TBPF_ERROR,
             TaskBarProgressState.Paused => ShObjIdl.TBPFLAG.TBPF_PAUSED,
             TaskBarProgressState.Normal => ShObjIdl.TBPFLAG.TBPF_NORMAL,
-            _ => Wpf.Ui.Interop.ShObjIdl.TBPFLAG.TBPF_NOPROGRESS
+            _ => Wpf.Ui.Interop.ShObjIdl.TBPFLAG.TBPF_NOPROGRESS,
         };
     }
 
     /// <summary>
     /// Casts <see cref="ShObjIdl.TBPFLAG"/> to <see cref="TaskBarProgressState"/>.
     /// </summary>
-    public static TaskBarProgressState Cast( ShObjIdl.TBPFLAG progressState )
+    public static TaskBarProgressState Cast(ShObjIdl.TBPFLAG progressState)
     {
         return progressState switch
         {
@@ -72,7 +72,7 @@ internal static class UnsafeReflection
             ShObjIdl.TBPFLAG.TBPF_ERROR => TaskBarProgressState.Error,
             ShObjIdl.TBPFLAG.TBPF_PAUSED => TaskBarProgressState.Paused,
             ShObjIdl.TBPFLAG.TBPF_NORMAL => TaskBarProgressState.Normal,
-            _ => TaskBarProgressState.None
+            _ => TaskBarProgressState.None,
         };
     }
 }

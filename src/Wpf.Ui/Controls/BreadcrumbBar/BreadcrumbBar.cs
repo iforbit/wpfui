@@ -86,7 +86,7 @@ public class BreadcrumbBar : System.Windows.Controls.ItemsControl
         Unloaded += OnUnloaded;
     }
 
-    protected virtual void OnItemClicked(object item, int index )
+    protected virtual void OnItemClicked(object item, int index)
     {
         var args = new BreadcrumbBarItemClickedEventArgs(ItemClickedEvent, this, item, index);
         RaiseEvent(args);
@@ -102,7 +102,7 @@ public class BreadcrumbBar : System.Windows.Controls.ItemsControl
         }
     }
 
-    protected override bool IsItemItsOwnContainerOverride(object item )
+    protected override bool IsItemItsOwnContainerOverride(object item)
     {
         return item is BreadcrumbBarItem;
     }
@@ -112,7 +112,7 @@ public class BreadcrumbBar : System.Windows.Controls.ItemsControl
         return new BreadcrumbBarItem();
     }
 
-    private void OnLoaded(object sender, RoutedEventArgs e )
+    private void OnLoaded(object sender, RoutedEventArgs e)
     {
         ItemContainerGenerator.ItemsChanged += ItemContainerGeneratorOnItemsChanged;
         ItemContainerGenerator.StatusChanged += ItemContainerGeneratorOnStatusChanged;
@@ -120,7 +120,7 @@ public class BreadcrumbBar : System.Windows.Controls.ItemsControl
         UpdateLastContainer();
     }
 
-    private void OnUnloaded(object sender, RoutedEventArgs e )
+    private void OnUnloaded(object sender, RoutedEventArgs e)
     {
         Loaded -= OnLoaded;
         Unloaded -= OnUnloaded;
@@ -129,7 +129,7 @@ public class BreadcrumbBar : System.Windows.Controls.ItemsControl
         ItemContainerGenerator.StatusChanged -= ItemContainerGeneratorOnStatusChanged;
     }
 
-    private void ItemContainerGeneratorOnStatusChanged(object? sender, EventArgs e )
+    private void ItemContainerGeneratorOnStatusChanged(object? sender, EventArgs e)
     {
         if (ItemContainerGenerator.Status != GeneratorStatus.ContainersGenerated)
         {
@@ -150,7 +150,7 @@ public class BreadcrumbBar : System.Windows.Controls.ItemsControl
         UpdateLastContainer();
     }
 
-    private void ItemContainerGeneratorOnItemsChanged(object sender, ItemsChangedEventArgs e )
+    private void ItemContainerGeneratorOnItemsChanged(object sender, ItemsChangedEventArgs e)
     {
         if (e.Action != NotifyCollectionChangedAction.Remove)
         {
@@ -160,7 +160,7 @@ public class BreadcrumbBar : System.Windows.Controls.ItemsControl
         UpdateLastContainer();
     }
 
-    private void OnTemplateButtonClick(object? obj )
+    private void OnTemplateButtonClick(object? obj)
     {
         if (obj is null)
         {
@@ -173,7 +173,7 @@ public class BreadcrumbBar : System.Windows.Controls.ItemsControl
         OnItemClicked(obj, index);
     }
 
-    private void InteractWithItemContainer(int offsetFromEnd, Action<BreadcrumbBarItem> action )
+    private void InteractWithItemContainer(int offsetFromEnd, Action<BreadcrumbBarItem> action)
     {
         if (ItemContainerGenerator.Items.Count <= 0)
         {

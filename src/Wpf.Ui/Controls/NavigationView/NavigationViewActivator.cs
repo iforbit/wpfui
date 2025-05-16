@@ -22,7 +22,7 @@ internal static class NavigationViewActivator
     /// <param name="pageType"><see cref="FrameworkElement"/> to instantiate.</param>
     /// <param name="dataContext">Additional context to set.</param>
     /// <returns>Instance of the <see cref="FrameworkElement"/> object or <see langword="null"/>.</returns>
-    public static FrameworkElement? CreateInstance(Type pageType, object? dataContext = null )
+    public static FrameworkElement? CreateInstance(Type pageType, object? dataContext = null)
     {
         if (!typeof(FrameworkElement).IsAssignableFrom(pageType))
         {
@@ -37,8 +37,9 @@ internal static class NavigationViewActivator
             {
                 Content = new TextBlock
                 {
-                    Text = "Pages are not rendered while using the Designer. Edit the page template directly."
-                }
+                    Text =
+                        "Pages are not rendered while using the Designer. Edit the page template directly.",
+                },
             };
         }
 
@@ -93,7 +94,7 @@ internal static class NavigationViewActivator
     }
 
 #if NET48_OR_GREATER || NETCOREAPP3_0_OR_GREATER
-    private static object? ResolveConstructorParameter(Type tParam, object? dataContext )
+    private static object? ResolveConstructorParameter(Type tParam, object? dataContext)
     {
         if (dataContext != null && dataContext.GetType() == tParam)
         {
@@ -120,7 +121,7 @@ internal static class NavigationViewActivator
                 ParameterInfo[] parameters = ctor.GetParameters();
                 int score = parameters.Aggregate(
                     0,
-                    (acc, prm ) =>
+                    (acc, prm) =>
                         acc + (ResolveConstructorParameter(prm.ParameterType, dataContext) != null ? 1 : 0)
                 );
                 score = score != parameters.Length ? 0 : score;
@@ -132,7 +133,7 @@ internal static class NavigationViewActivator
             ?.Constructor;
     }
 
-    private static FrameworkElement? InvokeElementConstructor(ConstructorInfo ctor, object? dataContext )
+    private static FrameworkElement? InvokeElementConstructor(ConstructorInfo ctor, object? dataContext)
     {
         IEnumerable<object?> args = ctor.GetParameters()
             .Select(prm => ResolveConstructorParameter(prm.ParameterType, dataContext));
@@ -141,7 +142,7 @@ internal static class NavigationViewActivator
     }
 #endif
 
-    private static FrameworkElement? InvokeElementConstructor(Type tPage, object? dataContext )
+    private static FrameworkElement? InvokeElementConstructor(Type tPage, object? dataContext)
     {
         ConstructorInfo? ctor = dataContext is null
             ? tPage.GetConstructor(Type.EmptyTypes)
@@ -150,17 +151,17 @@ internal static class NavigationViewActivator
         return ctor?.Invoke(new[] { dataContext }) as FrameworkElement;
     }
 
-    private static ConstructorInfo? FindParameterlessConstructor(Type? tPage )
+    private static ConstructorInfo? FindParameterlessConstructor(Type? tPage)
     {
         return tPage?.GetConstructor(Type.EmptyTypes);
     }
 
-    private static FrameworkElement? InvokeParameterlessConstructor(Type? tPage )
+    private static FrameworkElement? InvokeParameterlessConstructor(Type? tPage)
     {
         return FindParameterlessConstructor(tPage)?.Invoke(null) as FrameworkElement;
     }
 
-    private static void SetDataContext(FrameworkElement? element, object? dataContext )
+    private static void SetDataContext(FrameworkElement? element, object? dataContext)
     {
         if (element != null && dataContext != null)
         {

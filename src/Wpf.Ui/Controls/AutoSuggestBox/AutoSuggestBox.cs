@@ -238,14 +238,14 @@ public class AutoSuggestBox : System.Windows.Controls.ItemsControl, IIconControl
 
     public AutoSuggestBox()
     {
-        Loaded += static (sender, _ ) =>
+        Loaded += static (sender, _) =>
         {
             var self = (AutoSuggestBox)sender;
 
             self.AcquireTemplateResources();
         };
 
-        Unloaded += static (sender, _ ) =>
+        Unloaded += static (sender, _) =>
         {
             var self = (AutoSuggestBox)sender;
 
@@ -278,7 +278,7 @@ public class AutoSuggestBox : System.Windows.Controls.ItemsControl, IIconControl
         return TextBox.Focus();
     }
 
-    protected T GetTemplateChild<T>(string name )
+    protected T GetTemplateChild<T>(string name)
         where T : DependencyObject
     {
         if (GetTemplateChild(name) is not T dependencyObject)
@@ -354,11 +354,11 @@ public class AutoSuggestBox : System.Windows.Controls.ItemsControl, IIconControl
     /// Method for <see cref="QuerySubmitted"/>.
     /// </summary>
     /// <param name="queryText">Currently submitted query text.</param>
-    protected virtual void OnQuerySubmitted(string queryText )
+    protected virtual void OnQuerySubmitted(string queryText)
     {
         var args = new AutoSuggestBoxQuerySubmittedEventArgs(QuerySubmittedEvent, this)
         {
-            QueryText = queryText
+            QueryText = queryText,
         };
 
         RaiseEvent(args);
@@ -368,11 +368,11 @@ public class AutoSuggestBox : System.Windows.Controls.ItemsControl, IIconControl
     /// Method for <see cref="SuggestionChosen"/>.
     /// </summary>
     /// <param name="selectedItem">Currently selected item.</param>
-    protected virtual void OnSuggestionChosen(object selectedItem )
+    protected virtual void OnSuggestionChosen(object selectedItem)
     {
         var args = new AutoSuggestBoxSuggestionChosenEventArgs(SuggestionChosenEvent, this)
         {
-            SelectedItem = selectedItem
+            SelectedItem = selectedItem,
         };
 
         RaiseEvent(args);
@@ -388,12 +388,12 @@ public class AutoSuggestBox : System.Windows.Controls.ItemsControl, IIconControl
     /// </summary>
     /// <param name="reason">Data for the text changed event.</param>
     /// <param name="text">Changed text.</param>
-    protected virtual void OnTextChanged(AutoSuggestionBoxTextChangeReason reason, string text )
+    protected virtual void OnTextChanged(AutoSuggestionBoxTextChangeReason reason, string text)
     {
         var args = new AutoSuggestBoxTextChangedEventArgs(TextChangedEvent, this)
         {
             Reason = reason,
-            Text = text
+            Text = text,
         };
 
         RaiseEvent(args);
@@ -404,7 +404,7 @@ public class AutoSuggestBox : System.Windows.Controls.ItemsControl, IIconControl
         }
     }
 
-    private void TextBoxOnPreviewKeyDown(object sender, KeyEventArgs e )
+    private void TextBoxOnPreviewKeyDown(object sender, KeyEventArgs e)
     {
         if (e.Key is Key.Escape)
         {
@@ -427,7 +427,7 @@ public class AutoSuggestBox : System.Windows.Controls.ItemsControl, IIconControl
         _ = SuggestionsList?.Focus();
     }
 
-    private void TextBoxOnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e )
+    private void TextBoxOnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
     {
         if (e.NewFocus is ListView)
         {
@@ -437,7 +437,7 @@ public class AutoSuggestBox : System.Windows.Controls.ItemsControl, IIconControl
         SetCurrentValue(IsSuggestionListOpenProperty, false);
     }
 
-    private void TextBoxOnTextChanged(object sender, TextChangedEventArgs e )
+    private void TextBoxOnTextChanged(object sender, TextChangedEventArgs e)
     {
         AutoSuggestionBoxTextChangeReason changeReason = AutoSuggestionBoxTextChangeReason.UserInput;
 
@@ -463,7 +463,7 @@ public class AutoSuggestBox : System.Windows.Controls.ItemsControl, IIconControl
         SetCurrentValue(IsSuggestionListOpenProperty, true);
     }
 
-    private void SuggestionsListOnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e )
+    private void SuggestionsListOnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
     {
         if (e.NewFocus is ListViewItem)
         {
@@ -473,7 +473,7 @@ public class AutoSuggestBox : System.Windows.Controls.ItemsControl, IIconControl
         SetCurrentValue(IsSuggestionListOpenProperty, false);
     }
 
-    private void SuggestionsListOnPreviewKeyDown(object sender, KeyEventArgs e )
+    private void SuggestionsListOnPreviewKeyDown(object sender, KeyEventArgs e)
     {
         if (e.Key is not Key.Enter)
         {
@@ -485,7 +485,7 @@ public class AutoSuggestBox : System.Windows.Controls.ItemsControl, IIconControl
         OnSelectedChanged(SuggestionsList!.SelectedItem);
     }
 
-    private void SuggestionsListOnPreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e )
+    private void SuggestionsListOnPreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
     {
         if (SuggestionsList!.SelectedItem is not null)
         {
@@ -500,7 +500,7 @@ public class AutoSuggestBox : System.Windows.Controls.ItemsControl, IIconControl
         }
     }
 
-    private void SuggestionsListOnSelectionChanged(object sender, SelectionChangedEventArgs e )
+    private void SuggestionsListOnSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         if (SuggestionsList!.SelectedItem is null)
         {
@@ -510,7 +510,7 @@ public class AutoSuggestBox : System.Windows.Controls.ItemsControl, IIconControl
         OnSelectedChanged(SuggestionsList.SelectedItem);
     }
 
-    private IntPtr Hook(IntPtr hwnd, int msg, IntPtr wparam, IntPtr lparam, ref bool handled )
+    private IntPtr Hook(IntPtr hwnd, int msg, IntPtr wparam, IntPtr lparam, ref bool handled)
     {
         if (!IsSuggestionListOpen)
         {
@@ -527,14 +527,14 @@ public class AutoSuggestBox : System.Windows.Controls.ItemsControl, IIconControl
         return IntPtr.Zero;
     }
 
-    private void OnSelectedChanged(object selectedObj )
+    private void OnSelectedChanged(object selectedObj)
     {
         OnSuggestionChosen(selectedObj);
 
         _selectedItem = selectedObj;
     }
 
-    private void UpdateTexBoxTextAfterSelection(object selectedObj )
+    private void UpdateTexBoxTextAfterSelection(object selectedObj)
     {
         _changingTextAfterSuggestionChosen = true;
 
@@ -543,7 +543,7 @@ public class AutoSuggestBox : System.Windows.Controls.ItemsControl, IIconControl
         _changingTextAfterSuggestionChosen = false;
     }
 
-    private void DefaultFiltering(string text )
+    private void DefaultFiltering(string text)
     {
         if (string.IsNullOrEmpty(text))
         {
@@ -551,20 +551,22 @@ public class AutoSuggestBox : System.Windows.Controls.ItemsControl, IIconControl
             return;
         }
 
-        var splitText = text.ToLowerInvariant().Split(' ');
+        var splitText = text.Split(' ');
         var suitableItems = OriginalItemsSource
             .Cast<object>()
             .Where(item =>
             {
-                var itemText = GetStringFromObj(item)?.ToLowerInvariant();
-                return splitText.All(key => itemText?.Contains(key) ?? false);
+                var itemText = GetStringFromObj(item);
+                return splitText.All(key =>
+                    itemText?.Contains(key, StringComparison.OrdinalIgnoreCase) ?? false
+                );
             })
             .ToList();
 
         SetCurrentValue(ItemsSourceProperty, suitableItems);
     }
 
-    private string? GetStringFromObj(object obj )
+    private string? GetStringFromObj(object obj)
     {
         // uses reflection. maybe it needs some optimization?
         var displayMemberPathText =
@@ -576,7 +578,7 @@ public class AutoSuggestBox : System.Windows.Controls.ItemsControl, IIconControl
         return displayMemberPathText ?? obj as string ?? obj.ToString();
     }
 
-    private static void OnTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e )
+    private static void OnTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         var self = (AutoSuggestBox)d;
         var newText = (string)e.NewValue;

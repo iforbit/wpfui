@@ -117,7 +117,7 @@ public class CalendarDatePicker : Wpf.Ui.Controls.Button
             {
                 Source = this,
                 Mode = BindingMode.TwoWay,
-                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
+                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
             }
         );
         _ = calendar.SetBinding(
@@ -126,7 +126,7 @@ public class CalendarDatePicker : Wpf.Ui.Controls.Button
             {
                 Source = this,
                 Mode = BindingMode.TwoWay,
-                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
+                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
             }
         );
         _ = calendar.SetBinding(
@@ -135,7 +135,7 @@ public class CalendarDatePicker : Wpf.Ui.Controls.Button
             {
                 Source = this,
                 Mode = BindingMode.TwoWay,
-                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
+                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
             }
         );
 
@@ -151,7 +151,7 @@ public class CalendarDatePicker : Wpf.Ui.Controls.Button
             VerticalOffset = 1D,
             VerticalAlignment = VerticalAlignment.Center,
             PopupAnimation = PopupAnimation.None,
-            AllowsTransparency = true
+            AllowsTransparency = true,
         };
 
         _ = _popup.SetBinding(
@@ -160,12 +160,12 @@ public class CalendarDatePicker : Wpf.Ui.Controls.Button
             {
                 Source = this,
                 Mode = BindingMode.TwoWay,
-                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
+                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
             }
         );
     }
 
-    protected virtual void OnPopupOpened( object? sender, EventArgs e )
+    protected virtual void OnPopupOpened(object? sender, EventArgs e)
     {
         if (sender is not Popup popup)
         {
@@ -181,7 +181,7 @@ public class CalendarDatePicker : Wpf.Ui.Controls.Button
         _ = Keyboard.Focus(popup.Child);
     }
 
-    protected virtual void OnSelectedDatesChanged( object? sender, SelectionChangedEventArgs e )
+    protected virtual void OnSelectedDatesChanged(object? sender, SelectionChangedEventArgs e)
     {
         if (IsCalendarOpen)
         {

@@ -14,8 +14,9 @@
 
 // ReSharper disable IdentifierTypo
 // ReSharper disable InconsistentNaming
-#pragma warning disable CA1060
 using System.Runtime.InteropServices;
+
+#pragma warning disable CA1060 // Move pinvokes to native methods class
 
 namespace Wpf.Ui.Interop;
 
@@ -36,7 +37,7 @@ internal class Kernel32
     /// </summary>
     /// <param name="dwErrorCode">The last-error code for the thread.</param>
     [DllImport(Libraries.Kernel32, ExactSpelling = true, CharSet = CharSet.Auto)]
-    public static extern void SetLastError( [In] int dwErrorCode );
+    public static extern void SetLastError([In] int dwErrorCode);
 
     /// <summary>
     /// Determines whether the calling process is being debugged by a user-mode debugger.
@@ -46,3 +47,5 @@ internal class Kernel32
     [return: MarshalAs(UnmanagedType.Bool)]
     public static extern bool IsDebuggerPresent();
 }
+
+#pragma warning restore CA1060 // Move pinvokes to native methods class

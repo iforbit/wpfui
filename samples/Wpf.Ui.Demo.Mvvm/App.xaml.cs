@@ -3,10 +3,12 @@
 // Copyright (C) Leszek Pomianowski and WPF UI Contributors.
 // All Rights Reserved.
 
-using System.IO;
-using System.Windows.Threading;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+
+using System.IO;
+using System.Windows.Threading;
+
 using Wpf.Ui.Demo.Mvvm.Models;
 using Wpf.Ui.Demo.Mvvm.Services;
 using Wpf.Ui.DependencyInjection;
@@ -34,7 +36,7 @@ public partial class App
             _ = c.SetBasePath(basePath);
         })
         .ConfigureServices(
-            ( context, services ) =>
+            (context, services) =>
             {
                 _ = services.AddNavigationViewPageProvider();
 
@@ -57,10 +59,11 @@ public partial class App
                 // Views and ViewModels
                 _ = services.AddSingleton<Views.Pages.DashboardPage>();
                 _ = services.AddSingleton<ViewModels.DashboardViewModel>();
-                _ = services.AddSingleton<Views.Pages.DataPage>();
-                _ = services.AddSingleton<ViewModels.DataViewModel>();
                 _ = services.AddSingleton<Views.Pages.SettingsPage>();
                 _ = services.AddSingleton<ViewModels.SettingsViewModel>();
+
+                _ = services.AddTransient<Views.Pages.DataPage>();
+                _ = services.AddTransient<ViewModels.DataViewModel>();
 
                 // Configuration
                 _ = services.Configure<AppConfig>(context.Configuration.GetSection(nameof(AppConfig)));
@@ -79,7 +82,7 @@ public partial class App
     /// <summary>
     /// Occurs when the application is loading.
     /// </summary>
-    private async void OnStartup( object sender, StartupEventArgs e )
+    private async void OnStartup(object sender, StartupEventArgs e)
     {
         await _host.StartAsync();
     }
@@ -87,7 +90,7 @@ public partial class App
     /// <summary>
     /// Occurs when the application is closing.
     /// </summary>
-    private async void OnExit( object sender, ExitEventArgs e )
+    private async void OnExit(object sender, ExitEventArgs e)
     {
         await _host.StopAsync();
 
@@ -97,7 +100,7 @@ public partial class App
     /// <summary>
     /// Occurs when an exception is thrown by an application but not handled.
     /// </summary>
-    private void OnDispatcherUnhandledException( object sender, DispatcherUnhandledExceptionEventArgs e )
+    private void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
     {
         // For more info see https://docs.microsoft.com/en-us/dotnet/api/system.windows.application.dispatcherunhandledexception?view=windowsdesktop-6.0
     }

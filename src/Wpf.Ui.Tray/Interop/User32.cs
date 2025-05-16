@@ -11,7 +11,8 @@ namespace Wpf.Ui.Tray.Interop;
 // ReSharper disable InconsistentNaming
 #pragma warning disable SA1300 // Element should begin with upper-case letter
 #pragma warning disable SA1307 // Accessible fields should begin with upper-case letter
-#pragma warning disable CA1060
+#pragma warning disable CA1060 // Move pinvokes to native methods class
+
 /// <summary>
 /// USER procedure declarations, constant definitions and macros.
 /// </summary>
@@ -186,7 +187,7 @@ internal static class User32
         HTSIZELAST = HTBOTTOMRIGHT,
         HTOBJECT = 19,
         HTCLOSE = 20,
-        HTHELP = 21
+        HTHELP = 21,
     }
 
     /// <summary>
@@ -246,7 +247,7 @@ internal static class User32
         /// <summary>
         /// Sets the new address of the dialog box procedure.
         /// </summary>
-        DWLP_DLGPROC = 0x4
+        DWLP_DLGPROC = 0x4,
     }
 
     /// <summary>
@@ -284,7 +285,7 @@ internal static class User32
         WCA_CORNER_STYLE = 27,
         WCA_PART_COLOR = 28,
         WCA_DISABLE_MOVESIZE_FEEDBACK = 29,
-        WCA_LAST = 30
+        WCA_LAST = 30,
     }
 
     [Flags]
@@ -294,7 +295,7 @@ internal static class User32
         DrawTopBorder = 0x40,
         DrawRightBorder = 0x80,
         DrawBottomBorder = 0x100,
-        DrawAllBorders = DrawLeftBorder | DrawTopBorder | DrawRightBorder | DrawBottomBorder
+        DrawAllBorders = DrawLeftBorder | DrawTopBorder | DrawRightBorder | DrawBottomBorder,
     }
 
     /// <summary>
@@ -307,7 +308,7 @@ internal static class User32
         ACCENT_ENABLE_TRANSPARENTGRADIENT = 2,
         ACCENT_ENABLE_BLURBEHIND = 3,
         ACCENT_ENABLE_ACRYLICBLURBEHIND = 4,
-        ACCENT_INVALID_STATE = 5
+        ACCENT_INVALID_STATE = 5,
     }
 
     /// <summary>
@@ -348,7 +349,7 @@ internal static class User32
         BYTEALIGNWINDOW = 0x2000,
         GLOBALCLASS = 0x4000,
         IME = 0x00010000,
-        DROPSHADOW = 0x00020000
+        DROPSHADOW = 0x00020000,
     }
 
     /// <summary>
@@ -854,7 +855,7 @@ internal static class User32
     public static extern bool AdjustWindowRectEx(
         [In] ref Rect lpRect,
         [In] WS dwStyle,
-        [In][MarshalAs(UnmanagedType.Bool)] bool bMenu,
+        [In] [MarshalAs(UnmanagedType.Bool)] bool bMenu,
         [In] WS_EX dwExStyle
     );
 
@@ -976,8 +977,8 @@ internal static class User32
     [DllImport(Libraries.User32, SetLastError = true, CharSet = CharSet.Unicode)]
     public static extern IntPtr CreateWindowExW(
         [In] WS_EX dwExStyle,
-        [In, Optional][MarshalAs(UnmanagedType.LPWStr)] string lpClassName,
-        [In, Optional][MarshalAs(UnmanagedType.LPWStr)] string lpWindowName,
+        [In, Optional] [MarshalAs(UnmanagedType.LPWStr)] string lpClassName,
+        [In, Optional] [MarshalAs(UnmanagedType.LPWStr)] string lpWindowName,
         [In] WS dwStyle,
         [In] int x,
         [In] int y,
@@ -1417,7 +1418,7 @@ internal static class User32
     [DllImport(Libraries.User32)]
     public static extern IntPtr GetSystemMenu(
         [In] IntPtr hWnd,
-        [In][MarshalAs(UnmanagedType.Bool)] bool bRevert
+        [In] [MarshalAs(UnmanagedType.Bool)] bool bRevert
     );
 
     [DllImport(Libraries.User32, EntryPoint = "EnableMenuItem")]
@@ -1441,7 +1442,7 @@ internal static class User32
     private static extern int _SetWindowRgn(
         [In] IntPtr hWnd,
         [In] IntPtr hRgn,
-        [In][MarshalAs(UnmanagedType.Bool)] bool bRedraw
+        [In] [MarshalAs(UnmanagedType.Bool)] bool bRedraw
     );
 
     /// <summary>
@@ -1546,3 +1547,4 @@ internal static class User32
 
 #pragma warning restore SA1300 // Element should begin with upper-case letter
 #pragma warning restore SA1307 // Accessible fields should begin with upper-case letter
+#pragma warning restore CA1060 // Move pinvokes to native methods class

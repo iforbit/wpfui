@@ -22,7 +22,7 @@ public class SyntaxHighlightDictionary : ResourceDictionary
 
     /// <summary>
     /// Initializes a new instance of the <see cref="SyntaxHighlightDictionary"/> class.
-    /// Default constructor defining <see cref="ResourceDictionary.Source"/> of the <c>WPF UI</c> syntax highlight dictionary.
+    /// It sets the <see cref="ResourceDictionary.Source"/> of the <c>WPF UI</c> syntax highlight dictionary.
     /// </summary>
     public SyntaxHighlightDictionary() => Source = new Uri(DictionaryUri, UriKind.Absolute);
 }

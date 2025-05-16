@@ -52,13 +52,14 @@ public class Arc : Shape
         new PropertyMetadata(SweepDirection.Clockwise, PropertyChangedCallback)
     );
 
-    /// <summary>Identifies the <see cref="StrokeStartLineCap"/> dependency property.</summary>
-    public static new readonly DependencyProperty StrokeStartLineCapProperty = DependencyProperty.Register(
-        nameof(StrokeStartLineCap),
-        typeof(PenLineCap),
-        typeof(Arc),
-        new PropertyMetadata(PenLineCap.Round, PropertyChangedCallback)
-    );
+    static Arc()
+    {
+        // Modify the metadata of the StrokeStartLineCap dependency property.
+        StrokeStartLineCapProperty.OverrideMetadata(
+            typeof(Arc),
+            new FrameworkPropertyMetadata(PenLineCap.Round, PropertyChangedCallback)
+        );
+    }
 
     /// <summary>
     /// Gets or sets the initial angle from which the arc will be drawn.
@@ -85,13 +86,6 @@ public class Arc : Shape
     {
         get => (SweepDirection)GetValue(SweepDirectionProperty);
         set => SetValue(SweepDirectionProperty, value);
-    }
-
-    // TODO: Should we?
-    public new PenLineCap StrokeStartLineCap
-    {
-        get { return (PenLineCap)GetValue(StrokeStartLineCapProperty); }
-        set { SetValue(StrokeStartLineCapProperty, value); }
     }
 
     /// <summary>
@@ -148,7 +142,7 @@ public class Arc : Shape
     /// <para><see href="https://stackoverflow.com/a/36756365/13224348">Based on Mark Feldman implementation.</see></para>
     /// </summary>
     /// <param name="angle">The angle at which to create the point.</param>
-    protected Point PointAtAngle(double angle )
+    protected Point PointAtAngle(double angle)
     {
         if (SweepDirection == SweepDirection.Counterclockwise)
         {
@@ -191,7 +185,7 @@ public class Arc : Shape
     /// <summary>
     /// Event triggered when one of the key parameters is changed. Forces the geometry to be redrawn.
     /// </summary>
-    protected static void PropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e )
+    protected static void PropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if (d is not Arc control)
         {
@@ -202,7 +196,7 @@ public class Arc : Shape
         control.InvalidateVisual();
     }
 
-    protected override Visual? GetVisualChild(int index )
+    protected override Visual? GetVisualChild(int index)
     {
         if (index != 0)
         {
@@ -214,7 +208,7 @@ public class Arc : Shape
         return _rootLayout;
     }
 
-    protected override Size MeasureOverride(Size availableSize )
+    protected override Size MeasureOverride(Size availableSize)
     {
         EnsureRootLayout();
 
@@ -222,7 +216,7 @@ public class Arc : Shape
         return _rootLayout.DesiredSize;
     }
 
-    protected override Size ArrangeOverride(Size finalSize )
+    protected override Size ArrangeOverride(Size finalSize)
     {
         EnsureRootLayout();
 
@@ -232,15 +226,14 @@ public class Arc : Shape
 
     /// <summary>Overrides the default OnRender method to draw the <see cref="Arc" /> element.</summary>
     /// <param name="drawingContext">A <see cref="DrawingContext" /> object that is drawn during the rendering pass of this <see cref="System.Windows.Shapes.Shape" />.</param>
-    protected override void OnRender(DrawingContext drawingContext )
+    protected override void OnRender(DrawingContext drawingContext)
     {
         base.OnRender(drawingContext);
-        Pen pen =
-            new(Stroke, StrokeThickness)
-            {
-                StartLineCap = StrokeStartLineCap,
-                EndLineCap = StrokeStartLineCap
-            };
+        Pen pen = new(Stroke, StrokeThickness)
+        {
+            StartLineCap = StrokeStartLineCap,
+            EndLineCap = StrokeStartLineCap,
+        };
 
         drawingContext.DrawGeometry(Stroke, pen, DefinedGeometry());
     }

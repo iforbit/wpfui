@@ -20,7 +20,7 @@ internal class TrayHandler : HwndSource
     /// </summary>
     /// <param name="name">The name of the created window.</param>
     /// <param name="parent">Parent of the created window.</param>
-    public TrayHandler( string name, IntPtr parent )
+    public TrayHandler(string name, IntPtr parent)
         : base(0x0, 0x4000000, 0x80000 | 0x20 | 0x00000008 | 0x08000000, 0, 0, 0, 0, name, parent)
     {
         System.Diagnostics.Debug.WriteLine(

@@ -22,7 +22,7 @@ public partial class CheckBoxViewModel : ViewModel
     private bool _optionThreeCheckBoxChecked = false;
 
     [RelayCommand]
-    private void OnSelectAllChecked( object sender )
+    private void OnSelectAllChecked(object sender)
     {
         if (sender is not CheckBox checkBox)
         {
@@ -47,16 +47,15 @@ public partial class CheckBoxViewModel : ViewModel
     }
 
     [RelayCommand]
-    private void OnSingleChecked( string option )
+    private void OnSingleChecked(string option)
     {
         bool allChecked = OptionOneCheckBoxChecked && OptionTwoCheckBoxChecked && OptionThreeCheckBoxChecked;
         bool allUnchecked =
             !OptionOneCheckBoxChecked && !OptionTwoCheckBoxChecked && !OptionThreeCheckBoxChecked;
 
-        SelectAllCheckBoxChecked = allChecked
-            ? true
-            : allUnchecked
-                ? false
-                : (bool?)null;
+        SelectAllCheckBoxChecked =
+            allChecked ? true
+            : allUnchecked ? false
+            : (bool?)null;
     }
 }

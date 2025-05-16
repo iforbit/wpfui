@@ -15,7 +15,7 @@ public partial class TaskBarService : ITaskBarService
     private readonly Dictionary<IntPtr, TaskBarProgressState> _progressStates = [];
 
     /// <inheritdoc />
-    public virtual TaskBarProgressState GetState(IntPtr hWnd )
+    public virtual TaskBarProgressState GetState(IntPtr hWnd)
     {
         if (!_progressStates.TryGetValue(hWnd, out TaskBarProgressState progressState))
         {
@@ -26,7 +26,7 @@ public partial class TaskBarService : ITaskBarService
     }
 
     /// <inheritdoc />
-    public virtual TaskBarProgressState GetState(Window? window )
+    public virtual TaskBarProgressState GetState(Window? window)
     {
         if (window is null)
         {
@@ -44,7 +44,7 @@ public partial class TaskBarService : ITaskBarService
     }
 
     /// <inheritdoc />
-    public virtual bool SetState(Window? window, TaskBarProgressState taskBarProgressState )
+    public virtual bool SetState(Window? window, TaskBarProgressState taskBarProgressState)
     {
         if (window is null)
         {
@@ -71,7 +71,7 @@ public partial class TaskBarService : ITaskBarService
     }
 
     /// <inheritdoc />
-    public virtual bool SetValue(Window? window, int current, int total )
+    public virtual bool SetValue(Window? window, int current, int total)
     {
         if (window == null)
         {
@@ -89,7 +89,7 @@ public partial class TaskBarService : ITaskBarService
     }
 
     /// <inheritdoc />
-    public virtual bool SetState(IntPtr hWnd, TaskBarProgressState taskBarProgressState )
+    public virtual bool SetState(IntPtr hWnd, TaskBarProgressState taskBarProgressState)
     {
         return TaskBarProgress.SetState(hWnd, taskBarProgressState);
     }
@@ -106,7 +106,7 @@ public partial class TaskBarService : ITaskBarService
     }
 
     /// <inheritdoc />
-    public virtual bool SetValue(IntPtr hWnd, int current, int total )
+    public virtual bool SetValue(IntPtr hWnd, int current, int total)
     {
         if (!_progressStates.TryGetValue(hWnd, out TaskBarProgressState progressState))
         {

@@ -9,7 +9,7 @@ namespace Wpf.Ui.Converters;
 
 internal class AnimationFactorToValueConverter : IMultiValueConverter
 {
-    public object Convert( object[] values, Type targetType, object parameter, CultureInfo culture )
+    public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
     {
         if (values[0] is not double completeValue)
         {
@@ -29,7 +29,7 @@ internal class AnimationFactorToValueConverter : IMultiValueConverter
         return factor * completeValue;
     }
 
-    public object[] ConvertBack( object value, Type[] targetTypes, object parameter, CultureInfo culture )
+    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
     {
         throw new NotImplementedException();
     }

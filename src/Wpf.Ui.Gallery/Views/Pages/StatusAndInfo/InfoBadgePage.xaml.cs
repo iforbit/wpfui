@@ -20,7 +20,7 @@ public partial class InfoBadgePage : INavigableView<InfoBadgeViewModel>
 {
     public InfoBadgeViewModel ViewModel { get; }
 
-    public InfoBadgePage( InfoBadgeViewModel viewModel )
+    public InfoBadgePage(InfoBadgeViewModel viewModel)
     {
         ViewModel = viewModel;
         DataContext = this;

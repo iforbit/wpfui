@@ -38,9 +38,7 @@ public partial class MainWindow : IWindow
 
     private bool _isPaneOpenedOrClosedFromCode;
 
-    public event RoutedEventHandler Loaded;
-
-    private void OnNavigationSelectionChanged( object sender, RoutedEventArgs e )
+    private void OnNavigationSelectionChanged(object sender, RoutedEventArgs e)
     {
         if (sender is not Wpf.Ui.Controls.NavigationView navigationView)
         {
@@ -55,7 +53,7 @@ public partial class MainWindow : IWindow
         );
     }
 
-    private void MainWindow_OnSizeChanged( object sender, SizeChangedEventArgs e )
+    private void MainWindow_OnSizeChanged(object sender, SizeChangedEventArgs e)
     {
         if (_isUserClosedPane)
         {
@@ -67,7 +65,7 @@ public partial class MainWindow : IWindow
         _isPaneOpenedOrClosedFromCode = false;
     }
 
-    private void NavigationView_OnPaneOpened( NavigationView sender, RoutedEventArgs args )
+    private void NavigationView_OnPaneOpened(NavigationView sender, RoutedEventArgs args)
     {
         if (_isPaneOpenedOrClosedFromCode)
         {
@@ -77,7 +75,7 @@ public partial class MainWindow : IWindow
         _isUserClosedPane = false;
     }
 
-    private void NavigationView_OnPaneClosed( NavigationView sender, RoutedEventArgs args )
+    private void NavigationView_OnPaneClosed(NavigationView sender, RoutedEventArgs args)
     {
         if (_isPaneOpenedOrClosedFromCode)
         {

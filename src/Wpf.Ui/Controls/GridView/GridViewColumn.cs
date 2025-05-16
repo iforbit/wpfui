@@ -29,28 +29,26 @@ namespace Wpf.Ui.Controls;
 public class GridViewColumn : System.Windows.Controls.GridViewColumn
 {
     // use reflection to get the `_desiredWidth` private field.
-    private static readonly Lazy<FieldInfo> _desiredWidthField =
-        new(
-            () =>
-                typeof(System.Windows.Controls.GridViewColumn).GetField(
-                    "_desiredWidth",
-                    BindingFlags.NonPublic | BindingFlags.Instance
-                ) ?? throw new InvalidOperationException("The `_desiredWidth` field was not found.")
-        );
+    private static readonly Lazy<FieldInfo> _desiredWidthField = new(
+        () =>
+            typeof(System.Windows.Controls.GridViewColumn).GetField(
+                "_desiredWidth",
+                BindingFlags.NonPublic | BindingFlags.Instance
+            ) ?? throw new InvalidOperationException("The `_desiredWidth` field was not found.")
+    );
 
     private static FieldInfo DesiredWidthField => _desiredWidthField.Value;
 
     // use reflection to get the `UpdateActualWidth` private method.
-    private static readonly Lazy<MethodInfo> _updateActualWidthMethod =
-        new(() =>
-        {
-            MethodInfo methodInfo =
-                typeof(System.Windows.Controls.GridViewColumn).GetMethod(
-                    "UpdateActualWidth",
-                    BindingFlags.NonPublic | BindingFlags.Instance
-                ) ?? throw new InvalidOperationException("The `UpdateActualWidth` method was not found.");
-            return methodInfo;
-        });
+    private static readonly Lazy<MethodInfo> _updateActualWidthMethod = new(() =>
+    {
+        MethodInfo methodInfo =
+            typeof(System.Windows.Controls.GridViewColumn).GetMethod(
+                "UpdateActualWidth",
+                BindingFlags.NonPublic | BindingFlags.Instance
+            ) ?? throw new InvalidOperationException("The `UpdateActualWidth` method was not found.");
+        return methodInfo;
+    });
 
     private static MethodInfo UpdateActualWidthMethod => _updateActualWidthMethod.Value;
 
@@ -91,7 +89,7 @@ public class GridViewColumn : System.Windows.Controls.GridViewColumn
         new FrameworkPropertyMetadata(0.0, OnMinWidthChanged)
     );
 
-    private static void OnMinWidthChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
+    private static void OnMinWidthChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if (d is not GridViewColumn self)
         {
@@ -101,7 +99,7 @@ public class GridViewColumn : System.Windows.Controls.GridViewColumn
         self.OnMinWidthChanged(e);
     }
 
-    protected virtual void OnMinWidthChanged( DependencyPropertyChangedEventArgs e )
+    protected virtual void OnMinWidthChanged(DependencyPropertyChangedEventArgs e)
     {
         // Hook for derived classes to react to MinWidth property changes
     }
@@ -123,7 +121,7 @@ public class GridViewColumn : System.Windows.Controls.GridViewColumn
         new FrameworkPropertyMetadata(double.PositiveInfinity, OnMaxWidthChanged)
     );
 
-    private static void OnMaxWidthChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
+    private static void OnMaxWidthChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if (d is not GridViewColumn self)
         {
@@ -133,7 +131,7 @@ public class GridViewColumn : System.Windows.Controls.GridViewColumn
         self.OnMaxWidthChanged(e);
     }
 
-    protected virtual void OnMaxWidthChanged( DependencyPropertyChangedEventArgs e )
+    protected virtual void OnMaxWidthChanged(DependencyPropertyChangedEventArgs e)
     {
         // Hook for derived classes to react to MaxWidth property changes
     }

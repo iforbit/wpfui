@@ -77,24 +77,24 @@ public class DynamicScrollBar : System.Windows.Controls.Primitives.ScrollBar
     /// <summary>
     /// Method reporting the mouse entered this element.
     /// </summary>
-    protected override void OnMouseEnter(MouseEventArgs e )
+    protected override void OnMouseEnter(MouseEventArgs e)
     {
         base.OnMouseEnter(e);
 
-        _ = UpdateScroll().GetAwaiter();
+        _ = UpdateScrollAsync();
     }
 
     /// <summary>
     /// Method reporting the mouse leaved this element.
     /// </summary>
-    protected override void OnMouseLeave(MouseEventArgs e )
+    protected override void OnMouseLeave(MouseEventArgs e)
     {
         base.OnMouseLeave(e);
 
-        _ = UpdateScroll().GetAwaiter();
+        _ = UpdateScrollAsync();
     }
 
-    private async Task UpdateScroll()
+    private async Task UpdateScrollAsync()
     {
         var currentEvent = _interactiveIdentifier.GetNext();
         var shouldScroll = IsMouseOver || _isScrolling;
@@ -117,7 +117,7 @@ public class DynamicScrollBar : System.Windows.Controls.Primitives.ScrollBar
         SetCurrentValue(IsInteractedProperty, shouldScroll);
     }
 
-    private static void OnIsScrollingChanged(DependencyObject d, DependencyPropertyChangedEventArgs e )
+    private static void OnIsScrollingChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if (d is not DynamicScrollBar bar)
         {
@@ -131,10 +131,10 @@ public class DynamicScrollBar : System.Windows.Controls.Primitives.ScrollBar
 
         bar._isScrolling = !bar._isScrolling;
 
-        _ = bar.UpdateScroll().GetAwaiter();
+        _ = bar.UpdateScrollAsync();
     }
 
-    private static void OnIsInteractedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e )
+    private static void OnIsInteractedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if (d is not DynamicScrollBar bar)
         {
@@ -148,6 +148,6 @@ public class DynamicScrollBar : System.Windows.Controls.Primitives.ScrollBar
 
         bar._isInteracted = !bar._isInteracted;
 
-        _ = bar.UpdateScroll().GetAwaiter();
+        _ = bar.UpdateScrollAsync();
     }
 }

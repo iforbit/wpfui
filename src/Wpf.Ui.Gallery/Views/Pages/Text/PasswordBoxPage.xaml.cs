@@ -1,4 +1,4 @@
-// This Source Code Form is subject to the terms of the MIT License.
+﻿// This Source Code Form is subject to the terms of the MIT License.
 // If a copy of the MIT was not distributed with this file, You can obtain one at https://opensource.org/licenses/MIT.
 // Copyright (C) Leszek Pomianowski and WPF UI Contributors.
 // All Rights Reserved.
@@ -14,7 +14,7 @@ public partial class PasswordBoxPage : INavigableView<PasswordBoxViewModel>
 {
     public PasswordBoxViewModel ViewModel { get; }
 
-    public PasswordBoxPage( PasswordBoxViewModel viewModel )
+    public PasswordBoxPage(PasswordBoxViewModel viewModel)
     {
         ViewModel = viewModel;
         DataContext = this;

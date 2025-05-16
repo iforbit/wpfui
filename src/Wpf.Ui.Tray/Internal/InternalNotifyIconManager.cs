@@ -89,7 +89,7 @@ internal class InternalNotifyIconManager : IDisposable, INotifyIcon
     }
 
     /// <inheritdoc />
-    public virtual bool Register(Window parentWindow )
+    public virtual bool Register(Window parentWindow)
     {
         IsRegistered = TrayManager.Register(this, parentWindow);
 
@@ -117,7 +117,7 @@ internal class InternalNotifyIconManager : IDisposable, INotifyIcon
     /// <summary>
     /// Occurs when the application theme is changing.
     /// </summary>
-    protected virtual void OnThemeChanged(ApplicationTheme currentApplicationTheme, Color systemAccent )
+    protected virtual void OnThemeChanged(ApplicationTheme currentApplicationTheme, Color systemAccent)
     {
         ContextMenu?.UpdateDefaultStyle();
         ContextMenu?.UpdateLayout();
@@ -240,7 +240,7 @@ internal class InternalNotifyIconManager : IDisposable, INotifyIcon
     /// <para>Only unmanaged resources can be disposed.</para>
     /// </summary>
     /// <param name="disposing">If disposing equals <see langword="true"/>, dispose all managed and unmanaged resources.</param>
-    protected virtual void Dispose(bool disposing )
+    protected virtual void Dispose(bool disposing)
     {
         if (_disposed)
         {
@@ -263,7 +263,7 @@ internal class InternalNotifyIconManager : IDisposable, INotifyIcon
     }
 
     /// <inheritdoc />
-    public IntPtr WndProc(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled )
+    public IntPtr WndProc(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
     {
         var uMsg = (Interop.User32.WM)msg;
 

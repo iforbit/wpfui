@@ -47,14 +47,14 @@ public partial class InfoBarViewModel : ViewModel
         }
     }
 
-    private static InfoBarSeverity ConvertIndexToInfoBarSeverity( int value )
+    private static InfoBarSeverity ConvertIndexToInfoBarSeverity(int value)
     {
         return value switch
         {
             1 => InfoBarSeverity.Success,
             2 => InfoBarSeverity.Warning,
             3 => InfoBarSeverity.Error,
-            _ => InfoBarSeverity.Informational
+            _ => InfoBarSeverity.Informational,
         };
     }
 }

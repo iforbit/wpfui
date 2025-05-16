@@ -11,8 +11,8 @@ namespace Wpf.Ui.Controls;
 /// </summary>
 public sealed class AutoSuggestBoxSuggestionChosenEventArgs : RoutedEventArgs
 {
-    public AutoSuggestBoxSuggestionChosenEventArgs( RoutedEvent eventArgs, object sender )
+    public AutoSuggestBoxSuggestionChosenEventArgs(RoutedEvent eventArgs, object sender)
         : base(eventArgs, sender) { }
 
-    required public object SelectedItem { get; init; }
+    public required object SelectedItem { get; init; }
 }

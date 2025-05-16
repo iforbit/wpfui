@@ -101,7 +101,6 @@ public partial class NavigationView
         NavigationViewContentPresenter = GetTemplateChild<NavigationViewContentPresenter>(
             TemplateElementNavigationViewContentPresenter
         );
-
         MenuItemsItemsControl = GetTemplateChild<System.Windows.Controls.ItemsControl>(
             TemplateElementMenuItemsItemsControl
         );

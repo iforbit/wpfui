@@ -71,7 +71,7 @@ public class ThumbRate : System.Windows.Controls.Control
     /// <summary>
     /// Triggered by clicking a button in the control template.
     /// </summary>
-    protected virtual void OnTemplateButtonClick( ThumbRateState parameter )
+    protected virtual void OnTemplateButtonClick(ThumbRateState parameter)
     {
         if (State == parameter)
         {
@@ -85,12 +85,12 @@ public class ThumbRate : System.Windows.Controls.Control
     /// <summary>
     /// This virtual method is called when <see cref="State"/> is changed.
     /// </summary>
-    protected virtual void OnStateChanged( ThumbRateState previousState, ThumbRateState currentState )
+    protected virtual void OnStateChanged(ThumbRateState previousState, ThumbRateState currentState)
     {
         RaiseEvent(new RoutedEventArgs(StateChangedEvent, this));
     }
 
-    private static void OnStateChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
+    private static void OnStateChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if (d is not ThumbRate thumbRate)
         {

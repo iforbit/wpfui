@@ -16,7 +16,7 @@ public static class SymbolExtensions
     /// <summary>
     /// Replaces <see cref="SymbolRegular"/> with <see cref="SymbolFilled"/>.
     /// </summary>
-    public static SymbolFilled Swap(this SymbolRegular icon )
+    public static SymbolFilled Swap(this SymbolRegular icon)
     {
         // It is possible that the alternative icon does not exist
         return SymbolGlyph.ParseFilled(icon.ToString());
@@ -25,7 +25,7 @@ public static class SymbolExtensions
     /// <summary>
     /// Replaces <see cref="SymbolFilled"/> with <see cref="SymbolRegular"/>.
     /// </summary>
-    public static SymbolRegular Swap(this SymbolFilled icon )
+    public static SymbolRegular Swap(this SymbolFilled icon)
     {
         // It is possible that the alternative icon does not exist
         return SymbolGlyph.Parse(icon.ToString());
@@ -34,7 +34,7 @@ public static class SymbolExtensions
     /// <summary>
     /// Converts <see cref="SymbolRegular"/> to <see langword="string"/> based on the ID.
     /// </summary>
-    public static string GetString(this SymbolRegular icon )
+    public static string GetString(this SymbolRegular icon)
     {
         return Encoding.Unicode.GetString(BitConverter.GetBytes((int)icon)).TrimEnd('\0');
     }
@@ -42,7 +42,7 @@ public static class SymbolExtensions
     /// <summary>
     /// Converts <see cref="SymbolFilled"/> to <see langword="string"/> based on the ID.
     /// </summary>
-    public static string GetString(this SymbolFilled icon )
+    public static string GetString(this SymbolFilled icon)
     {
         return Encoding.Unicode.GetString(BitConverter.GetBytes((int)icon)).TrimEnd('\0');
     }

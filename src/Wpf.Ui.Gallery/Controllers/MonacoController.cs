@@ -18,7 +18,7 @@ public class MonacoController
 
     private readonly WebView2 _webView;
 
-    public MonacoController( WebView2 webView )
+    public MonacoController(WebView2 webView)
     {
         _webView = webView;
     }
@@ -33,7 +33,7 @@ public class MonacoController
         );
     }
 
-    public async Task SetThemeAsync( ApplicationTheme appApplicationTheme )
+    public async Task SetThemeAsync(ApplicationTheme appApplicationTheme)
     {
         // TODO: Parse theme from object
         const string uiThemeName = "wpf-ui-app-theme";
@@ -51,30 +51,32 @@ public class MonacoController
         );
     }
 
-    public async Task SetLanguageAsync( MonacoLanguage monacoLanguage )
+    public async Task SetLanguageAsync(MonacoLanguage monacoLanguage)
     {
         var languageId =
             monacoLanguage == MonacoLanguage.ObjectiveC ? "objective-c" : monacoLanguage.ToString().ToLower();
 
-        await _webView.ExecuteScriptAsync(
+        _ = await _webView.ExecuteScriptAsync(
             "monaco.editor.setModelLanguage(" + EditorObject + $".getModel(), \"{languageId}\");"
         );
     }
 
-    public async Task SetContentAsync( string contents )
+    public async Task SetContentAsync(string contents)
     {
         var literalContents = SymbolDisplay.FormatLiteral(contents, false);
 
-        await _webView.ExecuteScriptAsync(EditorObject + $".setValue(\"{literalContents}\");");
+        _ = await _webView.ExecuteScriptAsync(EditorObject + $".setValue(\"{literalContents}\");");
     }
 
-    public void DispatchScript( string script )
+    public void DispatchScript(string script)
     {
         if (_webView == null)
         {
             return;
         }
 
-        Application.Current.Dispatcher.InvokeAsync(async () => await _webView!.ExecuteScriptAsync(script));
+        _ = Application.Current.Dispatcher.InvokeAsync(
+            async () => await _webView!.ExecuteScriptAsync(script)
+        );
     }
 }

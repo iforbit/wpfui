@@ -19,7 +19,7 @@ internal static class DateTimeHelper
 {
     private static readonly System.Globalization.Calendar Cal = new GregorianCalendar();
 
-    public static DateTime? AddDays(DateTime time, int days )
+    public static DateTime? AddDays(DateTime time, int days)
     {
         try
         {
@@ -31,7 +31,7 @@ internal static class DateTimeHelper
         }
     }
 
-    public static DateTime? AddMonths(DateTime time, int months )
+    public static DateTime? AddMonths(DateTime time, int months)
     {
         try
         {
@@ -43,7 +43,7 @@ internal static class DateTimeHelper
         }
     }
 
-    public static DateTime? AddYears(DateTime time, int years )
+    public static DateTime? AddYears(DateTime time, int years)
     {
         try
         {
@@ -55,12 +55,12 @@ internal static class DateTimeHelper
         }
     }
 
-    public static DateTime? SetYear(DateTime date, int year )
+    public static DateTime? SetYear(DateTime date, int year)
     {
         return DateTimeHelper.AddYears(date, year - date.Year);
     }
 
-    public static DateTime? SetYearMonth(DateTime date, DateTime yearMonth )
+    public static DateTime? SetYearMonth(DateTime date, DateTime yearMonth)
     {
         DateTime? target = SetYear(date, yearMonth.Year);
         if (target.HasValue)
@@ -71,32 +71,32 @@ internal static class DateTimeHelper
         return target;
     }
 
-    public static int CompareDays(DateTime dt1, DateTime dt2 )
+    public static int CompareDays(DateTime dt1, DateTime dt2)
     {
         return DateTime.Compare(DiscardTime(dt1), DiscardTime(dt2));
     }
 
-    public static int CompareYearMonth(DateTime dt1, DateTime dt2 )
+    public static int CompareYearMonth(DateTime dt1, DateTime dt2)
     {
         return ((dt1.Year - dt2.Year) * 12) + (dt1.Month - dt2.Month);
     }
 
-    public static int DecadeOfDate(DateTime date )
+    public static int DecadeOfDate(DateTime date)
     {
         return date.Year - (date.Year % 10);
     }
 
-    public static DateTime DiscardDayTime(DateTime d )
+    public static DateTime DiscardDayTime(DateTime d)
     {
         return new DateTime(d.Year, d.Month, 1, 0, 0, 0);
     }
 
-    public static DateTime DiscardTime(DateTime d )
+    public static DateTime DiscardTime(DateTime d)
     {
         return d.Date;
     }
 
-    public static int EndOfDecade(DateTime date )
+    public static int EndOfDecade(DateTime date)
     {
         return DecadeOfDate(date) + 9;
     }
@@ -106,7 +106,7 @@ internal static class DateTimeHelper
         return GetDateFormat(CultureInfo.CurrentCulture);
     }
 
-    internal static DateTimeFormatInfo GetDateFormat(CultureInfo culture )
+    internal static DateTimeFormatInfo GetDateFormat(CultureInfo culture)
     {
         if (culture.Calendar is GregorianCalendar)
         {
@@ -147,13 +147,13 @@ internal static class DateTimeHelper
     }
 
     // returns true if the date is included in the range
-    public static bool InRange(DateTime date, CalendarDateRange range )
+    public static bool InRange(DateTime date, CalendarDateRange range)
     {
         return InRange(date, range.Start, range.End);
     }
 
     // returns true if the date is included in the range
-    public static bool InRange(DateTime date, DateTime start, DateTime end )
+    public static bool InRange(DateTime date, DateTime start, DateTime end)
     {
         Debug.Assert(
             DateTime.Compare(start, end) < 1,
@@ -168,7 +168,7 @@ internal static class DateTimeHelper
         return false;
     }
 
-    public static string ToDayString(DateTime? date, CultureInfo culture )
+    public static string ToDayString(DateTime? date, CultureInfo culture)
     {
         var result = string.Empty;
         DateTimeFormatInfo format = GetDateFormat(culture);
@@ -181,7 +181,7 @@ internal static class DateTimeHelper
         return result;
     }
 
-    public static string ToYearMonthPatternString(DateTime? date, CultureInfo culture )
+    public static string ToYearMonthPatternString(DateTime? date, CultureInfo culture)
     {
         var result = string.Empty;
         DateTimeFormatInfo format = GetDateFormat(culture);
@@ -194,7 +194,7 @@ internal static class DateTimeHelper
         return result;
     }
 
-    public static string ToYearString(DateTime? date, CultureInfo culture )
+    public static string ToYearString(DateTime? date, CultureInfo culture)
     {
         var result = string.Empty;
         DateTimeFormatInfo format = GetDateFormat(culture);
@@ -207,7 +207,7 @@ internal static class DateTimeHelper
         return result;
     }
 
-    public static string ToAbbreviatedMonthString(DateTime? date, CultureInfo culture )
+    public static string ToAbbreviatedMonthString(DateTime? date, CultureInfo culture)
     {
         var result = string.Empty;
         DateTimeFormatInfo format = GetDateFormat(culture);
@@ -225,7 +225,7 @@ internal static class DateTimeHelper
         return result;
     }
 
-    public static string ToLongDateString(DateTime? date, CultureInfo culture )
+    public static string ToLongDateString(DateTime? date, CultureInfo culture)
     {
         var result = string.Empty;
         DateTimeFormatInfo format = GetDateFormat(culture);

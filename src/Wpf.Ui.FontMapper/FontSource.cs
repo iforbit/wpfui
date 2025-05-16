@@ -13,7 +13,7 @@ class FontSource
     public string DestinationPath { get; }
     public IDictionary<string, long> Contents { get; set; } = new Dictionary<string, long>();
 
-    public FontSource( string name, string description, string sourcePath, string destinationPath )
+    public FontSource(string name, string description, string sourcePath, string destinationPath)
     {
         Name = name;
         Description = description;
@@ -21,12 +21,12 @@ class FontSource
         DestinationPath = destinationPath;
     }
 
-    public void SetContents( IDictionary<string, long> contents )
+    public void SetContents(IDictionary<string, long> contents)
     {
         Contents = contents;
     }
 
-    public void UpdateVersion( string version )
+    public void UpdateVersion(string version)
     {
         Description = Description.Replace("{{FLUENT_SYSTEM_ICONS_VERSION}}", version);
     }
