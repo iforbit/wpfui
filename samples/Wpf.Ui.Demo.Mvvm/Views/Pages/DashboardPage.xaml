@@ -32,7 +32,14 @@
                                                                FontSize='32'}"
                                      SizeDefinition="Large" />
 
-
+                    <ComboBox Width="100" DisplayMemberPath="Content"
+                              SelectedValue="{Binding SelectedTabPlacement, Mode=TwoWay}"
+                              SelectedValuePath="Tag">
+                        <ComboBoxItem Content="Top" Tag="Top" />
+                        <ComboBoxItem Content="Bottom" Tag="Bottom" />
+                        <ComboBoxItem Content="Left" Tag="Left" />
+                        <ComboBoxItem Content="Right" Tag="Right" />
+                    </ComboBox>
                 </ui:RibbonGroupBox>
             </ui:RibbonTabItem>
 
@@ -46,22 +53,39 @@
         <sys:Int16 x:Key="Num_4">4</sys:Int16>
     </Page.Resources>
 
-    <Grid Margin="42" VerticalAlignment="Top">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto " />
-            <RowDefinition Height="auto " />
+    <Grid >
+        <!--<ui:SideTabControl>
+            <ui:SideTabItem Header="A 탭">
+                <TextBlock Padding="16" Text="내용 A" />
+            </ui:SideTabItem>
+            <ui:SideTabItem Header="B 탭">
+                <TextBlock Padding="16" Text="내용 B" />
+            </ui:SideTabItem>
+            <ui:SideTabItem Header="C 탭">
+                <TextBlock Padding="16" Text="내용 C" />
+            </ui:SideTabItem>
+        </ui:SideTabControl>-->
 
-            <RowDefinition Height="auto " />
-            <RowDefinition Height="auto " />
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
-        <ui:Button Command="{Binding ViewModel.messageTestCommand}" Content="Add" />
+        <!--  실제 TabControl 적용  -->
+        <ui:DockedTabControl ItemContainerStyle="{StaticResource DockedTabItemStyle}" TabStripPlacement="{Binding ViewModel.SelectedTabPlacement, Mode=TwoWay}">
 
+            <TabItem Header="📄 상태">
+                <Grid >
+                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="시스템 상태 페이지입니다." />
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="⚙ 설정">
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="설정 페이지입니다." />
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <ui:SymbolIcon Margin="0,0,6,0" Symbol="StoreMicrosoft16" />
+                        <TextBlock Text="UnBuffered Report" />
+                    </StackPanel>
+                </TabItem.Header>
+            </TabItem>
+        </ui:DockedTabControl>
     </Grid>
 </Page>

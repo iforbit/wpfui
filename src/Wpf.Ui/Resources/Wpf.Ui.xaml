@@ -15,10 +15,7 @@
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Resources/DefaultContextMenu.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Resources/DefaultFocusVisualStyle.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Resources/DefaultTextBoxScrollViewerStyle.xaml" />
-
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Resources/RibbonStyles.xaml" />
-
-
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/AccessText/AccessText.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/Anchor/Anchor.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/AutoSuggestBox/AutoSuggestBox.xaml" />
@@ -85,7 +82,8 @@
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/Snackbar/Snackbar.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/SplitButton/SplitButton.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/StatusBar/StatusBar.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/TabControl/TabControl.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/TabControl/DockedTabControl.xaml" />
+
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/TextBlock/TextBlock.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/TextBox/TextBox.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/ThumbRate/ThumbRate.xaml" />
@@ -101,6 +99,7 @@
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/VirtualizingGridView/VirtualizingGridView.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/VirtualizingItemsControl/VirtualizingItemsControl.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/VirtualizingWrapPanel/VirtualizingWrapPanel.xaml" />
+
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/Window/Window.xaml" />
 
     </ResourceDictionary.MergedDictionaries>

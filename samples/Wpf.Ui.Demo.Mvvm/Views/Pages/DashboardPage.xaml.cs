@@ -28,9 +28,11 @@ public partial class DashboardPage : INavigableView<ViewModels.DashboardViewMode
     {
         get
         {
+            var ribbon = (FrameworkElement)this.FindResource("DashboardPageRibbon");
+            ribbon.DataContext = ViewModel; // 페이지의 ViewModel 전달
             // 예를 들어, 리소스에서 Ribbon을 찾거나,
             // 또는 페이지의 특정 이름을 가진 Ribbon 요소를 찾아 반환합니다.
-            return this.FindResource("DashboardPageRibbon");
+            return ribbon;
         }
     }
 }

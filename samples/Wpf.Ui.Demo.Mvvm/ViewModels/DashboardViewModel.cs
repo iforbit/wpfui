@@ -5,14 +5,9 @@
 
 using CommunityToolkit.Mvvm.Messaging;
 
-using Microsoft.Xaml.Behaviors;
-
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.Windows.Input;
-using System.Windows.Threading;
+using System.Windows.Controls;
 
-using Wpf.Ui.Controls;
 using Wpf.Ui.Demo.Mvvm.Message;
 
 namespace Wpf.Ui.Demo.Mvvm.ViewModels;
@@ -32,13 +27,22 @@ public partial class DashboardViewModel : ViewModel
     {
         1, 4
     };
-
-    public ObservableCollection<int> tESTlIST { get; set; } = new ObservableCollection<int>() { 1, 3 };
-
+    public ObservableCollection<TabItem> MyTabs { get; } = new()
+    {
+        new TabItem { Header = "로그", Content = new System.Windows.Controls.TextBox { Text = "로그 내용" } },
+        new TabItem { Header = "상태", Content = new System.Windows.Controls.TextBlock { Text = "상태 정보 표시" } }
+    };
     [RelayCommand]
     private void messageTest()
     {
         _ = WeakReferenceMessenger.Default.Send(new ChildAddMessage("Child"));
+    }
+
+    private object? _currentTab;
+    public object? CurrentTab
+    {
+        get => _currentTab;
+        set => SetProperty(ref _currentTab, value);
     }
     public override void OnNavigatedTo()
     {
@@ -49,6 +53,7 @@ public partial class DashboardViewModel : ViewModel
     }
     private void InitializeViewModel()
     {
+        CurrentTab = MyTabs.FirstOrDefault();
     }
 
     [RelayCommand]
@@ -63,61 +68,12 @@ public partial class DashboardViewModel : ViewModel
             return;
 
     }
-}
 
-public class SelectedItemsChangedBehavior : Behavior<ComboBox>
-{
-    public ICommand SelectedItemsChangedCommand
+    private Dock _selectedTabPlacement = Dock.Right;
+    public Dock SelectedTabPlacement
     {
-        get { return (ICommand)GetValue(SelectedItemsChangedCommandProperty); }
-        set { SetValue(SelectedItemsChangedCommandProperty, value); }
-    }
-
-    public static readonly DependencyProperty SelectedItemsChangedCommandProperty =
-        DependencyProperty.Register(nameof(SelectedItemsChangedCommand), typeof(ICommand), typeof(SelectedItemsChangedBehavior), new PropertyMetadata(null));
-
-    private DispatcherTimer? _debounceTimer;
-
-    protected override void OnAttached()
-    {
-        base.OnAttached();
-        if (AssociatedObject?.SelectedItems is INotifyCollectionChanged notifyCollection)
-        {
-            notifyCollection.CollectionChanged += OnSelectedItemsChanged;
-        }
-
-        _debounceTimer = new DispatcherTimer
-        {
-            Interval = TimeSpan.FromMilliseconds(200)
-        };
-        _debounceTimer.Tick += DebounceTimer_Tick;
-    }
-
-    protected override void OnDetaching()
-    {
-        if (AssociatedObject?.SelectedItems is INotifyCollectionChanged notifyCollection)
-        {
-            notifyCollection.CollectionChanged -= OnSelectedItemsChanged;
-        }
-
-        _debounceTimer.Tick -= DebounceTimer_Tick;
-        _debounceTimer.Stop();
-        base.OnDetaching();
-    }
-
-    private void OnSelectedItemsChanged(object sender, NotifyCollectionChangedEventArgs e)
-    {
-        // 디바운스 타이머를 재시작하여 여러 이벤트를 하나로 모읍니다.
-        _debounceTimer.Stop();
-        _debounceTimer.Start();
-    }
-
-    private void DebounceTimer_Tick(object sender, EventArgs e)
-    {
-        _debounceTimer.Stop();
-        if (SelectedItemsChangedCommand != null && SelectedItemsChangedCommand.CanExecute(AssociatedObject.SelectedItems))
-        {
-            SelectedItemsChangedCommand.Execute(AssociatedObject.SelectedItems);
-        }
+        get => _selectedTabPlacement;
+        set => SetProperty(ref _selectedTabPlacement, value);
     }
 }
+
