@@ -3,8 +3,88 @@
                     xmlns:controls="clr-namespace:Wpf.Ui.Controls"
                     xmlns:converters="clr-namespace:Wpf.Ui.Converters">
 
+    <!--  TabItem 스타일 예시  -->
+    <Style x:Key="DockedTabItemStyle" TargetType="{x:Type controls:DockedTabItem}">
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+        <Setter Property="Background" Value="{DynamicResource TabViewItemHeaderBackground}" />
+        <Setter Property="Foreground" Value="{DynamicResource TabViewForeground}" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TabItem">
+                    <Border x:Name="Border"
+                            Padding="6"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}">
+                        <ContentPresenter x:Name="ContentSite"
+                                          HorizontalAlignment="Center" VerticalAlignment="Center" ContentSource="Header"
+                                          RecognizesAccessKey="True"
+                                          TextBlock.Foreground="{TemplateBinding Foreground}" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource TabViewItemHeaderBackgroundSelected}" />
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource TabViewSelectedItemBorderBrush}" />
+                            <Setter Property="Foreground" Value="{DynamicResource TabViewItemForegroundSelected}" />
+                            <Setter Property="Panel.ZIndex" Value="100" />
+                        </Trigger>
+                        <DataTrigger Binding="{Binding TabStripPlacement, RelativeSource={RelativeSource AncestorType=TabControl}}" Value="Top">
+                            <Setter TargetName="Border" Property="Margin" Value="2,2,2,0" />
+                            <Setter TargetName="Border" Property="MinHeight" Value="30" />
+                            <Setter TargetName="Border" Property="MinWidth" Value="50" />
+
+                            <Setter TargetName="Border" Property="BorderThickness" Value="1,1,1,0" />
+                            <Setter TargetName="Border" Property="CornerRadius" Value="6,6,0,0" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding TabStripPlacement, RelativeSource={RelativeSource AncestorType=TabControl}}" Value="Bottom">
+                            <Setter TargetName="Border" Property="Margin" Value="2,0,2,2" />
+                            <Setter TargetName="Border" Property="MinHeight" Value="30" />
+                            <Setter TargetName="Border" Property="MinWidth" Value="50" />
+
+                            <Setter TargetName="Border" Property="BorderThickness" Value="1,0,1,1" />
+                            <Setter TargetName="Border" Property="CornerRadius" Value="0,0,6,6" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding TabStripPlacement, RelativeSource={RelativeSource AncestorType=TabControl}}" Value="Left">
+                            <Setter TargetName="Border" Property="Margin" Value="2,2,0,2" />
+                            <Setter TargetName="Border" Property="MinHeight" Value="50" />
+                            <Setter TargetName="Border" Property="MinWidth" Value="30" />
+
+                            <Setter TargetName="Border" Property="BorderThickness" Value="1,1,0,1" />
+                            <Setter TargetName="Border" Property="CornerRadius" Value="6,0,0,6" />
+                            <Setter TargetName="ContentSite" Property="LayoutTransform">
+                                <Setter.Value>
+                                    <RotateTransform Angle="90" />
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding TabStripPlacement, RelativeSource={RelativeSource AncestorType=TabControl}}" Value="Right">
+                            <Setter TargetName="Border" Property="Margin" Value="0,2,2,2" />
+                            <Setter TargetName="Border" Property="MinHeight" Value="50" />
+                            <Setter TargetName="Border" Property="MinWidth" Value="30" />
+
+                            <Setter TargetName="Border" Property="BorderThickness" Value="0,1,1,1" />
+                            <Setter TargetName="Border" Property="CornerRadius" Value="0,6,6,0" />
+                            <Setter TargetName="ContentSite" Property="LayoutTransform">
+                                <Setter.Value>
+                                    <RotateTransform Angle="90" />
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsVisibleInStrip" Value="False">
+                <Setter Property="Visibility" Value="Collapsed" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
     <!--  DockedTabControl Template (Top/Bottom/Left/Right 방향 대응)  -->
     <Style TargetType="{x:Type controls:DockedTabControl}">
+        <Setter Property="ItemContainerStyle" Value="{StaticResource DockedTabItemStyle}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type controls:DockedTabControl}">
@@ -77,77 +157,5 @@
         </Setter>
     </Style>
 
-    <!--  TabItem 스타일 예시  -->
-    <Style x:Key="DockedTabItemStyle" TargetType="{x:Type TabItem}">
-        <Setter Property="HorizontalAlignment" Value="Stretch" />
-        <Setter Property="VerticalAlignment" Value="Stretch" />
-        <Setter Property="Background" Value="{DynamicResource TabViewItemHeaderBackground}" />
-        <Setter Property="Foreground" Value="{DynamicResource TabViewForeground}" />
-        <Setter Property="BorderBrush" Value="Transparent" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="TabItem">
-                    <Border x:Name="Border"
-                            Padding="6"
-                            Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}">
-                        <ContentPresenter x:Name="ContentSite"
-                                          HorizontalAlignment="Center" VerticalAlignment="Center" ContentSource="Header"
-                                          RecognizesAccessKey="True"
-                                          TextBlock.Foreground="{TemplateBinding Foreground}" />
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter TargetName="Border" Property="Background" Value="{DynamicResource TabViewItemHeaderBackgroundSelected}" />
-                            <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource TabViewSelectedItemBorderBrush}" />
-                            <Setter Property="Foreground" Value="{DynamicResource TabViewItemForegroundSelected}" />
-                            <Setter Property="Panel.ZIndex" Value="100" />
-                        </Trigger>
-                        <DataTrigger Binding="{Binding TabStripPlacement, RelativeSource={RelativeSource AncestorType=TabControl}}" Value="Top">
-                            <Setter TargetName="Border" Property="Margin" Value="2,2,2,0" />
-                            <Setter TargetName="Border" Property="MinHeight" Value="30" />
-                            <Setter TargetName="Border" Property="MinWidth" Value="50" />
 
-                            <Setter TargetName="Border" Property="BorderThickness" Value="1,1,1,0" />
-                            <Setter TargetName="Border" Property="CornerRadius" Value="6,6,0,0" />
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding TabStripPlacement, RelativeSource={RelativeSource AncestorType=TabControl}}" Value="Bottom">
-                            <Setter TargetName="Border" Property="Margin" Value="2,0,2,2" />
-                            <Setter TargetName="Border" Property="MinHeight" Value="30" />
-                            <Setter TargetName="Border" Property="MinWidth" Value="50" />
-
-                            <Setter TargetName="Border" Property="BorderThickness" Value="1,0,1,1" />
-                            <Setter TargetName="Border" Property="CornerRadius" Value="0,0,6,6" />
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding TabStripPlacement, RelativeSource={RelativeSource AncestorType=TabControl}}" Value="Left">
-                            <Setter TargetName="Border" Property="Margin" Value="2,2,0,2" />
-                            <Setter TargetName="Border" Property="MinHeight" Value="50" />
-                            <Setter TargetName="Border" Property="MinWidth" Value="30" />
-
-                            <Setter TargetName="Border" Property="BorderThickness" Value="1,1,0,1" />
-                            <Setter TargetName="Border" Property="CornerRadius" Value="6,0,0,6" />
-                            <Setter TargetName="ContentSite" Property="LayoutTransform">
-                                <Setter.Value>
-                                    <RotateTransform Angle="90" />
-                                </Setter.Value>
-                            </Setter>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding TabStripPlacement, RelativeSource={RelativeSource AncestorType=TabControl}}" Value="Right">
-                            <Setter TargetName="Border" Property="Margin" Value="0,2,2,2" />
-                            <Setter TargetName="Border" Property="MinHeight" Value="50" />
-                            <Setter TargetName="Border" Property="MinWidth" Value="30" />
-
-                            <Setter TargetName="Border" Property="BorderThickness" Value="0,1,1,1" />
-                            <Setter TargetName="Border" Property="CornerRadius" Value="0,6,6,0" />
-                            <Setter TargetName="ContentSite" Property="LayoutTransform">
-                                <Setter.Value>
-                                    <RotateTransform Angle="90" />
-                                </Setter.Value>
-                            </Setter>
-                        </DataTrigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
 </ResourceDictionary>

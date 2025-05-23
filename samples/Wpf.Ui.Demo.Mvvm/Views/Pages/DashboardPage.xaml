@@ -53,7 +53,7 @@
         <sys:Int16 x:Key="Num_4">4</sys:Int16>
     </Page.Resources>
 
-    <Grid >
+    <Grid>
         <!--<ui:SideTabControl>
             <ui:SideTabItem Header="A 탭">
                 <TextBlock Padding="16" Text="내용 A" />
@@ -67,25 +67,25 @@
         </ui:SideTabControl>-->
 
         <!--  실제 TabControl 적용  -->
-        <ui:DockedTabControl ItemContainerStyle="{StaticResource DockedTabItemStyle}" TabStripPlacement="{Binding ViewModel.SelectedTabPlacement, Mode=TwoWay}">
+        <ui:DockedTabControl  TabStripPlacement="{Binding ViewModel.SelectedTabPlacement, Mode=TwoWay}">
 
-            <TabItem Header="📄 상태">
-                <Grid >
+            <ui:DockedTabItem Header="📄 상태" IsVisibleInStrip="True">
+                <Grid>
                     <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="시스템 상태 페이지입니다." />
                 </Grid>
-            </TabItem>
+            </ui:DockedTabItem>
 
-            <TabItem Header="⚙ 설정">
+            <ui:DockedTabItem Header="⚙ 설정" >
                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="설정 페이지입니다." />
-            </TabItem>
-            <TabItem>
-                <TabItem.Header>
+            </ui:DockedTabItem>
+            <ui:DockedTabItem>
+                <ui:DockedTabItem.Header>
                     <StackPanel Orientation="Horizontal">
                         <ui:SymbolIcon Margin="0,0,6,0" Symbol="StoreMicrosoft16" />
                         <TextBlock Text="UnBuffered Report" />
                     </StackPanel>
-                </TabItem.Header>
-            </TabItem>
+                </ui:DockedTabItem.Header>
+            </ui:DockedTabItem>
         </ui:DockedTabControl>
     </Grid>
 </Page>
