@@ -123,6 +123,31 @@ public partial class NavigationService(INavigationViewPageProvider pageProvider)
         }
     }
 
+    // Added by SHJ - 2025-06-02
+    // [문제 배경]
+    // NavigationView에 자식 항목(NavigationViewItem)을 동적으로 추가한 후,
+    // 해당 페이지로 이동하거나 탐색 기록(Journal)을 활용해 복귀하는 과정에서
+    // NavigationView 내부 딕셔너리(PageIdOrTargetTagNavigationViewsDictionary)에
+    // 해당 자식 항목의 Id(Tag)가 등록되지 않아 예외가 발생함.
+    //
+    // [문제 원인]
+    // NavigationViewItem은 기본적으로 RegisterNavigationViewItem을 통해
+    // NavigationView 내부 탐색용 딕셔너리(PageIdOrTargetTagNavigationViewsDictionary)에 등록되어야 함.
+    // 하지만 MenuItems를 통해 동적으로 자식을 추가할 경우 OnMenuItemsSource_CollectionChanged 이벤트가
+    // 호출되지 않거나, 내부 등록 로직이 수행되지 않아 해당 키가 누락됨.
+    //
+    // [해결 방법]
+    // NavigationService를 통해 동적으로 추가되는 자식 NavigationViewItem을 수동으로
+    // RegisterNavigationViewItem()에 전달하여 강제로 딕셔너리에 등록함으로써,
+    // Navigate(tag) 또는 Journal 복원 시 키를 찾지 못해 발생하는 예외를 방지함.
+    public void RegisterNavigationViewItem(INavigationViewItem item)
+    {
+        if (NavigationControl is NavigationView navView)
+        {
+            navView.RegisterNavigationViewItem(item);
+        }
+    }
+
     public event EventHandler<string> CurrentPageChanged;
 
     public void UpdateCurrentPage(string newPage)

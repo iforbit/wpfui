@@ -83,4 +83,6 @@ public interface INavigationService
     event EventHandler<string> CurrentPageChanged;
 
     void UpdateCurrentPage(string newPage);
+
+    void RegisterNavigationViewItem(INavigationViewItem item);
 }

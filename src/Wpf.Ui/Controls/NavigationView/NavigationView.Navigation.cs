@@ -501,6 +501,33 @@ public partial class NavigationView
         }
     }
 
+    // Addedby SHJ - 2025-06-02
+    internal void RegisterNavigationViewItem(INavigationViewItem viewItem)
+    {
+        if (viewItem == null || string.IsNullOrEmpty(viewItem.Id))
+        {
+            return;
+        }
+
+        if (!PageIdOrTargetTagNavigationViewsDictionary.ContainsKey(viewItem.Id))
+        {
+            PageIdOrTargetTagNavigationViewsDictionary[viewItem.Id] = viewItem;
+
+            Debug.WriteLineIf(
+                EnableDebugMessages,
+                $"[REGISTER] {viewItem.Id} -> {viewItem.Content}");
+        }
+
+        // 자식도 재귀 등록
+        if (viewItem is NavigationViewItem parent)
+        {
+            foreach (INavigationViewItem child in parent.MenuItems.OfType<INavigationViewItem>())
+            {
+                RegisterNavigationViewItem(child);
+            }
+        }
+    }
+
     private void ClearNavigationStack(int navigationStackItemIndex)
     {
         var navigationStackCount = NavigationStack.Count;
