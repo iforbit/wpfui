@@ -5,3 +5,5 @@
 
 namespace Wpf.Ui.Demo.Mvvm.Message;
 public record ChildAddMessage(string child);
+
+public record ToggleIedStateMessage();

@@ -6,6 +6,7 @@ using CommunityToolkit.Mvvm.Messaging;
 
 using System.Collections;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 
 using Wpf.Ui.Controls;
 using Wpf.Ui.Demo.Mvvm.Message;
@@ -15,6 +16,8 @@ namespace Wpf.Ui.Demo.Mvvm.ViewModels;
 
 public partial class MainWindowViewModel : ViewModel
 {
+    readonly INavigationService _navigationService;
+
     private bool _isInitialized = false;
 
     [ObservableProperty]
@@ -32,6 +35,8 @@ public partial class MainWindowViewModel : ViewModel
     [ObservableProperty]
     private ObservableCollection<MenuItem> _trayMenuItems = [];
 
+    public ObservableCollection<ConnectedIedViewModel> IedViewModels { get; } = new();
+
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
         "Style",
         "IDE0060:Remove unused parameter",
@@ -39,6 +44,9 @@ public partial class MainWindowViewModel : ViewModel
     )]
     public MainWindowViewModel(INavigationService navigationService)
     {
+        _navigationService = navigationService ??
+            throw new ArgumentNullException(nameof(navigationService));
+
         if (!_isInitialized)
         {
             InitializeViewModel();
@@ -47,8 +55,34 @@ public partial class MainWindowViewModel : ViewModel
         // IED 선택 메시지 받기
         WeakReferenceMessenger.Default.Register<ChildAddMessage>(this, (r, m) =>
         {
-            AddToNavigation(m.child);
+            var parts = m.child.Split('@');
+            var ipPort = parts[0].Split(':');
+            var host = ipPort[0];
+            var port = int.Parse(ipPort[1]);
+            var name = parts.Length > 1 ? parts[1] : "Unknown";
+
+            var vm = new ConnectedIedViewModel(name, host, port);
+
+            // 중복 방지
+            if (!IedViewModels.Any(x => x.Tag == vm.Tag))
+                IedViewModels.Add(vm);
+
+            AddToNavigationCommand.Execute(vm);
         });
+
+        WeakReferenceMessenger.Default.Register<ToggleIedStateMessage>(this, (_, _) =>
+        {
+            ToggleAllConnectionsCommand.Execute(null);
+        });
+    }
+
+    [RelayCommand]
+    private void ToggleAllConnections()
+    {
+        foreach (ConnectedIedViewModel vm in IedViewModels)
+        {
+            vm.IsConnected = !vm.IsConnected;
+        }
     }
 
     private void InitializeViewModel()
@@ -88,34 +122,80 @@ public partial class MainWindowViewModel : ViewModel
     }
 
     [RelayCommand]
-    private void AddToNavigation(string child)
+    private void AddToNavigation(ConnectedIedViewModel viewModel)
     {
-        // “ElementSetting” 메뉴 아이템 찾기
+        // “Data” 메뉴 항목 찾기
         NavigationViewItem? parent = NavigationItems
-            .FirstOrDefault(n => n.Content?.ToString() == "Home");
-        if (parent == null)
+            .FirstOrDefault(n => n.Content?.ToString() == "Data");
+
+        if (parent is null)
             return;
 
-        // 기존 하위 메뉴가 컬렉션이면 꺼내고, 아니면 새로 생성
-        IList children = (parent.MenuItemsSource as IList)
-                      ?? new ObservableCollection<NavigationViewItem>();
+        // 내부 MenuItems 컬렉션을 직접 사용 (MenuItemsSource는 갱신 필요 없음)
+        IList children = parent.MenuItems;
 
-        // 이미 같은 IED 항목이 있는지 중복 방지
-        if (children.Cast<NavigationViewItem>().Any(x => (string)x.Content == child))
+        // 중복 방지: 동일 Tag 기준
+        if (children.OfType<BindableNavigationViewItem>().Any(x =>
+            x.DataContext is ConnectedIedViewModel vm && vm.Tag == viewModel.Tag))
             return;
 
-        // 새로운 메뉴 아이템
-        var iedNode = new NavigationViewItem(child, SymbolRegular.Server24, typeof(DataPage))
+        // BindableNavigationViewItem 생성
+        var item = new BindableNavigationViewItem
         {
-            Tag = child,
-            IsMenuElement = true, // 메뉴 아이템으로 설정
-            // 자식 메뉴들 설정
+            Content = viewModel, // ✅ Content가 템플릿 바인딩의 기준이 된다
+            DataContext = viewModel, // ✅ 핵심은 DataContext에 ViewModel만 넣는 것
+            ContentTemplate = (DataTemplate)Application.Current.FindResource("IedItemTemplate"),
+            Icon = new SymbolIcon { Symbol = SymbolRegular.Server24 },
+            TargetPageType = typeof(DataPage),
+            TargetPageTag = viewModel.Tag,
+            Tag = viewModel.Tag,
+            IsMenuElement = true,
+            IsDynamicScrollEnabled = false
         };
-        _ = children.Add(iedNode);
 
-        parent.IsExpanded = true; // 메뉴 확장
+        _ = children.Add(item);
 
-        // 다시 할당해야 UI가 갱신됩니다
-        parent.MenuItemsSource = children;
+        parent.IsExpanded = true;
+
+        // NavigationView 등록 (저널/탐색 가능하게)
+        _navigationService?.RegisterNavigationViewItem(item);
+    }
+}
+
+public partial class ConnectedIedViewModel : ObservableObject
+{
+    public string Name { get; set; } = string.Empty;
+    public string Host { get; set; } = string.Empty;
+    public int Port { get; set; }
+
+    public string NicName { get; set; } = string.Empty;
+    public string NicIp { get; set; } = string.Empty;
+    public string Tag { get; } = string.Empty;  // ✅ 추가
+
+    //public override string ToString() => $"{Name} ({Host}) via {NicName}";
+
+    [ObservableProperty]
+    private bool _isConnected;
+
+    [ObservableProperty]
+    private bool _isLoading;
+
+    partial void OnIsConnectedChanged(bool oldValue, bool newValue)
+    {
+        Debug.WriteLine($"[IsConnected Changed] {Name}: {oldValue} → {newValue}");
+    }
+
+    [RelayCommand]
+    private void Loaded()
+    {
+        Debug.WriteLine($"[Loaded] Function Call Test");
+    }
+
+    public ConnectedIedViewModel(string name, string host, int port)
+    {
+        Name = name;
+        Host = host;
+        Port = port;
+        Tag = $"{Host}:{Port}@{Name}";
     }
 }

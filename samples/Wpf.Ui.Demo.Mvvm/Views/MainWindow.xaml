@@ -28,6 +28,8 @@
     <ui:FluentWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries />
+            <converters:BoolToBrushConverter x:Key="BoolToBrushConverter"
+                                             FalseBrush="Gray" TrueBrush="LimeGreen" />
 
         </ResourceDictionary>
     </ui:FluentWindow.Resources>
@@ -53,28 +55,6 @@
             </tray:NotifyIcon.Menu>
         </tray:NotifyIcon>
 
-        <!--<ui:Ribbon x:Name="MainRibbon" Grid.Row="1" AutomaticStateManagement="True" CanUseSimplified="True" SnapsToDevicePixels="True" ItemsSource="{Binding ViewModel.TabItems, Mode=OneWay}" >
-            <ui:RibbonTabItem Header="Tests" >
-                <ui:RibbonGroupBox Header="LongLongGroup"
-                             IsLauncherVisible="False"
-                             IsSeparatorVisible="False">
-                    <ui:Button >Text 1</ui:Button>
-                    <ui:Button >Text 2</ui:Button>
-                    <ui:Button >Text 3</ui:Button>
-                    <ui:Button >Text 4</ui:Button>
-                    <ui:Button >Text 5</ui:Button>
-                </ui:RibbonGroupBox>
-                <ui:RibbonGroupBox Header="TongTongGroup"
-                             IsLauncherVisible="False"
-                             IsSeparatorVisible="False">
-                    <ui:Button >Text 1</ui:Button>
-                    <ui:Button >Text 2</ui:Button>
-                    <ui:Button >Text 3</ui:Button>
-                    <ui:Button >Text 4</ui:Button>
-                    <ui:Button >Text 5</ui:Button>
-                </ui:RibbonGroupBox>
-            </ui:RibbonTabItem>
-        </ui:Ribbon>-->
         <ContentControl x:Name="MainRibbonPlaceholder" Grid.Row="1" />
 
         <ui:NavigationView x:Name="RootNavigation"

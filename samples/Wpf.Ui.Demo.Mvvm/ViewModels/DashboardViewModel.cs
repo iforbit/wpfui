@@ -35,9 +35,14 @@ public partial class DashboardViewModel : ViewModel
     [RelayCommand]
     private void messageTest()
     {
-        _ = WeakReferenceMessenger.Default.Send(new ChildAddMessage("Child"));
+        _ = WeakReferenceMessenger.Default.Send(new ChildAddMessage("127.0.0.1:102@IED1"));
     }
 
+    [RelayCommand]
+    private void toggleTest()
+    {
+        _ = WeakReferenceMessenger.Default.Send(new ToggleIedStateMessage());
+    }
     private object? _currentTab;
     public object? CurrentTab
     {
