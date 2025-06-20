@@ -15,17 +15,6 @@ public class BindableNavigationViewItem : NavigationViewItem, ICommandSource
     public static new readonly DependencyProperty CommandParameterProperty =
         DependencyProperty.Register(nameof(CommandParameter), typeof(object), typeof(BindableNavigationViewItem));
 
-    public static readonly DependencyProperty ViewModelProperty =
-        DependencyProperty.Register(nameof(ViewModel), typeof(object), typeof(BindableNavigationViewItem));
-
-    public static readonly DependencyProperty CommandIconProperty =
-    DependencyProperty.Register(
-        nameof(CommandIcon),
-        typeof(object),
-        typeof(BindableNavigationViewItem),
-        new PropertyMetadata(null)
-    );
-
     public new ICommand? Command
     {
         get => (ICommand?)GetValue(CommandProperty);
@@ -36,18 +25,6 @@ public class BindableNavigationViewItem : NavigationViewItem, ICommandSource
     {
         get => GetValue(CommandParameterProperty);
         set => SetValue(CommandParameterProperty, value);
-    }
-
-    public object? CommandIcon
-    {
-        get => GetValue(CommandIconProperty);
-        set => SetValue(CommandIconProperty, value);
-    }
-
-    public object? ViewModel
-    {
-        get => GetValue(ViewModelProperty);
-        set => SetValue(ViewModelProperty, value);
     }
 
     protected override void OnClick()

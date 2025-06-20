@@ -19,15 +19,23 @@
             <converters:BoolToSymbolConverter x:Key="BoolToSymbolConverter"
                                               FalseSymbol="PlugConnected20" TrueSymbol="PlugConnectedCheckmark20" />
             <DataTemplate x:Key="IedItemTemplate">
-                <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
-                    <TextBlock VerticalAlignment="Center" Text="{Binding Name}" />
+                <Grid VerticalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <!--  텍스트  -->
+                        <ColumnDefinition Width="Auto" />
+                        <!--  버튼  -->
+                    </Grid.ColumnDefinitions>
 
-                    <!--  상태 기반 색상 변경 + 클릭 시 LoadedCommand 호출  -->
-                    <Button Margin="6,0,0,0" Padding="0" VerticalAlignment="Center"
+                    <TextBlock Grid.Column="0" VerticalAlignment="Center"
+                               Text="{Binding Name}" />
+
+                    <Button Grid.Column="1" Margin="6,0,0,0" Padding="0"
+                            HorizontalAlignment="Right" VerticalAlignment="Center"
                             Command="{Binding LoadedCommand}">
                         <ui:SymbolIcon Foreground="{Binding IsConnected, Converter={StaticResource BoolToBrushConverter}}" Symbol="{Binding IsConnected, Converter={StaticResource BoolToSymbolConverter}}" />
                     </Button>
-                </StackPanel>
+                </Grid>
             </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>

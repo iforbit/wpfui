@@ -1,6 +1,12 @@
 <Project>
   <ItemGroup>
     <!-- 여기에 중앙 관리하는 패키지 버전을 정의 -->
+    <PackageVersion Include="Vortice.D3DCompiler" Version="3.7.4-beta" />
+    <PackageVersion Include="Vortice.Direct3D11" Version="3.7.4-beta" />
+    <PackageVersion Include="Vortice.DirectX" Version="3.7.4-beta" />
+    <PackageVersion Include="Vortice.DXGI" Version="3.7.4-beta" />
+    <PackageVersion Include="Vortice.Mathematics" Version="1.9.3" />
+    <PackageVersion Include="Vortice.Wpf" Version="3.7.4-beta" />
     <PackageVersion Include="XAMLTools.MSBuild" Version="1.0.0-alpha0167">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>

@@ -3,12 +3,14 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:converters="clr-namespace:Wpf.Ui.Demo.Mvvm.Converter"
       xmlns:ctrlHelper="clr-namespace:Wpf.Ui.Demo.Mvvm.Helpers"
       xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
       xmlns:local="clr-namespace:Wpf.Ui.Demo.Mvvm.Views.Pages"
       xmlns:sys="clr-namespace:System;assembly=mscorlib"
       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
       xmlns:vm="clr-namespace:Wpf.Ui.Demo.Mvvm.ViewModels"
+      xmlns:wpf="http://schemas.vortice.windows.io"
       Title="DashboardPage"
       d:DataContext="{d:DesignInstance local:DashboardPage,
                                        IsDesignTimeCreatable=True}"
@@ -21,38 +23,30 @@
       mc:Ignorable="d">
 
     <Page.Resources>
+        <converters:BooleanToTextConverter x:Key="BooleanToTextConverter" />
+
+
         <ui:Ribbon x:Key="DashboardPageRibbon">
             <!--  페이지에 필요한 RibbonTabItem, RibbonGroupBox, Button 등을 정의  -->
             <ui:RibbonTabItem Header="Dashboard">
                 <ui:RibbonGroupBox Header="Group 1" IsLauncherVisible="False" IsSeparatorVisible="False">
-                    <ui:RibbonButton Command="{Binding messageTestCommand}"
-                                     Header="Grey"
+                    <ui:RibbonButton Header="Grey"
                                      Icon="{ui:SymbolIcon Mail28}"
                                      LargeIcon="{ui:SymbolIcon Mail28,
                                                                FontSize='32'}"
                                      SizeDefinition="Large" />
 
-                    <ui:RibbonButton Command="{Binding toggleTestCommand}"
-                                     Header="Grey"
+                    <ui:RibbonButton Header="Grey"
                                      Icon="{ui:SymbolIcon Mail28}"
                                      LargeIcon="{ui:SymbolIcon Mail28,
                                                                FontSize='32'}"
                                      SizeDefinition="Large" />
 
-                    <ComboBox Width="100" DisplayMemberPath="Content"
-                              SelectedValue="{Binding SelectedTabPlacement, Mode=TwoWay}"
-                              SelectedValuePath="Tag">
-                        <ComboBoxItem Content="Top" Tag="Top" />
-                        <ComboBoxItem Content="Bottom" Tag="Bottom" />
-                        <ComboBoxItem Content="Left" Tag="Left" />
-                        <ComboBoxItem Content="Right" Tag="Right" />
-                    </ComboBox>
                 </ui:RibbonGroupBox>
             </ui:RibbonTabItem>
 
 
         </ui:Ribbon>
-        <ctrlHelper:FixedPointFormatter x:Key="FixedPointFormatter" />
 
         <sys:Int16 x:Key="Num_1">1</sys:Int16>
         <sys:Int16 x:Key="Num_2">2</sys:Int16>
@@ -78,7 +72,22 @@
 
             <ui:DockedTabItem Header="📄 상태" IsVisibleInStrip="True">
                 <Grid>
-                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="시스템 상태 페이지입니다." />
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Orientation="Vertical">
+                        <ui:Button Width="100" Margin="8"
+                                   Command="{Binding ViewModel.ToggleRenderingCommand}"
+                                   Content="{Binding ViewModel.IsRendering, Converter={StaticResource BooleanToTextConverter}, ConverterParameter='Stop|Start'}" />
+
+                        <ui:Button Width="100" Margin="8"
+                                   Command="{Binding ViewModel.ApplyTestTransformCommand}"
+                                   Content="Test" />
+
+                    </StackPanel>
+                    <ui:GraphControl x:Name="DxGraph"
+                                     Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
                 </Grid>
             </ui:DockedTabItem>
 

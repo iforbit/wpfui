@@ -24,7 +24,6 @@
                                     <ColumnDefinition Width="40" />
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
 
                                 <ContentPresenter x:Name="IconContentPresenter"
@@ -38,18 +37,13 @@
                                            Fill="{DynamicResource NavigationViewSelectionIndicatorForeground}"
                                            Opacity="0.0" />
                                 <ContentPresenter x:Name="ElementContentPresenter"
-                                                  Grid.Column="1" Margin="6,0,0,0" HorizontalAlignment="Left"
+                                                  Grid.Column="1" Margin="6,0,0,0" HorizontalAlignment="Stretch"
                                                   VerticalAlignment="Center"
                                                   Content="{TemplateBinding Content}"
                                                   ContentTemplate="{TemplateBinding ContentTemplate}" />
-
                                 <ContentPresenter x:Name="PART_InfoBadge"
                                                   Grid.Column="2" Margin="4,0,0,0"
                                                   Content="{TemplateBinding InfoBadge}" />
-
-                                <ContentPresenter x:Name="PART_CommandIndicator"
-                                                  Grid.Column="3" Margin="4,0,6,0"
-                                                  Content="{TemplateBinding CommandIcon}" />
                             </Grid>
                         </Border>
                     </Grid>

@@ -41,3 +41,24 @@ public class BoolToSymbolConverter : IValueConverter
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         => throw new NotImplementedException();
 }
+
+public class BooleanToTextConverter : IValueConverter
+{
+    // parameter: "FalseText|TrueText"
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        if (parameter is not string param || !param.Contains('|'))
+            return value?.ToString() ?? string.Empty;
+
+        var parts = param.Split('|');
+        var falseText = parts[0];
+        var trueText = parts[1];
+
+        return value is true ? trueText : falseText;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
+    }
+}

@@ -33,6 +33,14 @@
     <Resource Include="Resources\Theme\Effects\Grayscale.ps" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Assets\LinePixelShader.hlsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Assets\LineVertexShader.hlsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DirectX\Shaders\LinePixelShader.hlsl" />
+    <EmbeddedResource Include="DirectX\Shaders\LineVertexShader.hlsl" />
     <EmbeddedResource Include="Controls\Anchor\Anchor.bmp" />
     <EmbeddedResource Include="Controls\Arc\Arc.bmp" />
     <EmbeddedResource Include="Controls\AutoSuggestBox\AutoSuggestBox.bmp" />
@@ -66,6 +74,12 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>build; analyzers</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Vortice.D3DCompiler" />
+    <PackageReference Include="Vortice.Direct3D11" />
+    <PackageReference Include="Vortice.DirectX" />
+    <PackageReference Include="Vortice.DXGI" />
+    <PackageReference Include="Vortice.Mathematics" />
+    <PackageReference Include="Vortice.Wpf" />
     <PackageReference Include="WpfAnalyzers">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -90,4 +104,9 @@
       <Visible>True</Visible>
     </XAMLCombineItems>
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controls\Graph\" />
+  </ItemGroup>
+
 </Project>

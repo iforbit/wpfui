@@ -1,0 +1,3 @@
+<Path xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    Stroke="Black" StrokeThickness="2"
+    Data="M10,10 L30,10 M20,10 L20,30 M15,30 L25,30" />

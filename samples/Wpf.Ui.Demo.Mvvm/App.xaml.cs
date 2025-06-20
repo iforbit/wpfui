@@ -12,6 +12,8 @@ using System.Windows.Threading;
 using Wpf.Ui.Demo.Mvvm.Models;
 using Wpf.Ui.Demo.Mvvm.Services;
 using Wpf.Ui.DependencyInjection;
+using Wpf.Ui.DirectX.Services;
+using Wpf.Ui.DirectX.Threading;
 
 namespace Wpf.Ui.Demo.Mvvm;
 
@@ -65,6 +67,8 @@ public partial class App
                 _ = services.AddTransient<Views.Pages.DataPage>();
                 _ = services.AddTransient<ViewModels.DataViewModel>();
 
+                _ = services.AddSingleton<ID3DGraphicsService, D3DGraphicsService>();
+                _ = services.AddSingleton<IRenderThreadService, RenderThreadService>();
                 // Configuration
                 _ = services.Configure<AppConfig>(context.Configuration.GetSection(nameof(AppConfig)));
             }
