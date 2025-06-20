@@ -7,7 +7,7 @@ using SharpGen.Runtime;
 
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-
+using Wpf.Ui.DirectX.Helpers;
 using Wpf.Ui.DirectX.Models;
 using Wpf.Ui.DirectX.Rendering;
 using Wpf.Ui.DirectX.Services;
@@ -67,18 +67,19 @@ public sealed class GraphControl : HwndHost, IRenderStateNotifier
 
     public void AddItem(GraphItemBase item)
     {
-        if (!_graphItems.Contains(item))
-        {
-            item.Transform(XOffset, XScale, YScale);
-            _graphItems.Add(item);
+        if (_graphItems.Contains(item))
+            return;
 
-            if (_renderer is not null)
+        _graphItems.Add(item);
+
+        // ✅ Transform은 Renderer가 아이템을 직접 초기화하면서 수행
+        if (_renderer is not null)
+        {
+            _renderer.AddGraphItem(item);
+
+            if (_rendererReadyFired)
             {
-                _renderer.AddGraphItem(item);
-                if (_rendererReadyFired) // ✅ RendererReady 발생 후에만
-                {
-                    RequestRender();
-                }
+                RequestRender();
             }
         }
     }
@@ -110,9 +111,15 @@ public sealed class GraphControl : HwndHost, IRenderStateNotifier
 
     public void RequestRender()
     {
-        if (!_rendererReadyFired || _renderer == null || _graphItems.Count == 0 || _disposed)
+        if (!_rendererReadyFired || _renderer == null || !_renderer.IsReady || _graphItems.Count == 0 || _disposed)
         {
             Debug.WriteLine("⚠️ RequestRender ignored: renderer not fully ready or no items");
+            return;
+        }
+
+        if (_renderThread == null || !_renderThread.IsRunning)
+        {
+            Debug.WriteLine("⚠️ RequestRender ignored: no render thread assigned");
             return;
         }
 
@@ -127,7 +134,7 @@ public sealed class GraphControl : HwndHost, IRenderStateNotifier
     private void OnSizeChanged(object sender, SizeChangedEventArgs e)
     {
         _resizeToken?.Cancel();
-        _resizeToken = new();
+        _resizeToken = new CancellationTokenSource();
 
         CancellationToken token = _resizeToken.Token;
 
@@ -144,6 +151,26 @@ public sealed class GraphControl : HwndHost, IRenderStateNotifier
 
     private void TryInitializeRendererSafely()
     {
+    
+        bool needsResize = _renderer is D3D11Renderer r &&
+                   (Math.Abs(r.Width - ActualWidth) > 0.1 || Math.Abs(r.Height - ActualHeight) > 0.1);
+
+        if (_renderer != null && _renderer.IsReady && !needsResize)
+        {
+            if (!_rendererReadyFired)
+            {
+                _rendererReadyFired = true;
+                _ = _rendererReady.TrySetResult();
+                RendererReady?.Invoke(this, EventArgs.Empty);
+            }
+
+            // ✅ 렌더러는 유효하지만 Reset 이벤트를 외부에 보냄
+            RendererReset?.Invoke(this, EventArgs.Empty);
+
+            Debug.WriteLine("⚠️ TryInitializeRendererSafely: renderer is already ready and size unchanged, skipping reinit");
+            return;
+        }
+
         lock (_rendererLock)
         {
             // ✅ 렌더링 중지: 렌더러 재설정 전
@@ -152,6 +179,7 @@ public sealed class GraphControl : HwndHost, IRenderStateNotifier
             if (_renderThread?.IsRunning == true)
             {
                 _renderThread.Stop();
+                Thread.Sleep(50); // 또는 WaitHandle로 완전 종료 보장
             }
 
             if (_renderer != null)
@@ -195,14 +223,16 @@ public sealed class GraphControl : HwndHost, IRenderStateNotifier
 
             foreach (GraphItemBase item in _graphItems)
             {
-                item.Transform(XOffset, XScale, YScale);
+                GraphItemInitializer.Reinitialize(item, newRenderer.Device, newRenderer.Context, XOffset, XScale, YScale);
                 newRenderer.AddGraphItem(item);
             }
+
 
             _renderer = newRenderer;
             _renderThread.Register(newRenderer);
             _renderThread.Start();
-
+            // ✅ OnRendererReady 호출로 대기 중이던 아이템 초기화
+            _renderer.OnRendererReady();
             // ✅ 명시적 Transform 적용 (초기 값이라도 적용되게)
             _renderer.SetTransform(XOffset, XScale, YScale);
             _ = _rendererReady.TrySetResult();

@@ -3,6 +3,7 @@
 // Copyright (C) Leszek Pomianowski and WPF UI Contributors.
 // All Rights Reserved.
 
+using System.Buffers;
 using System.Diagnostics;
 using System.Windows.Controls;
 using System.Windows.Threading;
@@ -205,13 +206,21 @@ public partial class DashboardViewModel : ViewModel, IDisposable
             if (buffer.LastX <= 0 || float.IsNaN(buffer.LastX))
                 continue; // ✅ 안전 필터링
 
-            Span<VertexPositionColor> temp = stackalloc VertexPositionColor[4096];
-            int count = buffer.CopyVerticesInRange(visibleStart, visibleEnd, temp);
+            VertexPositionColor[] tempArray = ArrayPool<VertexPositionColor>.Shared.Rent(4096);
+            try
+            {
+                Span<VertexPositionColor> temp = tempArray;
+                int count = buffer.CopyVerticesInRange(visibleStart, visibleEnd, temp);
 
-            if (count <= 0)
-                continue; // ✅ 데이터가 없으면 enqueue 안 함
-
-            item.EnqueueVertices(temp.Slice(0, count));
+                if (count > 0)
+                {
+                    item.EnqueueVertices(temp.Slice(0, count));
+                }
+            }
+            finally
+            {
+                ArrayPool<VertexPositionColor>.Shared.Return(tempArray);
+            }
         }
 
         _graphControl?.UpdateTransform(offset, 1f, 1f);

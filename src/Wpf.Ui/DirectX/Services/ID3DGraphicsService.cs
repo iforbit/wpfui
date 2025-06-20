@@ -39,4 +39,6 @@ public interface ID3DGraphicsService : IDisposable
     /// <param name="shaderFileName">예: "graph_vs.cso"</param>
     /// <returns>바이트 배열</returns>
     byte[] LoadShaderBytes(string shaderFileName);
+
+    bool IsDeviceValid(); // ✅ 추가
 }

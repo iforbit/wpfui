@@ -18,54 +18,76 @@ namespace Wpf.Ui.DirectX.Models;
 public sealed class GraphLineItem : GraphItemBase
 {
     private ID3D11Buffer? _vertexBuffer;
-
+    private readonly object _renderUpdateLock = new();
+    private readonly ChunkedVertexBuffer _chunkBuffer = new();
     public int LastDrawCount => VertexCount;
+    public float LastX => _chunkBuffer.LastX;
+    public void AppendPoint(float x, float y)
+    {
+        _chunkBuffer.AppendPoint(x, y, GraphColor); // ✅ 내부 색상 적용
+    }
 
     protected override void OnInitialize(ID3D11Device device)
     {
-        int initialBufferSize = 16384; // 16KB로 초기 버퍼 크기 확대
-        int initialBufferVertexCount = initialBufferSize / Marshal.SizeOf<VertexPositionColor>();
+        BufferSizeInBytes = 16384;
+        Span<VertexPositionColor> initial = stackalloc VertexPositionColor[BufferSizeInBytes / VertexSizeInBytes];
 
-        Span<VertexPositionColor> span = stackalloc VertexPositionColor[initialBufferVertexCount];
-
-        BufferSizeInBytes = initialBufferSize;
         _vertexBuffer = VertexBufferFactory.CreateVertexBuffer<VertexPositionColor>(
-            device, _deviceContext!, span, dynamic: true, overrideSizeInBytes: BufferSizeInBytes);
+            device, Context!, initial, dynamic: true, overrideSizeInBytes: BufferSizeInBytes);
 
         VertexCount = 0;
+    }
+
+    public override void Update(double time)
+    {
+        if (Context == null || Context.NativePointer == IntPtr.Zero || _chunkBuffer == null || _vertexBuffer == null)
+        {
+            Debug.WriteLine("🚫 Upload aborted: context or buffer is invalid");
+            return;
+        }
+
+        float minX = _lastXOffset; // Transform에서 설정된 값 사용
+        float maxX = _lastXOffset + _lastXScale * _chunkBuffer.MaxVisibleRange;
+
+        Span<VertexPositionColor> span = stackalloc VertexPositionColor[8192];
+        int count = _chunkBuffer.CopyVerticesInRange(minX, maxX, span);
+        if (count > 0)
+        {
+            Debug.WriteLine($"[Update] {Name} VisibleX: {minX:F3}~{maxX:F3}, count={count}");
+            UpdateVertices(span[..count]);
+        }
+        else
+        {
+            Debug.WriteLine($"[Update] {Name} No visible vertices in range {minX:F3}~{maxX:F3}");
+        }
     }
 
     public override void UpdateVertices(ReadOnlySpan<VertexPositionColor> span)
     {
         lock (_renderUpdateLock)
         {
-            if (span.Length == 0 || _disposed || _vertexBuffer == null || _device == null || _deviceContext == null || _deviceContext.NativePointer == IntPtr.Zero)
+            if (span.Length == 0 || _vertexBuffer == null || Context == null)
             {
-                Debug.WriteLine("🚫 Skipped UpdateVertices: GPU context not ready or disposed");
+                Debug.WriteLine("🚫 Skipped UpdateVertices: context or buffer not ready");
                 return;
             }
 
             int sizeInBytes = span.Length * VertexSizeInBytes;
-
-            bool needsResize = sizeInBytes > BufferSizeInBytes || sizeInBytes < (BufferSizeInBytes / 4);
+            bool needsResize = sizeInBytes > BufferSizeInBytes || sizeInBytes < BufferSizeInBytes / 4;
 
             if (needsResize)
             {
                 _vertexBuffer?.Dispose();
                 BufferSizeInBytes = Math.Max((int)(sizeInBytes * 1.25f), BufferSizeInBytes);
-                _vertexBuffer = VertexBufferFactory.CreateVertexBuffer<VertexPositionColor>(
-                    _device, _deviceContext, span, dynamic: true, overrideSizeInBytes: BufferSizeInBytes);
-            }
-
-            if (_vertexBuffer.Description.ByteWidth < sizeInBytes)
-            {
-                Debug.WriteLine($"❌ Upload skipped: Data {sizeInBytes} > Buffer {_vertexBuffer.Description.ByteWidth}");
-                return;
+                _vertexBuffer = VertexBufferFactory.CreateVertexBuffer(
+                    Device!, Context!, span,
+                    dynamic: true,
+                    overrideSizeInBytes: BufferSizeInBytes);
             }
 
             try
             {
-                VertexBufferFactory.UploadVertices<VertexPositionColor>(_deviceContext, _vertexBuffer!, span);
+                VertexBufferFactory.UploadVertices(Device!, Context!, _vertexBuffer!, span);
                 VertexCount = span.Length;
             }
             catch (SharpGenException ex) when (ex.ResultCode.Code == unchecked((int)0x887A0005))
@@ -79,49 +101,13 @@ public sealed class GraphLineItem : GraphItemBase
         }
     }
 
-    public override void Update(double time) { }
 
-    public override void Transform(float xOffset, float xScale, float yScale) { }
-
-    private readonly object _renderUpdateLock = new();
-
-    public override void Render(ID3D11DeviceContext context)
+    protected override void OnTransform(float xOffset, float xScale, float yScale)
     {
-        if (_disposed)
-        {
-            return;
-        }
-
-        lock (_renderUpdateLock)
-        {
-            try
-            {
-                while (_updateQueue.TryDequeue(out ReadOnlyMemory<VertexPositionColor> memory))
-                {
-                    UpdateVertices(memory.Span);
-                }
-
-                if (_vertexBuffer == null)
-                {
-                    return;
-                }
-
-                int stride = Marshal.SizeOf<VertexPositionColor>();
-                int offset = 0;
-
-                Span<uint> strides = stackalloc uint[] { (uint)stride };
-                Span<uint> offsets = stackalloc uint[] { (uint)offset };
-
-                context.IASetVertexBuffers(0, new[] { _vertexBuffer }, strides, offsets);
-                context.IASetPrimitiveTopology(Vortice.Direct3D.PrimitiveTopology.LineStrip);
-                context.Draw((uint)VertexCount, 0);
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"[Item Render Error] {this.Name}: {ex.Message}");
-            }
-        }
+        // 필요 시 구현하세요 (ex: 변환 캐싱, 렌더링 설정 등)
     }
+
+    protected override ID3D11Buffer? GetVertexBuffer() => _vertexBuffer;
 
     protected override void Dispose(bool disposing)
     {
@@ -133,7 +119,6 @@ public sealed class GraphLineItem : GraphItemBase
             BufferSizeInBytes = 0;
         }
 
-        _disposed = true;
         base.Dispose(disposing);
     }
 }

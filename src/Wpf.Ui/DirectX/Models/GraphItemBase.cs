@@ -4,6 +4,7 @@
 // All Rights Reserved.
 
 using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 using Vortice.Direct3D11;
@@ -36,17 +37,55 @@ public abstract class GraphItemBase : IDisposable
     protected int VertexCount = 0;
 
     public Color4 GraphColor { get; set; } = new Color4(1f, 1f, 1f, 1f);
+    protected float _lastXOffset, _lastXScale = 1f, _lastYScale = 1f;
+
+    public ID3D11Device? Device => _device;
+    public ID3D11DeviceContext? Context => _deviceContext;
+    public bool IsDisposed => _disposed;
+
+    public bool IsReadyToRender =>
+      !_disposed && _initialized &&
+      _device?.NativePointer != IntPtr.Zero &&
+      _deviceContext?.NativePointer != IntPtr.Zero;
+
+    public bool CanRender() => IsVisible && IsReadyToRender && VertexCount > 0;
+
+    public void FlushQueuedVertices()
+    {
+        while (_updateQueue.TryDequeue(out var mem))
+        {
+            UpdateVertices(mem.Span);
+        }
+    }
+
+ 
+
+    public void SetDisposedFlag(bool value)
+    {
+        _disposed = value;
+        if (!value)
+            _initialized = false; // ✅ 재초기화를 유도
+    }
 
     public void SetDevice(ID3D11Device device) => _device = device;
 
-    public void SetContext(ID3D11DeviceContext context) => _deviceContext = context;
-
-    public void Initialize(ID3D11Device device)
+    public void SetContext(ID3D11DeviceContext context)
     {
-        if (_initialized)
+        if (context == null || context.NativePointer == IntPtr.Zero)
         {
+            Debug.WriteLine("⚠️ SetContext called with invalid context.");
             return;
         }
+
+        _deviceContext = context;
+    }
+    public void Initialize(ID3D11Device device, ID3D11DeviceContext context)
+    {
+        if (_initialized)
+            return;
+
+        _device = device;
+        _deviceContext = context;
 
         OnInitialize(device);
         _initialized = true;
@@ -65,9 +104,41 @@ public abstract class GraphItemBase : IDisposable
 
     public abstract void Update(double time);
 
-    public abstract void Transform(float xOffset, float xScale, float yScale);
+    public void Transform(float xOffset, float xScale, float yScale)
+    {
+        if (xOffset == _lastXOffset && xScale == _lastXScale && yScale == _lastYScale)
+            return;
 
-    public abstract void Render(ID3D11DeviceContext context);
+        _lastXOffset = xOffset;
+        _lastXScale = xScale;
+        _lastYScale = yScale;
+
+        OnTransform(xOffset, xScale, yScale);
+    }
+
+    protected abstract void OnTransform(float xOffset, float xScale, float yScale);
+
+    public virtual void Render(ID3D11DeviceContext context)
+    {
+        FlushQueuedVertices();
+
+        if (!CanRender())
+            return;
+
+      
+
+        int stride = VertexSizeInBytes;
+        int offset = 0;
+
+        Span<uint> strides = stackalloc uint[] { (uint)stride };
+        Span<uint> offsets = stackalloc uint[] { (uint)offset };
+
+        context.IASetVertexBuffers(0, new[] { GetVertexBuffer() }, strides, offsets);
+        context.IASetPrimitiveTopology(Vortice.Direct3D.PrimitiveTopology.LineStrip);
+        context.Draw((uint)VertexCount, 0);
+    }
+
+    protected abstract ID3D11Buffer? GetVertexBuffer();
 
     public void Dispose()
     {
@@ -79,6 +150,9 @@ public abstract class GraphItemBase : IDisposable
     {
         _device = null;
         _deviceContext = null;
+        _disposed = true;
     }
 }
+
+
 #pragma warning restore SA1401, SA1306 // Fields should be private

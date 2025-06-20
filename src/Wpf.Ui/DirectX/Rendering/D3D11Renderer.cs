@@ -15,7 +15,7 @@ using Vortice.Direct3D;
 using Vortice.Direct3D11;
 using Vortice.DXGI;
 using Vortice.Mathematics;
-
+using Wpf.Ui.DirectX.Helpers;
 using Wpf.Ui.DirectX.Models;
 using Wpf.Ui.DirectX.Services;
 using Wpf.Ui.DirectX.Threading;
@@ -26,8 +26,16 @@ namespace Wpf.Ui.DirectX.Rendering;
 
 public sealed class D3D11Renderer : IRenderable, IDisposable
 {
-    public bool IsReady => _inputLayout != null && _vertexShader != null && _pixelShader != null && _renderTargetView != null;
-
+    public bool IsReady =>
+     !_disposed &&
+     _inputLayout != null &&
+     _vertexShader != null &&
+     _pixelShader != null &&
+     _renderTargetView != null &&
+     _swapChain != null &&
+     _viewProjectionBuffer != null &&
+     _context != null &&
+     _context.NativePointer != IntPtr.Zero;
     private bool _disposed = false;
 
     private readonly ID3DGraphicsService _graphicsService;
@@ -37,12 +45,12 @@ public sealed class D3D11Renderer : IRenderable, IDisposable
     private IDXGISwapChain? _swapChain;
     private ID3D11RenderTargetView? _renderTargetView;
     private readonly List<GraphItemBase> _graphItems = new();
+    private readonly List<GraphItemBase> _pendingItems = new();
 
     private ID3D11VertexShader? _vertexShader;
     private ID3D11PixelShader? _pixelShader;
     private ID3D11InputLayout? _inputLayout;
     private ID3D11Buffer? _viewProjectionBuffer;
-
     public float XOffset { get; private set; } = 0f;
 
     public float XScale { get; private set; } = 1f;
@@ -53,6 +61,10 @@ public sealed class D3D11Renderer : IRenderable, IDisposable
     private readonly double _height;
     private readonly IntPtr _hwnd;
 
+    public double Width => _width;
+    public double Height => _height;
+    public ID3D11Device Device => _device;
+    public ID3D11DeviceContext Context => _context;
     private DateTime _lastReinitTime = DateTime.MinValue;
     private readonly TimeSpan _minReinitInterval = TimeSpan.FromSeconds(5);
     private int _reinitFailCount = 0;
@@ -82,15 +94,11 @@ public sealed class D3D11Renderer : IRenderable, IDisposable
 
     private void InitializeResources()
     {
-        DisposeResources();
+        DisposeResources(); // ✅ 항상 기존 리소스 정리 후 시작
 
-        var swapDesc = new SwapChainDescription
+        _swapChain = ((IDXGIFactory1)_graphicsService.Factory).CreateSwapChain(_device, new SwapChainDescription
         {
-            BufferDescription = new ModeDescription(
-                (uint)Math.Ceiling(_width),
-                (uint)Math.Ceiling(_height),
-                new Rational(60, 1),
-                Format.B8G8R8A8_UNorm),
+            BufferDescription = new ModeDescription((uint)_width, (uint)_height, new Rational(60, 1), Format.B8G8R8A8_UNorm),
             SampleDescription = new SampleDescription(1, 0),
             BufferUsage = Usage.RenderTargetOutput,
             BufferCount = 1,
@@ -98,90 +106,66 @@ public sealed class D3D11Renderer : IRenderable, IDisposable
             Windowed = true,
             SwapEffect = SwapEffect.Discard,
             Flags = SwapChainFlags.None
-        };
+        });
 
-        _swapChain = ((IDXGIFactory1)_graphicsService.Factory).CreateSwapChain(_device, swapDesc);
         _renderTargetView = _graphicsService.CreateRenderTargetView(_swapChain);
 
-        InitializeShaders(_device);
+        InitializeShaders();
         CreateViewProjectionBuffer();
         UpdateViewProjectionBuffer();
 
         Debug.WriteLine("✅ Renderer resources initialized.");
     }
 
+
     private void DisposeResources()
     {
-        try
+        static void SafeDispose<T>(ref T? resource) where T : class, IDisposable
         {
-            _vertexShader?.Dispose();
-            _vertexShader = null;
-
-            _pixelShader?.Dispose();
-            _pixelShader = null;
-
-            _inputLayout?.Dispose();
-            _inputLayout = null;
-
-            _viewProjectionBuffer?.Dispose();
-            _viewProjectionBuffer = null;
-
-            _renderTargetView?.Dispose();
-            _renderTargetView = null;
-
-            _swapChain?.Dispose();
-            _swapChain = null;
-
-            Debug.WriteLine("🧹 All GPU resources disposed.");
+            resource?.Dispose();
+            resource = null;
         }
-        catch (Exception ex)
-        {
-            Debug.WriteLine($"⚠️ Exception during DisposeResources: {ex}");
-        }
+
+        SafeDispose(ref _vertexShader);
+        SafeDispose(ref _pixelShader);
+        SafeDispose(ref _inputLayout);
+        SafeDispose(ref _viewProjectionBuffer);
+        SafeDispose(ref _renderTargetView);
+        SafeDispose(ref _swapChain);
+
+        Debug.WriteLine("🧹 All GPU resources disposed.");
     }
 
-    private void InitializeShaders(ID3D11Device device)
+
+    private void InitializeShaders()
     {
-        var vsPath = Path.Combine(AppContext.BaseDirectory, "Assets", "LineVertexShader.hlsl");
-        var psPath = Path.Combine(AppContext.BaseDirectory, "Assets", "LinePixelShader.hlsl");
+        string vsPath = Path.Combine(AppContext.BaseDirectory, "Assets", "LineVertexShader.hlsl");
+        string psPath = Path.Combine(AppContext.BaseDirectory, "Assets", "LinePixelShader.hlsl");
 
-        if (!File.Exists(vsPath) || !File.Exists(psPath))
-        {
-            throw new FileNotFoundException("HLSL shader file(s) not found.");
-        }
+        var vsResult = Compiler.CompileFromFile(vsPath, "VSMain", "vs_5_0", out Blob? vsBytecode, out Blob? vsErr);
+        var psResult = Compiler.CompileFromFile(psPath, "PSMain", "ps_5_0", out Blob? psBytecode, out Blob? psErr);
 
-        Result vsResult = Compiler.CompileFromFile(vsPath, "VSMain", "vs_5_0", out Blob? vsBytecode, out Blob? vsErrBlob);
-        Result psResult = Compiler.CompileFromFile(psPath, "PSMain", "ps_5_0", out Blob? psBytecode, out Blob? psErrBlob);
+        if (vsResult.Failure || vsBytecode == null)
+            throw new InvalidOperationException(vsErr?.AsString() ?? "Vertex shader error.");
+        if (psResult.Failure || psBytecode == null)
+            throw new InvalidOperationException(psErr?.AsString() ?? "Pixel shader error.");
 
-        if (vsResult.Failure || vsBytecode is null)
-        {
-            string error = vsErrBlob?.AsString() ?? "Unknown vertex shader error.";
-            vsErrBlob?.Dispose();
-            throw new InvalidOperationException($"Vertex shader compilation failed:\n{error}");
-        }
+        _vertexShader = _device.CreateVertexShader(vsBytecode);
+        _pixelShader = _device.CreatePixelShader(psBytecode);
 
-        if (psResult.Failure || psBytecode is null)
-        {
-            string error = psErrBlob?.AsString() ?? "Unknown pixel shader error.";
-            psErrBlob?.Dispose();
-            throw new InvalidOperationException($"Pixel shader compilation failed:\n{error}");
-        }
-
-        _vertexShader = device.CreateVertexShader(vsBytecode);
-        _pixelShader = device.CreatePixelShader(psBytecode);
-
-        InputElementDescription[] inputElements = new[]
-        {
-            new InputElementDescription("POSITION", 0, Format.R32G32B32_Float, 0, 0),
-            new InputElementDescription("COLOR", 0, Format.R32G32B32A32_Float, 12, 0)
-        };
-
-        _inputLayout = device.CreateInputLayout(inputElements, vsBytecode);
+        _inputLayout = _device.CreateInputLayout(
+            new InputElementDescription[]
+            {
+                new InputElementDescription("POSITION", 0, Format.R32G32B32_Float, 0, 0),
+                new InputElementDescription("COLOR", 0, Format.R32G32B32A32_Float, 12, 0)
+            },
+            vsBytecode
+        );
 
         vsBytecode.Dispose();
         psBytecode.Dispose();
-        vsErrBlob?.Dispose();
-        psErrBlob?.Dispose();
+        vsErr?.Dispose();
+        psErr?.Dispose();
     }
 
     private void CreateViewProjectionBuffer()
@@ -211,9 +195,16 @@ public sealed class D3D11Renderer : IRenderable, IDisposable
     {
         lock (_contextLock) // 전체 Context 사용을 보호
         {
-            if (_viewProjectionBuffer == null || _context == null ||
-                _context.NativePointer == IntPtr.Zero || _disposed)
+            if (_viewProjectionBuffer == null || _context == null || _disposed)
             {
+                Debug.WriteLine("⚠️ UpdateViewProjectionBuffer skipped: Buffer or context is null or disposed.");
+                return;
+            }
+
+            // 디바이스 및 컨텍스트가 여전히 유효한지 확인
+            if (!IsDeviceValid() || !IsContextValid())
+            {
+                Debug.WriteLine("⚠️ UpdateViewProjectionBuffer skipped: Invalid device or context.");
                 return;
             }
 
@@ -234,7 +225,15 @@ public sealed class D3D11Renderer : IRenderable, IDisposable
             }
             catch (SEHException ex)
             {
-                Debug.WriteLine($"SEHException in UpdateViewProjectionBuffer: {ex.Message}");
+                Debug.WriteLine($"💥 SEHException in Map: {ex.Message}");
+            }
+            catch (SharpGenException ex)
+            {
+                Debug.WriteLine($"💥 SharpGenException in Map: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"💥 General Exception in Map: {ex.Message}");
             }
         }
     }
@@ -254,6 +253,20 @@ public sealed class D3D11Renderer : IRenderable, IDisposable
         }
     }
 
+
+    public bool IsDeviceValid()
+    {
+        try
+        {
+            return _device != null &&
+                   _device.NativePointer != IntPtr.Zero &&
+                   !_disposed;
+        }
+        catch
+        {
+            return false;
+        }
+    }
     public void RenderFrame(float time)
     {
         if (_disposed)
@@ -261,10 +274,10 @@ public sealed class D3D11Renderer : IRenderable, IDisposable
             return;
         }
 
-        Render();
+        Render(time);
     }
 
-    public void Render()
+    public void Render(float time)
     {
         if (!IsReady)
         {
@@ -289,6 +302,7 @@ public sealed class D3D11Renderer : IRenderable, IDisposable
                 {
                     try
                     {
+                        //item.Update(time);
                         item.Render(_context);
                     }
                     catch (Exception ex)
@@ -381,16 +395,36 @@ public sealed class D3D11Renderer : IRenderable, IDisposable
     {
         lock (_graphItemsLock)
         {
-            if (!_graphItems.Contains(item))
+            if (_graphItems.Contains(item) || _pendingItems.Contains(item))
+                return;
+
+            if (IsReady)
             {
-                item.Transform(XOffset, XScale, YScale);
-                item.SetDevice(_device);
-                item.SetContext(_context);
-                item.Initialize(_device);
+                GraphItemInitializer.Initialize(item, _device, _context, XOffset, XScale, YScale);
                 _graphItems.Add(item);
+            }
+            else
+            {
+                _pendingItems.Add(item);
             }
         }
     }
+
+    public  void OnRendererReady()
+    {
+        lock (_graphItemsLock)
+        {
+            foreach (var item in _pendingItems)
+            {
+                GraphItemInitializer.Initialize(item, _device, _context, XOffset, XScale, YScale);
+                _graphItems.Add(item);
+            }
+
+
+            _pendingItems.Clear();
+        }
+    }
+
 
     public void Dispose()
     {

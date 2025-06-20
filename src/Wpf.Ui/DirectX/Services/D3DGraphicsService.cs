@@ -98,7 +98,18 @@ public sealed class D3DGraphicsService : ID3DGraphicsService
         using ID3D11Texture2D backBuffer = swapChain.GetBuffer<ID3D11Texture2D>(0);
         return Device.CreateRenderTargetView(backBuffer);
     }
-
+    public bool IsDeviceValid()
+    {
+        try
+        {
+            return Device.DeviceRemovedReason == Result.Ok;
+        }
+        catch (SharpGenException ex)
+        {
+            Debug.WriteLine($"[IsDeviceValid] Exception: {ex.Message}");
+            return false;
+        }
+    }
     public byte[] LoadShaderBytes(string shaderFileName)
     {
         var path = Path.Combine(AppContext.BaseDirectory, "Assets", shaderFileName);
