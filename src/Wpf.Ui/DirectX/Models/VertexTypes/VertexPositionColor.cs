@@ -27,3 +27,14 @@ public struct VertexPositionColor
     {
     }
 }
+
+[StructLayout(LayoutKind.Sequential)]
+public struct VertexPosition
+{
+    public Vector3 Position;
+
+    public VertexPosition(float x, float y)
+    {
+        Position = new Vector3(x, y, 0f);
+    }
+}

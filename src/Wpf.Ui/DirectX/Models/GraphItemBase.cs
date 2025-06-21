@@ -5,24 +5,26 @@
 
 using System.Collections.Concurrent;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
+using System.Runtime.CompilerServices;
 
 using Vortice.Direct3D11;
-using Vortice.Mathematics;
 
 using Wpf.Ui.DirectX.Models.VertexTypes;
 
 namespace Wpf.Ui.DirectX.Models;
 
 #pragma warning disable SA1401,SA1306 // Fields should be private
-public abstract class GraphItemBase : IDisposable
+public abstract class GraphItemBase<T> : IGraphItem
+    where T : unmanaged
 {
-    protected readonly ConcurrentQueue<ReadOnlyMemory<VertexPositionColor>> _updateQueue = new();
+    protected readonly ConcurrentQueue<ReadOnlyMemory<T>> _updateQueue = new();
 
     protected bool _disposed = false;
     protected bool _initialized = false;
 
     public bool IsVisible { get; set; } = true;
+
+    public virtual PixelShaderType ShaderType { get; set; } = PixelShaderType.PerVertexColor;
 
     public string Name { get; set; } = string.Empty;
 
@@ -31,12 +33,14 @@ public abstract class GraphItemBase : IDisposable
     protected ID3D11Device? _device;
     protected ID3D11DeviceContext? _deviceContext;
 
-    protected static readonly int VertexSizeInBytes = Marshal.SizeOf<VertexPositionColor>();
+    private int _vertexSizeInBytes = 0;
+
+    protected int VertexSizeInBytes => _vertexSizeInBytes == 0 ? (_vertexSizeInBytes = Unsafe.SizeOf<T>()) : _vertexSizeInBytes;
 
     protected int BufferSizeInBytes = 0;
     protected int VertexCount = 0;
 
-    public Color4 GraphColor { get; set; } = new Color4(1f, 1f, 1f, 1f);
+    public Vortice.Mathematics.Color4 GraphColor { get; set; } = new(1f, 1f, 1f, 1f);
 
     protected float _lastXOffset;
     protected float _lastXScale = 1f;
@@ -49,15 +53,15 @@ public abstract class GraphItemBase : IDisposable
     public bool IsDisposed => _disposed;
 
     public bool IsReadyToRender =>
-      !_disposed && _initialized &&
-      _device?.NativePointer != IntPtr.Zero &&
-      _deviceContext?.NativePointer != IntPtr.Zero;
+        !_disposed && _initialized &&
+        _device?.NativePointer != IntPtr.Zero &&
+        _deviceContext?.NativePointer != IntPtr.Zero;
 
     public bool CanRender() => IsVisible && IsReadyToRender && VertexCount > 0;
 
     public void FlushQueuedVertices()
     {
-        while (_updateQueue.TryDequeue(out ReadOnlyMemory<VertexPositionColor> mem))
+        while (_updateQueue.TryDequeue(out ReadOnlyMemory<T> mem))
         {
             UpdateVertices(mem.Span);
         }
@@ -68,7 +72,7 @@ public abstract class GraphItemBase : IDisposable
         _disposed = value;
         if (!value)
         {
-            _initialized = false; // ✅ 재초기화를 유도
+            _initialized = false;
         }
     }
 
@@ -76,10 +80,9 @@ public abstract class GraphItemBase : IDisposable
 
     public void SetContext(ID3D11DeviceContext context)
     {
-        if (context == null || context.NativePointer == IntPtr.Zero)
+        if (_deviceContext != null && !ReferenceEquals(_deviceContext, context))
         {
-            Debug.WriteLine("⚠️ SetContext called with invalid context.");
-            return;
+            Debug.WriteLine("⚠️ Overwriting GraphItem context with a different instance");
         }
 
         _deviceContext = context;
@@ -101,20 +104,22 @@ public abstract class GraphItemBase : IDisposable
 
     protected abstract void OnInitialize(ID3D11Device device);
 
-    public virtual void EnqueueVertices(ReadOnlySpan<VertexPositionColor> span)
+    public virtual void EnqueueVertices(ReadOnlySpan<T> span)
     {
-        var buffer = new VertexPositionColor[span.Length];
+        var buffer = new T[span.Length];
         span.CopyTo(buffer);
         _updateQueue.Enqueue(buffer.AsMemory());
     }
 
-    public abstract void UpdateVertices(ReadOnlySpan<VertexPositionColor> span);
+    public abstract void UpdateVertices(ReadOnlySpan<T> span);
 
     public abstract void Update(double time);
 
-    public void Transform(float xOffset, float xScale, float yScale)
+    public abstract bool TryGetTransform(out float xOffset, out float xScale);
+
+    public void Transform(float xOffset, float xScale, float yScale, bool force = false)
     {
-        if (xOffset == _lastXOffset && xScale == _lastXScale && yScale == _lastYScale)
+        if (!force && xOffset == _lastXOffset && xScale == _lastXScale && yScale == _lastYScale)
         {
             return;
         }

@@ -81,9 +81,7 @@
                                    Command="{Binding ViewModel.ToggleRenderingCommand}"
                                    Content="{Binding ViewModel.IsRendering, Converter={StaticResource BooleanToTextConverter}, ConverterParameter='Stop|Start'}" />
 
-                        <ui:Button Width="100" Margin="8"
-                                   Command="{Binding ViewModel.ApplyTestTransformCommand}"
-                                   Content="Test" />
+
 
                     </StackPanel>
                     <ui:GraphControl x:Name="DxGraph"

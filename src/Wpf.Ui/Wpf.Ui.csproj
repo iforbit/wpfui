@@ -18,6 +18,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\ConstPixelShader.hlsl" />
     <None Remove="Resources\Fonts\MaterialIcons-Regular.ttf" />
   </ItemGroup>
 
@@ -33,6 +34,9 @@
     <Resource Include="Resources\Theme\Effects\Grayscale.ps" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Assets\ConstPixelShader.hlsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Include="Assets\LinePixelShader.hlsl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>

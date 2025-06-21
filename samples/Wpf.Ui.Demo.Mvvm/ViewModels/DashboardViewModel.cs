@@ -24,9 +24,11 @@ public partial class DashboardViewModel : ViewModel, IDisposable
     private GraphControl? _graphControl;
     private readonly IRenderThreadService? _renderThread;
 
-    private readonly Dictionary<string, ChunkedVertexBuffer> _buffers = new();
+    private readonly Dictionary<string, ChunkedVertexBuffer<VertexPositionColor>> _buffers = new();
 
-    private readonly Dictionary<string, GraphLineItem> _lineItems = new();
+    private readonly Dictionary<string, FastGraphItem<VertexPosition>> _fastItems = new();
+    private readonly Dictionary<string, GraphLineItem<VertexPositionColor>> _lineItems = new();
+
     private readonly Dictionary<string, float> _channelTime = new();
     private readonly string[] _channels = ["CH1", "CH2", "CH3"];
 
@@ -66,6 +68,7 @@ public partial class DashboardViewModel : ViewModel, IDisposable
                 if (!lockTaken)
                     return;
 
+                //GenerateVerticesLegacy();
                 GenerateVertices();
             }
             catch (InvalidOperationException ex)
@@ -88,7 +91,8 @@ public partial class DashboardViewModel : ViewModel, IDisposable
         {
             if (_graphControl?.IsRendererReady == true && IsRendering)
             {
-                OnRenderFrame((float)_stopwatch.Elapsed.TotalSeconds);
+                //OnRenderFrameLegacy((float)_stopwatch.Elapsed.TotalSeconds);
+                //OnRenderFrame((float)_stopwatch.Elapsed.TotalSeconds);
                 _graphControl.RequestRender();
             }
         };
@@ -116,7 +120,7 @@ public partial class DashboardViewModel : ViewModel, IDisposable
 
         _graphControl.RendererReset += (_, _) =>
         {
-            _graphControl.UpdateTransform(-5f, 0.2f, 0.5f);  // ✅ Transform도 여기서 적용
+            _graphControl.UpdateTransform(-5f, 0.2f, 0.5f, 0.0f); // ✅ YOffset 명시 추가
             _dataTimer.Start();
             _renderTimer.Start();
             IsRendering = true;
@@ -125,15 +129,13 @@ public partial class DashboardViewModel : ViewModel, IDisposable
 
         foreach (string ch in _channels)
         {
-            var buffer = new ChunkedVertexBuffer
+            var buffer = new ChunkedVertexBuffer<VertexPositionColor>(500_000, v => v.Position.X)
             {
-                XStep = XStep,
-                MaxBufferLength = 500_000,
                 AutoTrim = true,
                 MaxVisibleRange = 30f
             };
 
-            var item = new GraphLineItem
+            var item = new FastGraphItem<VertexPosition>(100_000)
             {
                 GraphColor = ch switch
                 {
@@ -141,19 +143,51 @@ public partial class DashboardViewModel : ViewModel, IDisposable
                     "CH2" => new Color4(0f, 1f, 0f, 1f),
                     "CH3" => new Color4(0f, 0f, 1f, 1f),
                     _ => new Color4(1f, 1f, 1f, 1f)
-                }
+                },
+            };
+            var Litem = new GraphLineItem<VertexPositionColor>(v => v.Position.X)
+            {
+                GraphColor = item.GraphColor
             };
 
             _buffers[ch] = buffer;
-            _lineItems[ch] = item;
-
+            _fastItems[ch] = item;
+            _lineItems[ch] = Litem;
+            //_graphControl.AddItem(Litem); // 내부에서 자동 Transform + 렌더 요청
             _graphControl.AddItem(item); // 내부에서 자동 Transform + 렌더 요청
         }
 
-        _graphControl.UpdateTransform(-5f, 0.2f, 0.5f);
+        _graphControl.UpdateTransform(-5f, 0.2f, 0.5f, 0.0f); // ✅ YOffset 명시 추가
     }
 
     private void GenerateVertices()
+    {
+        Span<VertexPosition> buffer = stackalloc VertexPosition[1];
+
+        for (int i = 0; i < 10; i++)
+        {
+            foreach (string ch in _channels)
+            {
+                if (!_fastItems.TryGetValue(ch, out FastGraphItem<VertexPosition>? item)) continue;
+
+                float x = _channelTime.TryGetValue(ch, out var last) ? last : 0f;
+
+                float y = ch switch
+                {
+                    "CH1" => MathF.Sin(x),
+                    "CH2" => MathF.Cos(x),
+                    "CH3" => MathF.Sin(x) * MathF.Cos(x),
+                    _ => 0f
+                };
+
+                buffer[0] = new VertexPosition(x, y);
+                item.AppendBatch(buffer);
+                _channelTime[ch] = x + XStep;
+            }
+        }
+    }
+
+    private void GenerateVerticesLegacy()
     {
         if (!_buffers.TryGetValue("CH1", out _))
             return;
@@ -163,9 +197,7 @@ public partial class DashboardViewModel : ViewModel, IDisposable
         {
             foreach (string ch in _channels)
             {
-                if (!_buffers.TryGetValue(ch, out ChunkedVertexBuffer? buffer) ||
-                    !_lineItems.TryGetValue(ch, out GraphLineItem? item))
-                    continue;
+                if (!_buffers.TryGetValue(ch, out ChunkedVertexBuffer<VertexPositionColor>? buffer) || !_lineItems.TryGetValue(ch, out GraphLineItem<VertexPositionColor>? item)) continue;
 
                 // ✅ 채널별 시간 흐름 추적
                 float x = _channelTime.TryGetValue(ch, out var last) ? last : 0f;
@@ -184,13 +216,12 @@ public partial class DashboardViewModel : ViewModel, IDisposable
                     continue;
                 }
 
-                buffer.AppendPoint(x, y, item.GraphColor);
+                buffer.Append(new VertexPositionColor(x, y, 0f, item.GraphColor));
                 _channelTime[ch] = x + XStep; // ✅ 시간 전진
             }
         }
     }
-
-    public void OnRenderFrame(float time)
+    public void OnRenderFrameLegacy(float time)
     {
         float visibleEnd = _buffers["CH1"].LastX;
         float visibleStart = visibleEnd - 2.0f;
@@ -199,8 +230,8 @@ public partial class DashboardViewModel : ViewModel, IDisposable
 
         foreach (string ch in _channels)
         {
-            if (!_buffers.TryGetValue(ch, out ChunkedVertexBuffer? buffer) ||
-                !_lineItems.TryGetValue(ch, out GraphLineItem? item))
+            if (!_buffers.TryGetValue(ch, out ChunkedVertexBuffer<VertexPositionColor>? buffer) ||
+                !_lineItems.TryGetValue(ch, out GraphLineItem<VertexPositionColor>? item))
                 continue;
 
             if (buffer.LastX <= 0 || float.IsNaN(buffer.LastX))
@@ -210,7 +241,7 @@ public partial class DashboardViewModel : ViewModel, IDisposable
             try
             {
                 Span<VertexPositionColor> temp = tempArray;
-                int count = buffer.CopyVerticesInRange(visibleStart, visibleEnd, temp);
+                int count = buffer.CopyInRange(visibleStart, visibleEnd, temp);
 
                 if (count > 0)
                 {
@@ -235,13 +266,6 @@ public partial class DashboardViewModel : ViewModel, IDisposable
         {
             _renderThread?.RequestRender();
         }
-    }
-
-    // ViewModel에 추가
-    [RelayCommand]
-    private void ApplyTestTransform()
-    {
-        _graphControl?.UpdateTransform(-1600f, 0.005f, 1.0f);
     }
 
     public override void OnNavigatedTo()
@@ -285,7 +309,12 @@ public partial class DashboardViewModel : ViewModel, IDisposable
         {
             _graphControl?.Dispose();
 
-            foreach (GraphLineItem item in _lineItems.Values)
+            foreach (FastGraphItem<VertexPosition> item in _fastItems.Values)
+            {
+                item.Dispose();
+            }
+
+            foreach (GraphLineItem<VertexPositionColor> item in _lineItems.Values)
             {
                 item.Dispose();
             }

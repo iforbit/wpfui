@@ -6,7 +6,6 @@
 using SharpGen.Runtime;
 
 using System.Diagnostics;
-using System.IO;
 using System.Numerics;
 using System.Runtime.InteropServices;
 
@@ -16,12 +15,13 @@ using Vortice.Direct3D11;
 using Vortice.DXGI;
 using Vortice.Mathematics;
 
-using Wpf.Ui.DirectX.Helpers;
 using Wpf.Ui.DirectX.Models;
+using Wpf.Ui.DirectX.Models.VertexTypes;
 using Wpf.Ui.DirectX.Services;
 using Wpf.Ui.DirectX.Threading;
 
 using MapFlags = Vortice.Direct3D11.MapFlags;
+using Path = System.IO.Path;
 
 namespace Wpf.Ui.DirectX.Rendering;
 
@@ -33,8 +33,8 @@ public sealed class D3D11Renderer : IRenderable, IDisposable
     private readonly IRenderThreadService _renderThread;
     private readonly ID3D11Device _device;
     private readonly ID3D11DeviceContext _context;
-    private readonly List<GraphItemBase> _graphItems = new();
-    private readonly List<GraphItemBase> _pendingItems = new();
+    private readonly List<IGraphItem> _graphItems = new();
+    private readonly List<IGraphItem> _pendingItems = new();
 
     private readonly TimeSpan _minReinitInterval = TimeSpan.FromSeconds(5);
 
@@ -46,7 +46,8 @@ public sealed class D3D11Renderer : IRenderable, IDisposable
         !_disposed &&
          _inputLayout != null &&
          _vertexShader != null &&
-         _pixelShader != null &&
+         _pixelShaderVertexColor != null &&
+         _pixelShaderConstColor != null &&
          _renderTargetView != null &&
          _swapChain != null &&
          _viewProjectionBuffer != null &&
@@ -59,13 +60,17 @@ public sealed class D3D11Renderer : IRenderable, IDisposable
     private ID3D11RenderTargetView? _renderTargetView;
 
     private ID3D11VertexShader? _vertexShader;
-    private ID3D11PixelShader? _pixelShader;
+    private ID3D11PixelShader? _pixelShaderVertexColor;
+    private ID3D11PixelShader? _pixelShaderConstColor;
     private ID3D11InputLayout? _inputLayout;
     private ID3D11Buffer? _viewProjectionBuffer;
+    private ID3D11Buffer? _graphColorBuffer;
 
     public float XOffset { get; private set; } = 0f;
 
     public float XScale { get; private set; } = 1f;
+
+    public float YOffset { get; private set; } = 0f;
 
     public float YScale { get; private set; } = 1f;
 
@@ -123,6 +128,7 @@ public sealed class D3D11Renderer : IRenderable, IDisposable
 
         InitializeShaders();
         CreateViewProjectionBuffer();
+        CreateGraphColorBuffer();
         UpdateViewProjectionBuffer();
 
         Debug.WriteLine("✅ Renderer resources initialized.");
@@ -138,9 +144,11 @@ public sealed class D3D11Renderer : IRenderable, IDisposable
         }
 
         SafeDispose(ref _vertexShader);
-        SafeDispose(ref _pixelShader);
+        SafeDispose(ref _pixelShaderVertexColor);
+        SafeDispose(ref _pixelShaderConstColor);
         SafeDispose(ref _inputLayout);
         SafeDispose(ref _viewProjectionBuffer);
+        SafeDispose(ref _graphColorBuffer);
         SafeDispose(ref _renderTargetView);
         SafeDispose(ref _swapChain);
 
@@ -150,23 +158,31 @@ public sealed class D3D11Renderer : IRenderable, IDisposable
     private void InitializeShaders()
     {
         string vsPath = Path.Combine(AppContext.BaseDirectory, "Assets", "LineVertexShader.hlsl");
-        string psPath = Path.Combine(AppContext.BaseDirectory, "Assets", "LinePixelShader.hlsl");
+        string psVertexPath = Path.Combine(AppContext.BaseDirectory, "Assets", "LinePixelShader.hlsl");
+        string psConstPath = Path.Combine(AppContext.BaseDirectory, "Assets", "ConstPixelShader.hlsl");
 
         Result vsResult = Compiler.CompileFromFile(vsPath, "VSMain", "vs_5_0", out Blob? vsBytecode, out Blob? vsErr);
-        Result psResult = Compiler.CompileFromFile(psPath, "PSMain", "ps_5_0", out Blob? psBytecode, out Blob? psErr);
+        Result psResult = Compiler.CompileFromFile(psVertexPath, "PSMain", "ps_5_0", out Blob? psVertexBytecode, out Blob? psErr);
+        Result constResult = Compiler.CompileFromFile(psConstPath, "PSMain", "ps_5_0", out Blob? psConstBytecode, out Blob? constErr);
 
         if (vsResult.Failure || vsBytecode == null)
         {
             throw new InvalidOperationException(vsErr?.AsString() ?? "Vertex shader error.");
         }
 
-        if (psResult.Failure || psBytecode == null)
+        if (psResult.Failure || psVertexBytecode == null)
         {
             throw new InvalidOperationException(psErr?.AsString() ?? "Pixel shader error.");
         }
 
+        if (constResult.Failure || psConstBytecode == null)
+        {
+            throw new InvalidOperationException(constErr?.AsString() ?? "Const Pixel shader error.");
+        }
+
         _vertexShader = _device.CreateVertexShader(vsBytecode);
-        _pixelShader = _device.CreatePixelShader(psBytecode);
+        _pixelShaderVertexColor = _device.CreatePixelShader(psVertexBytecode);
+        _pixelShaderConstColor = _device.CreatePixelShader(psConstBytecode);
 
         _inputLayout = _device.CreateInputLayout(
             new InputElementDescription[]
@@ -178,9 +194,22 @@ public sealed class D3D11Renderer : IRenderable, IDisposable
         );
 
         vsBytecode.Dispose();
-        psBytecode.Dispose();
+        psVertexBytecode.Dispose();
+        psConstBytecode.Dispose();
         vsErr?.Dispose();
         psErr?.Dispose();
+        constErr?.Dispose();
+    }
+
+    private void CreateGraphColorBuffer()
+    {
+        var desc = new BufferDescription(
+            (uint)Marshal.SizeOf<Color4>(),
+            BindFlags.ConstantBuffer,
+            ResourceUsage.Dynamic,
+            CpuAccessFlags.Write);
+
+        _graphColorBuffer = _device.CreateBuffer(desc);
     }
 
     private void CreateViewProjectionBuffer()
@@ -197,59 +226,64 @@ public sealed class D3D11Renderer : IRenderable, IDisposable
         _viewProjectionBuffer = _device.CreateBuffer(bufferDesc);
     }
 
-    public void SetTransform(float xOffset, float xScale, float yScale)
+    private void UpdateGraphColorBuffer(Color4 color)
+    {
+        MappedSubresource mapped = _context.Map(_graphColorBuffer, 0, MapMode.WriteDiscard, MapFlags.None);
+        Marshal.StructureToPtr(color, mapped.DataPointer, false);
+        _context.Unmap(_graphColorBuffer, 0);
+    }
+
+    public void SetTransform(float xOffset, float xScale, float yScale, float yOffset = 0f)
     {
         XOffset = xOffset;
         XScale = xScale;
         YScale = yScale;
-
+        YOffset = yOffset;
         UpdateViewProjectionBuffer();
     }
 
+    private int _isUpdatingViewProjection = 0;
+
     public void UpdateViewProjectionBuffer()
     {
-        lock (_contextLock) // 전체 Context 사용을 보호
+        if (Interlocked.Exchange(ref _isUpdatingViewProjection, 1) == 1)
         {
-            if (_viewProjectionBuffer == null || _context == null || _disposed)
+            return; // 이미 실행 중
+        }
+
+        try
+        {
+            if (_disposed || _viewProjectionBuffer == null || _context?.NativePointer == IntPtr.Zero)
             {
-                Debug.WriteLine("⚠️ UpdateViewProjectionBuffer skipped: Buffer or context is null or disposed.");
+                Debug.WriteLine("⚠️ Skipped UpdateViewProjectionBuffer: disposed or buffer/context invalid.");
                 return;
             }
 
-            // 디바이스 및 컨텍스트가 여전히 유효한지 확인
-            if (!IsDeviceValid() || !IsContextValid())
+            if (float.IsNaN(XScale) || float.IsNaN(YScale) || float.IsNaN(XOffset) || float.IsNaN(YOffset))
             {
-                Debug.WriteLine("⚠️ UpdateViewProjectionBuffer skipped: Invalid device or context.");
+                Debug.WriteLine("⚠️ Invalid transform values: NaN detected.");
                 return;
             }
 
             try
             {
-                // Context 유효성 재검증
-                if (!IsContextValid())
-                {
-                    Debug.WriteLine("Context is invalid, skipping update");
-                    return;
-                }
-
-                var data = new Vector4(XScale, YScale, XOffset, 0.0f);
-                MappedSubresource mapped = _context.Map(_viewProjectionBuffer, 0,
-                    MapMode.WriteDiscard, MapFlags.None);
+                var data = new Vector4(XScale, YScale, XOffset, YOffset);
+                MappedSubresource mapped = _context.Map(_viewProjectionBuffer, 0, MapMode.WriteDiscard, MapFlags.None);
                 Marshal.StructureToPtr(data, mapped.DataPointer, false);
                 _context.Unmap(_viewProjectionBuffer, 0);
             }
-            catch (SEHException ex)
-            {
-                Debug.WriteLine($"💥 SEHException in Map: {ex.Message}");
-            }
             catch (SharpGenException ex)
             {
-                Debug.WriteLine($"💥 SharpGenException in Map: {ex.Message}");
+                Debug.WriteLine($"💥 SharpGenException during Map/Unmap: {ex.Message}");
             }
-            catch (Exception ex)
+            catch (SEHException ex)
             {
-                Debug.WriteLine($"💥 General Exception in Map: {ex.Message}");
+                Debug.WriteLine($"💥 SEHException during Map/Unmap: {ex.Message}");
             }
+        }
+        finally
+        {
+            _ = Interlocked.Exchange(ref _isUpdatingViewProjection, 0);
         }
     }
 
@@ -257,6 +291,11 @@ public sealed class D3D11Renderer : IRenderable, IDisposable
     {
         try
         {
+            if (_context == null || _context.NativePointer == IntPtr.Zero || _disposed)
+            {
+                Debug.WriteLine("❌ Invalid context");
+            }
+
             // Context가 여전히 유효한지 확인
             return _context != null &&
                    _context.NativePointer != IntPtr.Zero &&
@@ -308,23 +347,11 @@ public sealed class D3D11Renderer : IRenderable, IDisposable
             _context.VSSetShader(_vertexShader);
             _context.VSSetConstantBuffer(0, _viewProjectionBuffer);
 
-            _context.PSSetShader(_pixelShader);
             _context.RSSetViewport(new Viewport(0, 0, (int)_width, (int)_height, 0, 1));
 
-            foreach (GraphItemBase item in _graphItems)
+            foreach (IGraphItem item in _graphItems)
             {
-                if (item.IsVisible)
-                {
-                    try
-                    {
-                        // item.Update(time);
-                        item.Render(_context);
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.WriteLine($"[Render Error] {item.Name}: {ex.Message}");
-                    }
-                }
+                RenderGraphItem(item);
             }
         }
 
@@ -349,6 +376,44 @@ public sealed class D3D11Renderer : IRenderable, IDisposable
         {
             Debug.WriteLine($"💥 Unexpected exception during Render(): {ex.Message}");
         }
+    }
+
+    private void RenderGraphItem(IGraphItem item)
+    {
+        if (!item.IsVisible || !item.IsReadyToRender)
+        {
+            return;
+        }
+
+        // ✅ PS 설정은 항상 먼저
+        switch (item.ShaderType)
+        {
+            case PixelShaderType.PerVertexColor:
+                _context.PSSetShader(_pixelShaderVertexColor);
+                break;
+
+            case PixelShaderType.ConstantColor:
+                _context.PSSetShader(_pixelShaderConstColor);
+                UpdateGraphColorBuffer(item.GraphColor);
+                _context.PSSetConstantBuffer(1, _graphColorBuffer);
+                break;
+
+            default:
+                Debug.WriteLine($"⚠️ Unknown shader type for {item.Name}");
+                return;
+        }
+
+        if (item.TryGetTransform(out float xOffset, out float xScale))
+        {
+            SetTransform(xOffset, xScale, YScale, YOffset); // ✅ GPU ConstantBuffer 적용
+            item.Transform(xOffset, xScale, YScale, force: true); // ✅ GraphItem에도 반영
+        }
+
+        // ✅ InputLayout은 한 번만 설정되어 있지만, GraphItem에서 기대하는 구조와 불일치 시 문제
+        // 이 경우 별도 InputLayout 관리가 필요함 (지금은 고정이므로 괜찮음)
+
+        // 최종 렌더링
+        item.Render(_context); // ✅ 올바른 호출
     }
 
     private void ReinitializeRenderer()
@@ -406,7 +471,7 @@ public sealed class D3D11Renderer : IRenderable, IDisposable
         _renderThread?.Register(this);
     }
 
-    public void AddGraphItem(GraphItemBase item)
+    public void AddGraphItem(IGraphItem item)
     {
         lock (_graphItemsLock)
         {
@@ -431,7 +496,7 @@ public sealed class D3D11Renderer : IRenderable, IDisposable
     {
         lock (_graphItemsLock)
         {
-            foreach (GraphItemBase item in _pendingItems)
+            foreach (IGraphItem item in _pendingItems)
             {
                 GraphItemInitializer.Initialize(item, _device, _context, XOffset, XScale, YScale);
                 _graphItems.Add(item);

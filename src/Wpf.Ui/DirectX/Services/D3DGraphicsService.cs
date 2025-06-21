@@ -51,6 +51,13 @@ public sealed class D3DGraphicsService : ID3DGraphicsService
         {
             DXGI.CreateDXGIFactory2(debug: false, out factory6).CheckError();
             factory6!.EnumAdapterByGpuPreference(0, GpuPreference.HighPerformance, out adapter).CheckError();
+
+            if (adapter != null)
+            {
+                AdapterDescription1 desc = adapter.Description1;
+                Debug.WriteLine($"✅ Selected GPU: {desc.Description.Trim()}");
+                Debug.WriteLine($"🧠 Dedicated Video Memory: {desc.DedicatedVideoMemory / (1024 * 1024)} MB");
+            }
         }
         catch (Exception ex)
         {
@@ -86,6 +93,9 @@ public sealed class D3DGraphicsService : ID3DGraphicsService
 
         Device = device;
         Context = context;
+
+        FeatureLevel actualFeatureLevel = device.FeatureLevel;
+        Debug.WriteLine($"🎮 Device Feature Level: {actualFeatureLevel}");
 
         // 3. 팩토리는 IDXGIFactory1로 캐스팅 또는 새로 생성
         _factory = factory6?.QueryInterfaceOrNull<IDXGIFactory1>()

@@ -19,7 +19,7 @@ struct VSOutput
 VSOutput VSMain(VSInput input)
 {
     VSOutput output;
-    float2 transformed = (input.position.xy + offset) * scale;
+    float2 transformed = input.position.xy * scale + offset;
     output.position = float4(transformed, 0.0f, 1.0f);
     output.color = input.color;
     return output;

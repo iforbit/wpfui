@@ -5,65 +5,59 @@
 
 using System.Diagnostics;
 
-using Vortice.Mathematics;
-
-using Wpf.Ui.DirectX.Models.VertexTypes;
-
 namespace Wpf.Ui.DirectX.Models;
 
-public sealed class ChunkedVertexBuffer : IDisposable
+public sealed class ChunkedVertexBuffer<T> : IDisposable
+    where T : unmanaged
 {
     private const int ChunkSize = 16_384;
 
-    private readonly object _lock = new();
-
     private readonly ReaderWriterLockSlim _rwLock = new();
+    private readonly List<List<T>> _chunks = new();
+    private List<T> _currentChunk = new();
 
-    private readonly List<List<VertexPositionColor>> _chunks = new();
-
-    private List<VertexPositionColor> _currentChunk = new();
-
+    private readonly Func<T, float> _xSelector;
     private float _lastX = 0f;
+    private int _totalCount = 0;
 
     public float LastX => _lastX;
 
     public float XStep { get; set; } = 0.05f;
 
-    public int MaxBufferLength { get; set; } = 100_000;  // 최대 보관 길이
+    public int TotalCount => _totalCount;
+
+    public int MaxBufferLength { get; set; } = 100_000;
+
+    public float MaxVisibleRange { get; set; } = 30f;
 
     public bool AutoTrim { get; set; } = true;
 
-    public float MaxVisibleRange { get; set; } = 30f;    // 최대 시야 범위 (초)
-
-    private int _totalCount = 0;
-
-    public int TotalCount => _totalCount;
-
-    public ChunkedVertexBuffer()
+    public ChunkedVertexBuffer(int capacity, Func<T, float> xSelector)
     {
+        MaxBufferLength = capacity;
+        _xSelector = xSelector;
     }
 
-    public void AppendPoint(float x, float y, Color4? color = null)
+    public void Append(T point)
     {
         _rwLock.EnterWriteLock();
         try
         {
+            float x = _xSelector(point);
             if (x < _lastX)
             {
                 Debug.WriteLine($"⚠️ Non-monotonic X detected: {x} < {_lastX}");
-                return; // 또는 return false;
+                return;
             }
 
-            Color4 finalColor = color ?? new Color4(1f, 1f, 1f, 1f);
-
-            _currentChunk.Add(new VertexPositionColor(x, y, 0f, finalColor));
+            _currentChunk.Add(point);
             _lastX = x;
             _totalCount++;
 
             if (_currentChunk.Count >= ChunkSize)
             {
                 _chunks.Add(_currentChunk);
-                _currentChunk = new List<VertexPositionColor>(ChunkSize); // 최적화: capacity 명시
+                _currentChunk = new List<T>(ChunkSize);
             }
 
             if (AutoTrim && _totalCount > MaxBufferLength)
@@ -77,7 +71,7 @@ public sealed class ChunkedVertexBuffer : IDisposable
         }
     }
 
-    public int CopyVerticesInRange(float minX, float maxX, Span<VertexPositionColor> destination)
+    public int CopyInRange(float minX, float maxX, Span<T> destination)
     {
         int count = 0;
 
@@ -89,29 +83,30 @@ public sealed class ChunkedVertexBuffer : IDisposable
                 minX = maxX - MaxVisibleRange;
             }
 
-            foreach (List<VertexPositionColor> chunk in _chunks)
+            foreach (List<T> chunk in _chunks)
             {
                 if (chunk.Count == 0)
                 {
                     continue;
                 }
 
-                float chunkMin = chunk[0].Position.X;
-                float chunkMax = chunk[^1].Position.X;
+                float chunkMin = _xSelector(chunk[0]);
+                float chunkMax = _xSelector(chunk[^1]);
 
                 if (chunkMax < minX || chunkMin > maxX)
                 {
                     continue;
                 }
 
-                foreach (VertexPositionColor v in chunk)
+                foreach (T v in chunk)
                 {
-                    if (v.Position.X < minX)
+                    float x = _xSelector(v);
+                    if (x < minX)
                     {
                         continue;
                     }
 
-                    if (v.Position.X > maxX)
+                    if (x > maxX)
                     {
                         break;
                     }
@@ -125,14 +120,15 @@ public sealed class ChunkedVertexBuffer : IDisposable
                 }
             }
 
-            foreach (VertexPositionColor v in _currentChunk)
+            foreach (T v in _currentChunk)
             {
-                if (v.Position.X < minX)
+                float x = _xSelector(v);
+                if (x < minX)
                 {
                     continue;
                 }
 
-                if (v.Position.X > maxX)
+                if (x > maxX)
                 {
                     break;
                 }
@@ -169,15 +165,27 @@ public sealed class ChunkedVertexBuffer : IDisposable
         }
     }
 
-    public void Dispose()
+    public void Clear()
     {
-        lock (_lock)
+        _rwLock.EnterWriteLock();
+        try
         {
-            _rwLock.Dispose();
             _chunks.Clear();
             _currentChunk.Clear();
             _totalCount = 0;
             _lastX = 0f;
         }
+        finally
+        {
+            _rwLock.ExitWriteLock();
+        }
+    }
+
+    public void Dispose()
+    {
+        _rwLock.Dispose();
+        _chunks.Clear();
+        _currentChunk.Clear();
+        _totalCount = 0;
     }
 }

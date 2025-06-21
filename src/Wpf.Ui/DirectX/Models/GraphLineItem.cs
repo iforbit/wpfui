@@ -10,32 +10,39 @@ using System.Runtime.InteropServices;
 
 using Vortice.Direct3D11;
 
-using Wpf.Ui.DirectX.Models.VertexTypes;
 using Wpf.Ui.DirectX.Rendering;
 
 namespace Wpf.Ui.DirectX.Models;
 
-public sealed class GraphLineItem : GraphItemBase
+public sealed class GraphLineItem<T> : GraphItemBase<T>
+    where T : unmanaged
 {
     private ID3D11Buffer? _vertexBuffer;
     private readonly object _renderUpdateLock = new();
-    private readonly ChunkedVertexBuffer _chunkBuffer = new();
+    private readonly ChunkedVertexBuffer<T> _chunkBuffer;
+    private readonly Func<T, float> _xSelector;
 
     public int LastDrawCount => VertexCount;
 
     public float LastX => _chunkBuffer.LastX;
 
-    public void AppendPoint(float x, float y)
+    public GraphLineItem(Func<T, float> xSelector, int capacity = 10000)
     {
-        _chunkBuffer.AppendPoint(x, y, GraphColor); // ✅ 내부 색상 적용
+        _xSelector = xSelector;
+        _chunkBuffer = new ChunkedVertexBuffer<T>(capacity, xSelector);
+    }
+
+    public void AppendPoint(T point)
+    {
+        _chunkBuffer.Append(point);
     }
 
     protected override void OnInitialize(ID3D11Device device)
     {
         BufferSizeInBytes = 16384;
-        Span<VertexPositionColor> initial = stackalloc VertexPositionColor[BufferSizeInBytes / VertexSizeInBytes];
+        Span<T> initial = stackalloc T[BufferSizeInBytes / Marshal.SizeOf<T>()];
 
-        _vertexBuffer = VertexBufferFactory.CreateVertexBuffer<VertexPositionColor>(
+        _vertexBuffer = VertexBufferFactory.CreateVertexBuffer<T>(
             device, Context!, initial, dynamic: true, overrideSizeInBytes: BufferSizeInBytes);
 
         VertexCount = 0;
@@ -49,11 +56,11 @@ public sealed class GraphLineItem : GraphItemBase
             return;
         }
 
-        float minX = _lastXOffset; // Transform에서 설정된 값 사용
+        float minX = _lastXOffset;
         float maxX = _lastXOffset + (_lastXScale * _chunkBuffer.MaxVisibleRange);
 
-        Span<VertexPositionColor> span = stackalloc VertexPositionColor[8192];
-        int count = _chunkBuffer.CopyVerticesInRange(minX, maxX, span);
+        Span<T> span = stackalloc T[8192];
+        int count = _chunkBuffer.CopyInRange(minX, maxX, span);
         if (count > 0)
         {
             Debug.WriteLine($"[Update] {Name} VisibleX: {minX:F3}~{maxX:F3}, count={count}");
@@ -65,7 +72,7 @@ public sealed class GraphLineItem : GraphItemBase
         }
     }
 
-    public override void UpdateVertices(ReadOnlySpan<VertexPositionColor> span)
+    public override void UpdateVertices(ReadOnlySpan<T> span)
     {
         lock (_renderUpdateLock)
         {
@@ -75,7 +82,7 @@ public sealed class GraphLineItem : GraphItemBase
                 return;
             }
 
-            int sizeInBytes = span.Length * VertexSizeInBytes;
+            int sizeInBytes = span.Length * Marshal.SizeOf<T>();
             bool needsResize = sizeInBytes > BufferSizeInBytes || sizeInBytes < BufferSizeInBytes / 4;
 
             if (needsResize)
@@ -104,9 +111,14 @@ public sealed class GraphLineItem : GraphItemBase
         }
     }
 
-    protected override void OnTransform(float xOffset, float xScale, float yScale)
+    protected override void OnTransform(float xOffset, float xScale, float yScale) { }
+
+    public override bool TryGetTransform(out float xOffset, out float xScale)
     {
-        // 필요 시 구현하세요 (ex: 변환 캐싱, 렌더링 설정 등)
+        xScale = 0.0f;
+        xOffset = 0.0f;
+
+        return true;
     }
 
     protected override ID3D11Buffer? GetVertexBuffer() => _vertexBuffer;

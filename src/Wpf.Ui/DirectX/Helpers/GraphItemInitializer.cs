@@ -7,14 +7,12 @@ using Vortice.Direct3D11;
 
 using Wpf.Ui.DirectX.Models;
 
-namespace Wpf.Ui.DirectX.Helpers;
-
 /// <summary>
 /// GraphItem의 Device/Context/Transform 초기화 통합 처리 유틸리티
 /// </summary>
 public static class GraphItemInitializer
 {
-    public static void Initialize(GraphItemBase item, ID3D11Device device, ID3D11DeviceContext context, float xOffset, float xScale, float yScale)
+    public static void Initialize(IGraphItem item, ID3D11Device device, ID3D11DeviceContext context, float xOffset, float xScale, float yScale)
     {
         if (device == null || context == null)
         {
@@ -28,7 +26,7 @@ public static class GraphItemInitializer
         item.Transform(xOffset, xScale, yScale);
     }
 
-    public static void Reinitialize(GraphItemBase item, ID3D11Device device, ID3D11DeviceContext context, float xOffset, float xScale, float yScale)
+    public static void Reinitialize(IGraphItem item, ID3D11Device device, ID3D11DeviceContext context, float xOffset, float xScale, float yScale)
     {
         if (item == null || item.IsDisposed)
         {

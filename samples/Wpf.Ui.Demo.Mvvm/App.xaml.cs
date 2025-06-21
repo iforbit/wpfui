@@ -88,6 +88,7 @@ public partial class App
     /// </summary>
     private async void OnStartup(object sender, StartupEventArgs e)
     {
+        Application.Current.Resources["ServiceProvider"] = _host.Services;
         await _host.StartAsync();
     }
 

@@ -7,8 +7,8 @@ using SharpGen.Runtime;
 
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Windows.Threading;
 
-using Wpf.Ui.DirectX.Helpers;
 using Wpf.Ui.DirectX.Models;
 using Wpf.Ui.DirectX.Rendering;
 using Wpf.Ui.DirectX.Services;
@@ -19,17 +19,18 @@ namespace Wpf.Ui.DirectX.Controls;
 public sealed class GraphControl : HwndHost, IRenderStateNotifier
 {
     private readonly object _rendererLock = new();
-    private readonly List<GraphItemBase> _graphItems = new();
+    private readonly List<IGraphItem> _graphItems = new();
     private readonly TaskCompletionSource _rendererReady = new();
 
     private IntPtr _hwnd;
     private D3D11Renderer? _renderer;
     private ID3DGraphicsService? _graphicsService;
     private IRenderThreadService? _renderThread;
+    private DispatcherTimer? _graphicsRetryTimer;
 
     private CancellationTokenSource? _resizeToken;
     private bool _disposed;
-    private bool _rendererReadyFired = false; // ✅ RendererReady 발생 여부 추적
+    private bool _rendererReadyFired = false;
 
     public event EventHandler? RendererResetting;
 
@@ -39,15 +40,15 @@ public sealed class GraphControl : HwndHost, IRenderStateNotifier
 
     public Task WaitForRendererAsync() => _rendererReady.Task;
 
-    public bool IsRendererAvailable =>
-     _renderer is not null && !_disposed;
+    public bool IsRendererAvailable => _renderer is not null && !_disposed;
 
-    public bool IsRendererReady =>
-        _rendererReadyFired && _renderer != null && _graphItems.Count > 0;
+    public bool IsRendererReady => _rendererReadyFired && _renderer != null && _graphItems.Count > 0;
 
     public float XOffset { get; set; } = 0f;
 
     public float XScale { get; set; } = 1f;
+
+    public float YOffset { get; set; } = 0f;
 
     public float YScale { get; set; } = 1f;
 
@@ -57,7 +58,48 @@ public sealed class GraphControl : HwndHost, IRenderStateNotifier
 
     public GraphControl()
     {
+        TryResolveGraphicsService();
         SizeChanged += OnSizeChanged;
+    }
+
+    private void TryResolveGraphicsService()
+    {
+        if (_graphicsService != null)
+        {
+            return;
+        }
+
+        if (Application.Current.Resources.Contains("ServiceProvider") &&
+            Application.Current.Resources["ServiceProvider"] is IServiceProvider provider)
+        {
+            _graphicsService = provider.GetService(typeof(ID3DGraphicsService)) as ID3DGraphicsService;
+        }
+
+        if (_graphicsService == null)
+        {
+            StartRetryGraphicsService();
+        }
+    }
+
+    private void StartRetryGraphicsService()
+    {
+        _graphicsRetryTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(300), IsEnabled = true };
+        _graphicsRetryTimer.Tick += (s, e) =>
+        {
+            if (_graphicsService == null &&
+                Application.Current.Resources.Contains("ServiceProvider") &&
+                Application.Current.Resources["ServiceProvider"] is IServiceProvider provider)
+            {
+                _graphicsService = provider.GetService(typeof(ID3DGraphicsService)) as ID3DGraphicsService;
+            }
+
+            if (_graphicsService != null)
+            {
+                _graphicsRetryTimer?.Stop();
+                TryInitializeRenderer();
+            }
+        };
+        _graphicsRetryTimer.Start();
     }
 
     public void AttachRenderThread(IRenderThreadService renderThread)
@@ -66,7 +108,7 @@ public sealed class GraphControl : HwndHost, IRenderStateNotifier
         TryInitializeRenderer();
     }
 
-    public void AddItem(GraphItemBase item)
+    public void AddItem(IGraphItem item)
     {
         if (_graphItems.Contains(item))
         {
@@ -75,11 +117,9 @@ public sealed class GraphControl : HwndHost, IRenderStateNotifier
 
         _graphItems.Add(item);
 
-        // ✅ Transform은 Renderer가 아이템을 직접 초기화하면서 수행
         if (_renderer is not null)
         {
             _renderer.AddGraphItem(item);
-
             if (_rendererReadyFired)
             {
                 RequestRender();
@@ -87,15 +127,16 @@ public sealed class GraphControl : HwndHost, IRenderStateNotifier
         }
     }
 
-    public void UpdateTransform(float xOffset, float? xScale = null, float? yScale = null)
+    public void UpdateTransform(float xOffset, float? xScale = null, float? yScale = null, float? yOffset = null)
     {
         XOffset = xOffset;
         XScale = xScale ?? XScale;
         YScale = yScale ?? YScale;
+        YOffset = yOffset ?? YOffset;
 
-        _renderer?.SetTransform(XOffset, XScale, YScale);
+        _renderer?.SetTransform(XOffset, XScale, YScale, YOffset);
 
-        foreach (GraphItemBase item in _graphItems)
+        foreach (IGraphItem item in _graphItems)
         {
             item.Transform(XOffset, XScale, YScale);
         }
@@ -107,7 +148,7 @@ public sealed class GraphControl : HwndHost, IRenderStateNotifier
         double height = Math.Max(ActualHeight, 1);
 
         _hwnd = User32Interop.CreateHostWindow(hwndParent.Handle, (int)width, (int)height);
-        _graphicsService = new D3DGraphicsService();
+        TryResolveGraphicsService();
 
         return new HandleRef(this, _hwnd);
     }
@@ -143,19 +184,18 @@ public sealed class GraphControl : HwndHost, IRenderStateNotifier
 
         _ = Task.Delay(300, token).ContinueWith(
             t =>
+        {
+            if (!t.IsCanceled)
             {
-                if (!t.IsCanceled)
-                {
-                    Dispatcher.Invoke(TryInitializeRendererSafely);
-                }
-            },
-            token);
+                Dispatcher.Invoke(TryInitializeRendererSafely);
+            }
+        }, token);
     }
 
     private void TryInitializeRendererSafely()
     {
         bool needsResize = _renderer is D3D11Renderer r &&
-                   (Math.Abs(r.Width - ActualWidth) > 0.1 || Math.Abs(r.Height - ActualHeight) > 0.1);
+                           (Math.Abs(r.Width - ActualWidth) > 0.1 || Math.Abs(r.Height - ActualHeight) > 0.1);
 
         if (_renderer != null && _renderer.IsReady && !needsResize)
         {
@@ -166,7 +206,6 @@ public sealed class GraphControl : HwndHost, IRenderStateNotifier
                 RendererReady?.Invoke(this, EventArgs.Empty);
             }
 
-            // ✅ 렌더러는 유효하지만 Reset 이벤트를 외부에 보냄
             RendererReset?.Invoke(this, EventArgs.Empty);
 
             Debug.WriteLine("⚠️ TryInitializeRendererSafely: renderer is already ready and size unchanged, skipping reinit");
@@ -175,13 +214,12 @@ public sealed class GraphControl : HwndHost, IRenderStateNotifier
 
         lock (_rendererLock)
         {
-            // ✅ 렌더링 중지: 렌더러 재설정 전
             RendererResetting?.Invoke(this, EventArgs.Empty);
 
             if (_renderThread?.IsRunning == true)
             {
                 _renderThread.Stop();
-                Thread.Sleep(50); // 또는 WaitHandle로 완전 종료 보장
+                Thread.Sleep(50);
             }
 
             if (_renderer != null)
@@ -209,21 +247,20 @@ public sealed class GraphControl : HwndHost, IRenderStateNotifier
             return;
         }
 
-        if (_renderThread == null)
+        TryResolveGraphicsService();
+
+        if (_graphicsService == null || _renderThread == null)
         {
-            Debug.WriteLine("⚠️ TryInitializeRenderer: RenderThread is null. Renderer not initialized.");
+            Debug.WriteLine("⚠️ TryInitializeRenderer: GraphicsService or RenderThread not ready.");
             return;
         }
 
         try
         {
-            _graphicsService?.Dispose();
-            _graphicsService = new D3DGraphicsService();
-
             var newRenderer = new D3D11Renderer(_graphicsService, _renderThread, _hwnd, ActualWidth, ActualHeight);
             newRenderer.SetTransform(XOffset, XScale, YScale);
 
-            foreach (GraphItemBase item in _graphItems)
+            foreach (IGraphItem item in _graphItems)
             {
                 GraphItemInitializer.Reinitialize(item, newRenderer.Device, newRenderer.Context, XOffset, XScale, YScale);
                 newRenderer.AddGraphItem(item);
@@ -233,13 +270,11 @@ public sealed class GraphControl : HwndHost, IRenderStateNotifier
             _renderThread.Register(newRenderer);
             _renderThread.Start();
 
-            // ✅ OnRendererReady 호출로 대기 중이던 아이템 초기화
             _renderer.OnRendererReady();
-
-            // ✅ 명시적 Transform 적용 (초기 값이라도 적용되게)
             _renderer.SetTransform(XOffset, XScale, YScale);
+
             _ = _rendererReady.TrySetResult();
-            _rendererReadyFired = true; // ✅ 준비 완료 상태 반영
+            _rendererReadyFired = true;
             RendererReady?.Invoke(this, EventArgs.Empty);
         }
         catch (SharpGenException ex)
@@ -258,7 +293,7 @@ public sealed class GraphControl : HwndHost, IRenderStateNotifier
 
         if (disposing)
         {
-            foreach (GraphItemBase item in _graphItems)
+            foreach (IGraphItem item in _graphItems)
             {
                 item.Dispose();
             }
@@ -266,9 +301,10 @@ public sealed class GraphControl : HwndHost, IRenderStateNotifier
             _graphItems.Clear();
             _renderer?.Dispose();
             _renderer = null;
-            _graphicsService?.Dispose();
             _graphicsService = null;
             _resizeToken?.Dispose();
+            _graphicsRetryTimer?.Stop();
+            _graphicsRetryTimer = null;
         }
 
         if (_hwnd != IntPtr.Zero)
