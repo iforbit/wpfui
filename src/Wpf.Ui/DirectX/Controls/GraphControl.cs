@@ -10,6 +10,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Threading;
 
 using Wpf.Ui.DirectX.Models;
+using Wpf.Ui.DirectX.Models.VertexTypes;
 using Wpf.Ui.DirectX.Rendering;
 using Wpf.Ui.DirectX.Services;
 using Wpf.Ui.DirectX.Threading;
@@ -58,7 +59,7 @@ public sealed class GraphControl : HwndHost, IRenderStateNotifier
 
     public GraphControl()
     {
-        TryResolveGraphicsService();
+        //TryResolveGraphicsService();
         SizeChanged += OnSizeChanged;
     }
 
@@ -78,7 +79,10 @@ public sealed class GraphControl : HwndHost, IRenderStateNotifier
         if (_graphicsService == null)
         {
             StartRetryGraphicsService();
+            Debug.WriteLine($"🧪 call StartRetryGraphicsService");
         }
+        Debug.WriteLine($"🧪 call TryResolveGraphicsService");
+
     }
 
     private void StartRetryGraphicsService()
@@ -116,12 +120,15 @@ public sealed class GraphControl : HwndHost, IRenderStateNotifier
         }
 
         _graphItems.Add(item);
-
+        Debug.WriteLine($"📌 AddItem: {item.Name}");
         if (_renderer is not null)
         {
             _renderer.AddGraphItem(item);
+            Debug.WriteLine($"📌 AddGraphItem: {item.Name}");
             if (_rendererReadyFired)
             {
+                Debug.WriteLine($"📌 _rendererReadyFired: {item.Name}");
+                UpdateTransformFromFirstItem();   // ✅ 자동 Transform 적용
                 RequestRender();
             }
         }
@@ -166,7 +173,7 @@ public sealed class GraphControl : HwndHost, IRenderStateNotifier
             Debug.WriteLine("⚠️ RequestRender ignored: no render thread assigned");
             return;
         }
-
+        UpdateTransformFromFirstItem(); // ✅ 렌더 요청 직전에 transform 조정
         _renderThread?.RequestRender();
     }
 
@@ -207,7 +214,6 @@ public sealed class GraphControl : HwndHost, IRenderStateNotifier
             }
 
             RendererReset?.Invoke(this, EventArgs.Empty);
-
             Debug.WriteLine("⚠️ TryInitializeRendererSafely: renderer is already ready and size unchanged, skipping reinit");
             return;
         }
@@ -236,6 +242,14 @@ public sealed class GraphControl : HwndHost, IRenderStateNotifier
                 _renderThread.Start();
             }
 
+            // ✅ 여기 보장적 호출
+            if (_renderer?.IsReady == true && !_rendererReadyFired)
+            {
+                _rendererReadyFired = true;
+                _ = _rendererReady.TrySetResult();
+                RendererReady?.Invoke(this, EventArgs.Empty);
+            }
+
             RendererReset?.Invoke(this, EventArgs.Empty);
         }
     }
@@ -259,14 +273,13 @@ public sealed class GraphControl : HwndHost, IRenderStateNotifier
         {
             var newRenderer = new D3D11Renderer(_graphicsService, _renderThread, _hwnd, ActualWidth, ActualHeight);
             newRenderer.SetTransform(XOffset, XScale, YScale);
-
+            _renderer = newRenderer;
             foreach (IGraphItem item in _graphItems)
             {
                 GraphItemInitializer.Reinitialize(item, newRenderer.Device, newRenderer.Context, XOffset, XScale, YScale);
                 newRenderer.AddGraphItem(item);
             }
-
-            _renderer = newRenderer;
+       
             _renderThread.Register(newRenderer);
             _renderThread.Start();
 
@@ -283,6 +296,46 @@ public sealed class GraphControl : HwndHost, IRenderStateNotifier
             Debug.WriteLine($"[Renderer Init Failed] {ex.ResultCode} : {ex.Message}");
         }
     }
+
+    private bool _initialTransformApplied = false;
+
+    public void UpdateTransformFromFirstItem(float visibleX = 30f, float visibleY = 1.0f)
+    {
+        if (_graphItems.Count == 0)
+            return;
+
+        if (_graphItems[0] is FastGraphItem<VertexPosition> fp)
+        {
+            if (fp.LastX <= 1e-3f)
+            {
+                if (!_initialTransformApplied)
+                {
+                    Debug.WriteLine("⚠️ No LastX yet, applying default transform");
+                    UpdateTransform(0f, 1.0f, 1.0f, 0.0f);
+                    _initialTransformApplied = true;
+                }
+                return;
+            }
+
+            _initialTransformApplied = false;
+
+            float xEnd = fp.LastX;
+     
+
+            float xStart = Math.Max(0, xEnd - visibleX);
+            // ✅ xOffset: 화면 오른쪽이 xEnd가 되도록 조정
+            float xOffset = -xStart;
+            float xScale = 1.0f;
+            fp.GetYRangeInRange(xStart, xEnd, out float minY, out float maxY);
+            float rangeY = Math.Max(1e-3f, maxY - minY);
+            float yScale = visibleY / rangeY;
+            float yOffset = -minY * yScale;
+
+            UpdateTransform(xOffset, xScale, yScale, yOffset);
+            Debug.WriteLine($"🧭 Transform (fixed): xOffset={xOffset:F2}, xScale={xScale:F2}, yOffset={yOffset:F2}, yScale={yScale:F2}");
+        }
+    }
+
 
     protected override void Dispose(bool disposing)
     {

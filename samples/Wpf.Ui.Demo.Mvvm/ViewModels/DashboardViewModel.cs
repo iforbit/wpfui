@@ -32,7 +32,7 @@ public partial class DashboardViewModel : ViewModel, IDisposable
     private readonly Dictionary<string, float> _channelTime = new();
     private readonly string[] _channels = ["CH1", "CH2", "CH3"];
 
-    private const float XStep = 0.002f; // 20Hz 샘플링 간격처럼 동작
+    private const double XStep = 0.02f; // 20Hz 샘플링 간격처럼 동작
 
     private readonly DispatcherTimer _renderTimer = new();
 
@@ -70,6 +70,7 @@ public partial class DashboardViewModel : ViewModel, IDisposable
 
                 //GenerateVerticesLegacy();
                 GenerateVertices();
+              
             }
             catch (InvalidOperationException ex)
             {
@@ -101,13 +102,15 @@ public partial class DashboardViewModel : ViewModel, IDisposable
     public void SetGraphControl(GraphControl control)
     {
         _graphControl = control;
-        _graphControl.AttachRenderThread(_renderThread!);
+     
 
         // Renderer가 실제 준비된 시점에만 타이머 시작
         _graphControl.RendererReady += (_, _) =>
         {
             Debug.WriteLine("✅ RendererReady: (internal task ready)");
             // 타이머는 여기서 X
+            //AppendTestShape();              // 다시 호출 보장
+            _graphControl.RequestRender();  // 수동 렌더링 요청
         };
 
         _graphControl.RendererResetting += (_, _) =>
@@ -120,13 +123,15 @@ public partial class DashboardViewModel : ViewModel, IDisposable
 
         _graphControl.RendererReset += (_, _) =>
         {
-            _graphControl.UpdateTransform(-5f, 0.2f, 0.5f, 0.0f); // ✅ YOffset 명시 추가
+            //_graphControl.UpdateTransform(-10f, 20f, 20f, 0f); // 확대 + 왼쪽 이동
             _dataTimer.Start();
             _renderTimer.Start();
             IsRendering = true;
             Debug.WriteLine("✅ RendererReset: Timers restarted");
+            //AppendTestShape(); // 안전을 위해 추가
+            _graphControl.RequestRender();
         };
-
+        
         foreach (string ch in _channels)
         {
             var buffer = new ChunkedVertexBuffer<VertexPositionColor>(500_000, v => v.Position.X)
@@ -137,6 +142,7 @@ public partial class DashboardViewModel : ViewModel, IDisposable
 
             var item = new FastGraphItem<VertexPosition>(100_000)
             {
+                Name = ch,
                 GraphColor = ch switch
                 {
                     "CH1" => new Color4(1f, 0f, 0f, 1f),
@@ -144,6 +150,7 @@ public partial class DashboardViewModel : ViewModel, IDisposable
                     "CH3" => new Color4(0f, 0f, 1f, 1f),
                     _ => new Color4(1f, 1f, 1f, 1f)
                 },
+                UseHistoryCache = false
             };
             var Litem = new GraphLineItem<VertexPositionColor>(v => v.Position.X)
             {
@@ -157,7 +164,7 @@ public partial class DashboardViewModel : ViewModel, IDisposable
             _graphControl.AddItem(item); // 내부에서 자동 Transform + 렌더 요청
         }
 
-        _graphControl.UpdateTransform(-5f, 0.2f, 0.5f, 0.0f); // ✅ YOffset 명시 추가
+        _graphControl.AttachRenderThread(_renderThread!);
     }
 
     private void GenerateVertices()
@@ -170,21 +177,58 @@ public partial class DashboardViewModel : ViewModel, IDisposable
             {
                 if (!_fastItems.TryGetValue(ch, out FastGraphItem<VertexPosition>? item)) continue;
 
-                float x = _channelTime.TryGetValue(ch, out var last) ? last : 0f;
+                double x = _channelTime.TryGetValue(ch, out var last) ? last : 0f;
 
+                x = (double)last;
+                x += XStep;  // XStep도 double이면 더 좋음
+
+                float xf = (float)x;
                 float y = ch switch
                 {
-                    "CH1" => MathF.Sin(x),
-                    "CH2" => MathF.Cos(x),
-                    "CH3" => MathF.Sin(x) * MathF.Cos(x),
+                    "CH1" => MathF.Sin(xf),
+                    "CH2" => MathF.Cos(xf),
+                    "CH3" => MathF.Sin(xf) * MathF.Cos(xf),
                     _ => 0f
                 };
 
-                buffer[0] = new VertexPosition(x, y);
+
+                buffer[0] = new VertexPosition(xf, y);
                 item.AppendBatch(buffer);
-                _channelTime[ch] = x + XStep;
+                _channelTime[ch] = xf;
             }
         }
+    }
+
+    public void AppendTestShape()
+    {
+        if (_graphControl == null )
+            return;
+
+        var testItem = new FastGraphItem<VertexPosition>(10)
+        {
+            Name = "TestTriangle",
+            GraphColor = new Color4(1f, 1f, 0f, 1f),
+            UseHistoryCache = false
+        };
+
+        _graphControl.AddItem(testItem);
+
+        // ✅ 중심 좌표를 화면에 보이는 45 정도로 이동
+        var shape = new VertexPosition[]
+ {
+    new VertexPosition(0.0f, 0.0f),
+    new VertexPosition(1.0f, 0.0f),
+    new VertexPosition(0.5f, 1.0f),
+    new VertexPosition(0.0f, 0.0f)
+ };
+
+
+        testItem.AppendBatch(shape);
+
+        //// ⛳️ transform 재계산 강제 적용
+        //_graphControl.UpdateTransformFromFirstItem(); // 여기서 LastX 등이 반영된 상태로 다시 계산
+        testItem.Transform(0f, 1f, 1f, force: true);
+        _graphControl.UpdateTransform(0f, 1f, 1f, 0f); // GPU 상 ViewProjectionBuffer 적용
     }
 
     private void GenerateVerticesLegacy()
@@ -217,7 +261,7 @@ public partial class DashboardViewModel : ViewModel, IDisposable
                 }
 
                 buffer.Append(new VertexPositionColor(x, y, 0f, item.GraphColor));
-                _channelTime[ch] = x + XStep; // ✅ 시간 전진
+                _channelTime[ch] = x + (float)XStep; // ✅ 시간 전진
             }
         }
     }

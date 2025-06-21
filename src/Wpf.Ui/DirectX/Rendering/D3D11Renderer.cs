@@ -44,15 +44,29 @@ public sealed class D3D11Renderer : IRenderable, IDisposable
 
     public bool IsReady =>
         !_disposed &&
-         _inputLayout != null &&
-         _vertexShader != null &&
-         _pixelShaderVertexColor != null &&
-         _pixelShaderConstColor != null &&
-         _renderTargetView != null &&
-         _swapChain != null &&
-         _viewProjectionBuffer != null &&
-         _context != null &&
-         _context.NativePointer != IntPtr.Zero;
+        _context != null &&
+        _context.NativePointer != IntPtr.Zero &&
+        _renderTargetView != null &&
+        _swapChain != null &&
+        _viewProjectionBuffer != null &&
+
+        // ✅ PerVertexColor용 셰이더 및 레이아웃
+        _inputLayout != null &&
+        _vertexShader != null &&
+        _pixelShaderVertexColor != null &&
+
+        // ✅ ConstantColor용 셰이더 및 레이아웃
+        _inputLayoutConst != null &&
+        _vertexShaderConst != null &&
+        _pixelShaderConstColor != null &&
+        _graphColorBuffer != null;
+
+
+    public bool IsReadyForVertexColor =>
+    _inputLayout != null && _vertexShader != null && _pixelShaderVertexColor != null;
+
+    public bool IsReadyForConstColor =>
+        _inputLayoutConst != null && _vertexShaderConst != null && _pixelShaderConstColor != null && _graphColorBuffer != null;
 
     private bool _disposed = false;
 
@@ -60,9 +74,12 @@ public sealed class D3D11Renderer : IRenderable, IDisposable
     private ID3D11RenderTargetView? _renderTargetView;
 
     private ID3D11VertexShader? _vertexShader;
+    private ID3D11VertexShader? _vertexShaderConst;
+    
     private ID3D11PixelShader? _pixelShaderVertexColor;
     private ID3D11PixelShader? _pixelShaderConstColor;
     private ID3D11InputLayout? _inputLayout;
+    private ID3D11InputLayout? _inputLayoutConst;
     private ID3D11Buffer? _viewProjectionBuffer;
     private ID3D11Buffer? _graphColorBuffer;
 
@@ -144,9 +161,11 @@ public sealed class D3D11Renderer : IRenderable, IDisposable
         }
 
         SafeDispose(ref _vertexShader);
+        SafeDispose(ref _vertexShaderConst);
         SafeDispose(ref _pixelShaderVertexColor);
         SafeDispose(ref _pixelShaderConstColor);
         SafeDispose(ref _inputLayout);
+        SafeDispose(ref _inputLayoutConst);
         SafeDispose(ref _viewProjectionBuffer);
         SafeDispose(ref _graphColorBuffer);
         SafeDispose(ref _renderTargetView);
@@ -158,12 +177,20 @@ public sealed class D3D11Renderer : IRenderable, IDisposable
     private void InitializeShaders()
     {
         string vsPath = Path.Combine(AppContext.BaseDirectory, "Assets", "LineVertexShader.hlsl");
+        string vsConstPath = Path.Combine(AppContext.BaseDirectory, "Assets", "ConstVertexShader.hlsl");
         string psVertexPath = Path.Combine(AppContext.BaseDirectory, "Assets", "LinePixelShader.hlsl");
         string psConstPath = Path.Combine(AppContext.BaseDirectory, "Assets", "ConstPixelShader.hlsl");
 
         Result vsResult = Compiler.CompileFromFile(vsPath, "VSMain", "vs_5_0", out Blob? vsBytecode, out Blob? vsErr);
+        Result vsConstResult = Compiler.CompileFromFile(vsConstPath, "VSMain", "vs_5_0", out Blob? vsConstBytecode, out Blob? vsConstErr);
+
         Result psResult = Compiler.CompileFromFile(psVertexPath, "PSMain", "ps_5_0", out Blob? psVertexBytecode, out Blob? psErr);
         Result constResult = Compiler.CompileFromFile(psConstPath, "PSMain", "ps_5_0", out Blob? psConstBytecode, out Blob? constErr);
+
+        if (vsConstResult.Failure || vsConstBytecode == null)
+        {
+            throw new InvalidOperationException(vsConstErr?.AsString() ?? "Const Vertex shader error.");
+        }
 
         if (vsResult.Failure || vsBytecode == null)
         {
@@ -181,6 +208,8 @@ public sealed class D3D11Renderer : IRenderable, IDisposable
         }
 
         _vertexShader = _device.CreateVertexShader(vsBytecode);
+        _vertexShaderConst = _device.CreateVertexShader(vsConstBytecode);
+
         _pixelShaderVertexColor = _device.CreatePixelShader(psVertexBytecode);
         _pixelShaderConstColor = _device.CreatePixelShader(psConstBytecode);
 
@@ -191,6 +220,15 @@ public sealed class D3D11Renderer : IRenderable, IDisposable
                 new InputElementDescription("COLOR", 0, Format.R32G32B32A32_Float, 12, 0)
             },
             vsBytecode
+        );
+
+        // ✅ 전용 InputLayout: POSITION only
+        _inputLayoutConst = _device.CreateInputLayout(
+            new InputElementDescription[]
+            {
+        new InputElementDescription("POSITION", 0, Format.R32G32B32_Float, 0, 0)
+            },
+            vsConstBytecode
         );
 
         vsBytecode.Dispose();
@@ -342,12 +380,8 @@ public sealed class D3D11Renderer : IRenderable, IDisposable
         {
             _context.OMSetRenderTargets(_renderTargetView);
             _context.ClearRenderTargetView(_renderTargetView, new Color4(0, 0, 0, 1));
-
-            _context.IASetInputLayout(_inputLayout);
-            _context.VSSetShader(_vertexShader);
-            _context.VSSetConstantBuffer(0, _viewProjectionBuffer);
-
             _context.RSSetViewport(new Viewport(0, 0, (int)_width, (int)_height, 0, 1));
+            _context.VSSetConstantBuffer(0, _viewProjectionBuffer);
 
             foreach (IGraphItem item in _graphItems)
             {
@@ -381,21 +415,23 @@ public sealed class D3D11Renderer : IRenderable, IDisposable
     private void RenderGraphItem(IGraphItem item)
     {
         if (!item.IsVisible || !item.IsReadyToRender)
-        {
             return;
-        }
 
-        // ✅ PS 설정은 항상 먼저
+        // ✅ 픽셀 셰이더 설정
         switch (item.ShaderType)
         {
-            case PixelShaderType.PerVertexColor:
-                _context.PSSetShader(_pixelShaderVertexColor);
-                break;
-
             case PixelShaderType.ConstantColor:
+                _context.VSSetShader(_vertexShaderConst);
+                _context.IASetInputLayout(_inputLayoutConst);
                 _context.PSSetShader(_pixelShaderConstColor);
                 UpdateGraphColorBuffer(item.GraphColor);
                 _context.PSSetConstantBuffer(1, _graphColorBuffer);
+                break;
+
+            case PixelShaderType.PerVertexColor:
+                _context.VSSetShader(_vertexShader);
+                _context.IASetInputLayout(_inputLayout);
+                _context.PSSetShader(_pixelShaderVertexColor);
                 break;
 
             default:
@@ -403,17 +439,9 @@ public sealed class D3D11Renderer : IRenderable, IDisposable
                 return;
         }
 
-        if (item.TryGetTransform(out float xOffset, out float xScale))
-        {
-            SetTransform(xOffset, xScale, YScale, YOffset); // ✅ GPU ConstantBuffer 적용
-            item.Transform(xOffset, xScale, YScale, force: true); // ✅ GraphItem에도 반영
-        }
-
-        // ✅ InputLayout은 한 번만 설정되어 있지만, GraphItem에서 기대하는 구조와 불일치 시 문제
-        // 이 경우 별도 InputLayout 관리가 필요함 (지금은 고정이므로 괜찮음)
-
-        // 최종 렌더링
-        item.Render(_context); // ✅ 올바른 호출
+        // ❌ Transform은 GraphControl에서만 설정됨
+        // ✅ 여기선 렌더링만
+        item.Render(_context);
     }
 
     private void ReinitializeRenderer()
@@ -505,7 +533,21 @@ public sealed class D3D11Renderer : IRenderable, IDisposable
             _pendingItems.Clear();
         }
     }
-
+    /*
+    public void TryRecover()
+    {
+        try
+        {
+            Dispose();
+            Initialize(Device); // 또는 TryInitialize()
+            _isFaulted = false;
+        }
+        catch
+        {
+            _isFaulted = true;
+        }
+    }
+    */
     public void Dispose()
     {
         if (_disposed)

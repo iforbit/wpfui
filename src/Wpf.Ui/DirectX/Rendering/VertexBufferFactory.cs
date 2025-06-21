@@ -42,7 +42,17 @@ public static class VertexBufferFactory
         if (dynamic)
         {
             ID3D11Buffer buffer = device.CreateBuffer(bufferDesc);
-            UploadVertices(device, context, buffer, vertices);
+
+            // ✅ Span이 비어 있으면 업로드 생략
+            if (!vertices.IsEmpty)
+            {
+                UploadVertices(device, context, buffer, vertices);
+            }
+            else
+            {
+                Debug.WriteLine($"⚠️ Skipped Upload: Empty span in CreateVertexBuffer<{typeof(T).Name}>");
+            }
+
             return buffer;
         }
         else
@@ -57,7 +67,25 @@ public static class VertexBufferFactory
         }
     }
 
-    public static unsafe void UploadVertices<T>(
+        public static bool TryUploadVertices<T>(ID3D11Device device, ID3D11DeviceContext context, ID3D11Buffer buffer, T[]? source, string name) where T : unmanaged
+        {
+            if (source == null || source.Length == 0)
+            {
+                Debug.WriteLine($"⚠️ Upload skipped: fullSpan is null or empty for {name}");
+                return false;
+            }
+
+            ReadOnlySpan<T> span = source.AsSpan();
+            if (span.IsEmpty)
+            {
+                Debug.WriteLine($"⚠️ Upload skipped: span is empty for {name}");
+                return false;
+            }
+
+            return UploadVertices(device, context, buffer, span);
+        }
+
+    public static unsafe bool UploadVertices<T>(
         ID3D11Device device,
         ID3D11DeviceContext context,
         ID3D11Buffer buffer,
@@ -66,9 +94,20 @@ public static class VertexBufferFactory
     {
         lock (_contextLock)
         {
-            if (vertices.IsEmpty || buffer == null || context == null)
+            if (vertices.IsEmpty)
             {
-                return;
+                Debug.WriteLine("⚠️ UploadVertices skipped: vertices.IsEmpty");
+                return false;
+            }
+            if (buffer == null)
+            {
+                Debug.WriteLine("⚠️ UploadVertices skipped: buffer is null");
+                return false;
+            }
+            if (context == null)
+            {
+                Debug.WriteLine("⚠️ UploadVertices skipped: context is null");
+                return false;
             }
 
             uint sizeInBytes = (uint)(vertices.Length * sizeof(T));
@@ -80,13 +119,13 @@ public static class VertexBufferFactory
             catch (SharpGenException ex)
             {
                 Debug.WriteLine($"❌ Error accessing buffer.Description: {ex.Message}");
-                return;
+                return false;
             }
 
             if (sizeInBytes > bufferSize)
             {
                 Debug.WriteLine($"❌ UploadVertices aborted: data size ({sizeInBytes}) > buffer size ({bufferSize})");
-                return;
+                return false;
             }
 
             try
@@ -94,19 +133,22 @@ public static class VertexBufferFactory
                 MappedSubresource mapped = context.Map(buffer, 0, MapMode.WriteDiscard, MapFlags.None);
                 vertices.CopyTo(new Span<T>((void*)mapped.DataPointer, vertices.Length));
                 context.Unmap(buffer, 0);
+                return true;
             }
             catch (SEHException ex)
             {
                 Debug.WriteLine($"💥 SEHException during Map/Unmap: {ex.Message}");
+                return false;
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"[UploadVertices] Exception: {ex.Message}");
+                return false;
             }
         }
     }
 
-    public static unsafe void UploadVertices<T>(
+    public static unsafe bool UploadVertices<T>(
     ID3D11Device device,
     ID3D11DeviceContext context,
     ID3D11Buffer buffer,
@@ -119,7 +161,7 @@ public static class VertexBufferFactory
             if ((span1.Length + span2.Length) == 0 || buffer == null || context == null)
             {
                 Debug.WriteLine("⚠️ UploadVertices skipped: invalid parameters");
-                return;
+                return false;
             }
 
             uint totalSize = (uint)((span1.Length + span2.Length) * sizeof(T));
@@ -132,13 +174,13 @@ public static class VertexBufferFactory
             catch (SharpGenException ex)
             {
                 Debug.WriteLine($"❌ Error accessing buffer.Description: {ex.Message}");
-                return;
+                return false;
             }
 
             if (totalSize > bufferSize)
             {
                 Debug.WriteLine($"❌❌ UploadVertices aborted: total data size ({totalSize}) > buffer size ({bufferSize})");
-                return;
+                return false;
             }
 
             try
@@ -150,14 +192,17 @@ public static class VertexBufferFactory
                 span2.CopyTo(new Span<T>(dst + span1.Length, span2.Length));
 
                 context.Unmap(buffer, 0);
+                return true;
             }
             catch (SEHException ex)
             {
                 Debug.WriteLine($"💥 SEHException during Map/Unmap (DualSpan): {ex.Message}");
+                return false;
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"[UploadVertices - DualSpan] Exception: {ex.Message}");
+                return false;
             }
         }
     }
