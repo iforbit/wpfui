@@ -15,6 +15,7 @@ using Vortice.Direct3D;
 using Vortice.Direct3D11;
 using Vortice.DXGI;
 using Vortice.Mathematics;
+
 using Wpf.Ui.DirectX.Helpers;
 using Wpf.Ui.DirectX.Models;
 using Wpf.Ui.DirectX.Services;
@@ -26,31 +27,42 @@ namespace Wpf.Ui.DirectX.Rendering;
 
 public sealed class D3D11Renderer : IRenderable, IDisposable
 {
-    public bool IsReady =>
-     !_disposed &&
-     _inputLayout != null &&
-     _vertexShader != null &&
-     _pixelShader != null &&
-     _renderTargetView != null &&
-     _swapChain != null &&
-     _viewProjectionBuffer != null &&
-     _context != null &&
-     _context.NativePointer != IntPtr.Zero;
-    private bool _disposed = false;
+    private const int MaxReinitFailCount = 3;
 
     private readonly ID3DGraphicsService _graphicsService;
     private readonly IRenderThreadService _renderThread;
     private readonly ID3D11Device _device;
     private readonly ID3D11DeviceContext _context;
-    private IDXGISwapChain? _swapChain;
-    private ID3D11RenderTargetView? _renderTargetView;
     private readonly List<GraphItemBase> _graphItems = new();
     private readonly List<GraphItemBase> _pendingItems = new();
+
+    private readonly TimeSpan _minReinitInterval = TimeSpan.FromSeconds(5);
+
+    private readonly object _reinitLock = new();
+    private readonly object _graphItemsLock = new();
+    private readonly object _contextLock = new();
+
+    public bool IsReady =>
+        !_disposed &&
+         _inputLayout != null &&
+         _vertexShader != null &&
+         _pixelShader != null &&
+         _renderTargetView != null &&
+         _swapChain != null &&
+         _viewProjectionBuffer != null &&
+         _context != null &&
+         _context.NativePointer != IntPtr.Zero;
+
+    private bool _disposed = false;
+
+    private IDXGISwapChain? _swapChain;
+    private ID3D11RenderTargetView? _renderTargetView;
 
     private ID3D11VertexShader? _vertexShader;
     private ID3D11PixelShader? _pixelShader;
     private ID3D11InputLayout? _inputLayout;
     private ID3D11Buffer? _viewProjectionBuffer;
+
     public float XOffset { get; private set; } = 0f;
 
     public float XScale { get; private set; } = 1f;
@@ -62,16 +74,15 @@ public sealed class D3D11Renderer : IRenderable, IDisposable
     private readonly IntPtr _hwnd;
 
     public double Width => _width;
+
     public double Height => _height;
+
     public ID3D11Device Device => _device;
+
     public ID3D11DeviceContext Context => _context;
+
     private DateTime _lastReinitTime = DateTime.MinValue;
-    private readonly TimeSpan _minReinitInterval = TimeSpan.FromSeconds(5);
     private int _reinitFailCount = 0;
-    private const int MaxReinitFailCount = 3;
-    private readonly object _reinitLock = new();
-    private readonly object _graphItemsLock = new();
-    private readonly object _contextLock = new();
 
     private volatile bool _isReinitializing = false;
 
@@ -117,10 +128,10 @@ public sealed class D3D11Renderer : IRenderable, IDisposable
         Debug.WriteLine("✅ Renderer resources initialized.");
     }
 
-
     private void DisposeResources()
     {
-        static void SafeDispose<T>(ref T? resource) where T : class, IDisposable
+        static void SafeDispose<T>(ref T? resource)
+            where T : class, IDisposable
         {
             resource?.Dispose();
             resource = null;
@@ -136,19 +147,23 @@ public sealed class D3D11Renderer : IRenderable, IDisposable
         Debug.WriteLine("🧹 All GPU resources disposed.");
     }
 
-
     private void InitializeShaders()
     {
         string vsPath = Path.Combine(AppContext.BaseDirectory, "Assets", "LineVertexShader.hlsl");
         string psPath = Path.Combine(AppContext.BaseDirectory, "Assets", "LinePixelShader.hlsl");
 
-        var vsResult = Compiler.CompileFromFile(vsPath, "VSMain", "vs_5_0", out Blob? vsBytecode, out Blob? vsErr);
-        var psResult = Compiler.CompileFromFile(psPath, "PSMain", "ps_5_0", out Blob? psBytecode, out Blob? psErr);
+        Result vsResult = Compiler.CompileFromFile(vsPath, "VSMain", "vs_5_0", out Blob? vsBytecode, out Blob? vsErr);
+        Result psResult = Compiler.CompileFromFile(psPath, "PSMain", "ps_5_0", out Blob? psBytecode, out Blob? psErr);
 
         if (vsResult.Failure || vsBytecode == null)
+        {
             throw new InvalidOperationException(vsErr?.AsString() ?? "Vertex shader error.");
+        }
+
         if (psResult.Failure || psBytecode == null)
+        {
             throw new InvalidOperationException(psErr?.AsString() ?? "Pixel shader error.");
+        }
 
         _vertexShader = _device.CreateVertexShader(vsBytecode);
         _pixelShader = _device.CreatePixelShader(psBytecode);
@@ -253,7 +268,6 @@ public sealed class D3D11Renderer : IRenderable, IDisposable
         }
     }
 
-
     public bool IsDeviceValid()
     {
         try
@@ -267,6 +281,7 @@ public sealed class D3D11Renderer : IRenderable, IDisposable
             return false;
         }
     }
+
     public void RenderFrame(float time)
     {
         if (_disposed)
@@ -302,7 +317,7 @@ public sealed class D3D11Renderer : IRenderable, IDisposable
                 {
                     try
                     {
-                        //item.Update(time);
+                        // item.Update(time);
                         item.Render(_context);
                     }
                     catch (Exception ex)
@@ -396,7 +411,9 @@ public sealed class D3D11Renderer : IRenderable, IDisposable
         lock (_graphItemsLock)
         {
             if (_graphItems.Contains(item) || _pendingItems.Contains(item))
+            {
                 return;
+            }
 
             if (IsReady)
             {
@@ -410,21 +427,19 @@ public sealed class D3D11Renderer : IRenderable, IDisposable
         }
     }
 
-    public  void OnRendererReady()
+    public void OnRendererReady()
     {
         lock (_graphItemsLock)
         {
-            foreach (var item in _pendingItems)
+            foreach (GraphItemBase item in _pendingItems)
             {
                 GraphItemInitializer.Initialize(item, _device, _context, XOffset, XScale, YScale);
                 _graphItems.Add(item);
             }
 
-
             _pendingItems.Clear();
         }
     }
-
 
     public void Dispose()
     {

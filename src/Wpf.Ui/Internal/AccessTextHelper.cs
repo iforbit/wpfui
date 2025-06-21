@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Windows.Controls;
 
 namespace Wpf.Ui.Internal;
+
 internal static class AccessTextHelper
 {
     private static readonly MethodInfo? RemoveAccessKeyMarkerMethodInfo = typeof(AccessText).GetMethod("RemoveAccessKeyMarker", BindingFlags.Static | BindingFlags.NonPublic);

@@ -6,6 +6,7 @@
 using System.Windows.Automation.Peers;
 
 namespace Wpf.Ui.Controls.Automation.Peers;
+
 public class GalleryItemWrapperAutomationPeer : FrameworkElementAutomationPeer
 {
     /// <inheritdoc cref="FrameworkElementAutomationPeer" />

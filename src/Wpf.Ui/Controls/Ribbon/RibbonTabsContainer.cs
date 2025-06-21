@@ -6,6 +6,7 @@
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+
 using Wpf.Ui.Internal;
 
 namespace Wpf.Ui.Controls;
@@ -33,7 +34,7 @@ public class RibbonTabsContainer : Panel, IScrollInfo
     }
 
     /// <inheritdoc />
-    protected override Size MeasureOverride(Size availableSize )
+    protected override Size MeasureOverride(Size availableSize)
     {
         if (this.InternalChildren.Count is 0)
         {
@@ -140,12 +141,12 @@ public class RibbonTabsContainer : Panel, IScrollInfo
         return desiredSize;
     }
 
-    private bool AreAnyTabsAboveMinimumSize(List<RibbonTabItem> tabs )
+    private bool AreAnyTabsAboveMinimumSize(List<RibbonTabItem> tabs)
     {
         return tabs.Any(x => x.Visibility is not Visibility.Collapsed && x.IsContextual is false && DoubleUtil.GreaterThan(x.HeaderPadding.Right, this.minimumLeftRightHeaderPadding));
     }
 
-    private Size MeasureChildrenDesiredSize(Size availableSize )
+    private Size MeasureChildrenDesiredSize(Size availableSize)
     {
         double width = 0;
         double height = 0;
@@ -167,7 +168,7 @@ public class RibbonTabsContainer : Panel, IScrollInfo
     }
 
     /// <inheritdoc />
-    protected override Size ArrangeOverride(Size finalSize )
+    protected override Size ArrangeOverride(Size finalSize)
     {
         var finalRect = new Rect(finalSize)
         {
@@ -192,7 +193,7 @@ public class RibbonTabsContainer : Panel, IScrollInfo
     /// Updates separator visibility
     /// </summary>
     /// <param name="opacity">If this parameter true, tabs will have separators</param>
-    private void UpdateSeparators(double opacity )
+    private void UpdateSeparators(double opacity)
     {
         foreach (RibbonTabItem? tab in this.Children)
         {
@@ -218,7 +219,7 @@ public class RibbonTabsContainer : Panel, IScrollInfo
     }
 
     /// <inheritdoc />
-    public void SetHorizontalOffset(double offset )
+    public void SetHorizontalOffset(double offset)
     {
         var newValue = CoerceOffset(ValidateInputOffset(offset, nameof(this.HorizontalOffset)), this.ScrollData.ExtentWidth, this.ScrollData.ViewportWidth);
 
@@ -252,7 +253,7 @@ public class RibbonTabsContainer : Panel, IScrollInfo
     }
 
     /// <inheritdoc />
-    public Rect MakeVisible(Visual visual, Rect rectangle )
+    public Rect MakeVisible(Visual visual, Rect rectangle)
     {
         // We can only work on visuals that are us or children.
         // An empty rect has no size or position.  We can't meaningfully use it.
@@ -293,7 +294,7 @@ public class RibbonTabsContainer : Panel, IScrollInfo
         double topView,
         double bottomView,
         double topChild,
-        double bottomChild )
+        double bottomChild)
     {
         // # CHILD POSITION       CHILD SIZE      SCROLL      REMEDY
         // 1 Above viewport       <= viewport     Down        Align top edge of child & viewport
@@ -398,7 +399,7 @@ public class RibbonTabsContainer : Panel, IScrollInfo
     /// <summary>
     /// Not implemented
     /// </summary>
-    public void SetVerticalOffset(double offset )
+    public void SetVerticalOffset(double offset)
     {
     }
 
@@ -438,7 +439,7 @@ public class RibbonTabsContainer : Panel, IScrollInfo
     private ScrollData? scrollData;
 
     // Validates input offset
-    private static double ValidateInputOffset(double offset, string parameterName )
+    private static double ValidateInputOffset(double offset, string parameterName)
     {
         if (double.IsNaN(offset))
         {
@@ -452,7 +453,7 @@ public class RibbonTabsContainer : Panel, IScrollInfo
     // Checks the X/Y offset and coerces them into the range [0, Extent - ViewportSize]
     // If extent, viewport, or the newly coerced offsets are different than the existing offset,
     //   caches are updated and InvalidateScrollInfo() is called.
-    private void VerifyScrollData(double viewportWidth, double extentWidth )
+    private void VerifyScrollData(double viewportWidth, double extentWidth)
     {
         var isValid = true;
 
@@ -497,7 +498,7 @@ public class RibbonTabsContainer : Panel, IScrollInfo
     }
 
     // Returns an offset coerced into the [0, Extent - Viewport] range.
-    private static double CoerceOffset(double offset, double extent, double viewport )
+    private static double CoerceOffset(double offset, double extent, double viewport)
     {
         if (offset > extent - viewport)
         {

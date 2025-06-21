@@ -6,11 +6,12 @@
 using System.Collections;
 
 namespace Wpf.Ui.Extensions;
+
 internal static class IListExtensions
 {
     private static readonly IList EmptyReadOnlyList = ArrayList.ReadOnly(new ArrayList());
 
-    public static IList NullSafe( this IList? list )
+    public static IList NullSafe(this IList? list)
     {
         return list ?? EmptyReadOnlyList;
     }

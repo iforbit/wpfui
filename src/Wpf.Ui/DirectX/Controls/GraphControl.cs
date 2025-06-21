@@ -7,6 +7,7 @@ using SharpGen.Runtime;
 
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+
 using Wpf.Ui.DirectX.Helpers;
 using Wpf.Ui.DirectX.Models;
 using Wpf.Ui.DirectX.Rendering;
@@ -68,7 +69,9 @@ public sealed class GraphControl : HwndHost, IRenderStateNotifier
     public void AddItem(GraphItemBase item)
     {
         if (_graphItems.Contains(item))
+        {
             return;
+        }
 
         _graphItems.Add(item);
 
@@ -151,7 +154,6 @@ public sealed class GraphControl : HwndHost, IRenderStateNotifier
 
     private void TryInitializeRendererSafely()
     {
-    
         bool needsResize = _renderer is D3D11Renderer r &&
                    (Math.Abs(r.Width - ActualWidth) > 0.1 || Math.Abs(r.Height - ActualHeight) > 0.1);
 
@@ -227,12 +229,13 @@ public sealed class GraphControl : HwndHost, IRenderStateNotifier
                 newRenderer.AddGraphItem(item);
             }
 
-
             _renderer = newRenderer;
             _renderThread.Register(newRenderer);
             _renderThread.Start();
+
             // ✅ OnRendererReady 호출로 대기 중이던 아이템 초기화
             _renderer.OnRendererReady();
+
             // ✅ 명시적 Transform 적용 (초기 값이라도 적용되게)
             _renderer.SetTransform(XOffset, XScale, YScale);
             _ = _rendererReady.TrySetResult();

@@ -4,6 +4,7 @@
 // All Rights Reserved.
 
 namespace Wpf.Ui.Internal;
+
 internal static class TypeHelper
 {
     public static bool InheritsFrom(this Type type, string typeName)

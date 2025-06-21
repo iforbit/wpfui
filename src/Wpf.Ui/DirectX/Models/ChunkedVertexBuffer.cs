@@ -15,7 +15,12 @@ public sealed class ChunkedVertexBuffer : IDisposable
 {
     private const int ChunkSize = 16_384;
 
+    private readonly object _lock = new();
+
+    private readonly ReaderWriterLockSlim _rwLock = new();
+
     private readonly List<List<VertexPositionColor>> _chunks = new();
+
     private List<VertexPositionColor> _currentChunk = new();
 
     private float _lastX = 0f;
@@ -33,10 +38,6 @@ public sealed class ChunkedVertexBuffer : IDisposable
     private int _totalCount = 0;
 
     public int TotalCount => _totalCount;
-
-    private readonly object _lock = new();
-
-    private readonly ReaderWriterLockSlim _rwLock = new();
 
     public ChunkedVertexBuffer()
     {
@@ -172,6 +173,7 @@ public sealed class ChunkedVertexBuffer : IDisposable
     {
         lock (_lock)
         {
+            _rwLock.Dispose();
             _chunks.Clear();
             _currentChunk.Clear();
             _totalCount = 0;

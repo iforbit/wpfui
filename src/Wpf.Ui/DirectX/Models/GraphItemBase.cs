@@ -37,10 +37,15 @@ public abstract class GraphItemBase : IDisposable
     protected int VertexCount = 0;
 
     public Color4 GraphColor { get; set; } = new Color4(1f, 1f, 1f, 1f);
-    protected float _lastXOffset, _lastXScale = 1f, _lastYScale = 1f;
+
+    protected float _lastXOffset;
+    protected float _lastXScale = 1f;
+    protected float _lastYScale = 1f;
 
     public ID3D11Device? Device => _device;
+
     public ID3D11DeviceContext? Context => _deviceContext;
+
     public bool IsDisposed => _disposed;
 
     public bool IsReadyToRender =>
@@ -52,19 +57,19 @@ public abstract class GraphItemBase : IDisposable
 
     public void FlushQueuedVertices()
     {
-        while (_updateQueue.TryDequeue(out var mem))
+        while (_updateQueue.TryDequeue(out ReadOnlyMemory<VertexPositionColor> mem))
         {
             UpdateVertices(mem.Span);
         }
     }
 
- 
-
     public void SetDisposedFlag(bool value)
     {
         _disposed = value;
         if (!value)
+        {
             _initialized = false; // ✅ 재초기화를 유도
+        }
     }
 
     public void SetDevice(ID3D11Device device) => _device = device;
@@ -79,10 +84,13 @@ public abstract class GraphItemBase : IDisposable
 
         _deviceContext = context;
     }
+
     public void Initialize(ID3D11Device device, ID3D11DeviceContext context)
     {
         if (_initialized)
+        {
             return;
+        }
 
         _device = device;
         _deviceContext = context;
@@ -107,7 +115,9 @@ public abstract class GraphItemBase : IDisposable
     public void Transform(float xOffset, float xScale, float yScale)
     {
         if (xOffset == _lastXOffset && xScale == _lastXScale && yScale == _lastYScale)
+        {
             return;
+        }
 
         _lastXOffset = xOffset;
         _lastXScale = xScale;
@@ -123,9 +133,9 @@ public abstract class GraphItemBase : IDisposable
         FlushQueuedVertices();
 
         if (!CanRender())
+        {
             return;
-
-      
+        }
 
         int stride = VertexSizeInBytes;
         int offset = 0;
@@ -133,7 +143,8 @@ public abstract class GraphItemBase : IDisposable
         Span<uint> strides = stackalloc uint[] { (uint)stride };
         Span<uint> offsets = stackalloc uint[] { (uint)offset };
 
-        context.IASetVertexBuffers(0, new[] { GetVertexBuffer() }, strides, offsets);
+        ID3D11Buffer buffer = GetVertexBuffer() ?? throw new InvalidOperationException("VertexBuffer is null.");
+        context.IASetVertexBuffers(0, new[] { buffer }, strides, offsets);
         context.IASetPrimitiveTopology(Vortice.Direct3D.PrimitiveTopology.LineStrip);
         context.Draw((uint)VertexCount, 0);
     }
@@ -153,6 +164,5 @@ public abstract class GraphItemBase : IDisposable
         _disposed = true;
     }
 }
-
 
 #pragma warning restore SA1401, SA1306 // Fields should be private

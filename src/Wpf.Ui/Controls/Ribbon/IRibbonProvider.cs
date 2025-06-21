@@ -4,6 +4,7 @@
 // All Rights Reserved.
 
 namespace Wpf.Ui.Controls;
+
 public interface IRibbonProvider
 {
     // IEnumerable<RibbonTabItem> RibbonTabs { get; }

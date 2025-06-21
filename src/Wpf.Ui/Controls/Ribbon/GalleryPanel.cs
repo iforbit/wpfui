@@ -8,7 +8,7 @@ using System.Reflection;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Threading;
-using Wpf.Ui.Extensions;
+
 using Wpf.Ui.Internal.KnowBoxes;
 
 namespace Wpf.Ui.Controls;

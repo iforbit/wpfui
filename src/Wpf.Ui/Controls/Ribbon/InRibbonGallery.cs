@@ -17,7 +17,6 @@ using System.Windows.Threading;
 using Wpf.Ui.Controls.Automation.Peers;
 using Wpf.Ui.Controls.Extensibility;
 using Wpf.Ui.Controls.Helpers;
-using Wpf.Ui.Extensions;
 using Wpf.Ui.Internal;
 using Wpf.Ui.Internal.KnowBoxes;
 

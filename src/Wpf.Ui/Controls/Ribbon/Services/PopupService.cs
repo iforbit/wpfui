@@ -6,7 +6,7 @@
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
-using Wpf.Ui.Extensions;
+
 using Wpf.Ui.Internal;
 
 namespace Wpf.Ui.Controls;

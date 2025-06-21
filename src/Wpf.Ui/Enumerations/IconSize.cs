@@ -4,6 +4,7 @@
 // All Rights Reserved.
 
 namespace Wpf.Ui;
+
 public enum IconSize
 {
     /// <summary>

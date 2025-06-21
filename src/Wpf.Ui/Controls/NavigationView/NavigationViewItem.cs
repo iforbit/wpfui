@@ -453,10 +453,12 @@ public class NavigationViewItem
 
         e.Handled = true;
     }
- protected override AutomationPeer OnCreateAutomationPeer()
+
+    protected override AutomationPeer OnCreateAutomationPeer()
     {
         return new NavigationViewItemAutomationPeer(this);
     }
+
     private void OnMenuItems_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
         SetValue(HasMenuItemsPropertyKey, MenuItems.Count > 0);

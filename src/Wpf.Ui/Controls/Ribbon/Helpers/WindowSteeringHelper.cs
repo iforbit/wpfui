@@ -4,9 +4,11 @@
 // All Rights Reserved.
 
 using System.Windows.Input;
+
 using Wpf.Ui.Interop;
 
 namespace Wpf.Ui.Controls.Helpers;
+
 public static class WindowSteeringHelper
 {
     /// <summary>

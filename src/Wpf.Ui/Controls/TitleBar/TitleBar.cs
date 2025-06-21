@@ -8,7 +8,6 @@ using System.Windows.Data;
 using System.Windows.Input;
 
 using Wpf.Ui.Designer;
-using Wpf.Ui.Extensions;
 using Wpf.Ui.Input;
 using Wpf.Ui.Interop;
 
@@ -55,10 +54,10 @@ public class TitleBar : System.Windows.Controls.Control, IThemeControl
         new PropertyMetadata(null)
     );
 
-     /// <summary>
+    /// <summary>
     /// Property for <see cref="Header"/>.
-    /// </summary>  
-      public static readonly DependencyProperty HeaderProperty = DependencyProperty.Register(
+    /// </summary>
+    public static readonly DependencyProperty HeaderProperty = DependencyProperty.Register(
         nameof(Header),
         typeof(object),
         typeof(TitleBar),
@@ -239,7 +238,7 @@ public class TitleBar : System.Windows.Controls.Control, IThemeControl
 
     /// <summary>
     /// Gets or sets the content displayed in the left side of the <see cref="TitleBar"/>.
-       /// </summary>
+    /// </summary>
     public object? Header
     {
         get => GetValue(HeaderProperty);

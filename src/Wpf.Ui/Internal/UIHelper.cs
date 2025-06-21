@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 
 namespace Wpf.Ui.Internal;
+
 internal static class UIHelper
 {
     /// <summary>
@@ -14,7 +15,7 @@ internal static class UIHelper
     /// If there are no visual children <c>null</c> is returned.
     /// </summary>
     /// <returns>The first visual child of <paramref name="parent"/> or <c>null</c> if there are no children.</returns>
-    public static DependencyObject? GetFirstVisualChild( DependencyObject parent )
+    public static DependencyObject? GetFirstVisualChild(DependencyObject parent)
     {
         var childrenCount = VisualTreeHelper.GetChildrenCount(parent);
 
@@ -33,7 +34,7 @@ internal static class UIHelper
     /// The visual child of type <typeparamref name="T"/> that matches <paramref name="predicate"/>.
     /// Returns <c>null</c> if no child matches.
     /// </returns>
-    public static T? FindImmediateVisualChild<T>( DependencyObject parent, Predicate<T> predicate )
+    public static T? FindImmediateVisualChild<T>(DependencyObject parent, Predicate<T> predicate)
         where T : DependencyObject
     {
         foreach (DependencyObject child in GetVisualChildren(parent))
@@ -54,7 +55,7 @@ internal static class UIHelper
     /// <typeparam name="TChildItem">The type of visual child to find.</typeparam>
     /// <param name="parent">The parent element whose visual tree shall be walked down.</param>
     /// <returns>The first element of type TChildItem found in the visual tree is returned. If none is found, null is returned.</returns>
-    public static TChildItem? FindVisualChild<TChildItem>( DependencyObject parent )
+    public static TChildItem? FindVisualChild<TChildItem>(DependencyObject parent)
         where TChildItem : DependencyObject
     {
         foreach (DependencyObject child in GetVisualChildren(parent))
@@ -77,7 +78,7 @@ internal static class UIHelper
     /// <summary>
     /// Gets all visual children of <paramref name="parent"/>.
     /// </summary>
-    public static IEnumerable<DependencyObject> GetVisualChildren( DependencyObject parent )
+    public static IEnumerable<DependencyObject> GetVisualChildren(DependencyObject parent)
     {
         var visualChildrenCount = VisualTreeHelper.GetChildrenCount(parent);
 
@@ -97,7 +98,7 @@ internal static class UIHelper
 
     /// <returns>The found visual/logical parent or null.</returns>
     /// <remarks>This method searches further up the parent chain instead of just using the immediate parent.</remarks>
-    public static T? GetParent<T>( DependencyObject? element, Predicate<T>? filter = null )
+    public static T? GetParent<T>(DependencyObject? element, Predicate<T>? filter = null)
         where T : DependencyObject
     {
         if (element is null)
@@ -142,7 +143,7 @@ internal static class UIHelper
     /// Returns either the visual or logical parent of <paramref name="element"/>.
     /// This also works for <see cref="ContentElement"/> and <see cref="FrameworkContentElement"/>.
     /// </summary>
-    public static DependencyObject GetVisualOrLogicalParent( DependencyObject element )
+    public static DependencyObject GetVisualOrLogicalParent(DependencyObject element)
     {
         return GetVisualParent(element) ?? LogicalTreeHelper.GetParent(element);
     }
@@ -151,7 +152,7 @@ internal static class UIHelper
     /// Returns the visual parent of <paramref name="element"/>.
     /// This also works for <see cref="ContentElement"/> and <see cref="FrameworkContentElement"/>.
     /// </summary>
-    public static DependencyObject? GetVisualParent( DependencyObject? element )
+    public static DependencyObject? GetVisualParent(DependencyObject? element)
     {
         if (element is null)
         {
@@ -181,7 +182,7 @@ internal static class UIHelper
     /// <param name="visual">The visual element for which to find an adorner layer.</param>
     /// <returns>An adorner layer for the specified visual, or null if no adorner layer can be found.</returns>
     /// <exception cref="T:System.ArgumentNullException">Raised when visual is null.</exception>
-    public static AdornerLayer? GetAdornerLayer( Visual visual )
+    public static AdornerLayer? GetAdornerLayer(Visual visual)
     {
         if (visual is null)
         {
@@ -205,7 +206,7 @@ internal static class UIHelper
     /// Gets all containers from the <see cref="ItemContainerGenerator"/> of <paramref name="itemsControl"/>.
     /// </summary>
     /// <typeparam name="T">The desired container type.</typeparam>
-    public static IEnumerable<T> GetAllItemContainers<T>( ItemsControl itemsControl )
+    public static IEnumerable<T> GetAllItemContainers<T>(ItemsControl itemsControl)
         where T : class
     {
         return GetAllItemContainers<T>(itemsControl.ItemContainerGenerator);
@@ -215,7 +216,7 @@ internal static class UIHelper
     /// Gets all containers from <paramref name="itemContainerGenerator"/>.
     /// </summary>
     /// <typeparam name="T">The desired container type.</typeparam>
-    public static IEnumerable<T> GetAllItemContainers<T>( ItemContainerGenerator itemContainerGenerator )
+    public static IEnumerable<T> GetAllItemContainers<T>(ItemContainerGenerator itemContainerGenerator)
         where T : class
     {
         for (var i = 0; i < itemContainerGenerator.Items.Count; i++)

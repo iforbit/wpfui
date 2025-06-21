@@ -1,3 +1,9 @@
+cbuffer ViewProjection : register(b0)
+{
+    float2 scale;
+    float2 offset;
+};
+
 struct VSInput
 {
     float3 position : POSITION;
@@ -10,10 +16,11 @@ struct VSOutput
     float4 color : COLOR;
 };
 
-VSOutput main(VSInput input)
+VSOutput VSMain(VSInput input)
 {
     VSOutput output;
-    output.position = float4(input.position.xy, 0.0f, 1.0f);
+    float2 transformed = (input.position.xy + offset) * scale;
+    output.position = float4(transformed, 0.0f, 1.0f);
     output.color = input.color;
     return output;
 }

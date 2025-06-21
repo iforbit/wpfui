@@ -6,6 +6,7 @@
 using System.Windows.Controls.Primitives;
 
 namespace Wpf.Ui.Controls.Automation.Peers;
+
 public class RibbonToggleButtonAutomationPeer : System.Windows.Automation.Peers.ToggleButtonAutomationPeer
 {
     /// <summary>Initializes a new instance of the <see cref="RibbonToggleButtonAutomationPeer"/> class.</summary>

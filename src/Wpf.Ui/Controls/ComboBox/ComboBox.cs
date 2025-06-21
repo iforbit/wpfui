@@ -16,10 +16,6 @@ namespace Wpf.Ui.Controls;
 /// 다중 선택 기능을 지원하는 ComboBox 컨트롤.
 /// 단일 선택 모드와 다중 선택 모드를 모두 지원하며, 외부 바인딩을 통해 초기 선택 상태를 지정할 수 있습니다.
 /// </summary>
-/// <summary>
-/// 다중 선택 기능을 지원하는 ComboBox 컨트롤.
-/// 단일 선택 모드와 다중 선택 모드를 모두 지원하며, 외부 바인딩을 통해 초기 선택 상태를 지정할 수 있습니다.
-/// </summary>
 public class ComboBox : System.Windows.Controls.ComboBox
 {
     public static readonly DependencyProperty AllowMultipleSelectionProperty =
@@ -40,7 +36,7 @@ public class ComboBox : System.Windows.Controls.ComboBox
             nameof(FinalSelectedItems),
             typeof(IList),
             typeof(ComboBox),
-            new FrameworkPropertyMetadata(new ObservableCollection<object>(), OnFinalSelectedItemsChanged));
+            new FrameworkPropertyMetadata(null, OnFinalSelectedItemsChanged));
 
     // 기본값이 null인 경우에도 null이 아닌 새 List<object>를 반환하도록 함
     private static object CoerceFinalSelectedItems(DependencyObject d, object baseValue)
@@ -101,15 +97,14 @@ public class ComboBox : System.Windows.Controls.ComboBox
         ItemContainerGenerator.StatusChanged += ItemContainerGenerator_StatusChanged;
     }
 
-    private void ComboBox_Loaded(object sender, RoutedEventArgs e)
+    private void ComboBox_Loaded(object? sender, RoutedEventArgs e)
     {
         if (AllowMultipleSelection)
         {
-            // 다중 선택 모드에서는 기본 SelectedItem을 무시하기 위해 null로 설정
             SetCurrentValue(SelectedItemProperty, null);
         }
 
-        if (FinalSelectedItems != null && FinalSelectedItems.Count > 0)
+        if (FinalSelectedItems is { Count: > 0 })
         {
             UpdateSelectedItemsFromFinal(FinalSelectedItems);
         }
@@ -141,7 +136,7 @@ public class ComboBox : System.Windows.Controls.ComboBox
     }
 
     // 외부 컬렉션 변경 이벤트 핸들러: 외부 컬렉션의 변화가 있을 때 내부 선택 상태를 업데이트
-    private void FinalSelectedItems_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+    private void FinalSelectedItems_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
         if (_updatingFinalCollection)
         {
@@ -154,7 +149,7 @@ public class ComboBox : System.Windows.Controls.ComboBox
         }
     }
 
-    private void ItemContainerGenerator_StatusChanged(object sender, EventArgs e)
+    private void ItemContainerGenerator_StatusChanged(object? sender, EventArgs e)
     {
         // 각 항목의 컨테이너를 가져와 선택 상태를 업데이트
         foreach (var item in Items)
@@ -192,9 +187,9 @@ public class ComboBox : System.Windows.Controls.ComboBox
                 }
 
                 container.IsMultiSelected = isSelected;
-                if (isSelected && !SelectedItems.Contains(container.Content))
+                if (isSelected && !SelectedItems.Contains(container.Content!))
                 {
-                    SelectedItems.Add(container.Content);
+                    SelectedItems.Add(container.Content!); // ✅ null-forgiving
                 }
             }
         }
@@ -295,7 +290,7 @@ public class ComboBox : System.Windows.Controls.ComboBox
         {
             if (e.OriginalSource is DependencyObject original)
             {
-                MultiSelectComboBoxItem multiItem = FindVisualParent<MultiSelectComboBoxItem>(original);
+                MultiSelectComboBoxItem? multiItem = FindVisualParent<MultiSelectComboBoxItem>(original);
                 if (multiItem != null)
                 {
                     multiItem.IsMultiSelected = !multiItem.IsMultiSelected;
@@ -326,7 +321,7 @@ public class ComboBox : System.Windows.Controls.ComboBox
         base.OnPreviewMouseLeftButtonUp(e);
     }
 
-    private void SelectedItems_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+    private void SelectedItems_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
         if (_suppressCollectionChanged)
         {
@@ -355,17 +350,16 @@ public class ComboBox : System.Windows.Controls.ComboBox
     private void UpdateSelectedItems()
     {
         var oldSelected = SelectedItems.ToList();
-
         var newSelected = Items.Cast<object>()
-            .Select(item =>
-            {
-                MultiSelectComboBoxItem container = (item as MultiSelectComboBoxItem)
-                    ?? (ItemContainerGenerator.ContainerFromItem(item) as MultiSelectComboBoxItem);
-                return container;
-            })
-            .Where(container => container != null && container.IsMultiSelected)
-            .Select(container => container.Content)
-            .ToList();
+             .Select(item =>
+             {
+                 MultiSelectComboBoxItem? container = item as MultiSelectComboBoxItem
+                     ?? ItemContainerGenerator.ContainerFromItem(item) as MultiSelectComboBoxItem;
+                 return container;
+             })
+             .Where(container => container is not null && container.IsMultiSelected && container.Content is not null)
+             .Select(container => container!.Content!)
+             .ToList();
 
         if (newSelected.Count == oldSelected.Count && !newSelected.Except(oldSelected).Any())
         {

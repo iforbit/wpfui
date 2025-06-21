@@ -4,11 +4,8 @@
 // All Rights Reserved.
 
 using System.Diagnostics;
-using System.Runtime.InteropServices;
 
 using Vortice.Direct3D11;
-
-using Wpf.Ui.DirectX.Models.VertexTypes;
 
 namespace Wpf.Ui.DirectX.Rendering;
 
@@ -38,7 +35,7 @@ public static class VertexBufferFactory
 
         if (dynamic)
         {
-            var buffer = device.CreateBuffer(bufferDesc);
+            ID3D11Buffer buffer = device.CreateBuffer(bufferDesc);
             UploadVertices(device, context, buffer, vertices);
             return buffer;
         }
@@ -47,7 +44,7 @@ public static class VertexBufferFactory
             fixed (T* vertexPtr = vertices)
             {
                 var data = new SubresourceData((IntPtr)vertexPtr);
-                var result = device.CreateBuffer(bufferDesc, data, out ID3D11Buffer? buffer);
+                SharpGen.Runtime.Result result = device.CreateBuffer(bufferDesc, data, out ID3D11Buffer? buffer);
                 result.CheckError();
                 return buffer!;
             }
@@ -64,7 +61,9 @@ public static class VertexBufferFactory
         lock (_contextLock)
         {
             if (vertices.IsEmpty || buffer == null || context == null)
+            {
                 return;
+            }
 
             uint sizeInBytes = (uint)(vertices.Length * sizeof(T));
             uint bufferSize = buffer.Description.ByteWidth;
@@ -77,7 +76,7 @@ public static class VertexBufferFactory
 
             try
             {
-                var mapped = context.Map(buffer, 0, MapMode.WriteDiscard, MapFlags.None);
+                MappedSubresource mapped = context.Map(buffer, 0, MapMode.WriteDiscard, MapFlags.None);
                 vertices.CopyTo(new Span<T>((void*)mapped.DataPointer, vertices.Length));
                 context.Unmap(buffer, 0);
             }

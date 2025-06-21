@@ -7,11 +7,12 @@ using System.Reflection;
 using System.Windows.Controls.Primitives;
 
 namespace Wpf.Ui.Internal;
+
 internal static class SelectorHelper
 {
     private static readonly PropertyInfo? CanSelectMultiplePropertyInfo = typeof(Selector).GetProperty("CanSelectMultiple", BindingFlags.Instance | BindingFlags.NonPublic);
 
-    public static void SetCanSelectMultiple(Selector selector, bool value )
+    public static void SetCanSelectMultiple(Selector selector, bool value)
     {
         if (CanSelectMultiplePropertyInfo is null)
         {

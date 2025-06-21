@@ -7,8 +7,10 @@
    and is intended for use on Windows systems only.
    This Source Code is partially based on the source code provided by the .NET Foundation. */
 
-using System.Runtime.InteropServices;
 using Microsoft.Win32;
+
+using System.Runtime.InteropServices;
+
 using Wpf.Ui.Controls;
 using Wpf.Ui.Hardware;
 
@@ -376,7 +378,9 @@ public static class UnsafeNativeMethods
 
                     return Color.FromArgb(255, values[2], values[1], values[0]);
                 }
-                catch { }
+                catch
+                {
+                }
             }
         }
 

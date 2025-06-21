@@ -20,8 +20,11 @@ public sealed class GraphLineItem : GraphItemBase
     private ID3D11Buffer? _vertexBuffer;
     private readonly object _renderUpdateLock = new();
     private readonly ChunkedVertexBuffer _chunkBuffer = new();
+
     public int LastDrawCount => VertexCount;
+
     public float LastX => _chunkBuffer.LastX;
+
     public void AppendPoint(float x, float y)
     {
         _chunkBuffer.AppendPoint(x, y, GraphColor); // ✅ 내부 색상 적용
@@ -47,7 +50,7 @@ public sealed class GraphLineItem : GraphItemBase
         }
 
         float minX = _lastXOffset; // Transform에서 설정된 값 사용
-        float maxX = _lastXOffset + _lastXScale * _chunkBuffer.MaxVisibleRange;
+        float maxX = _lastXOffset + (_lastXScale * _chunkBuffer.MaxVisibleRange);
 
         Span<VertexPositionColor> span = stackalloc VertexPositionColor[8192];
         int count = _chunkBuffer.CopyVerticesInRange(minX, maxX, span);
@@ -100,7 +103,6 @@ public sealed class GraphLineItem : GraphItemBase
             }
         }
     }
-
 
     protected override void OnTransform(float xOffset, float xScale, float yScale)
     {

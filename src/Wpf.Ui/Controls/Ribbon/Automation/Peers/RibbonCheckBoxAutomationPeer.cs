@@ -4,6 +4,7 @@
 // All Rights Reserved.
 
 namespace Wpf.Ui.Controls.Automation.Peers;
+
 public class RibbonCheckBoxAutomationPeer : System.Windows.Automation.Peers.CheckBoxAutomationPeer
 {
     /// <summary>Initializes a new instance of the <see cref="RibbonCheckBoxAutomationPeer"/> class.</summary>

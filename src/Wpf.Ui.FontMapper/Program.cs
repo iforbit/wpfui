@@ -3,8 +3,10 @@
 // Copyright (C) Leszek Pomianowski and WPF UI Contributors.
 // All Rights Reserved.
 
+using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Net.Http.Json;
+
 using Wpf.Ui.FontMapper;
 
 Console.WriteLine("Fluent System Icons Mapper");
@@ -27,6 +29,8 @@ var filledIcons = new FontSource(
     "generated\\SymbolFilled.cs"
 );
 
+[RequiresUnreferencedCode("Calls System.Net.Http.Json.HttpClientJsonExtensions.GetFromJsonAsync<TValue>(String, CancellationToken)")]
+[RequiresDynamicCode("Calls System.Net.Http.Json.HttpClientJsonExtensions.GetFromJsonAsync<TValue>(String, CancellationToken)")]
 async Task<string> FetchVersion()
 {
     using var httpClient = new HttpClient();
@@ -62,6 +66,8 @@ string FormatIconName(string rawIconName)
     return iconName;
 }
 
+[RequiresUnreferencedCode("Calls System.Net.Http.Json.HttpClientJsonExtensions.GetFromJsonAsync<TValue>(String, CancellationToken)")]
+[RequiresDynamicCode("Calls System.Net.Http.Json.HttpClientJsonExtensions.GetFromJsonAsync<TValue>(String, CancellationToken)")]
 async Task FetchFontContents(FontSource source, string version)
 {
     using var httpClient = new HttpClient();

@@ -4,6 +4,7 @@
 // All Rights Reserved.
 
 namespace Wpf.Ui.Controls;
+
 internal class GalleryItemPlaceholder : UIElement
 {
     /// <summary>
