@@ -59,7 +59,7 @@ public sealed class GraphControl : HwndHost, IRenderStateNotifier
 
     public GraphControl()
     {
-        //TryResolveGraphicsService();
+        // TryResolveGraphicsService();
         SizeChanged += OnSizeChanged;
     }
 
@@ -81,8 +81,8 @@ public sealed class GraphControl : HwndHost, IRenderStateNotifier
             StartRetryGraphicsService();
             Debug.WriteLine($"🧪 call StartRetryGraphicsService");
         }
-        Debug.WriteLine($"🧪 call TryResolveGraphicsService");
 
+        Debug.WriteLine($"🧪 call TryResolveGraphicsService");
     }
 
     private void StartRetryGraphicsService()
@@ -173,6 +173,7 @@ public sealed class GraphControl : HwndHost, IRenderStateNotifier
             Debug.WriteLine("⚠️ RequestRender ignored: no render thread assigned");
             return;
         }
+
         UpdateTransformFromFirstItem(); // ✅ 렌더 요청 직전에 transform 조정
         _renderThread?.RequestRender();
     }
@@ -279,7 +280,7 @@ public sealed class GraphControl : HwndHost, IRenderStateNotifier
                 GraphItemInitializer.Reinitialize(item, newRenderer.Device, newRenderer.Context, XOffset, XScale, YScale);
                 newRenderer.AddGraphItem(item);
             }
-       
+
             _renderThread.Register(newRenderer);
             _renderThread.Start();
 
@@ -302,7 +303,9 @@ public sealed class GraphControl : HwndHost, IRenderStateNotifier
     public void UpdateTransformFromFirstItem(float visibleX = 30f, float visibleY = 1.0f)
     {
         if (_graphItems.Count == 0)
+        {
             return;
+        }
 
         if (_graphItems[0] is FastGraphItem<VertexPosition> fp)
         {
@@ -314,15 +317,16 @@ public sealed class GraphControl : HwndHost, IRenderStateNotifier
                     UpdateTransform(0f, 1.0f, 1.0f, 0.0f);
                     _initialTransformApplied = true;
                 }
+
                 return;
             }
 
             _initialTransformApplied = false;
 
             float xEnd = fp.LastX;
-     
 
             float xStart = Math.Max(0, xEnd - visibleX);
+
             // ✅ xOffset: 화면 오른쪽이 xEnd가 되도록 조정
             float xOffset = -xStart;
             float xScale = 1.0f;
@@ -335,7 +339,6 @@ public sealed class GraphControl : HwndHost, IRenderStateNotifier
             Debug.WriteLine($"🧭 Transform (fixed): xOffset={xOffset:F2}, xScale={xScale:F2}, yOffset={yOffset:F2}, yScale={yScale:F2}");
         }
     }
-
 
     protected override void Dispose(bool disposing)
     {
