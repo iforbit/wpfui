@@ -3,7 +3,7 @@
 // Copyright (C) Leszek Pomianowski and WPF UI Contributors.
 // All Rights Reserved.
 
-namespace Wpf.Ui.DirectX.Rendering;
+namespace Wpf.Ui.DirectX.Core;
 
 /// <summary>
 /// 렌더링 가능한 객체 인터페이스 (예: LineGraphControl 등)

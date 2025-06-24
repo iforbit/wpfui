@@ -10,12 +10,12 @@ using System.Runtime.InteropServices;
 
 using Vortice.Direct3D11;
 
-namespace Wpf.Ui.DirectX.Rendering;
+namespace Wpf.Ui.DirectX.Helpers;
 
 public static class VertexBufferFactory
 {
-    private static readonly object _contextLock = new();
     private const int MIN_ALLOC_SIZE = 4096;
+    private static readonly object _contextLock = new();
 
     public static unsafe ID3D11Buffer CreateVertexBuffer<T>(
        ID3D11Device device,
@@ -25,7 +25,7 @@ public static class VertexBufferFactory
        int? overrideSizeInBytes = null)
         where T : unmanaged
     {
-        uint sizeInBytes = (uint)(overrideSizeInBytes ?? (vertices.Length * sizeof(T)));
+        uint sizeInBytes = (uint)(overrideSizeInBytes ?? vertices.Length * sizeof(T));
         if (sizeInBytes == 0)
         {
             throw new ArgumentException("Vertex data size cannot be zero");
@@ -46,7 +46,7 @@ public static class VertexBufferFactory
             // ✅ Span이 비어 있으면 업로드 생략
             if (!vertices.IsEmpty)
             {
-                UploadVertices(device, context, buffer, vertices);
+                _ = UploadVertices(device, context, buffer, vertices);
             }
             else
             {
@@ -59,31 +59,32 @@ public static class VertexBufferFactory
         {
             fixed (T* vertexPtr = vertices)
             {
-                var data = new SubresourceData((IntPtr)vertexPtr);
-                SharpGen.Runtime.Result result = device.CreateBuffer(bufferDesc, data, out ID3D11Buffer? buffer);
+                var data = new SubresourceData((nint)vertexPtr);
+                Result result = device.CreateBuffer(bufferDesc, data, out ID3D11Buffer? buffer);
                 result.CheckError();
                 return buffer!;
             }
         }
     }
 
-        public static bool TryUploadVertices<T>(ID3D11Device device, ID3D11DeviceContext context, ID3D11Buffer buffer, T[]? source, string name) where T : unmanaged
+    public static bool TryUploadVertices<T>(ID3D11Device device, ID3D11DeviceContext context, ID3D11Buffer buffer, T[]? source, string name)
+            where T : unmanaged
+    {
+        if (source == null || source.Length == 0)
         {
-            if (source == null || source.Length == 0)
-            {
-                Debug.WriteLine($"⚠️ Upload skipped: fullSpan is null or empty for {name}");
-                return false;
-            }
-
-            ReadOnlySpan<T> span = source.AsSpan();
-            if (span.IsEmpty)
-            {
-                Debug.WriteLine($"⚠️ Upload skipped: span is empty for {name}");
-                return false;
-            }
-
-            return UploadVertices(device, context, buffer, span);
+            Debug.WriteLine($"⚠️ Upload skipped: fullSpan is null or empty for {name}");
+            return false;
         }
+
+        ReadOnlySpan<T> span = source.AsSpan();
+        if (span.IsEmpty)
+        {
+            Debug.WriteLine($"⚠️ Upload skipped: span is empty for {name}");
+            return false;
+        }
+
+        return UploadVertices(device, context, buffer, span);
+    }
 
     public static unsafe bool UploadVertices<T>(
         ID3D11Device device,
@@ -99,11 +100,13 @@ public static class VertexBufferFactory
                 Debug.WriteLine("⚠️ UploadVertices skipped: vertices.IsEmpty");
                 return false;
             }
+
             if (buffer == null)
             {
                 Debug.WriteLine("⚠️ UploadVertices skipped: buffer is null");
                 return false;
             }
+
             if (context == null)
             {
                 Debug.WriteLine("⚠️ UploadVertices skipped: context is null");
@@ -130,9 +133,14 @@ public static class VertexBufferFactory
 
             try
             {
+                // Debug.WriteLine($"🧪 Uploading {vertices.Length} vertices of size {sizeInBytes} bytes");
                 MappedSubresource mapped = context.Map(buffer, 0, MapMode.WriteDiscard, MapFlags.None);
+
+                // Debug.WriteLine($"🧪 Map success, DataPointer = 0x{(ulong)mapped.DataPointer:X}");
                 vertices.CopyTo(new Span<T>((void*)mapped.DataPointer, vertices.Length));
                 context.Unmap(buffer, 0);
+
+                // Debug.WriteLine("✅ UploadVertices completed successfully");
                 return true;
             }
             catch (SEHException ex)
@@ -158,7 +166,7 @@ public static class VertexBufferFactory
     {
         lock (_contextLock)
         {
-            if ((span1.Length + span2.Length) == 0 || buffer == null || context == null)
+            if (span1.Length + span2.Length == 0 || buffer == null || context == null)
             {
                 Debug.WriteLine("⚠️ UploadVertices skipped: invalid parameters");
                 return false;

@@ -6,23 +6,25 @@
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
-using Wpf.Ui.DirectX.Rendering;
+using Wpf.Ui.DirectX.Core;
 
-namespace Wpf.Ui.DirectX.Threading;
+namespace Wpf.Ui.DirectX.Services;
 
-/// <summary>
-/// 고성능 전용 렌더링 스레드 서비스
-/// </summary>
-public sealed class RenderThreadService : IRenderThreadService
+public sealed class RenderThreadService : IRenderThreadService, IDisposable
 {
     private readonly List<IRenderable> _renderables = new();
-    private readonly AutoResetEvent _renderEvent = new(false);
     private readonly object _lock = new();
-
     private Thread? _thread;
     private bool _running;
+    private int _targetFps = 60;
 
     public bool IsRunning => _running;
+
+    public int TargetFps
+    {
+        get => _targetFps;
+        set => _targetFps = Math.Clamp(value, 1, 240);
+    }
 
     public void Start()
     {
@@ -43,7 +45,6 @@ public sealed class RenderThreadService : IRenderThreadService
     public void Stop()
     {
         _running = false;
-        _ = _renderEvent.Set();
         _thread?.Join();
         _thread = null;
     }
@@ -67,42 +68,23 @@ public sealed class RenderThreadService : IRenderThreadService
         }
     }
 
-    public void RequestRender()
-    {
-        _ = _renderEvent.Set();
-    }
-
     private void RenderLoop()
     {
         Debug.WriteLine("[RenderThread] 🟢 Started");
-
         var stopwatch = Stopwatch.StartNew();
+        double targetFrameTime = 1000.0 / TargetFps;
 
         try
         {
             while (_running)
             {
-                _ = _renderEvent.WaitOne();
-
-                if (!_running)
-                {
-                    Debug.WriteLine("[RenderThread] 🛑 Exit signal received");
-                    break;
-                }
-
-                float time = (float)stopwatch.Elapsed.TotalSeconds;
+                long nowTicks = stopwatch.ElapsedTicks;
+                float time = (float)(nowTicks / (double)Stopwatch.Frequency);
 
                 lock (_lock)
                 {
                     foreach (IRenderable renderable in _renderables.ToArray())
                     {
-                        // 렌더링 전 유효성 재검증
-                        if (renderable is D3D11Renderer renderer &&
-                            !renderer.IsContextValid())
-                        {
-                            continue;
-                        }
-
                         if (!renderable.IsReady)
                         {
                             continue;
@@ -110,17 +92,27 @@ public sealed class RenderThreadService : IRenderThreadService
 
                         try
                         {
-                            renderable.RenderFrame(time);
+                            lock (renderable)
+                            {
+                                renderable.RenderFrame(time);
+                            }
                         }
                         catch (SEHException ex)
                         {
-                            Debug.WriteLine($"SEH in render loop: {ex.Message}");
+                            Debug.WriteLine($"[RenderThread] ❌ SEHException: {ex.Message}");
                         }
                         catch (Exception ex)
                         {
-                            Debug.WriteLine($"[RenderThread] ❌ Exception in renderable.RenderFrame: {ex}");
+                            Debug.WriteLine($"[RenderThread] ❌ Exception: {ex}");
                         }
                     }
+                }
+
+                long elapsedMs = (stopwatch.ElapsedTicks - nowTicks) * 1000 / Stopwatch.Frequency;
+                int sleepTime = (int)(targetFrameTime - elapsedMs);
+                if (sleepTime > 0)
+                {
+                    Thread.Sleep(sleepTime);
                 }
             }
         }
@@ -135,6 +127,5 @@ public sealed class RenderThreadService : IRenderThreadService
     public void Dispose()
     {
         Stop();
-        _renderEvent.Dispose();
     }
 }

@@ -10,6 +10,25 @@ using Vortice.Mathematics;
 
 namespace Wpf.Ui.DirectX.Models.VertexTypes;
 
+public static class VertexLayoutKey
+{
+    public static string Get<T>()
+        where T : unmanaged
+    {
+        if (typeof(T) == typeof(VertexPosition))
+        {
+            return "POSITION";
+        }
+
+        if (typeof(T) == typeof(VertexPositionColor))
+        {
+            return "POSITION+COLOR";
+        }
+
+        return typeof(T).Name; // fallback
+    }
+}
+
 [StructLayout(LayoutKind.Sequential)]
 public struct VertexPositionColor
 {

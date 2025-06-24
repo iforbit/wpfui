@@ -545,7 +545,8 @@ public class InRibbonGallery : Selector, IScalableRibbonControl, IDropDownContro
             {
                 GalleryItem? selectedContainer = inRibbonGallery.ItemContainerGenerator.ContainerOrContainerContentFromItem<GalleryItem>(inRibbonGallery.SelectedItem);
                 selectedContainer?.BringIntoView();
-            }, DispatcherPriority.SystemIdle);
+            },
+                DispatcherPriority.SystemIdle);
 
             // If focus is within the subtree, make sure we have the focus so that focus isn't in the disposed hwnd
             if (inRibbonGallery.IsKeyboardFocusWithin)
@@ -565,7 +566,8 @@ public class InRibbonGallery : Selector, IScalableRibbonControl, IDropDownContro
                     {
                         _ = inRibbonGallery.MoveFocus(new TraversalRequest(FocusNavigationDirection.First));
                     }
-                }, DispatcherPriority.SystemIdle);
+                },
+                    DispatcherPriority.SystemIdle);
             }
 
             if (Mouse.Captured == inRibbonGallery)

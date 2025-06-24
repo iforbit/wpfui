@@ -6,7 +6,7 @@
 using Wpf.Ui.Abstractions.Controls;
 using Wpf.Ui.Controls;
 using Wpf.Ui.Demo.Mvvm.ViewModels;
-using Wpf.Ui.DirectX.Threading;
+using Wpf.Ui.DirectX.Services;
 
 namespace Wpf.Ui.Demo.Mvvm.Views.Pages;
 

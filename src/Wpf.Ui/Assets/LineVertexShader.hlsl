@@ -1,8 +1,8 @@
-cbuffer ViewProjection : register(b0)
+// Assets/LineVertexShader.hlsl
+cbuffer ViewProjectionBuffer : register(b0)
 {
-    float2 scale;
-    float2 offset;
-};
+    float4 Transform;
+}
 
 struct VSInput
 {
@@ -19,7 +19,7 @@ struct VSOutput
 VSOutput VSMain(VSInput input)
 {
     VSOutput output;
-    float2 transformed = input.position.xy * scale + offset;
+    float2 transformed = input.position.xy * Transform.xy + Transform.zw;
     output.position = float4(transformed, 0.0f, 1.0f);
     output.color = input.color;
     return output;

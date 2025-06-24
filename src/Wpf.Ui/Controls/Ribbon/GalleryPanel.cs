@@ -290,7 +290,8 @@ public class GalleryPanel : StackPanel
 
             this.Refresh();
             this.needsRefresh = false;
-        }, DispatcherPriority.Send);
+        },
+            DispatcherPriority.Send);
     }
 
     private void Refresh()

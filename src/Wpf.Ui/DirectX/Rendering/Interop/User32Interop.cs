@@ -5,7 +5,7 @@
 
 using System.Runtime.InteropServices;
 
-namespace Wpf.Ui.DirectX.Rendering;
+namespace Wpf.Ui.DirectX.Rendering.Interop;
 
 // Window 생성 유틸리티 (User32Interop.cs 등 별도 파일에 존재해야 함)
 internal static class User32Interop
@@ -14,7 +14,7 @@ internal static class User32Interop
     private const string WINDOW_CLASS = "STATIC";
 
     [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-    public static extern IntPtr CreateWindowExW(
+    public static extern nint CreateWindowExW(
      uint dwExStyle,
      string lpClassName,
      string lpWindowName,
@@ -23,12 +23,12 @@ internal static class User32Interop
      int y,
      int nWidth,
      int nHeight,
-     IntPtr hWndParent,
-     IntPtr hMenu,
-     IntPtr hInstance,
-     IntPtr lpParam);
+     nint hWndParent,
+     nint hMenu,
+     nint hInstance,
+     nint lpParam);
 
-    public static IntPtr CreateHostWindow(IntPtr hwndParent, int width, int height)
+    public static nint CreateHostWindow(nint hwndParent, int width, int height)
     {
         return CreateWindowExW(
             0,
@@ -40,12 +40,12 @@ internal static class User32Interop
             width,
             height,
             hwndParent,
-            IntPtr.Zero,
-            IntPtr.Zero,
-            IntPtr.Zero);
+            nint.Zero,
+            nint.Zero,
+            nint.Zero);
     }
 
-    public static void DestroyWindow(IntPtr hwnd)
+    public static void DestroyWindow(nint hwnd)
     {
         _ = NativeMethods.DestroyWindow(hwnd);
     }

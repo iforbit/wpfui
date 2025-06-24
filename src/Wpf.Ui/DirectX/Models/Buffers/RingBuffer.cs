@@ -3,12 +3,13 @@
 // Copyright (C) Leszek Pomianowski and WPF UI Contributors.
 // All Rights Reserved.
 
-namespace Wpf.Ui.DirectX.Models;
+namespace Wpf.Ui.DirectX.Models.Buffers;
 
 /// <summary>
 /// 고정 크기의 Span 기반 순환 버퍼 (RingBuffer)
 /// GC 최소화 및 실시간 그래프 데이터 처리용
 /// </summary>
+/// <typeparam name="T">The type</typeparam>
 public sealed class RingBuffer<T>
     where T : unmanaged
 {

@@ -13,7 +13,6 @@ using Wpf.Ui.Demo.Mvvm.Models;
 using Wpf.Ui.Demo.Mvvm.Services;
 using Wpf.Ui.DependencyInjection;
 using Wpf.Ui.DirectX.Services;
-using Wpf.Ui.DirectX.Threading;
 
 namespace Wpf.Ui.Demo.Mvvm;
 
@@ -90,6 +89,8 @@ public partial class App
     {
         Application.Current.Resources["ServiceProvider"] = _host.Services;
         await _host.StartAsync();
+        IRenderThreadService renderThread = App.Services.GetRequiredService<IRenderThreadService>();
+        renderThread.Start();
     }
 
     /// <summary>

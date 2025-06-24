@@ -5,7 +5,7 @@
 
 using System.Runtime.InteropServices;
 
-namespace Wpf.Ui.DirectX.Rendering;
+namespace Wpf.Ui.DirectX.Rendering.Interop;
 
 internal static class NativeMethods
 {
@@ -15,26 +15,26 @@ internal static class NativeMethods
     public static extern ushort RegisterClassExW([In] ref WndClassEx lpwcx);
 
     [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-    public static extern IntPtr CreateWindow(
+    public static extern nint CreateWindow(
         string lpClassName,
-        IntPtr lpWindowName,
+        nint lpWindowName,
         int dwStyle,
         int x,
         int y,
         int nWidth,
         int nHeight,
-        IntPtr hWndParent,
-        IntPtr hMenu,
-        IntPtr hInstance,
-        IntPtr lpParam);
+        nint hWndParent,
+        nint hMenu,
+        nint hInstance,
+        nint lpParam);
 
     [DllImport("user32.dll", SetLastError = true)]
-    public static extern bool DestroyWindow(IntPtr hWnd);
+    public static extern bool DestroyWindow(nint hWnd);
 
     [DllImport("user32.dll", SetLastError = true)]
-    public static extern IntPtr DefWindowProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
+    public static extern nint DefWindowProc(nint hWnd, uint msg, nint wParam, nint lParam);
 
-    public delegate IntPtr WndProcDelegate(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
+    public delegate nint WndProcDelegate(nint hWnd, uint msg, nint wParam, nint lParam);
 
     public static void RegisterWindowClass(string className)
     {
@@ -46,12 +46,12 @@ internal static class NativeMethods
             CbClsExtra = 0,
             CbWndExtra = 0,
             HInstance = Marshal.GetHINSTANCE(typeof(NativeMethods).Module),
-            HIcon = IntPtr.Zero,
-            HCursor = IntPtr.Zero,
-            HbrBackground = IntPtr.Zero,
+            HIcon = nint.Zero,
+            HCursor = nint.Zero,
+            HbrBackground = nint.Zero,
             LpszMenuName = null,
             LpszClassName = className,
-            HIconSm = IntPtr.Zero
+            HIconSm = nint.Zero
         };
 
         _ = RegisterClassExW(ref wndClass);
@@ -63,16 +63,16 @@ internal struct WndClassEx
 {
     public int CbSize;
     public int Style;
-    public IntPtr LpfnWndProc;
+    public nint LpfnWndProc;
     public int CbClsExtra;
     public int CbWndExtra;
-    public IntPtr HInstance;
-    public IntPtr HIcon;
-    public IntPtr HCursor;
-    public IntPtr HbrBackground;
+    public nint HInstance;
+    public nint HIcon;
+    public nint HCursor;
+    public nint HbrBackground;
     [MarshalAs(UnmanagedType.LPWStr)]
     public string? LpszMenuName;
     [MarshalAs(UnmanagedType.LPWStr)]
     public string? LpszClassName;
-    public IntPtr HIconSm;
+    public nint HIconSm;
 }

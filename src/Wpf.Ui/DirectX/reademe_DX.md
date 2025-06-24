@@ -18,11 +18,11 @@ Direct3D11 기반으로 렌더링하며, MVVM 구조와 완전한 WPF 통합을 
 |           | DrawCall 병합: 시리즈 단위 렌더 수집/최적화                  | 🆕 최우선 예정 |
 | 시리즈 구조    | `GraphSeries<T>` 및 `SeriesRenderer<T>` 분리      | 🔄 진행 중   |
 | 셰이더 구성    | `ShaderManager` + `ShaderPipeline` 설계          | 🔄 진행 중   |
-| 축 시스템     | `AxisManager` 기반 다중 축/중앙 통제 구조                 | 🕓 예정     |
-| 어노테이션     | Annotation Layer (Line, Text, Custom)          | 🕓 예정     |
+| 축 시스템     | `AxisManager` 중심의 Transform 적용 및 다중 축 지원                | 🕓 예정     |
+| 어노테이션     | `AnnotationLayer` 기반 Line/Text 주석 시스템        | 🕓 예정     |
 | 범례        | WPF Overlay 기반 Legend UI                       | 🕓 예정     |
 | 상호작용      | ChartModifier 구조 (Cursor, Zoom, Pan 등)         | 🕓 예정     |
-| 다중 컨트롤 지원 | RenderThread 기반 다중 GraphControl 동시 지원          | ✅ 완료      |
+| 다중 컨트롤 지원 | `RenderThreadService` 기반 다중 `GraphControl` 렌더링 지원          | ✅ 완료      |
 | 스타일링      | Series별 색상, 두께, 마커 스타일                         | 🕓 예정     |
 | MVVM 대응   | SeriesBinding, AxisBinding, CommandTrigger 등   | ✅ 구조 확립 중 |
 
@@ -34,13 +34,13 @@ Direct3D11 기반으로 렌더링하며, MVVM 구조와 완전한 WPF 통합을 
 [GraphControl.xaml/.cs]                   ← WPF 컨트롤 진입점
 ├─ AxisManager                            ← 축 범위 및 Transform 계산 (공통)
 ├─ SeriesManager                          ← 시리즈 목록 및 상태 관리
-│  └─ List<GraphSeries<T>>                ← 순수 데이터 및 시각 속성
+│  └─ List<GraphSeries<T>>                ← 순수 데이터와 상태를 갖는 시리즈
 ├─ SeriesRendererManager                  ← 시리즈별 렌더러 구성/조회
 │  └─ Dictionary<GraphSeries, Renderer>  ← SeriesRenderer<T>
 ├─ D3D11Renderer                          ← 셰이더, 버퍼, SwapChain 관리
-│  └─ ShaderManager                       ← ShaderPipeline 등록소
+│  └─ ShaderManager                       ← ShaderPipeline /셰이더/버텍스레이아웃 캐싱 및 재사용
 │      └─ ShaderPipeline                  ← VS/PS/InputLayout 구성체
-├─ DrawGroupBatcher                       ← 시리즈 수집 및 DrawCall 병합 처리
+├─ DrawGroupBatcher                       ← 시리즈 수집 및 동일 셰이더 그룹 병합 및 DrawCall 최적화
 ├─ AnnotationLayer                        ← UIElement 기반 WPF Overlay 주석 시스템
 ├─ LegendPanel                            ← Series 정보 기반 WPF 오버레이 범례 시스템
 └─ RenderThreadService                    ← 각 렌더러를 독립 스레드에서 실행/관리
@@ -49,34 +49,37 @@ Direct3D11 기반으로 렌더링하며, MVVM 구조와 완전한 WPF 통합을 
 ---
 ### 📌 FastGraphItem 구조 요약 (GraphSeries 기반 핵심 구현체)
 
-- `AppendBatch()` → 실시간 RingBuffer<T> 누적
-- `Render()` 시점에만 GPU Upload 수행
-- Double Buffering: 4개 버퍼 순환
-- GPU Transform: ViewProjectionBuffer로 처리
-- 예외 대응: SEHException 및 DeviceRemoved 감지 후 무시
-
+- AppendBatch(span) → RingBuffer에 저장
+- Render() 호출 시점에만 GPU 업로드
+- 내부적으로 최대 4개의 VertexBuffer를 순환 (Double Buffering)
+- GPU 변환 행렬 적용: ViewProjectionBuffer 기반 Transform
+- 예외 대응: SEHException, DeviceRemoved → 무시 또는 재초기화
+- 실시간 렌더링 안정성 확보를 위해 Span 기반으로 최소 GC 설계
+- UseHistoryCache 옵션: 과거 데이터 회수용
+```
 var item = new FastGraphItem<VertexPosition>(capacity: 100_000)
 {
     Name = "CH1",
-    GraphColor = new Color4(1f, 0f, 0f, 1f)
+    GraphColor = new Color4(1f, 0f, 0f, 1f),
+    UseHistoryCache = false
 };
+```
+graphControl.AddItem(item);   // 내부적으로 AddGraphItem + Transform 적용
+item.AppendBatch(points);     // 렌더링 시점에만 GPU로 전송됨
+
 
 graphControl.AddItem(item); // 자동 Transform 반영 + 렌더 등록
 item.AppendBatch(points);   // GPU Upload는 렌더 타이밍에 처리됨
 ---
-🧠 DrawCall 병합 구조 초안
+### 🔁 DrawCall 병합 구조 (DrawGroupBatcher)
 DrawGroupBatcher 동작 계획
-시리즈 단위로 SeriesRenderer<T>에서 Upload 완료 후 DrawCallRequest 발행
+ - 시리즈 단위로 SeriesRenderer<T>에서 Upload 완료 후 DrawCallRequest 발행
+ - 동일 셰이더, 동일 스타일을 가진 시리즈를 하나의 그룹으로 묶음
+ - DrawGroupBatcher.Execute()가 한 번의 DrawCall로 처리
 
-동일 셰이더, 동일 스타일을 가진 시리즈를 하나의 그룹으로 묶음
-
-DrawGroupBatcher.Execute()가 한 번의 DrawCall로 처리
-
-효과:
-
-DrawCall 횟수 최소화
-
-렌더 중 0개의 버텍스, 이미 disposed된 버퍼 호출 방지
+ 효과:  DrawCall 횟수 최소화
+ 
+ 렌더 중 0개의 버텍스, 이미 disposed된 버퍼 호출 방지
 
 안정성, 성능, 예외 관리 모두 개선
 ---
@@ -87,8 +90,8 @@ DrawCall 횟수 최소화
 * `GraphControl`은 MVVM ViewModel에 Transform 정보 (XStart, XEnd 등)를 전달하거나 받아서 동기화 가능
 * 렌더 요청은 MVVM → GraphControl `RequestRender()` 또는 자동 타이머로 연동 가능
 
-추후 `ChartModifier`, `ZoomCommand`, `SelectionCommand`, `VisibleRange` 바인딩 등도 MVVM Command/Property 구조로 통합 예정
-
+- 추후 `ChartModifier`, `ZoomCommand`, `SelectionCommand`, `VisibleRange` 바인딩 등도 MVVM Command/Property 구조로 통합 예정
+```
 - Series 추가
 var series = new FastGraphItem<VertexPosition>(...) { Name = "MySeries" };
 graphControl.AddItem(series);
@@ -98,7 +101,8 @@ series.AppendBatch(generatedSpan); // Span<VertexPosition>
 graphControl.RequestRender(); // 또는 DispatcherTimer 내부 호출
 - Transform 바인딩 (MVVM)
 graphControl.UpdateTransform(xOffset, xScale, yScale, yOffset);
-
+- UI 확장:	Legend / Annotation은 MVVM 기반 WPF로 처리 예정
+```
 ---
 
 ## 🧵 고성능 렌더링 스레드 구조 (예정)
@@ -109,6 +113,7 @@ graphControl.UpdateTransform(xOffset, xScale, yScale, yOffset);
 | 시리즈 병렬 처리          | 시리즈별 Upload → 병렬 가능 (단, Context는 주의)                                                     |
 | 스레드 안전성            | Lock-free 큐, Dispatcher 최소 사용                                                            |
 | Frame Drop 대응      | Upload 시간 초과 시 Skip 허용                                                                   |
+|예외 및 재초기화 대응 |	SEHException, 0x887A0005 등 발생 시 TryRecover() 또는 무시 처리|
 | DrawCall 병합        | DrawGroupBatcher를 통해 시리즈를 그룹으로 수집하여 한 번에 렌더링 수행 → Draw 호출 최소화, 업데이트 오류 및 0버텍스 호출 방지에 효과적 |
 | 성능 측정 도구           | FPS, Upload 시간, Frame Cost 측정기 내장 예정                                                     |
 
@@ -136,7 +141,7 @@ Wpf.Ui.DirectX/
 ├─ Extensions/
 │  └─ ChartModifier, AnnotationLayer
 ├─ Shaders/
-│  └─ LinePixelShader.hlsl, LineVertexShader.hlsl
+│  └─ LinePixelShader.hlsl, LineVertexShader.hlsl, ConstPixelShader.hlsl,ConstVertexShader.hlsl
 └─ README.md
 ```
 

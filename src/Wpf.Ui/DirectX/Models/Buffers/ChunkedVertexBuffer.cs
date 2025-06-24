@@ -5,7 +5,7 @@
 
 using System.Diagnostics;
 
-namespace Wpf.Ui.DirectX.Models;
+namespace Wpf.Ui.DirectX.Models.Buffers;
 
 public sealed class ChunkedVertexBuffer<T> : IDisposable
     where T : unmanaged
@@ -14,9 +14,9 @@ public sealed class ChunkedVertexBuffer<T> : IDisposable
 
     private readonly ReaderWriterLockSlim _rwLock = new();
     private readonly List<List<T>> _chunks = new();
+    private readonly Func<T, float> _xSelector;
     private List<T> _currentChunk = new();
 
-    private readonly Func<T, float> _xSelector;
     private float _lastX = 0f;
     private int _totalCount = 0;
 
