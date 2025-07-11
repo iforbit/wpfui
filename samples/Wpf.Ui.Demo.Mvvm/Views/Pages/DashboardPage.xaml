@@ -24,8 +24,6 @@
 
     <Page.Resources>
         <converters:BooleanToTextConverter x:Key="BooleanToTextConverter" />
-
-
         <ui:Ribbon x:Key="DashboardPageRibbon">
             <!--  페이지에 필요한 RibbonTabItem, RibbonGroupBox, Button 등을 정의  -->
             <ui:RibbonTabItem Header="Dashboard">
@@ -47,63 +45,48 @@
 
 
         </ui:Ribbon>
-
-        <sys:Int16 x:Key="Num_1">1</sys:Int16>
-        <sys:Int16 x:Key="Num_2">2</sys:Int16>
-        <sys:Int16 x:Key="Num_3">3</sys:Int16>
-        <sys:Int16 x:Key="Num_4">4</sys:Int16>
     </Page.Resources>
 
     <Grid>
-        <!--<ui:SideTabControl>
-            <ui:SideTabItem Header="A 탭">
-                <TextBlock Padding="16" Text="내용 A" />
-            </ui:SideTabItem>
-            <ui:SideTabItem Header="B 탭">
-                <TextBlock Padding="16" Text="내용 B" />
-            </ui:SideTabItem>
-            <ui:SideTabItem Header="C 탭">
-                <TextBlock Padding="16" Text="내용 C" />
-            </ui:SideTabItem>
-        </ui:SideTabControl>-->
-
         <!--  실제 TabControl 적용  -->
-        <ui:DockedTabControl TabStripPlacement="{Binding ViewModel.SelectedTabPlacement, Mode=TwoWay}">
+        <ui:DockedTabControl>
 
             <ui:DockedTabItem Header="📄 상태" IsVisibleInStrip="True">
-                <Grid>
+
+                <Grid Margin="32">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <StackPanel Grid.Row="0" Orientation="Vertical">
-                        <ui:Button Width="100" Margin="8"
-                                   Command="{Binding ViewModel.ToggleRenderingCommand}"
-                                   Content="{Binding ViewModel.IsRendering, Converter={StaticResource BooleanToTextConverter}, ConverterParameter='Stop|Start'}" />
+                    <StackPanel Orientation="Vertical">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock VerticalAlignment="Center" FontSize="20" Text="Graph Viewer" />
+                            <TextBlock VerticalAlignment="Center" Text="{Binding ViewModel.StatusMessage}" />
 
 
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <!--  오버레이 FPS 텍스트  -->
+                            <ui:TextBlock x:Name="FpsTextBlock"
+                                          Margin="10" HorizontalAlignment="Left" VerticalAlignment="Top"
+                                          FontTypography="BodyStrong" Foreground="Lime" Text="FPS: -" />
 
+                            <ui:TextBlock x:Name="RenderTextBlock"
+                                          Margin="10" HorizontalAlignment="Left" VerticalAlignment="Top"
+                                          FontTypography="BodyStrong" Foreground="Cyan" Text="FPS: -" />
+
+                            <!--  Signal 수신 속도 표시  -->
+                            <ui:TextBlock Margin="16,0,0,0" VerticalAlignment="Center" FontTypography="BodyStrong"
+                                          Foreground="Orange"
+                                          Text="{Binding ViewModel.ReceiveRateText}" />
+
+                        </StackPanel>
                     </StackPanel>
-                    <ui:GraphControl x:Name="DxGraph"
-                                     Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+
+                    <ui:DXGraph x:Name="DxGraph"
+                                Grid.Row="1" Margin="0,16,0,0" HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch" />
                 </Grid>
-            </ui:DockedTabItem>
-
-            <ui:DockedTabItem Header="⚙ 설정">
-                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="설정 페이지입니다." />
-            </ui:DockedTabItem>
-            <ui:DockedTabItem>
-                <ui:DockedTabItem.Header>
-                    <StackPanel Orientation="Horizontal">
-                        <ui:SymbolIcon Margin="0,0,6,0" Symbol="StoreMicrosoft16" />
-                        <TextBlock Text="UnBuffered Report" />
-                    </StackPanel>
-                </ui:DockedTabItem.Header>
-            </ui:DockedTabItem>
-            <ui:DockedTabItem Header="🧪 테스트">
-                <StackPanel Margin="12" Orientation="Vertical">
-                    <TextBlock Margin="0,0,0,6" Text="IED 등록 테스트" />
-                </StackPanel>
             </ui:DockedTabItem>
         </ui:DockedTabControl>
     </Grid>

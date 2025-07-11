@@ -3,6 +3,9 @@
 // Copyright (C) Leszek Pomianowski and WPF UI Contributors.
 // All Rights Reserved.
 
+using System.Windows.Media;
+using System.Windows.Threading;
+
 using Wpf.Ui.Abstractions.Controls;
 using Wpf.Ui.Controls;
 using Wpf.Ui.Demo.Mvvm.ViewModels;
@@ -14,6 +17,10 @@ public partial class DashboardPage : INavigableView<ViewModels.DashboardViewMode
 {
     public ViewModels.DashboardViewModel ViewModel { get; }
     private readonly IRenderThreadService _renderThread;
+    private int _frameCount = 0;
+    private DateTime _lastFpsUpdate = DateTime.Now;
+
+    private DispatcherTimer _updateTimer;
     public DashboardPage(DashboardViewModel viewModel, IRenderThreadService renderThread)
     {
         ViewModel = viewModel;
@@ -28,6 +35,43 @@ public partial class DashboardPage : INavigableView<ViewModels.DashboardViewMode
     private void OnLoaded(object sender, RoutedEventArgs e)
     {
         ViewModel.SetGraphControl(DxGraph); // ✅ RenderThread는 ViewModel이 이미 갖고 있음
+        CompositionTarget.Rendering += OnRendering;
+        _updateTimer = new DispatcherTimer
+        {
+            Interval = TimeSpan.FromMilliseconds(50)
+        };
+
+        _updateTimer.Tick += (_, _) =>
+        {
+            _frameCount++;
+            if ((DateTime.Now - _lastFpsUpdate).TotalSeconds >= 1)
+            {
+                double tick = _frameCount / (DateTime.Now - _lastFpsUpdate).TotalSeconds;
+                FpsTextBlock.Text = $"WPF Tick: {tick:F1}";
+                _frameCount = 0;
+                _lastFpsUpdate = DateTime.Now;
+            }
+        };
+
+        _updateTimer.Start(); // ✅ Tick 설정 후 Start 한 번만
+    }
+
+    private int _renderFrameCount = 0;
+    private DateTime _lastUpdate = DateTime.Now;
+
+    // 화면 렌더링 속도.
+    private void OnRendering(object? sender, EventArgs e)
+    {
+        _renderFrameCount++;
+        TimeSpan elapsed = DateTime.Now - _lastUpdate;
+
+        if (elapsed.TotalSeconds >= 1)
+        {
+            double render = _renderFrameCount / elapsed.TotalSeconds;
+            RenderTextBlock.Text = $"Render FPS: {render:F1}";
+            _renderFrameCount = 0;
+            _lastUpdate = DateTime.Now;
+        }
     }
 
     // IRibbonProvider 구현 – 여기서는 XAML 리소스에서 정의된 Ribbon을 반환한다고 가정

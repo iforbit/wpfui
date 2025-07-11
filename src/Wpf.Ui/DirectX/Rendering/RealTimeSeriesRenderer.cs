@@ -50,7 +50,7 @@ public sealed class RealTimeSeriesRenderer<T> : SeriesRendererBase<T>
             return;
         }
 
-        ReadOnlySpan<T> data = realSeries.GetSpanMergedUnsafe();
+        ReadOnlySpan<T> data = realSeries.GetSpanMergedUnsafeCached();
 
         // Debug.WriteLine($"🔍 Span.Length = {data.Length}, Span.IsEmpty = {data.IsEmpty}");
         _vertexCount = data.Length;
@@ -191,6 +191,8 @@ public sealed class RealTimeSeriesRenderer<T> : SeriesRendererBase<T>
         Context.PSSetConstantBuffer(1, _graphColorBuffer);
         Context.IASetVertexBuffers(0, new[] { _vertexBuffer }, new uint[] { (uint)stride }, new uint[] { (uint)offset });
         Context.IASetPrimitiveTopology(Vortice.Direct3D.PrimitiveTopology.LineStrip);
+
+        // Debug.WriteLine($"🎨 Rendering {_vertexCount} vertices for {Series.Name}");
         Context.Draw((uint)_vertexCount, 0);
     }
 

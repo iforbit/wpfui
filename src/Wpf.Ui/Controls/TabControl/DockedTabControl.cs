@@ -33,4 +33,14 @@ public class DockedTabControl : TabControl
             };
         }
     }
+
+    protected override bool IsItemItsOwnContainerOverride(object item)
+    {
+        return item is DockedTabItem;
+    }
+
+    protected override DependencyObject GetContainerForItemOverride()
+    {
+        return new DockedTabItem();
+    }
 }

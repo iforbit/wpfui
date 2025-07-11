@@ -75,25 +75,6 @@ public sealed class TransformManager : IDisposable
         }
     }
 
-    public void FollowLatestX(ID3D11DeviceContext context, float latestX, float visibleRange = 30f)
-    {
-        if (IsUserControlled || _disposed || _viewProjectionBuffer == null || context.NativePointer == IntPtr.Zero)
-        {
-            return;
-        }
-
-        float newOffset = latestX - visibleRange;
-        if (Math.Abs(newOffset - XOffset) < 0.0001f)
-        {
-            return;
-        }
-
-        XScale = 0.1f; // 스케일은 고정
-
-        // Debug.WriteLine($"🧭 SyncOffset: {XOffset} → {newOffset}, LastX={latestX}");
-        SetTransform(newOffset, XScale, YScale, YOffset);
-    }
-
     // 🧠 Render 루프에서 호출 (1프레임 1회)
     public void ApplyToContext(ID3D11DeviceContext context, int slot = 0)
     {

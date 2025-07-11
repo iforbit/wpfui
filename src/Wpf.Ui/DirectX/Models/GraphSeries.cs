@@ -31,9 +31,9 @@ public abstract class GraphSeries<T> : IGraphSeries
     protected float _maxX = float.MinValue;
     protected float _lastX = 0f;
 
-    public virtual float MinX => _minX;
+    public virtual float MinX => _minX == float.MaxValue ? 0f : _minX;
 
-    public virtual float MaxX => _maxX;
+    public virtual float MaxX => _maxX == float.MinValue ? 100f : _maxX;
 
     public virtual float LastX => _lastX;
 

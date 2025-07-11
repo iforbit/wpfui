@@ -3,6 +3,7 @@
 // Copyright (C) Leszek Pomianowski and WPF UI Contributors.
 // All Rights Reserved.
 
+using System.Buffers;
 using System.Runtime.CompilerServices;
 
 using Wpf.Ui.DirectX.Models.Buffers;
@@ -16,6 +17,9 @@ public sealed class RealTimeSeries<T> : GraphSeries<T>
     private readonly RingBuffer<T> _ringBuffer;
     private readonly List<T> _historyCache = new();
     private readonly object _lock = new();
+
+    private T[]? _uploadBuffer;
+    private readonly int _uploadBufferSize;
 
     public int TotalVertexCount => _ringBuffer.Count;
 
@@ -44,15 +48,17 @@ public sealed class RealTimeSeries<T> : GraphSeries<T>
         lock (_lock)
         {
             _ringBuffer.Append(data);
-
             foreach (ref readonly T point in data)
             {
                 if (typeof(T) == typeof(VertexPosition))
                 {
                     float x = Unsafe.As<T, VertexPosition>(ref Unsafe.AsRef(in point)).Position.X;
+                    _ = Unsafe.As<T, VertexPosition>(ref Unsafe.AsRef(in point)).Position.Y;
                     _lastX = Math.Max(_lastX, x);
                     _minX = Math.Min(_minX, x);
                     _maxX = Math.Max(_maxX, x);
+
+                    // Debug.WriteLine($"🛑 Append Name:{Name}  Data:x={x}, y={y}");
                 }
                 else if (typeof(T) == typeof(VertexPositionColor))
                 {
@@ -80,6 +86,39 @@ public sealed class RealTimeSeries<T> : GraphSeries<T>
             _ringBuffer.GetSpans(out Span<T> span1, out Span<T> span2);
             ExtractY(span1, minX, maxX, ref minY, ref maxY);
             ExtractY(span2, minX, maxX, ref minY, ref maxY);
+
+            if (minY == float.MaxValue || maxY == float.MinValue)
+            {
+                minY = -1f;
+                maxY = 1f;
+            }
+        }
+    }
+
+    public void GetRecentYRange(int recentCount, out float minY, out float maxY)
+    {
+        lock (_lock)
+        {
+            ReadOnlySpan<T> span = _ringBuffer.AsSpanUnsafe(); // 최신순 정렬 가정
+            int count = Math.Min(recentCount, span.Length);
+            minY = float.MaxValue;
+            maxY = float.MinValue;
+
+            for (int i = span.Length - count; i < span.Length; i++)
+            {
+                if (typeof(T) == typeof(VertexPosition))
+                {
+                    float y = Unsafe.As<T, VertexPosition>(ref Unsafe.AsRef(in span[i])).Position.Y;
+                    minY = Math.Min(minY, y);
+                    maxY = Math.Max(maxY, y);
+                }
+                else if (typeof(T) == typeof(VertexPositionColor))
+                {
+                    float y = Unsafe.As<T, VertexPositionColor>(ref Unsafe.AsRef(in span[i])).Position.Y;
+                    minY = Math.Min(minY, y);
+                    maxY = Math.Max(maxY, y);
+                }
+            }
 
             if (minY == float.MaxValue || maxY == float.MinValue)
             {
@@ -132,7 +171,8 @@ public sealed class RealTimeSeries<T> : GraphSeries<T>
         }
     }
 
-    public ReadOnlySpan<T> GetSpanMergedUnsafe()
+    // 병합이 필요한 이유는 단절 방지를 위한 "시각적 연속성 유지" 때문임
+    public ReadOnlySpan<T> GetSpanMergedUnsafeCached()
     {
         lock (_lock)
         {
@@ -143,13 +183,42 @@ public sealed class RealTimeSeries<T> : GraphSeries<T>
                 return span1;
             }
 
-            // 두 Span을 병합하여 새로운 버퍼에 복사
             int totalLength = span1.Length + span2.Length;
-            T[] merged = GC.AllocateUninitializedArray<T>(totalLength); // .NET 5+ 안전한 할당
-            span1.CopyTo(merged);
-            span2.CopyTo(merged.AsSpan(span1.Length));
 
-            return merged.AsSpan();
+            if (totalLength <= 512)
+            {
+                // 💡 빠른 경량 병합 (GC는 문제 없음)
+                _uploadBuffer = GC.AllocateUninitializedArray<T>(totalLength);
+                span1.CopyTo(_uploadBuffer);
+                span2.CopyTo(_uploadBuffer.AsSpan(span1.Length));
+                return _uploadBuffer.AsSpan(0, totalLength);
+            }
+            else
+            {
+                if (_uploadBuffer == null || _uploadBuffer.Length < totalLength)
+                {
+                    if (_uploadBuffer != null)
+                    {
+                        ArrayPool<T>.Shared.Return(_uploadBuffer);
+                    }
+
+                    _uploadBuffer = ArrayPool<T>.Shared.Rent(totalLength);
+                }
+
+                return _ringBuffer.CopyMergedTo(_uploadBuffer.AsSpan(0, totalLength));
+            }
+        }
+    }
+
+    public void Clear()
+    {
+        lock (_lock)
+        {
+            _ringBuffer.Clear();
+            _lastX = 0f;
+            _minX = float.MaxValue;
+            _maxX = float.MinValue;
+            _historyCache?.Clear();
         }
     }
 }

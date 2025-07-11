@@ -1,0 +1,29 @@
+<UserControl x:Name="Root"
+             x:Class="Wpf.Ui.DirectX.Controls.DXGraph"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dx="clr-namespace:Wpf.Ui.DirectX.Controls"
+             mc:Ignorable="d">
+    <Grid x:Name="rootGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <dx:GraphControl x:Name="Graph"
+                             HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+
+            <Border Background="Transparent" MouseWheel="DXGraph_MouseWheel" />
+           
+        </Grid>
+        <ScrollBar x:Name="ScrollBarX"
+                   Grid.Row="1" Height="20"
+                   Maximum="{Binding ElementName=Graph, Path=MaxX}"
+                   Minimum="{Binding ElementName=Graph, Path=MinX}"
+                   Orientation="Horizontal" ValueChanged="ScrollBarX_OnValueChanged"
+                   ViewportSize="{Binding ElementName=Graph, Path=VisibleRange}" />
+    </Grid>
+</UserControl>
