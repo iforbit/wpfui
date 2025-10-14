@@ -103,6 +103,47 @@ public static class ApplicationAccentColorManager
     public static Brush SecondaryAccentBrush => new SolidColorBrush(SecondaryAccent);
 
     /// <summary>
+    /// Gets the .NET 9 system accent color directly from SystemColors.
+    /// This provides automatic updates when user changes accent color in Windows settings.
+    /// </summary>
+    public static Color Net9SystemAccent
+    {
+        get
+        {
+            // .NET 9 WPF Fluent 테마 시스템 액센트 컬러 지원
+            try
+            {
+                return SystemColors.AccentColor;
+            }
+            catch
+            {
+                // Fallback to current system if .NET 9 properties are not available
+                return GetColorizationColor();
+            }
+        }
+    }
+
+    /// <summary>
+    /// Gets the .NET 9 system accent color brush.
+    /// Uses DynamicResource for automatic updates.
+    /// </summary>
+    public static Brush Net9SystemAccentBrush
+    {
+        get
+        {
+            try
+            {
+                return SystemColors.AccentColorBrush;
+            }
+            catch
+            {
+                // Fallback to current system
+                return new SolidColorBrush(GetColorizationColor());
+            }
+        }
+    }
+
+    /// <summary>
     /// Gets the SystemAccentColorTertiary.
     /// </summary>
     public static Color TertiaryAccent
@@ -189,6 +230,57 @@ public static class ApplicationAccentColorManager
     }
 
     /// <summary>
+    /// Applies .NET 9 system accent color with automatic updates.
+    /// This method enables integration with Windows 11 Fluent design system.
+    /// </summary>
+    public static void ApplyNet9SystemAccent()
+    {
+        try
+        {
+            // .NET 9 WPF Fluent 테마 시스템 액센트 컬러 적용
+            Color net9AccentColor = Net9SystemAccent;
+            Apply(net9AccentColor, ApplicationThemeManager.GetAppTheme());
+            
+            // 추가로 .NET 9 시스템 컬러 리소스 업데이트
+            UpdateNet9SystemColorResources();
+        }
+        catch
+        {
+            // Fallback to traditional method if .NET 9 features are not available
+            ApplySystemAccent();
+        }
+    }
+
+    /// <summary>
+    /// Updates .NET 9 system color resources for dynamic accent color support.
+    /// </summary>
+    private static void UpdateNet9SystemColorResources()
+    {
+        try
+        {
+            // 동적 시스템 액센트 컬러 브러시 리소스 업데이트
+            if (UiApplication.Current?.Resources != null)
+            {
+                // .NET 9 시스템 액센트 컬러를 WPF UI 리소스와 연결
+                UiApplication.Current.Resources["SystemAccentColorBrush"] = Net9SystemAccentBrush;
+                UiApplication.Current.Resources["SystemFillColorAttentionBrush"] = Net9SystemAccentBrush;
+                
+                System.Diagnostics.Debug.WriteLine(
+                    "INFO | .NET 9 System Accent Colors applied successfully", 
+                    "Wpf.Ui.Accent"
+                );
+            }
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine(
+                $"WARNING | Failed to update .NET 9 system color resources: {ex.Message}", 
+                "Wpf.Ui.Accent"
+            );
+        }
+    }
+
+    /// <summary>
     /// Gets current Desktop Window Manager colorization color.
     /// <para>It should be the color defined in the system Personalization.</para>
     /// </summary>
@@ -207,23 +299,23 @@ public static class ApplicationAccentColorManager
         Color tertiaryAccent
     )
     {
-        System.Diagnostics.Debug.WriteLine("INFO | SystemAccentColor: " + systemAccent, "Wpf.Ui.Accent");
-        System.Diagnostics.Debug.WriteLine(
-            "INFO | SystemAccentColorPrimary: " + primaryAccent,
-            "Wpf.Ui.Accent"
-        );
-        System.Diagnostics.Debug.WriteLine(
-            "INFO | SystemAccentColorSecondary: " + secondaryAccent,
-            "Wpf.Ui.Accent"
-        );
-        System.Diagnostics.Debug.WriteLine(
-            "INFO | SystemAccentColorTertiary: " + tertiaryAccent,
-            "Wpf.Ui.Accent"
-        );
+        // System.Diagnostics.Debug.WriteLine("INFO | SystemAccentColor: " + systemAccent, "Wpf.Ui.Accent");
+        // System.Diagnostics.Debug.WriteLine(
+        //     "INFO | SystemAccentColorPrimary: " + primaryAccent,
+        //     "Wpf.Ui.Accent"
+        // );
+        // System.Diagnostics.Debug.WriteLine(
+        //     "INFO | SystemAccentColorSecondary: " + secondaryAccent,
+        //     "Wpf.Ui.Accent"
+        // );
+        // System.Diagnostics.Debug.WriteLine(
+        //     "INFO | SystemAccentColorTertiary: " + tertiaryAccent,
+        //     "Wpf.Ui.Accent"
+        // );
 
         if (secondaryAccent.GetBrightness() > BackgroundBrightnessThresholdValue)
         {
-            System.Diagnostics.Debug.WriteLine("INFO | Text on accent is DARK", "Wpf.Ui.Accent");
+            // System.Diagnostics.Debug.WriteLine("INFO | Text on accent is DARK", "Wpf.Ui.Accent");
             UiApplication.Current.Resources["TextOnAccentFillColorPrimary"] = Color.FromArgb(
                 0xFF,
                 0x00,
@@ -257,7 +349,7 @@ public static class ApplicationAccentColorManager
         }
         else
         {
-            System.Diagnostics.Debug.WriteLine("INFO | Text on accent is LIGHT", "Wpf.Ui.Accent");
+            // System.Diagnostics.Debug.WriteLine("INFO | Text on accent is LIGHT", "Wpf.Ui.Accent");
             UiApplication.Current.Resources["TextOnAccentFillColorPrimary"] = Color.FromArgb(
                 0xFF,
                 0xFF,

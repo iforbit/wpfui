@@ -509,10 +509,10 @@ public class TitleBar : System.Windows.Controls.Control, IThemeControl
         Color systemAccent
     )
     {
-        Debug.WriteLine(
-            $"INFO | {typeof(TitleBar)} received theme -  {currentApplicationTheme}",
-            "Wpf.Ui.TitleBar"
-        );
+        // Debug.WriteLine(
+        //     $"INFO | {typeof(TitleBar)} received theme -  {currentApplicationTheme}",
+        //     "Wpf.Ui.TitleBar"
+        // );
 
         SetCurrentValue(ApplicationThemeProperty, currentApplicationTheme);
     }
@@ -535,10 +535,10 @@ public class TitleBar : System.Windows.Controls.Control, IThemeControl
             }
         }
 
-        Debug.WriteLine(
-            $"INFO | {typeof(TitleBar)}.CloseWindow:ForceShutdown - {ForceShutdown}",
-            "Wpf.Ui.TitleBar"
-        );
+        // Debug.WriteLine(
+        //     $"INFO | {typeof(TitleBar)}.CloseWindow:ForceShutdown - {ForceShutdown}",
+        //     "Wpf.Ui.TitleBar"
+        // );
 
         if (ForceShutdown)
         {

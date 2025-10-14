@@ -164,6 +164,7 @@ public partial class MainWindowViewModel(IStringLocalizer<Translations> localize
                 new NavigationViewItem(nameof(Wpf.Ui.Controls.PasswordBox), typeof(PasswordBoxPage)),
                 new NavigationViewItem(nameof(Wpf.Ui.Controls.RichTextBox), typeof(RichTextBoxPage)),
                 new NavigationViewItem(nameof(Label), typeof(LabelPage)),
+                new NavigationViewItem(nameof(Wpf.Ui.Controls.LabelText), typeof(LabelTextPage)),
                 new NavigationViewItem(nameof(Wpf.Ui.Controls.TextBlock), typeof(TextBlockPage)),
                 new NavigationViewItem(nameof(Wpf.Ui.Controls.TextBox), typeof(TextBoxPage)),
             },

@@ -89,4 +89,17 @@ internal interface INotifyIcon
     /// Tries to remove the <see cref="INotifyIcon"/> from the shell.
     /// </summary>
     bool Unregister();
+
+    /// <summary>
+    /// Shows a balloon tip notification.
+    /// </summary>
+    /// <param name="title">The title of the balloon tip (max 64 characters).</param>
+    /// <param name="message">The message of the balloon tip (max 256 characters).</param>
+    /// <param name="icon">The icon to display.</param>
+    void ShowBalloonTip(string title, string message, BalloonTipIcon icon = BalloonTipIcon.Info);
+
+    /// <summary>
+    /// Hides the currently displayed balloon tip.
+    /// </summary>
+    void HideBalloonTip();
 }

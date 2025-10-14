@@ -1,0 +1,66 @@
+<Page x:Class="Wpf.Ui.Gallery.Views.Pages.Text.LabelTextPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:controls="clr-namespace:Wpf.Ui.Gallery.Controls"
+      xmlns:local="clr-namespace:Wpf.Ui.Gallery.Views.Pages.Text"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      Title="LabelTextPage"
+      controls:PageControlDocumentation.DocumentationType="{x:Type ui:LabelText}"
+      d:DataContext="{d:DesignInstance local:LabelTextPage,
+                                       IsDesignTimeCreatable=False}"
+      d:DesignHeight="750"
+      d:DesignWidth="800"
+      ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
+      ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+      Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+      mc:Ignorable="d">
+
+    <StackPanel Margin="0,0,0,24">
+        <!--  Basic LabelText  -->
+        <controls:ControlExample HeaderText="Basic floating label TextBox." XamlCode="&lt;ui:LabelText Label=&quot;Name&quot; /&gt;">
+            <ui:LabelText FontSize="20" IsSimple="True" Label="Test Label" IsEnabled="False" />
+        </controls:ControlExample>
+
+        <!--  LabelText with PlaceholderText fallback  -->
+        <controls:ControlExample Margin="0,36,0,0" HeaderText="LabelText with placeholder fallback when no label." XamlCode="&lt;ui:LabelText PlaceholderText=&quot;Enter text...&quot; /&gt;">
+            <ui:LabelText PlaceholderText="Enter text..." />
+        </controls:ControlExample>
+
+        <!--  LabelText with KeepLabelFloated  -->
+        <controls:ControlExample Margin="0,36,0,0" HeaderText="LabelText with always floated label." XamlCode="&lt;ui:LabelText Label=&quot;Email&quot; KeepLabelFloated=&quot;True&quot; /&gt;">
+            <ui:LabelText KeepLabelFloated="True" Label="Email" />
+        </controls:ControlExample>
+
+        <!--  LabelText with AdditionalContent  -->
+        <controls:ControlExample Margin="0,36,0,0" HeaderText="LabelText with additional content (icon)." XamlCode="&lt;ui:LabelText Label=&quot;Search&quot;&gt;&#x0A;    &lt;ui:LabelText.AdditionalContent&gt;&#x0A;        &lt;ui:SymbolIcon Symbol=&quot;Search24&quot; /&gt;&#x0A;    &lt;/ui:LabelText.AdditionalContent&gt;&#x0A;&lt;/ui:LabelText&gt;">
+            <ui:LabelText Label="Search">
+                <ui:LabelText.AdditionalContent>
+                    <ui:SymbolIcon Symbol="Search24" />
+                </ui:LabelText.AdditionalContent>
+            </ui:LabelText>
+        </controls:ControlExample>
+
+        <!--  LabelText with custom style  -->
+        <controls:ControlExample Margin="0,36,0,0" HeaderText="LabelText with custom label style.">
+            <ui:LabelText Label="Custom Styled">
+                <ui:LabelText.LabelStyle>
+                    <Style BasedOn="{StaticResource {x:Type Label}}" TargetType="Label">
+                        <Setter Property="Foreground" Value="{DynamicResource ControlSuccessBrush}" />
+                        <Setter Property="FontWeight" Value="Bold" />
+                    </Style>
+                </ui:LabelText.LabelStyle>
+            </ui:LabelText>
+        </controls:ControlExample>
+
+        <!--  LabelText with Button as AdditionalContent  -->
+        <controls:ControlExample Margin="0,36,0,0" HeaderText="LabelText with button as additional content." XamlCode="&lt;ui:LabelText Label=&quot;Password&quot;&gt;&#x0A;    &lt;ui:LabelText.AdditionalContent&gt;&#x0A;        &lt;ui:Button Content=&quot;Show&quot; Appearance=&quot;Secondary&quot; /&gt;&#x0A;    &lt;/ui:LabelText.AdditionalContent&gt;&#x0A;&lt;/ui:LabelText&gt;">
+            <ui:LabelText Label="Password">
+                <ui:LabelText.AdditionalContent>
+                    <ui:Button Padding="8,4" Appearance="Secondary" Content="Show" />
+                </ui:LabelText.AdditionalContent>
+            </ui:LabelText>
+        </controls:ControlExample>
+    </StackPanel>
+</Page>

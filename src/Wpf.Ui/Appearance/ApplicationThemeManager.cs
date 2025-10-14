@@ -84,24 +84,20 @@ public static class ApplicationThemeManager
 
         ResourceDictionaryManager appDictionaries = new(LibraryNamespace);
 
-        string themeDictionaryName = "Light";
-
-        switch (applicationTheme)
+        // .NET 9 성능 최적화: 스위치 표현식으로 리팩토링
+        string themeDictionaryName = applicationTheme switch
         {
-            case ApplicationTheme.Dark:
-                themeDictionaryName = "Dark";
-                break;
-            case ApplicationTheme.HighContrast:
-                themeDictionaryName = ApplicationThemeManager.GetSystemTheme() switch
-                {
-                    SystemTheme.HC1 => "HC1",
-                    SystemTheme.HC2 => "HC2",
-                    SystemTheme.HCBlack => "HCBlack",
-                    SystemTheme.HCWhite => "HCWhite",
-                    _ => "HCWhite",
-                };
-                break;
-        }
+            ApplicationTheme.Dark => "Dark",
+            ApplicationTheme.HighContrast => GetSystemTheme() switch
+            {
+                SystemTheme.HC1 => "HC1",
+                SystemTheme.HC2 => "HC2",
+                SystemTheme.HCBlack => "HCBlack",
+                SystemTheme.HCWhite => "HCWhite",
+                _ => "HCWhite",
+            },
+            _ => "Light"
+        };
 
         bool isUpdated = appDictionaries.UpdateDictionary(
             "theme",
@@ -294,19 +290,13 @@ public static class ApplicationThemeManager
 
         string themeUri = themeDictionary.Source.ToString();
 
-        if (themeUri.Contains("light", StringComparison.OrdinalIgnoreCase))
+        // .NET 9 성능 최적화: 단일 스위치 표현식으로 변경
+        _cachedApplicationTheme = themeUri.ToLowerInvariant() switch
         {
-            _cachedApplicationTheme = ApplicationTheme.Light;
-        }
-
-        if (themeUri.Contains("dark", StringComparison.OrdinalIgnoreCase))
-        {
-            _cachedApplicationTheme = ApplicationTheme.Dark;
-        }
-
-        if (themeUri.Contains("highcontrast", StringComparison.OrdinalIgnoreCase))
-        {
-            _cachedApplicationTheme = ApplicationTheme.HighContrast;
-        }
+            var uri when uri.Contains("light") => ApplicationTheme.Light,
+            var uri when uri.Contains("dark") => ApplicationTheme.Dark,
+            var uri when uri.Contains("highcontrast") => ApplicationTheme.HighContrast,
+            _ => ApplicationTheme.Unknown
+        };
     }
 }

@@ -7,11 +7,9 @@ using System.Collections;
 using System.Windows.Automation.Peers;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Forms;
 using System.Windows.Input;
 
 using Wpf.Ui.Controls.Helpers;
-using Wpf.Ui.Extensions;
 using Wpf.Ui.Internal;
 
 namespace Wpf.Ui.Controls;
@@ -260,90 +258,6 @@ public abstract class RibbonControl : System.Windows.Controls.Control, ICommandS
     {
     }
     */
-
-    /// <summary>
-    /// Returns screen workarea in witch control is placed
-    /// </summary>
-    /// <param name="control">Control</param>
-    /// <returns>Workarea in witch control is placed</returns>
-    public static Rect GetControlWorkArea(FrameworkElement control)
-    {
-        if (PresentationSource.FromVisual(control) is null)
-        {
-            return default;
-        }
-
-        // 1️ 컨트롤의 화면 위치 가져오기
-        Point controlPosOnScreen = control.PointToScreen(new Point(0, 0));
-        /*
-        var controlRect = new RECT
-        {
-            left = (int)controlPosOnScreen.X,
-            top = (int)controlPosOnScreen.Y,
-            right = (int)controlPosOnScreen.X + (int)control.ActualWidth,
-            bottom = (int)controlPosOnScreen.Y + (int)control.ActualHeight
-        };
-        var monitor = PInvoke.MonitorFromRect(&controlRect, MONITOR_FROM_FLAGS.MONITOR_DEFAULTTONEAREST);
-        if (monitor != IntPtr.Zero)
-        {
-            var monitorInfo = new MONITORINFO { cbSize = (uint)Marshal.SizeOf<MONITORINFO>() };
-            PInvoke.GetMonitorInfo(monitor, &monitorInfo);
-            return new Rect(monitorInfo.rcWork.left, monitorInfo.rcWork.top, monitorInfo.rcWork.right - monitorInfo.rcWork.left, monitorInfo.rcWork.bottom - monitorInfo.rcWork.top);
-        }
-
-        return default;
-        */
-
-        // 2️ 해당 위치가 속한 Screen 찾기
-        Screen screen = Screen.FromPoint(new System.Drawing.Point((int)controlPosOnScreen.X, (int)controlPosOnScreen.Y));
-
-        // 3️ Work Area (작업 표시줄 제외) 가져오기
-        System.Drawing.Rectangle workArea = screen.WorkingArea;
-
-        // 4️ WPF Rect로 변환하여 반환
-        return new Rect(workArea.Left, workArea.Top, workArea.Width, workArea.Height);
-    }
-
-    /// <summary>
-    /// Returns monitor in witch control is placed
-    /// </summary>
-    /// <param name="control">Control</param>
-    /// <returns>Workarea in witch control is placed</returns>
-    public static Rect GetControlMonitor(FrameworkElement control)
-    {
-        if (PresentationSource.FromVisual(control) is null)
-        {
-            return default;
-        }
-
-        // 1️ 컨트롤의 화면 좌표 가져오기
-        Point controlPosOnScreen = control.PointToScreen(new Point(0, 0));
-        /*
-        var controlRect = new RECT
-        {
-            left = (int)controlPosOnScreen.X,
-            top = (int)controlPosOnScreen.Y,
-            right = (int)controlPosOnScreen.X + (int)control.ActualWidth,
-            bottom = (int)controlPosOnScreen.Y + (int)control.ActualHeight
-        };
-        var monitor = PInvoke.MonitorFromRect(&controlRect, MONITOR_FROM_FLAGS.MONITOR_DEFAULTTONEAREST);
-        if (monitor != IntPtr.Zero)
-        {
-            var monitorInfo = new MONITORINFO { cbSize = (uint)Marshal.SizeOf<MONITORINFO>() };
-            PInvoke.GetMonitorInfo(monitor, &monitorInfo);
-            return new Rect(monitorInfo.rcMonitor.left, monitorInfo.rcMonitor.top, monitorInfo.rcMonitor.right - monitorInfo.rcMonitor.left, monitorInfo.rcMonitor.bottom - monitorInfo.rcMonitor.top);
-        }
-
-        return default;
-        */
-
-        // 2️ 해당 좌표가 속한 모니터 찾기
-        Screen screen = Screen.FromPoint(new System.Drawing.Point((int)controlPosOnScreen.X, (int)controlPosOnScreen.Y));
-
-        // 3️ 모니터 전체 영역(Rect) 변환
-        System.Drawing.Rectangle monitorArea = screen.Bounds;
-        return new Rect(monitorArea.Left, monitorArea.Top, monitorArea.Width, monitorArea.Height);
-    }
 
     /// <summary>
     /// Get the parent <see cref="Ribbon"/>.

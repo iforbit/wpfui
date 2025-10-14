@@ -1,0 +1,125 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="clr-namespace:Wpf.Ui.Controls">
+
+    <!--  DragScrubber 기본 스타일  -->
+    <Style TargetType="{x:Type controls:DragScrubber}">
+        <Setter Property="Height" Value="20" />
+        <Setter Property="LabelFontSize" Value="12" />
+        <Setter Property="LabelForeground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
+        <Setter Property="Step" Value="1.0" />
+        <Setter Property="Precision" Value="1" />
+        <Setter Property="DragSensitivity" Value="1.0" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:DragScrubber}">
+                    <Grid>
+                        <!--  Unity Inspector 스타일 레이아웃  -->
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{TemplateBinding LabelWidth}" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <!--  드래그 가능한 라벨  -->
+                            <Border x:Name="PART_LabelArea"
+                                    Grid.Column="0" Padding="4,2" Background="Transparent"
+                                    CornerRadius="2,0,0,2" Cursor="SizeWE">
+                                <TextBlock x:Name="PART_Label"
+                                           VerticalAlignment="Center"
+                                           FontSize="{TemplateBinding LabelFontSize}"
+                                           Foreground="{TemplateBinding LabelForeground}"
+                                           Text="{TemplateBinding Label}" />
+                            </Border>
+
+                            <!--  입력 가능한 TextBox  -->
+                            <TextBox x:Name="PART_TextBox"
+                                     Grid.Column="1" Padding="4,2" VerticalAlignment="Center"
+                                     VerticalContentAlignment="Center" BorderBrush="#CCCCCC" BorderThickness="1"
+                                     FontSize="{TemplateBinding LabelFontSize}"
+                                     Foreground="{TemplateBinding LabelForeground}"
+                                     Text="{Binding Value, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
+                        </Grid>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="InteractionStates">
+                                <!--  기본 상태  -->
+                                <VisualState x:Name="Normal">
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="PART_LabelArea" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" To="Transparent"
+                                                        Duration="0:0:0.1" />
+                                    </Storyboard>
+                                </VisualState>
+
+                                <!--  마우스 오버 상태  -->
+                                <VisualState x:Name="MouseOver">
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="PART_LabelArea" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" To="#10000000"
+                                                        Duration="0:0:0.1" />
+                                    </Storyboard>
+                                </VisualState>
+
+                                <!--  드래그 상태  -->
+                                <VisualState x:Name="Dragging">
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="PART_LabelArea" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" To="#20007ACC"
+                                                        Duration="0:0:0.1" />
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--  PropertyPane 전용 컴팩트 스타일 - 더 작고 유연한 크기  -->
+    <Style x:Key="CompactDragScrubberStyle" TargetType="{x:Type controls:DragScrubber}">
+        <Setter Property="Height" Value="14" />
+        <Setter Property="LabelFontSize" Value="8" />
+        <Setter Property="LabelForeground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
+        <Setter Property="Step" Value="1.0" />
+        <Setter Property="Precision" Value="1" />
+        <Setter Property="DragSensitivity" Value="1.0" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:DragScrubber}">
+                    <!--  Unity Inspector 스타일 컴팩트 레이아웃 - 심플한 커서 변경만  -->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="{TemplateBinding LabelWidth}" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <!--  컴팩트 드래그 가능한 라벨 (커서 변경으로 드래그 상태 표현)  -->
+                        <Border x:Name="PART_LabelArea"
+                                Grid.Column="0" Padding="2,0" Background="Transparent"
+                                Cursor="SizeWE">
+                            <TextBlock x:Name="PART_Label"
+                                       VerticalAlignment="Center"
+                                       FontSize="{TemplateBinding LabelFontSize}"
+                                       FontWeight="Medium"
+                                       Foreground="{TemplateBinding LabelForeground}"
+                                       Text="{TemplateBinding Label}" />
+                        </Border>
+
+                        <!--  컴팩트 입력 가능한 TextBox (외부에서 높이 조정 가능)  -->
+                        <TextBox x:Name="PART_TextBox"
+                                 Grid.Column="1"
+                                 Height="{Binding Height, RelativeSource={RelativeSource TemplatedParent}}"
+                                 MinHeight="12" Padding="2,0" VerticalAlignment="Center"
+                                 VerticalContentAlignment="Center" BorderThickness="0"
+                                 FontSize="{TemplateBinding LabelFontSize}"
+                                 Foreground="{TemplateBinding LabelForeground}"
+                                 Text="{Binding Value, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

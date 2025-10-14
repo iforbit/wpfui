@@ -1,5 +1,5 @@
 // This Source Code Form is subject to the terms of the MIT License.
-// If a copy of the MIT was not distributed with this file, You can obtain one at https://opensource.org/licenses/MIT.
+// If a copy of the MIT was not distributed with this file, you can obtain one at https://opensource.org/licenses/MIT.
 // Copyright (C) Leszek Pomianowski and WPF UI Contributors.
 // All Rights Reserved.
 
@@ -7,16 +7,20 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-#pragma warning disable CA1001 // Types that own disposable fields should be disposable
-
 namespace Wpf.Ui.Tray;
 
 /// <summary>
 /// Base implementation of the notify icon service.
+/// Fixed: Now properly implements IDisposable
 /// </summary>
-public class NotifyIconService : INotifyIconService
+public class NotifyIconService : INotifyIconService, IDisposable
 {
     private readonly Internal.InternalNotifyIconManager internalNotifyIconManager;
+    private bool _disposed = false;
+
+    public event NotifyIconEventHandler? LeftClick;
+    public event NotifyIconEventHandler? LeftDoubleClick;
+    public event NotifyIconEventHandler? RightClick;
 
     public Window ParentWindow { get; internal set; } = null!;
 
@@ -49,6 +53,11 @@ public class NotifyIconService : INotifyIconService
         RegisterHandlers();
     }
 
+    ~NotifyIconService()
+    {
+        Dispose(false);
+    }
+
     public bool Register()
     {
         if (ParentWindow is not null)
@@ -76,20 +85,41 @@ public class NotifyIconService : INotifyIconService
         ParentWindow.Closing += OnParentWindowClosing;
     }
 
+    /// <inheritdoc />
+    public void ShowBalloonTip(string title, string message, BalloonTipIcon icon = BalloonTipIcon.Info)
+    {
+        internalNotifyIconManager.ShowBalloonTip(title, message, icon);
+    }
+
+    /// <inheritdoc />
+    public void HideBalloonTip()
+    {
+        internalNotifyIconManager.HideBalloonTip();
+    }
+
     /// <summary>
     /// This virtual method is called when the user clicks the left mouse button on the tray icon.
     /// </summary>
-    protected virtual void OnLeftClick() { }
+    protected virtual void OnLeftClick()
+    {
+        LeftClick?.Invoke();
+    }
 
     /// <summary>
     /// This virtual method is called when the user double-clicks the left mouse button on the tray icon.
     /// </summary>
-    protected virtual void OnLeftDoubleClick() { }
+    protected virtual void OnLeftDoubleClick()
+    {
+        LeftDoubleClick?.Invoke();
+    }
 
     /// <summary>
     /// This virtual method is called when the user clicks the right mouse button on the tray icon.
     /// </summary>
-    protected virtual void OnRightClick() { }
+    protected virtual void OnRightClick()
+    {
+        RightClick?.Invoke();
+    }
 
     /// <summary>
     /// This virtual method is called when the user double-clicks the right mouse button on the tray icon.
@@ -108,7 +138,11 @@ public class NotifyIconService : INotifyIconService
 
     private void OnParentWindowClosing(object? sender, CancelEventArgs e)
     {
-        internalNotifyIconManager.Dispose();
+        // Only dispose if the window is actually closing (not just hiding)
+        if (!e.Cancel)
+        {
+            Dispose();
+        }
     }
 
     private void RegisterHandlers()
@@ -120,6 +154,31 @@ public class NotifyIconService : INotifyIconService
         internalNotifyIconManager.MiddleClick += OnMiddleClick;
         internalNotifyIconManager.MiddleDoubleClick += OnMiddleDoubleClick;
     }
-}
 
-#pragma warning restore CA1001 // Types that own disposable fields should be disposable
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (_disposed)
+        {
+            return;
+        }
+
+        if (disposing)
+        {
+            // Clean up managed resources
+            if (ParentWindow is not null)
+            {
+                ParentWindow.Closing -= OnParentWindowClosing;
+            }
+
+            internalNotifyIconManager.Dispose();
+        }
+
+        _disposed = true;
+    }
+}

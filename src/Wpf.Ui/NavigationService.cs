@@ -148,7 +148,7 @@ public partial class NavigationService(INavigationViewPageProvider pageProvider)
         }
     }
 
-    public event EventHandler<string> CurrentPageChanged;
+    public event EventHandler<string>? CurrentPageChanged;
 
     public void UpdateCurrentPage(string newPage)
     {

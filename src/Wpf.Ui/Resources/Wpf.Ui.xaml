@@ -12,6 +12,8 @@
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Resources/StaticColors.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Resources/Accent.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Resources/Palette.xaml" />
+        <!-- .NET 9 System Accent Color Integration -->
+        <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Resources/Theme/Net9AccentColors.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Resources/DefaultContextMenu.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Resources/DefaultFocusVisualStyle.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Resources/DefaultTextBoxScrollViewerStyle.xaml" />
@@ -33,11 +35,13 @@
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/CheckBox/CheckBox.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/ColorPicker/ColorPicker.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/ComboBox/ComboBox.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/ComboBox/ComboBoxExtension.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/ContentDialog/ContentDialog.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/ContextMenu/ContextMenu.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/ContextMenu/ContextMenuLoader.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/DataGrid/DataGrid.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/DatePicker/DatePicker.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/DragScrubber/DragScrubber.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/DropDownButton/DropDownButton.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/DynamicScrollBar/DynamicScrollBar.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/DynamicScrollViewer/DynamicScrollViewer.xaml" />
@@ -52,6 +56,7 @@
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/InfoBadge/InfoBadge.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/ItemsControl/ItemsControl.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/Label/Label.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/LabelText/LabelText.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/ListBox/ListBox.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/ListBox/ListBoxItem.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/ListView/ListView.xaml" />

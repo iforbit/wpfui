@@ -38,9 +38,9 @@ public sealed class GraphControl : HwndHost, IRenderStateNotifier
 
     public event EventHandler? RendererReset;
 
-    public event EventHandler RendererReady;
+    public event EventHandler? RendererReady;
 
-    private readonly bool _rendererReadyFired = false;
+    private bool _rendererReadyFired = false;
     private readonly TaskCompletionSource _rendererReady = new();
 
     public Task WaitForRendererAsync() => _rendererReady.Task;

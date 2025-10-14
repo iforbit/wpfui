@@ -128,10 +128,10 @@ internal class InternalNotifyIconManager : IDisposable, INotifyIcon
     /// </summary>
     protected virtual void FocusApp()
     {
-        Debug.WriteLine(
-            $"INFO | {typeof(TrayHandler)} invoked {nameof(FocusApp)} method.",
-            "Wpf.Ui.NotifyIcon"
-        );
+        // Debug.WriteLine(
+        //     $"INFO | {typeof(TrayHandler)} invoked {nameof(FocusApp)} method.",
+        //     "Wpf.Ui.NotifyIcon"
+        // );
 
         Window? mainWindow = Application.Current.MainWindow;
 
@@ -140,12 +140,20 @@ internal class InternalNotifyIconManager : IDisposable, INotifyIcon
             return;
         }
 
+        // Restore window if minimized or hidden
         if (mainWindow.WindowState == WindowState.Minimized)
         {
             mainWindow.WindowState = WindowState.Normal;
         }
 
-        mainWindow.Show();
+        // Show window if hidden
+        if (!mainWindow.IsVisible)
+        {
+            mainWindow.Show();
+        }
+
+        // Activate window to bring it to front
+        _ = mainWindow.Activate();
 
         if (mainWindow.Topmost)
         {
@@ -166,10 +174,10 @@ internal class InternalNotifyIconManager : IDisposable, INotifyIcon
     /// </summary>
     protected virtual void OpenMenu()
     {
-        Debug.WriteLine(
-            $"INFO | {typeof(TrayHandler)} invoked {nameof(OpenMenu)} method.",
-            "Wpf.Ui.NotifyIcon"
-        );
+        // Debug.WriteLine(
+        //     $"INFO | {typeof(TrayHandler)} invoked {nameof(OpenMenu)} method.",
+        //     "Wpf.Ui.NotifyIcon"
+        // );
 
         if (ContextMenu is null)
         {
@@ -259,7 +267,87 @@ internal class InternalNotifyIconManager : IDisposable, INotifyIcon
             "Wpf.Ui.NotifyIcon"
         );
 
+        // ContextMenu가 열려있으면 닫기
+        if (ContextMenu?.IsOpen == true)
+        {
+            ContextMenu.SetCurrentValue(ContextMenu.IsOpenProperty, false);
+        }
+
+        // BalloonTip 숨기기
+        HideBalloonTip();
+
+        // ApplicationThemeManager 이벤트 구독 해제
+        ApplicationThemeManager.Changed -= OnThemeChanged;
+
+        // Tray Icon 해제
         _ = Unregister();
+    }
+
+    /// <inheritdoc />
+    public void ShowBalloonTip(string title, string message, BalloonTipIcon icon = BalloonTipIcon.Info)
+    {
+        if (!IsRegistered)
+        {
+            // Debug.WriteLine(
+            //     $"WARN | Cannot show balloon tip - NotifyIcon is not registered.",
+            //     "Wpf.Ui.NotifyIcon"
+            // );
+            return;
+        }
+
+        if (string.IsNullOrEmpty(title) || string.IsNullOrEmpty(message))
+        {
+            // Debug.WriteLine(
+            //     $"WARN | Balloon tip title and message cannot be null or empty.",
+            //     "Wpf.Ui.NotifyIcon"
+            // );
+            return;
+        }
+
+        // Truncate to Windows limits
+        if (title.Length > 64)
+        {
+            title = title.Substring(0, 64);
+        }
+
+        if (message.Length > 256)
+        {
+            message = message.Substring(0, 256);
+        }
+
+        BalloonTipSetting flags = (BalloonTipSetting)icon;
+
+        ShellIconData.uFlags = Interop.Shell32.NIF.INFO;
+        ShellIconData.szInfo = message;
+        ShellIconData.szInfoTitle = title;
+        ShellIconData.dwInfoFlags = (uint)flags;
+
+        _ = Interop.Shell32.Shell_NotifyIcon(Interop.Shell32.NIM.MODIFY, ShellIconData);
+
+        // Debug.WriteLine(
+        //     $"INFO | Balloon tip shown: {title} - {message}",
+        //     "Wpf.Ui.NotifyIcon"
+        // );
+    }
+
+    /// <inheritdoc />
+    public void HideBalloonTip()
+    {
+        if (!IsRegistered)
+        {
+            return;
+        }
+
+        ShellIconData.szInfo = string.Empty;
+        ShellIconData.szInfoTitle = string.Empty;
+        ShellIconData.uFlags = Interop.Shell32.NIF.INFO;
+
+        _ = Interop.Shell32.Shell_NotifyIcon(Interop.Shell32.NIM.MODIFY, ShellIconData);
+
+        // Debug.WriteLine(
+        //     $"INFO | Balloon tip hidden.",
+        //     "Wpf.Ui.NotifyIcon"
+        // );
     }
 
     /// <inheritdoc />
@@ -267,13 +355,18 @@ internal class InternalNotifyIconManager : IDisposable, INotifyIcon
     {
         var uMsg = (Interop.User32.WM)msg;
 
+        // System.Diagnostics.Debug.WriteLine(
+        //     $"WndProc: msg={uMsg}, wParam={wParam}, lParam={lParam}",
+        //     "Wpf.Ui.NotifyIcon"
+        // );
+
         switch (uMsg)
         {
             case Interop.User32.WM.DESTROY:
-                System.Diagnostics.Debug.WriteLine(
-                    $"INFO | {typeof(TrayHandler)} received {uMsg} message.",
-                    "Wpf.Ui.NotifyIcon"
-                );
+                // System.Diagnostics.Debug.WriteLine(
+                //     $"INFO | {typeof(TrayHandler)} received {uMsg} message.",
+                //     "Wpf.Ui.NotifyIcon"
+                // );
                 Dispose();
 
                 handled = true;
@@ -281,19 +374,19 @@ internal class InternalNotifyIconManager : IDisposable, INotifyIcon
                 return IntPtr.Zero;
 
             case Interop.User32.WM.NCDESTROY:
-                System.Diagnostics.Debug.WriteLine(
-                    $"INFO | {typeof(TrayHandler)} received {uMsg} message.",
-                    "Wpf.Ui.NotifyIcon"
-                );
+                // System.Diagnostics.Debug.WriteLine(
+                //     $"INFO | {typeof(TrayHandler)} received {uMsg} message.",
+                //     "Wpf.Ui.NotifyIcon"
+                // );
                 handled = false;
 
                 return IntPtr.Zero;
 
             case Interop.User32.WM.CLOSE:
-                System.Diagnostics.Debug.WriteLine(
-                    $"INFO | {typeof(TrayHandler)} received {uMsg} message.",
-                    "Wpf.Ui.NotifyIcon"
-                );
+                // System.Diagnostics.Debug.WriteLine(
+                //     $"INFO | {typeof(TrayHandler)} received {uMsg} message.",
+                //     "Wpf.Ui.NotifyIcon"
+                // );
                 handled = true;
 
                 return IntPtr.Zero;
@@ -306,11 +399,20 @@ internal class InternalNotifyIconManager : IDisposable, INotifyIcon
             return IntPtr.Zero;
         }
 
-        var lMsg = (Interop.User32.WM)lParam;
+        // NOTIFYICON_VERSION_4 mouse event handling:
+        // - lParam contains the mouse message in LOWORD (lower 16 bits)
+        // - HIWORD contains the icon ID
+        // - We need to extract LOWORD to get WM_LBUTTONDOWN (0x0201), WM_RBUTTONDOWN (0x0204), etc.
+        var lMsg = (Interop.User32.WM)(lParam.ToInt32() & 0xFFFF);
+
+        // System.Diagnostics.Debug.WriteLine(
+        //     $"TRAY MESSAGE: lParam={lParam}, lMsg={lMsg} (0x{((int)lMsg):X})",
+        //     "Wpf.Ui.NotifyIcon"
+        // );
 
         switch (lMsg)
         {
-            case Interop.User32.WM.LBUTTONDOWN:
+            case Interop.User32.WM.LBUTTONDOWN: // 0x0201 - Left button pressed
                 OnLeftClick();
 
                 if (FocusOnLeftClick)
@@ -320,11 +422,11 @@ internal class InternalNotifyIconManager : IDisposable, INotifyIcon
 
                 break;
 
-            case Interop.User32.WM.LBUTTONDBLCLK:
+            case Interop.User32.WM.LBUTTONDBLCLK: // 0x0203 - Left button double-click
                 OnLeftDoubleClick();
                 break;
 
-            case Interop.User32.WM.RBUTTONDOWN:
+            case Interop.User32.WM.RBUTTONDOWN: // 0x0204 - Right button pressed
                 OnRightClick();
 
                 if (MenuOnRightClick)
@@ -334,15 +436,15 @@ internal class InternalNotifyIconManager : IDisposable, INotifyIcon
 
                 break;
 
-            case Interop.User32.WM.RBUTTONDBLCLK:
+            case Interop.User32.WM.RBUTTONDBLCLK: // 0x0206 - Right button double-click
                 OnRightDoubleClick();
                 break;
 
-            case Interop.User32.WM.MBUTTONDOWN:
+            case Interop.User32.WM.MBUTTONDOWN: // 0x0207 - Middle button pressed
                 OnMiddleClick();
                 break;
 
-            case Interop.User32.WM.MBUTTONDBLCLK:
+            case Interop.User32.WM.MBUTTONDBLCLK: // 0x0209 - Middle button double-click
                 OnMiddleDoubleClick();
                 break;
         }

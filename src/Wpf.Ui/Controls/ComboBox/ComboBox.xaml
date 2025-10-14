@@ -16,6 +16,7 @@
                     xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase"
                     xmlns:system="clr-namespace:System;assembly=System.Runtime">
 
+
     <Thickness x:Key="ComboBoxPadding">10,8,10,8</Thickness>
     <Thickness x:Key="ComboBoxBorderThemeThickness">1,1,1,1</Thickness>
     <Thickness x:Key="ComboBoxAccentBorderThemeThickness">0,0,0,2</Thickness>
@@ -120,55 +121,6 @@
                             <Setter TargetName="ContentBorder" Property="Background" Value="{DynamicResource ComboBoxItemBackgroundSelected}" />
                         </Trigger>
                         <Trigger Property="IsSelected" Value="True">
-                            <Setter TargetName="ActiveRectangle" Property="Visibility" Value="Visible" />
-                            <Setter TargetName="PART_ContentPresenter" Property="TextElement.Foreground" Value="{DynamicResource ComboBoxItemForegroundSelected}" />
-                        </Trigger>
-                        <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="Foreground" Value="{DynamicResource ComboBoxForegroundDisabled}" />
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <Style x:Key="MultiSelectComboBoxItemStyle" TargetType="{x:Type controls:MultiSelectComboBoxItem}">
-        <!--  Universal WPF UI focus  -->
-        <Setter Property="FocusVisualStyle" Value="{DynamicResource DefaultControlFocusVisualStyle}" />
-        <!--  Universal WPF UI focus  -->
-        <Setter Property="Foreground" Value="{DynamicResource ComboBoxForeground}" />
-        <Setter Property="Background" Value="Transparent" />
-        <Setter Property="Padding" Value="{StaticResource ComboBoxItemContentMargin}" />
-        <Setter Property="Cursor" Value="Hand" />
-        <Setter Property="Border.CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
-        <Setter Property="SnapsToDevicePixels" Value="True" />
-        <Setter Property="OverridesDefaultStyle" Value="True" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type controls:MultiSelectComboBoxItem}">
-                    <Grid Background="Transparent">
-                        <Border Name="ContentBorder"
-                                Margin="{DynamicResource ComboBoxItemMargin}"
-                                Padding="0" VerticalAlignment="Stretch"
-                                CornerRadius="{TemplateBinding Border.CornerRadius}"
-                                SnapsToDevicePixels="True">
-                            <Grid>
-                                <ContentPresenter x:Name="PART_ContentPresenter"
-                                                  Margin="{TemplateBinding Padding}"
-                                                  VerticalAlignment="Center" />
-                                <Rectangle x:Name="ActiveRectangle"
-                                           Width="3" Height="16" Margin="0"
-                                           HorizontalAlignment="Left" VerticalAlignment="Center"
-                                           Fill="{DynamicResource ComboBoxItemPillFillBrush}"
-                                           RadiusX="2" RadiusY="2" Visibility="Collapsed" />
-                            </Grid>
-                        </Border>
-                    </Grid>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsHighlighted" Value="True">
-                            <Setter TargetName="ContentBorder" Property="Background" Value="{DynamicResource ComboBoxItemBackgroundSelected}" />
-                        </Trigger>
-                        <Trigger Property="IsMultiSelected" Value="True">
                             <Setter TargetName="ActiveRectangle" Property="Visibility" Value="Visible" />
                             <Setter TargetName="PART_ContentPresenter" Property="TextElement.Foreground" Value="{DynamicResource ComboBoxItemForegroundSelected}" />
                         </Trigger>
@@ -587,8 +539,8 @@
     </Style>
 
     <Style BasedOn="{StaticResource DefaultComboBoxItemStyle}" TargetType="{x:Type ComboBoxItem}" />
-    <Style BasedOn="{StaticResource MultiSelectComboBoxItemStyle}" TargetType="{x:Type controls:MultiSelectComboBoxItem}" />
 
+    <!--  기본 스타일 강제 적용 비활성화 - CompactComboBoxStyle 우선순위 확보용  -->
     <Style BasedOn="{StaticResource DefaultComboBoxStyle}" TargetType="{x:Type ComboBox}" />
 
     <Style BasedOn="{StaticResource DefaultUIComboBoxStyle}" TargetType="{x:Type controls:ComboBox}" />

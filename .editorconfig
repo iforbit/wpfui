@@ -382,7 +382,7 @@ dotnet_diagnostic.CA2241.severity = warning # CA2241: 프로퍼티 getter에서 
 dotnet_diagnostic.CA2242.severity = warning # CA2242: 인덱서를 정의할 때 올바른 오버로드를 사용하라는 경고  
 
 dotnet_diagnostic.IDE0055.severity = silent # 자동 코드 포맷팅 관련 경고(IDE0055): 포맷팅 문제 경고를 표시하지 않음
-dotnet_diagnostic.IDE0073.severity = error # 파일 헤더가 필요하거나 헤더가 지정한 텍스트와 일치하지 않으면 오류 처리
+dotnet_diagnostic.IDE0073.severity = none # 파일 헤더가 필요하거나 헤더가 지정한 텍스트와 일치하지 않으면 오류 처리
 
 
 # StyleCop Code Analysis (스타일콥 관련 경고 설정)

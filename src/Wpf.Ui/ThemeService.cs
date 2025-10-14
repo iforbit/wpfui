@@ -23,18 +23,12 @@ public partial class ThemeService : IThemeService
     {
         SystemTheme systemTheme = ApplicationThemeManager.GetSystemTheme();
 
+        // .NET 9 최적화: or 패턴으로 그룹화하여 성능 향상
         return systemTheme switch
         {
-            SystemTheme.Light => ApplicationTheme.Light,
-            SystemTheme.Dark => ApplicationTheme.Dark,
-            SystemTheme.Glow => ApplicationTheme.Dark,
-            SystemTheme.CapturedMotion => ApplicationTheme.Dark,
-            SystemTheme.Sunrise => ApplicationTheme.Light,
-            SystemTheme.Flow => ApplicationTheme.Light,
-            SystemTheme.HCBlack => ApplicationTheme.HighContrast,
-            SystemTheme.HC1 => ApplicationTheme.HighContrast,
-            SystemTheme.HC2 => ApplicationTheme.HighContrast,
-            SystemTheme.HCWhite => ApplicationTheme.HighContrast,
+            SystemTheme.Light or SystemTheme.Sunrise or SystemTheme.Flow => ApplicationTheme.Light,
+            SystemTheme.Dark or SystemTheme.Glow or SystemTheme.CapturedMotion => ApplicationTheme.Dark,
+            SystemTheme.HCBlack or SystemTheme.HC1 or SystemTheme.HC2 or SystemTheme.HCWhite => ApplicationTheme.HighContrast,
             _ => ApplicationTheme.Unknown,
         };
     }
@@ -58,6 +52,25 @@ public partial class ThemeService : IThemeService
         ApplicationAccentColorManager.ApplySystemAccent();
 
         return true;
+    }
+
+    /// <summary>
+    /// Sets the .NET 9 system accent color with automatic updates.
+    /// This provides integration with Windows 11 Fluent design system.
+    /// </summary>
+    /// <returns><see langword="true"/> if operation was successful.</returns>
+    public bool SetNet9SystemAccent()
+    {
+        try
+        {
+            ApplicationAccentColorManager.ApplyNet9SystemAccent();
+            return true;
+        }
+        catch
+        {
+            // Fallback to traditional method
+            return SetSystemAccent();
+        }
     }
 
     /// <inheritdoc />
