@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Iec417 Symbols - Auto-generated from draw.io stencils -->
+
+    <!-- AC-AC Converter (80x85) -->
+    <Geometry x:Key="Iec417.AC_AC_Converter">
+        M0,5 L80.0,5 L80.0,85.0 L0,85.0 Z M0,85 L80,5 M35,0 L40,5 L35,10 M10,20 A3,3 0 0 1 15,20 A3,3 0 0 0 20,20 M60,70 A3,3 0 0 1 65,70 A3,3 0 0 0 70,70
+    </Geometry>
+
+    <!-- AC-DC Converter (80x85) -->
+    <Geometry x:Key="Iec417.AC_DC_Converter">
+        M0,5 L80.0,5 L80.0,85.0 L0,85.0 Z M0,85 L80,5 M35,0 L40,5 L35,10 M10,20 A3,3 0 0 1 15,20 A3,3 0 0 0 20,20 M60,70 L70,70 M60,73 L62,73 M64,73 L66,73 M68,73 L70,73
+    </Geometry>
+
+    <!-- AD Converter (80x85) -->
+    <Geometry x:Key="Iec417.AD_Converter">
+        M0,5 L80.0,5 L80.0,85.0 L0,85.0 Z M0,85 L80,5 M35,0 L40,5 L35,10 M5,20 A5.5,5.5 0 0 1 15,20 A5.5,5.5 0 0 0 25,20 M35,75 L40,75 L40,68 L47,68 L47,75 L52,75 L52,68 L59,68 L59,75 L66,75 L66,68 L73,68 L73,75 L76,75
+    </Geometry>
+
+    <!-- Amp (80x80) -->
+    <Geometry x:Key="Iec417.Amp">
+        M0,0 L80.0,0 L80.0,80.0 L0,80.0 Z M5,5 L75,40 L5,75 Z
+    </Geometry>
+
+    <!-- Amp Bidirectional (80x80) -->
+    <Geometry x:Key="Iec417.Amp_Bidirectional">
+        M0,0 L80.0,0 L80.0,80.0 L0,80.0 Z M31.5,15 L48.5,23.5 L31.5,32 Z M31.5,23.5 L20,23.5 L20,56.5 L31.5,56.5 M48.5,23.5 L60,23.5 L60,56.5 L48.5,56.5 M10,40 L20,40 M60,40 L70,40 M48.5,48 L31.5,56.5 L48.5,65 Z
+    </Geometry>
+
+    <!-- Att (80x80) -->
+    <Geometry x:Key="Iec417.Att">
+        M0,0 L80.0,0 L80.0,80.0 L0,80.0 Z M35,65 L45,55 L35,45 L45,35 L35,25 L45,15
+    </Geometry>
+
+    <!-- Bandpass (80x80) -->
+    <Geometry x:Key="Iec417.Bandpass">
+        M0,0 L80.0,0 L80.0,80.0 L0,80.0 Z M15,40 A17,17 0 0 1 40,40 A17,17 0 0 0 65,40 M15,25 A17,17 0 0 1 40,25 A17,17 0 0 0 65,25 M15,55 A17,17 0 0 1 40,55 A17,17 0 0 0 65,55 M36,57 L42,51 M36,27 L42,21
+    </Geometry>
+
+    <!-- Bandstop (80x80) -->
+    <Geometry x:Key="Iec417.Bandstop">
+        M0,0 L80.0,0 L80.0,80.0 L0,80.0 Z M15,40 A17,17 0 0 1 40,40 A17,17 0 0 0 65,40 M15,25 A17,17 0 0 1 40,25 A17,17 0 0 0 65,25 M15,55 A17,17 0 0 1 40,55 A17,17 0 0 0 65,55 M36,43 L42,37
+    </Geometry>
+
+    <!-- Block (80x80) -->
+    <Geometry x:Key="Iec417.Block">
+        M0,0 L80.0,0 L80.0,80.0 L0,80.0 Z
+    </Geometry>
+
+    <!-- Block Convert (80x80) -->
+    <Geometry x:Key="Iec417.Block_Convert">
+        M0,0 L80.0,0 L80.0,80.0 L0,80.0 Z M0,80 L80,0
+    </Geometry>
+
+    <!-- Circulator (80x80) -->
+    <Geometry x:Key="Iec417.Circulator">
+        M0,0 L80.0,0 L80.0,80.0 L0,80.0 Z M40,70 A30,30 0 1 1 70,40 M64,31 L70,40 L74,29
+    </Geometry>
+
+    <!-- Combine (80x80) -->
+    <Geometry x:Key="Iec417.Combine">
+        M0,0 L80.0,0 L80.0,80.0 L0,80.0 Z M25,10 L40,10 L40,70 L25,70 M25,30 L40,30 M25,50 L40,50 M40,40 L55,40 M50,35 L55,40 L50,45
+    </Geometry>
+
+    <!-- Corrector (80x80) -->
+    <Geometry x:Key="Iec417.Corrector">
+        M0,0 L80.0,0 L80.0,80.0 L0,80.0 Z M15,55 L20,55 A4,4 0 0 0 23,52 L32,27 A4,4 0 0 1 35,25 L40,25 M40,55 L50,55 L50,25 L60,25
+    </Geometry>
+
+    <!-- DA Converter (80x85) -->
+    <Geometry x:Key="Iec417.DA_Converter">
+        M0,5 L80.0,5 L80.0,85.0 L0,85.0 Z M0,85 L80,5 M35,0 L40,5 L35,10 M5,23 L10,23 L10,16 L17,16 L17,23 L22,23 L22,16 L29,16 L29,23 L36,23 L36,16 L43,16 L43,23 L46,23 M55,70 A5.5,5.5 0 0 1 65,70 A5.5,5.5 0 0 0 75,70
+    </Geometry>
+
+    <!-- DC-AC Converter (80x85) -->
+    <Geometry x:Key="Iec417.DC_AC_Converter">
+        M0,5 L80.0,5 L80.0,85.0 L0,85.0 Z M0,85 L80,5 M35,0 L40,5 L35,10 M60,70 A3,3 0 0 1 65,70 A3,3 0 0 0 70,70 M10,18.5 L20,18.5 M10,21.5 L12,21.5 M14,21.5 L16,21.5 M18,21.5 L20,21.5
+    </Geometry>
+
+    <!-- DC-DC Converter (80x85) -->
+    <Geometry x:Key="Iec417.DC_DC_Converter">
+        M0,5 L80.0,5 L80.0,85.0 L0,85.0 Z M0,85 L80,5 M35,0 L40,5 L35,10 M10,18.5 L20,18.5 M10,21.5 L12,21.5 M14,21.5 L16,21.5 M18,21.5 L20,21.5 M60,70 L70,70 M60,73 L62,73 M64,73 L66,73 M68,73 L70,73
+    </Geometry>
+
+    <!-- Decrypt (80x85) -->
+    <Geometry x:Key="Iec417.Decrypt">
+        M20,80 L0,80 L0,0 L80,0 L80,80 L30,80 M0,80 L80,0 M55,75 L60,80 L55,85 M18.7,18.7 L40,40 M12.7,52.6 L20,60 M10,40 L25,55 M11.2,31.2 L30,50 M14.3,24.4 L35,45 M24.5,14.5 L45,35 M40,10 L55,25 M52.9,13 L60,20 M31.4,11.6 L50,30 M20.0,80.0 A5.0,5.0 0 0 1 25.0,75.0 A5.0,5.0 0 0 1 30.0,80.0 A5.0,5.0 0 0 1 25.0,85.0 A5.0,5.0 0 0 1 20.0,80.0 Z M10.0,40.0 A30.0,30.0 0 0 1 40.0,10.0 A30.0,30.0 0 0 1 70.0,40.0 A30.0,30.0 0 0 1 40.0,70.0 A30.0,30.0 0 0 1 10.0,40.0 Z
+    </Geometry>
+
+    <!-- Delay (80x80) -->
+    <Geometry x:Key="Iec417.Delay">
+        M0,0 L80.0,0 L80.0,80.0 L0,80.0 Z
+    </Geometry>
+
+    <!-- Demodulator (80x85) -->
+    <Geometry x:Key="Iec417.Demodulator">
+        M25,80 L0,80 L0,0 L80,0 L80,80 L35,80 M50,75 L45,80 L50,85 M0,80 L40,1 L80,80 M25.0,80.0 A5.0,5.0 0 0 1 30.0,75.0 A5.0,5.0 0 0 1 35.0,80.0 A5.0,5.0 0 0 1 30.0,85.0 A5.0,5.0 0 0 1 25.0,80.0 Z
+    </Geometry>
+
+    <!-- Detector (80x80) -->
+    <Geometry x:Key="Iec417.Detector">
+        M0,0 L80.0,0 L80.0,80.0 L0,80.0 Z M10,40 L70,40 M50,25 L50,55 M30,25 L50,40 L30,55 Z
+    </Geometry>
+
+    <!-- Differential Amp (80x80) -->
+    <Geometry x:Key="Iec417.Differential_Amp">
+        M0,0 L80.0,0 L80.0,80.0 L0,80.0 Z M10,10 L70,40 L10,70 Z M5,20 L10,20 M5,60 L10,60
+    </Geometry>
+
+    <!-- Diplexer (80x80) -->
+    <Geometry x:Key="Iec417.Diplexer">
+        M0,0 L80.0,0 L80.0,80.0 L0,80.0 Z M0,0 L79,40 L0,80
+    </Geometry>
+
+    <!-- Divide by n (80x80) -->
+    <Geometry x:Key="Iec417.Divide_by_n">
+        M0,0 L80.0,0 L80.0,80.0 L0,80.0 Z M0,80 L80,0
+    </Geometry>
+
+    <!-- Down Converter (80x80) -->
+    <Geometry x:Key="Iec417.Down_Converter">
+        M0,0 L80.0,0 L80.0,80.0 L0,80.0 Z M30,25 L50,40 L30,40 Z M10,40 L70,40 M50,25 L50,55
+    </Geometry>
+
+    <!-- Encrypt (80x85) -->
+    <Geometry x:Key="Iec417.Encrypt">
+        M20,80 L0,80 L0,0 L80,0 L80,80 L30,80 M0,80 L80,0 M55,75 L60,80 L55,85 M61.3,61.3 L40,40 M27.3,67.3 L20,60 M40,70 L25,55 M48.8,68.8 L30,50 M55.7,65.6 L35,45 M65.5,55.5 L45,35 M70,40 L55,25 M67.1,27 L60,20 M68.6,48.6 L50,30 M10.0,40.0 A30.0,30.0 0 0 1 40.0,10.0 A30.0,30.0 0 0 1 70.0,40.0 A30.0,30.0 0 0 1 40.0,70.0 A30.0,30.0 0 0 1 10.0,40.0 Z M20.0,80.0 A5.0,5.0 0 0 1 25.0,75.0 A5.0,5.0 0 0 1 30.0,80.0 A5.0,5.0 0 0 1 25.0,85.0 A5.0,5.0 0 0 1 20.0,80.0 Z
+    </Geometry>
+
+    <!-- Hipass (80x80) -->
+    <Geometry x:Key="Iec417.Hipass">
+        M0,0 L80.0,0 L80.0,80.0 L0,80.0 Z M15,50 A17,17 0 0 1 40,50 A17,17 0 0 0 65,50 M15,30 A17,17 0 0 1 40,30 A17,17 0 0 0 65,30 M36,52 L42,46
+    </Geometry>
+
+    <!-- Hybrid (90x80) -->
+    <Geometry x:Key="Iec417.Hybrid">
+        M5,0 L85.0,0 L85.0,80.0 L5,80.0 Z M0,50 L35,50 L55,30 L90,30 M0,30 L35,30 L55,50 L90,50
+    </Geometry>
+
+    <!-- Limiter (80x80) -->
+    <Geometry x:Key="Iec417.Limiter">
+        M0,0 L80.0,0 L80.0,80.0 L0,80.0 Z M15,48.5 L23.5,31.5 L32,48.5 Z M23.5,31.5 L23.5,20 L56.5,20 L56.5,31.5 M23.5,48.5 L23.5,60 L56.5,60 L56.5,48.5 M40,10 L40,20 M40,60 L40,70 M48,31.5 L56.5,48.5 L65,31.5 Z M15,31.2 L32,31.5 M48,48.5 L65,48.5
+    </Geometry>
+
+    <!-- Lopass (80x80) -->
+    <Geometry x:Key="Iec417.Lopass">
+        M0,0 L80.0,0 L80.0,80.0 L0,80.0 Z M15,50 A17,17 0 0 1 40,50 A17,17 0 0 0 65,50 M15,30 A17,17 0 0 1 40,30 A17,17 0 0 0 65,30 M36,32 L42,26
+    </Geometry>
+
+    <!-- Mixer 1 (80x80) -->
+    <Geometry x:Key="Iec417.Mixer_1">
+        M0,0 L80.0,0 L80.0,80.0 L0,80.0 Z M0,80 L80,0 M0,0 L80,80
+    </Geometry>
+
+    <!-- Mixer 2 (80x80) -->
+    <Geometry x:Key="Iec417.Mixer_2">
+        M0,0 L80.0,0 L80.0,80.0 L0,80.0 Z M0,80 L40,1 L80,80
+    </Geometry>
+
+    <!-- Modem (80x85) -->
+    <Geometry x:Key="Iec417.Modem">
+        M0,0 L80.0,0 L80.0,80.0 L0,80.0 Z M50,75 L45,80 L50,85 M0,80 L40,1 L80,80 M30,75 L35,80 L30,85
+    </Geometry>
+
+    <!-- Modulator (80x85) -->
+    <Geometry x:Key="Iec417.Modulator">
+        M25,80 L0,80 L0,0 L80,0 L80,80 L35,80 M25.0,80.0 A5.0,5.0 0 0 1 30.0,75.0 A5.0,5.0 0 0 1 35.0,80.0 A5.0,5.0 0 0 1 30.0,85.0 A5.0,5.0 0 0 1 25.0,80.0 Z M45,75 L50,80 L45,85 M0,80 L40,1 L80,80
+    </Geometry>
+
+    <!-- Oscilloscope (80x80) -->
+    <Geometry x:Key="Iec417.Oscilloscope">
+        M0,0 L80.0,0 L80.0,80.0 L0,80.0 Z M20,40 A12,12 0 0 1 40,40 A12,12 0 0 0 60,40 M10.0,40.0 A30.0,30.0 0 0 1 40.0,10.0 A30.0,30.0 0 0 1 70.0,40.0 A30.0,30.0 0 0 1 40.0,70.0 A30.0,30.0 0 0 1 10.0,40.0 Z
+    </Geometry>
+
+    <!-- Phase Detector (80x80) -->
+    <Geometry x:Key="Iec417.Phase_Detector">
+        M0,0 L80.0,0 L80.0,80.0 L0,80.0 Z M40,50 L40,30 A4,8 0 1 1 45,38 A8,8 0 0 1 36,38 A20,8 15 0 1 37,27
+    </Geometry>
+
+    <!-- Process (80x80) -->
+    <Geometry x:Key="Iec417.Process">
+        M0,0 L80.0,0 L80.0,80.0 L0,80.0 Z M20,20 A40,40 0 0 0 20,60 M0,40 L15,40 M80,40 L65,40 M60,20 A40,40 0 0 1 60,60
+    </Geometry>
+
+    <!-- Pulse (80x80) -->
+    <Geometry x:Key="Iec417.Pulse">
+        M0,0 L80.0,0 L80.0,80.0 L0,80.0 Z M25,50 L35,50 L35,25 L45,25 L45,50 L55,50
+    </Geometry>
+
+    <!-- Sampler (80x80) -->
+    <Geometry x:Key="Iec417.Sampler">
+        M0,0 L80.0,0 L80.0,80.0 L0,80.0 Z M10,20 A15,50 0 0 1 30,20 M0,80 L80,0 M50,70 L70,70 M60,70 L60,57.4 M57,70 L57,58.3 M54,70 L54,61.5 M63,70 L63,58.3 M66,70 L66,61.5 M51,70 L51,67.5 M69,70 L69,67.5
+    </Geometry>
+
+    <!-- Splitter (80x80) -->
+    <Geometry x:Key="Iec417.Splitter">
+        M0,0 L80.0,0 L80.0,80.0 L0,80.0 Z M55,10 L40,10 L40,70 L55,70 M55,30 L40,30 M55,50 L40,50 M25,40 L39,40 M35,35 L39,40 L35,45
+    </Geometry>
+
+    <!-- Square-up (80x80) -->
+    <Geometry x:Key="Iec417.Square_up">
+        M0,0 L80.0,0 L80.0,80.0 L0,80.0 Z M30,55 L40,55 L40,25 L50,25
+    </Geometry>
+
+    <!-- Step (55x60) -->
+    <Geometry x:Key="Iec417.Step">
+        M0,60 L40,0 L55,0
+    </Geometry>
+
+    <!-- Transformer (80x80) -->
+    <Geometry x:Key="Iec417.Transformer">
+        M0,0 L80.0,0 L80.0,80.0 L0,80.0 Z M15,10 L30,10 A5,5 0 0 1 30,25 A5,5 0 0 1 30,40 A5,5 0 0 1 30,55 A5,5 0 0 1 30,70 L15,70 M65,10 L50,10 A5,5 0 0 0 50,25 A5,5 0 0 0 50,40 A5,5 0 0 0 50,55 A5,5 0 0 0 50,70 L65,70
+    </Geometry>
+
+    <!-- Trim (48.2x65.5) -->
+    <Geometry x:Key="Iec417.Trim">
+        M0,65.5 L40,5.5 M32.2,0 L48.2,10.5
+    </Geometry>
+
+    <!-- Up converter (80x80) -->
+    <Geometry x:Key="Iec417.Up_converter">
+        M0,0 L80.0,0 L80.0,80.0 L0,80.0 Z M50,25 L50,40 L30,40 Z M10,40 L70,40 M30,25 L30,55
+    </Geometry>
+
+    <!-- Var (40x60) -->
+    <Geometry x:Key="Iec417.Var">
+        M0,60 L40,0 M27,10 L40,0 L36.5,15.5
+    </Geometry>
+
+</ResourceDictionary>

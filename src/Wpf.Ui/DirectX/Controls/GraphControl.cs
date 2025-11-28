@@ -40,7 +40,7 @@ public sealed class GraphControl : HwndHost, IRenderStateNotifier
 
     public event EventHandler? RendererReady;
 
-    private bool _rendererReadyFired = false;
+    private readonly bool _rendererReadyFired = false;
     private readonly TaskCompletionSource _rendererReady = new();
 
     public Task WaitForRendererAsync() => _rendererReady.Task;
@@ -340,7 +340,7 @@ public sealed class GraphControl : HwndHost, IRenderStateNotifier
 
         if (series is null || series.TotalVertexCount < 2)
         {
-            Debug.WriteLine("🛑 [AutoAdjust] Not enough data");
+            // Debug.WriteLine("🛑 [AutoAdjust] Not enough data");
             return;
         }
 

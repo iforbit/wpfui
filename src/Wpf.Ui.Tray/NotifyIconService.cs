@@ -19,7 +19,9 @@ public class NotifyIconService : INotifyIconService, IDisposable
     private bool _disposed = false;
 
     public event NotifyIconEventHandler? LeftClick;
+
     public event NotifyIconEventHandler? LeftDoubleClick;
+
     public event NotifyIconEventHandler? RightClick;
 
     public Window ParentWindow { get; internal set; } = null!;

@@ -4,6 +4,7 @@
 // All Rights Reserved.
 
 using System.Text;
+
 using Wpf.Ui.Controls;
 
 namespace Wpf.Ui.Extensions;
@@ -43,6 +44,38 @@ public static class SymbolExtensions
     /// Converts <see cref="SymbolFilled"/> to <see langword="string"/> based on the ID.
     /// </summary>
     public static string GetString(this SymbolFilled icon)
+    {
+        return Encoding.Unicode.GetString(BitConverter.GetBytes((int)icon)).TrimEnd('\0');
+    }
+
+    /// <summary>
+    /// Converts <see cref="MaterialSymbolRegular"/> to <see langword="string"/> based on the ID.
+    /// </summary>
+    public static string GetString(this MaterialSymbolRegular icon)
+    {
+        return Encoding.Unicode.GetString(BitConverter.GetBytes((int)icon)).TrimEnd('\0');
+    }
+
+    /// <summary>
+    /// Converts <see cref="SegoeFluentSymbol"/> to <see langword="string"/> based on the ID.
+    /// </summary>
+    public static string GetString(this SegoeFluentSymbol icon)
+    {
+        return Encoding.Unicode.GetString(BitConverter.GetBytes((int)icon)).TrimEnd('\0');
+    }
+
+    /// <summary>
+    /// Converts <see cref="BootstrapSymbolRegular"/> to <see langword="string"/> based on the ID.
+    /// </summary>
+    public static string GetString(this BootstrapSymbolRegular icon)
+    {
+        return Encoding.Unicode.GetString(BitConverter.GetBytes((int)icon)).TrimEnd('\0');
+    }
+
+    /// <summary>
+    /// Converts <see cref="ElectricalSymbolRegular"/> to <see langword="string"/> based on the ID.
+    /// </summary>
+    public static string GetString(this ElectricalSymbolRegular icon)
     {
         return Encoding.Unicode.GetString(BitConverter.GetBytes((int)icon)).TrimEnd('\0');
     }

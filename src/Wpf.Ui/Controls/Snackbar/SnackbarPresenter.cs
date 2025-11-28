@@ -122,16 +122,18 @@ public class SnackbarPresenter : System.Windows.Controls.ContentPresenter
 
         snackbar.SetCurrentValue(Snackbar.IsShownProperty, true);
 
-        try
-        {
-            await Task.Delay(snackbar.Timeout, CancellationTokenSource.Token);
-        }
-        catch
-        {
-            return;
-        }
+        // CancellationToken과 함께 대기 (예외 없이 취소 감지)
+        CancellationToken token = CancellationTokenSource.Token;
+        Task delayTask = Task.Delay(snackbar.Timeout, token);
 
-        await HidSnackbar(snackbar);
+        // Task 완료를 기다리되, 취소 여부는 Task 상태로 확인
+        await delayTask.ContinueWith(_ => { }, TaskContinuationOptions.ExecuteSynchronously);
+
+        // 취소되지 않은 경우에만 Hide 실행
+        if (!token.IsCancellationRequested && delayTask.IsCompletedSuccessfully)
+        {
+            await HidSnackbar(snackbar);
+        }
     }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage(

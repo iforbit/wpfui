@@ -18,4 +18,20 @@ public struct DisplayableIcon
     public string Symbol { get; set; }
 
     public SymbolRegular Icon { get; set; }
+
+    public MaterialSymbolRegular MaterialIcon { get; set; }
+
+    public SegoeFluentSymbol SegoeFluentIcon { get; set; }
+
+    public BootstrapSymbolRegular BootstrapIcon { get; set; }
+
+    public ElectricalSymbolRegular ElectricalIcon { get; set; }
+
+    public bool IsMaterialIcon { get; set; }
+
+    public bool IsSegoeFluentIcon { get; set; }
+
+    public bool IsBootstrapIcon { get; set; }
+
+    public bool IsElectricalIcon { get; set; }
 }

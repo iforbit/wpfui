@@ -107,12 +107,12 @@ public class ProgressRing : System.Windows.Controls.Control
     }
 
     /// <summary>
-    /// Gets background ring fill.
+    /// Gets or sets background ring fill.
     /// </summary>
     public Brush CoverRingStroke
     {
         get => (Brush)GetValue(CoverRingStrokeProperty);
-        internal set => SetValue(CoverRingStrokeProperty, value);
+        set => SetValue(CoverRingStrokeProperty, value);
     }
 
     /// <summary>

@@ -10,6 +10,7 @@
 
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+
 using Point = System.Windows.Point;
 using Size = System.Windows.Size;
 
@@ -425,8 +426,7 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
                 int rowCountInCacheBefore = (int)(cacheBeforeInPixel / GetHeight(ChildSize));
                 int rowCountInCacheAfter =
                     (
-                        (int)
-                            Math.Ceiling(
+                        (int)Math.Ceiling(
                                 (offsetInPixel + viewportHeight + cacheAfterInPixel) / GetHeight(ChildSize)
                             )
                     ) - (int)Math.Ceiling((offsetInPixel + viewportHeight) / GetHeight(ChildSize));
@@ -482,7 +482,7 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
     private int GetRowIndex(double location)
     {
         var calculatedRowIndex = (int)Math.Floor(location / GetHeight(ChildSize));
-        var maxRowIndex = (int)Math.Ceiling((double)Items.Count / (double)ItemsPerRowCount);
+        var maxRowIndex = (int)Math.Ceiling(Items.Count / (double)ItemsPerRowCount);
 
         return Math.Max(Math.Min(calculatedRowIndex, maxRowIndex), 0);
     }

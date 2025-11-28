@@ -10,6 +10,7 @@ public partial class DragScrubberViewModel : ViewModel
     private double _sampleValue = 42.5;
     private double _width = 120.0;
     private double _height = 80.0;
+
     public double SampleValue
     {
         get => _sampleValue;

@@ -1,0 +1,12 @@
+// This Source Code Form is subject to the terms of the MIT License.
+// If a copy of the MIT was not distributed with this file, You can obtain one at https://opensource.org/licenses/MIT.
+// Copyright (C) Leszek Pomianowski and WPF UI Contributors.
+// All Rights Reserved.
+
+namespace Wpf.Ui.Demo.Writer.SharedMemory;
+public sealed class GraphChannel
+{
+    public string Name { get; init; } = "CH1";
+    public float LatestX { get; set; }
+    public float LatestY { get; set; }
+}

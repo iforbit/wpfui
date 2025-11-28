@@ -32,6 +32,8 @@
     <Resource Include="Resources\Fonts\FluentSystemIcons-Regular.ttf" />
     <Resource Include="Resources\Fonts\MaterialIcons-Regular.ttf" />
     <Resource Include="Resources\Fonts\SegoeFluentIcons.ttf" />
+    <Resource Include="Resources\Fonts\bootstrap-icons.ttf" />
+    <Resource Include="Resources\Fonts\electrical-icons.ttf" />
     <Resource Include="Resources\Theme\Effects\Grayscale.ps" />
   </ItemGroup>
   <ItemGroup>
@@ -104,7 +106,7 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <RibbonFilesForXamlCombine>Controls\Ribbon\*.xaml;</RibbonFilesForXamlCombine>
+    <RibbonFilesForXamlCombine>Controls\Ribbon\**\*.xaml;</RibbonFilesForXamlCombine>
   </PropertyGroup>
 
   <ItemGroup>

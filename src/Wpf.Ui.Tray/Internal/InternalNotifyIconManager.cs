@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
+
 using Wpf.Ui.Appearance;
 
 namespace Wpf.Ui.Tray.Internal;
@@ -132,7 +133,6 @@ internal class InternalNotifyIconManager : IDisposable, INotifyIcon
         //     $"INFO | {typeof(TrayHandler)} invoked {nameof(FocusApp)} method.",
         //     "Wpf.Ui.NotifyIcon"
         // );
-
         Window? mainWindow = Application.Current.MainWindow;
 
         if (mainWindow == null)
@@ -178,7 +178,6 @@ internal class InternalNotifyIconManager : IDisposable, INotifyIcon
         //     $"INFO | {typeof(TrayHandler)} invoked {nameof(OpenMenu)} method.",
         //     "Wpf.Ui.NotifyIcon"
         // );
-
         if (ContextMenu is null)
         {
             return;
@@ -359,7 +358,6 @@ internal class InternalNotifyIconManager : IDisposable, INotifyIcon
         //     $"WndProc: msg={uMsg}, wParam={wParam}, lParam={lParam}",
         //     "Wpf.Ui.NotifyIcon"
         // );
-
         switch (uMsg)
         {
             case Interop.User32.WM.DESTROY:
@@ -409,7 +407,6 @@ internal class InternalNotifyIconManager : IDisposable, INotifyIcon
         //     $"TRAY MESSAGE: lParam={lParam}, lMsg={lMsg} (0x{((int)lMsg):X})",
         //     "Wpf.Ui.NotifyIcon"
         // );
-
         switch (lMsg)
         {
             case Interop.User32.WM.LBUTTONDOWN: // 0x0201 - Left button pressed

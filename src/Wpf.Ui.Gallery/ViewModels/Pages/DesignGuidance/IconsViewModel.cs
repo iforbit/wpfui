@@ -4,6 +4,7 @@
 // All Rights Reserved.
 
 using System.Windows.Controls;
+
 using Wpf.Ui.Controls;
 using Wpf.Ui.Gallery.Models;
 
@@ -16,7 +17,19 @@ public partial class IconsViewModel : ViewModel
     private string _autoSuggestBoxText = string.Empty;
 
     [ObservableProperty]
+    private string _selectedFontType = "FluentSystemIcons";
+
+    [ObservableProperty]
     private SymbolRegular _selectedSymbol = SymbolRegular.Empty;
+
+    [ObservableProperty]
+    private MaterialSymbolRegular _selectedMaterialSymbol = MaterialSymbolRegular.Empty;
+
+    [ObservableProperty]
+    private SegoeFluentSymbol _selectedSegoeFluentSymbol = SegoeFluentSymbol.Empty;
+
+    [ObservableProperty]
+    private BootstrapSymbolRegular _selectedBootstrapSymbol = BootstrapSymbolRegular._123;
 
     [ObservableProperty]
     private string _selectedSymbolName = string.Empty;
@@ -54,28 +67,117 @@ public partial class IconsViewModel : ViewModel
 
     public IconsViewModel()
     {
+        LoadIcons();
+    }
+
+    partial void OnSelectedFontTypeChanged(string value)
+    {
+        LoadIcons();
+    }
+
+    private void LoadIcons()
+    {
         _ = Task.Run(() =>
         {
-            var id = 0;
-            var names = Enum.GetNames(typeof(SymbolRegular));
             var icons = new List<DisplayableIcon>();
+            var id = 0;
 
-            names = names.OrderBy(n => n).ToArray();
-
-            foreach (string iconName in names)
+            if (SelectedFontType == "MaterialIcons")
             {
-                SymbolRegular icon = SymbolGlyph.Parse(iconName);
+                var names = Enum.GetNames(typeof(MaterialSymbolRegular));
+                names = names.OrderBy(n => n).ToArray();
 
-                icons.Add(
-                    new DisplayableIcon
+                foreach (string iconName in names)
+                {
+                    if (!Enum.TryParse<MaterialSymbolRegular>(iconName, out MaterialSymbolRegular icon))
+                    {
+                        continue;
+                    }
+
+                    icons.Add(new DisplayableIcon
+                    {
+                        Id = id++,
+                        Name = iconName,
+                        MaterialIcon = icon,
+                        Symbol = ((char)icon).ToString(),
+                        Code = ((int)icon).ToString("X4"),
+                        IsMaterialIcon = true,
+                        IsSegoeFluentIcon = false,
+                        IsBootstrapIcon = false
+                    });
+                }
+            }
+            else if (SelectedFontType == "SegoeFluentIcons")
+            {
+                var names = Enum.GetNames(typeof(SegoeFluentSymbol));
+                names = names.OrderBy(n => n).ToArray();
+
+                foreach (string iconName in names)
+                {
+                    if (!Enum.TryParse<SegoeFluentSymbol>(iconName, out SegoeFluentSymbol icon))
+                    {
+                        continue;
+                    }
+
+                    icons.Add(new DisplayableIcon
+                    {
+                        Id = id++,
+                        Name = iconName,
+                        SegoeFluentIcon = icon,
+                        Symbol = ((char)icon).ToString(),
+                        Code = ((int)icon).ToString("X4"),
+                        IsMaterialIcon = false,
+                        IsSegoeFluentIcon = true,
+                        IsBootstrapIcon = false
+                    });
+                }
+            }
+            else if (SelectedFontType == "BootstrapIcons")
+            {
+                var names = Enum.GetNames(typeof(BootstrapSymbolRegular));
+                names = names.OrderBy(n => n).ToArray();
+
+                foreach (string iconName in names)
+                {
+                    if (!Enum.TryParse<BootstrapSymbolRegular>(iconName, out BootstrapSymbolRegular icon))
+                    {
+                        continue;
+                    }
+
+                    icons.Add(new DisplayableIcon
+                    {
+                        Id = id++,
+                        Name = iconName,
+                        BootstrapIcon = icon,
+                        Symbol = ((char)icon).ToString(),
+                        Code = ((int)icon).ToString("X4"),
+                        IsMaterialIcon = false,
+                        IsSegoeFluentIcon = false,
+                        IsBootstrapIcon = true
+                    });
+                }
+            }
+            else // FluentSystemIcons (default)
+            {
+                var names = Enum.GetNames(typeof(SymbolRegular));
+                names = names.OrderBy(n => n).ToArray();
+
+                foreach (string iconName in names)
+                {
+                    SymbolRegular icon = SymbolGlyph.Parse(iconName);
+
+                    icons.Add(new DisplayableIcon
                     {
                         Id = id++,
                         Name = iconName,
                         Icon = icon,
                         Symbol = ((char)icon).ToString(),
                         Code = ((int)icon).ToString("X4"),
-                    }
-                );
+                        IsMaterialIcon = false,
+                        IsSegoeFluentIcon = false,
+                        IsBootstrapIcon = false
+                    });
+                }
             }
 
             IconsCollection = icons;
@@ -85,7 +187,6 @@ public partial class IconsViewModel : ViewModel
             if (icons.Count > 4)
             {
                 _selectedIconId = 4;
-
                 UpdateSymbolData();
             }
         });
@@ -121,12 +222,51 @@ public partial class IconsViewModel : ViewModel
 
         DisplayableIcon selectedSymbol = IconsCollection.FirstOrDefault(sym => sym.Id == _selectedIconId);
 
-        SelectedSymbol = selectedSymbol.Icon;
-        SelectedSymbolName = selectedSymbol.Name;
-        SelectedSymbolUnicodePoint = selectedSymbol.Code;
-        SelectedSymbolTextGlyph = $"&#x{selectedSymbol.Code};";
-        SelectedSymbolXaml =
-            $"<ui:SymbolIcon Symbol=\"{selectedSymbol.Name}\"{(IsIconFilled ? " Filled=\"True\"" : string.Empty)}/>";
+        if (selectedSymbol.IsMaterialIcon)
+        {
+            SelectedMaterialSymbol = selectedSymbol.MaterialIcon;
+            SelectedSymbol = SymbolRegular.Empty;
+            SelectedSegoeFluentSymbol = SegoeFluentSymbol.Empty;
+            SelectedBootstrapSymbol = BootstrapSymbolRegular._123;
+            SelectedSymbolName = selectedSymbol.Name;
+            SelectedSymbolUnicodePoint = selectedSymbol.Code;
+            SelectedSymbolTextGlyph = $"&#x{selectedSymbol.Code};";
+            SelectedSymbolXaml = $"<ui:MaterialIcon Symbol=\"{selectedSymbol.Name}\"/>";
+        }
+        else if (selectedSymbol.IsSegoeFluentIcon)
+        {
+            SelectedSegoeFluentSymbol = selectedSymbol.SegoeFluentIcon;
+            SelectedSymbol = SymbolRegular.Empty;
+            SelectedMaterialSymbol = MaterialSymbolRegular.Empty;
+            SelectedBootstrapSymbol = BootstrapSymbolRegular.Empty;
+            SelectedSymbolName = selectedSymbol.Name;
+            SelectedSymbolUnicodePoint = selectedSymbol.Code;
+            SelectedSymbolTextGlyph = $"&#x{selectedSymbol.Code};";
+            SelectedSymbolXaml = $"<ui:SegoeFluentIcon Symbol=\"{selectedSymbol.Name}\"/>";
+        }
+        else if (selectedSymbol.IsBootstrapIcon)
+        {
+            SelectedBootstrapSymbol = selectedSymbol.BootstrapIcon;
+            SelectedSymbol = SymbolRegular.Empty;
+            SelectedMaterialSymbol = MaterialSymbolRegular.Empty;
+            SelectedSegoeFluentSymbol = SegoeFluentSymbol.Empty;
+            SelectedSymbolName = selectedSymbol.Name;
+            SelectedSymbolUnicodePoint = selectedSymbol.Code;
+            SelectedSymbolTextGlyph = $"&#x{selectedSymbol.Code};";
+            SelectedSymbolXaml = $"<ui:BootstrapIcon Symbol=\"{selectedSymbol.Name}\"/>";
+        }
+        else
+        {
+            SelectedSymbol = selectedSymbol.Icon;
+            SelectedMaterialSymbol = MaterialSymbolRegular.Empty;
+            SelectedSegoeFluentSymbol = SegoeFluentSymbol.Empty;
+            SelectedBootstrapSymbol = BootstrapSymbolRegular.Empty;
+            SelectedSymbolName = selectedSymbol.Name;
+            SelectedSymbolUnicodePoint = selectedSymbol.Code;
+            SelectedSymbolTextGlyph = $"&#x{selectedSymbol.Code};";
+            SelectedSymbolXaml =
+                $"<ui:SymbolIcon Symbol=\"{selectedSymbol.Name}\"{(IsIconFilled ? " Filled=\"True\"" : string.Empty)}/>";
+        }
     }
 
     private void UpdateSearchResults(string searchedText)

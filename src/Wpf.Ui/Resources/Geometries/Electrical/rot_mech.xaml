@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- RotMech Symbols - Auto-generated from draw.io stencils -->
+
+    <!-- Armature (100x100) -->
+    <Geometry x:Key="RotMech.Armature">
+        M0,100 L20,80 M80,20 L100,0
+    </Geometry>
+
+    <!-- Automatic Return (100x12) -->
+    <Geometry x:Key="RotMech.Automatic_Return">
+        M0,6 L100,6 M58,0 L58,12 L42,6 Z
+    </Geometry>
+
+    <!-- Blocking Device (100x15) -->
+    <Geometry x:Key="RotMech.Blocking_Device">
+        M0,15 L100,15 M33,0 L69.0,0 L69.0,15.0 L33,15.0 Z
+    </Geometry>
+
+    <!-- Clutch (100x20) -->
+    <Geometry x:Key="RotMech.Clutch">
+        M0,20 L35,20 L35,5 M100,20 L65,20 L65,5 M0,0 L10.0,0 L10.0,10.0 L0,10.0 Z M25,10 L25,0 L75,0 L75,10
+    </Geometry>
+
+    <!-- Clutch 2 (90x60) -->
+    <Geometry x:Key="RotMech.Clutch_2">
+        M20,0 L30,10 L30,50 L20,60 M50,0 L60,10 L60,50 L50,60 M0,30 L30,30 M60,30 L90,30
+    </Geometry>
+
+    <!-- Delayed Action (71.7x50) -->
+    <Geometry x:Key="RotMech.Delayed_Action">
+        M11.7,0 A40,40 0 0 0 11.7,50 M3.7,20 L71.7,20 M3.7,30 L71.7,30
+    </Geometry>
+
+    <!-- Detent (100x8) -->
+    <Geometry x:Key="RotMech.Detent">
+        M0,0 L46.2,0 M100,0 L53.8,0 M46.2,0 L50,8 L53.8,0
+    </Geometry>
+
+    <!-- Field (90x15) -->
+    <Geometry x:Key="RotMech.Field">
+        M0,15 A15,15 0 0 1 30,15 A15,15 0 0 1 60,15 A15,15 0 0 1 90,15
+    </Geometry>
+
+    <!-- Gearing (100x64) -->
+    <Geometry x:Key="RotMech.Gearing">
+        M30.0,20.0 A20.0,20.0 0 0 1 50.0,0.0 A20.0,20.0 0 0 1 70.0,20.0 A20.0,20.0 0 0 1 50.0,40.0 A20.0,20.0 0 0 1 30.0,20.0 Z M38.0,52.0 A12.0,12.0 0 0 1 50.0,40.0 A12.0,12.0 0 0 1 62.0,52.0 A12.0,12.0 0 0 1 50.0,64.0 A12.0,12.0 0 0 1 38.0,52.0 Z M0,52 L38,52 M70,20 L100,20
+    </Geometry>
+
+    <!-- Latching Device (100x22) -->
+    <Geometry x:Key="RotMech.Latching_Device">
+        M0,22 L100,22 M50,0 L50,17 M45,22 L25,22 L25,12 Z
+    </Geometry>
+
+    <!-- Manual Control (68x50) -->
+    <Geometry x:Key="RotMech.Manual_Control">
+        M0,0 L0,50 M0,25 L68,25
+    </Geometry>
+
+    <!-- Mechanical Interlock (100x30) -->
+    <Geometry x:Key="RotMech.Mechanical_Interlock">
+        M0,22 L100,22 M50,0 L50,17 M42,13 L58,13 L50,30 Z
+    </Geometry>
+
+    <!-- Rotation (68.43x53.61) -->
+    <Geometry x:Key="RotMech.Rotation">
+        M8.31,4.56 A30,30 0 1 0 58.31,4.56 M56.2,0 L56.14,16.06 L68.43,11.43 Z
+    </Geometry>
+
+    <!-- Synchro (80x100) -->
+    <Geometry x:Key="RotMech.Synchro">
+        M0.0,50.0 A40.0,40.0 0 0 1 40.0,10.0 A40.0,40.0 0 0 1 80.0,50.0 A40.0,40.0 0 0 1 40.0,90.0 A40.0,40.0 0 0 1 0.0,50.0 Z M5.0,50.0 A35.0,35.0 0 0 1 40.0,15.0 A35.0,35.0 0 0 1 75.0,50.0 A35.0,35.0 0 0 1 40.0,85.0 A35.0,35.0 0 0 1 5.0,50.0 Z M40,0 L40,10 M40,85 L40,100
+    </Geometry>
+
+    <!-- Winding Connection (100x100) -->
+    <Geometry x:Key="RotMech.Winding_Connection">
+        M0.0,50.0 A50.0,50.0 0 0 1 50.0,0.0 A50.0,50.0 0 0 1 100.0,50.0 A50.0,50.0 0 0 1 50.0,100.0 A50.0,50.0 0 0 1 0.0,50.0 Z M50,0 L92,77 L8,77 Z
+    </Geometry>
+
+</ResourceDictionary>

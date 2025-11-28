@@ -23,10 +23,13 @@ public sealed class SharedMemoryReader : IDisposable
 {
     private readonly MemoryMappedFile _mmf;
     private readonly MemoryMappedViewAccessor _accessor;
+    private readonly int _maxPointsPerChannel;
 
-    public SharedMemoryReader(string mapName = "Local\\GraphSignalBuffer")
+    public SharedMemoryReader(string mapName = "Local\\GraphSignalBuffer", int maxPointsPerChannel = 50000)
     {
-        _mmf = MemoryMappedFile.CreateOrOpen(mapName, 65536); // 충분한 크기 확보
+        _maxPointsPerChannel = maxPointsPerChannel;
+        long bufferSize = 8 + (10 * maxPointsPerChannel * 12); // Match Writer buffer size
+        _mmf = MemoryMappedFile.CreateOrOpen(mapName, bufferSize);
         _accessor = _mmf.CreateViewAccessor();
     }
 
@@ -39,7 +42,8 @@ public sealed class SharedMemoryReader : IDisposable
 
     public void ReadChannel(int channelIndex, int pointCount, Span<(double X, float Y)> buffer)
     {
-        long baseOffset = 8 + channelIndex * pointCount * 12;
+        // Use fixed offset based on _maxPointsPerChannel (matching Writer)
+        long baseOffset = 8 + channelIndex * _maxPointsPerChannel * 12;
 
         for (int i = 0; i < pointCount; i++)
         {

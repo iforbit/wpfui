@@ -46,7 +46,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <ui:TitleBar Title="{Binding ViewModel.ApplicationTitle, Mode=OneWay}"
-                     Grid.Row="0" Icon="pack://application:,,,/Assets/applicationIcon-256.png" />
+                     Grid.Row="0" Icon="pack://application:,,,/Assets/applicationIcon-256.png" ShowCloseConfirmation="False" />
 
         <tray:NotifyIcon Grid.Row="0" FocusOnLeftClick="True" Icon="pack://application:,,,/Assets/applicationIcon-256.png"
                          MenuOnRightClick="True" TooltipText="WPF UI - MVVM Demo">

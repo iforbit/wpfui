@@ -20,7 +20,7 @@ public partial class DashboardPage : INavigableView<ViewModels.DashboardViewMode
     private int _frameCount = 0;
     private DateTime _lastFpsUpdate = DateTime.Now;
 
-    private DispatcherTimer _updateTimer;
+    private DispatcherTimer _updateTimer = null!;
     public DashboardPage(DashboardViewModel viewModel, IRenderThreadService renderThread)
     {
         ViewModel = viewModel;
@@ -79,10 +79,20 @@ public partial class DashboardPage : INavigableView<ViewModels.DashboardViewMode
     {
         get
         {
-
             // 예를 들어, 리소스에서 Ribbon을 찾거나,
             // 또는 페이지의 특정 이름을 가진 Ribbon 요소를 찾아 반환합니다.
-            return this.FindResource("DashboardPageRibbon");
+            var ribbon = this.FindResource("DashboardPageRibbon");
+
+            // Ribbon의 DataContext를 Page로 설정하여 바인딩이 작동하도록 함
+            if (ribbon is FrameworkElement element)
+            {
+                element.DataContext = this;
+                System.Diagnostics.Debug.WriteLine($"[RibbonContent] Ribbon DataContext set to: {this.GetType().Name}");
+                System.Diagnostics.Debug.WriteLine($"[RibbonContent] ViewModel is null: {ViewModel == null}");
+                System.Diagnostics.Debug.WriteLine($"[RibbonContent] NewDocumentCommand is null: {ViewModel?.NewDocumentCommand == null}");
+            }
+
+            return ribbon;
         }
     }
 }

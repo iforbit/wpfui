@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- IecLogicGates Symbols - Auto-generated from draw.io stencils -->
+
+    <!-- AND (60x80) -->
+    <Geometry x:Key="IecLogicGates.AND">
+        M0,0 L60.0,0 L60.0,80.0 L0,80.0 Z
+    </Geometry>
+
+    <!-- NAND (66x80) -->
+    <Geometry x:Key="IecLogicGates.NAND">
+        M0,0 L60.0,0 L60.0,80.0 L0,80.0 Z M0,0 L10.0,0 L10.0,10.0 L0,10.0 Z M60.0,40.0 A3.0,3.0 0 0 1 63.0,37.0 A3.0,3.0 0 0 1 66.0,40.0 A3.0,3.0 0 0 1 63.0,43.0 A3.0,3.0 0 0 1 60.0,40.0 Z
+    </Geometry>
+
+    <!-- NAND 2 (68x80) -->
+    <Geometry x:Key="IecLogicGates.NAND_2">
+        M0,0 L60.0,0 L60.0,80.0 L0,80.0 Z M0,0 L10.0,0 L10.0,10.0 L0,10.0 Z M60.0,40.0 A4.0,4.0 0 0 1 64.0,36.0 A4.0,4.0 0 0 1 68.0,40.0 A4.0,4.0 0 0 1 64.0,44.0 A4.0,4.0 0 0 1 60.0,40.0 Z
+    </Geometry>
+
+    <!-- NOR (66x80) -->
+    <Geometry x:Key="IecLogicGates.NOR">
+        M0,0 L60.0,0 L60.0,80.0 L0,80.0 Z M60.0,40.0 A3.0,3.0 0 0 1 63.0,37.0 A3.0,3.0 0 0 1 66.0,40.0 A3.0,3.0 0 0 1 63.0,43.0 A3.0,3.0 0 0 1 60.0,40.0 Z M0,0 L10.0,0 L10.0,10.0 L0,10.0 Z M24.25,36 L28.75,40 L24.25,44 M0,0 L10.0,0 L10.0,10.0 L0,10.0 Z M30,40.75 L25.125,45
+    </Geometry>
+
+    <!-- NOR 2 (68x80) -->
+    <Geometry x:Key="IecLogicGates.NOR_2">
+        M0,0 L60.0,0 L60.0,80.0 L0,80.0 Z M60.0,40.0 A4.0,4.0 0 0 1 64.0,36.0 A4.0,4.0 0 0 1 68.0,40.0 A4.0,4.0 0 0 1 64.0,44.0 A4.0,4.0 0 0 1 60.0,40.0 Z M0,0 L10.0,0 L10.0,10.0 L0,10.0 Z M24.25,36 L28.75,40 L24.25,44 M0,0 L10.0,0 L10.0,10.0 L0,10.0 Z M30,40.75 L25.125,45
+    </Geometry>
+
+    <!-- NOT (66x80) -->
+    <Geometry x:Key="IecLogicGates.NOT">
+        M0,0 L60.0,0 L60.0,80.0 L0,80.0 Z M0,0 L10.0,0 L10.0,10.0 L0,10.0 Z M60.0,40.0 A3.0,3.0 0 0 1 63.0,37.0 A3.0,3.0 0 0 1 66.0,40.0 A3.0,3.0 0 0 1 63.0,43.0 A3.0,3.0 0 0 1 60.0,40.0 Z
+    </Geometry>
+
+    <!-- NOT 2 (68x80) -->
+    <Geometry x:Key="IecLogicGates.NOT_2">
+        M0,0 L60.0,0 L60.0,80.0 L0,80.0 Z M0,0 L10.0,0 L10.0,10.0 L0,10.0 Z M60.0,40.0 A4.0,4.0 0 0 1 64.0,36.0 A4.0,4.0 0 0 1 68.0,40.0 A4.0,4.0 0 0 1 64.0,44.0 A4.0,4.0 0 0 1 60.0,40.0 Z
+    </Geometry>
+
+    <!-- OR (60x80) -->
+    <Geometry x:Key="IecLogicGates.OR">
+        M0,0 L60.0,0 L60.0,80.0 L0,80.0 Z M0,0 L10.0,0 L10.0,10.0 L0,10.0 Z M24.25,36 L28.75,40 L24.25,44 M0,0 L10.0,0 L10.0,10.0 L0,10.0 Z M30,40.75 L25.125,45
+    </Geometry>
+
+    <!-- XOR (60x80) -->
+    <Geometry x:Key="IecLogicGates.XOR">
+        M0,0 L60.0,0 L60.0,80.0 L0,80.0 Z
+    </Geometry>
+
+</ResourceDictionary>

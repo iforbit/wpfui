@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Abstract Symbols - Auto-generated from draw.io stencils -->
+
+    <!-- Amplifier (100x90) -->
+    <Geometry x:Key="Abstract.Amplifier">
+        M5,0 L95,45 L5,90 Z M0,45 L5,45 M95,45 L100,45
+    </Geometry>
+
+    <!-- Controlled Amplifier (100x90) -->
+    <Geometry x:Key="Abstract.Controlled_Amplifier">
+        M5,0 L95,45 L5,90 Z M0,45 L5,45 M95,45 L100,45 M60,85 L60,68 M57,68 L60,63 L63,68 Z
+    </Geometry>
+
+    <!-- DAC (70x46) -->
+    <Geometry x:Key="Abstract.DAC">
+        M0,0 L45,0 L70,23 L45,46 L0,46 Z
+    </Geometry>
+
+    <!-- Delta (50x50) -->
+    <Geometry x:Key="Abstract.Delta">
+        M0.0,25.0 A25.0,25.0 0 0 1 25.0,0.0 A25.0,25.0 0 0 1 50.0,25.0 A25.0,25.0 0 0 1 25.0,50.0 A25.0,25.0 0 0 1 0.0,25.0 Z M15,35 L25,15 L35,35 Z
+    </Geometry>
+
+    <!-- Demux (60x90) -->
+    <Geometry x:Key="Abstract.Demux">
+        M10,0 L50,20 L50,70 L10,90 Z M25,82.5 L25,90 M50,50 L60,50 M50,60 L60,60 M0,45 L10,45 M50,40 L60,40 M50,30 L60,30 M35,77.5 L35,90
+    </Geometry>
+
+    <!-- Filter (52x46) -->
+    <Geometry x:Key="Abstract.Filter">
+        M0,0 L52.0,0 L52.0,46.0 L0,46.0 Z M6,23 A15,15 0 0 1 26,23 A15,15 0 0 0 46,23 M6,13 A15,15 0 0 1 26,13 A15,15 0 0 0 46,13 M6,33 A15,15 0 0 1 26,33 A15,15 0 0 0 46,33 M22,35 L28,29 M22,15 L28,9
+    </Geometry>
+
+    <!-- Function (50x50) -->
+    <Geometry x:Key="Abstract.Function">
+        M0.0,25.0 A25.0,25.0 0 0 1 25.0,0.0 A25.0,25.0 0 0 1 50.0,25.0 A25.0,25.0 0 0 1 25.0,50.0 A25.0,25.0 0 0 1 0.0,25.0 Z
+    </Geometry>
+
+    <!-- Integrator (50x50) -->
+    <Geometry x:Key="Abstract.Integrator">
+        M0.0,25.0 A25.0,25.0 0 0 1 25.0,0.0 A25.0,25.0 0 0 1 50.0,25.0 A25.0,25.0 0 0 1 25.0,50.0 A25.0,25.0 0 0 1 0.0,25.0 Z M20,35 A2.5,2.5 0 0 0 25,35 L25,15 A2.5,2.5 0 0 1 30,15
+    </Geometry>
+
+    <!-- Multiplier (50x50) -->
+    <Geometry x:Key="Abstract.Multiplier">
+        M0.0,25.0 A25.0,25.0 0 0 1 25.0,0.0 A25.0,25.0 0 0 1 50.0,25.0 A25.0,25.0 0 0 1 25.0,50.0 A25.0,25.0 0 0 1 0.0,25.0 Z M7.2,7.2 L42.8,42.8 M42.8,7.2 L7.2,42.8
+    </Geometry>
+
+    <!-- Mux-Demux (60x90) -->
+    <Geometry x:Key="Abstract.Mux_Demux">
+        M10,0 L50,20 L50,70 L10,90 Z M30,80 L30,90 M50,45 L60,45 M0,85 L10,85 M0,75 L10,75 M0,65 L10,65 M0,55 L10,55 M0,45 L10,45 M0,35 L10,35 M0,25 L10,25 M0,15 L10,15 M0,5 L10,5
+    </Geometry>
+
+    <!-- Mux (60x90) -->
+    <Geometry x:Key="Abstract.Mux">
+        M10,0 L50,20 L50,70 L10,90 Z M25,82.5 L25,90 M50,45 L60,45 M0,85 L10,85 M0,75 L10,75 M0,65 L10,65 M0,55 L10,55 M0,45 L10,45 M0,35 L10,35 M0,25 L10,25 M0,15 L10,15 M0,5 L10,5 M35,77.5 L35,90
+    </Geometry>
+
+    <!-- Operational Amp 1 (98x90) -->
+    <Geometry x:Key="Abstract.Operational_Amp_1">
+        M5,0 L98,45 L5,90 Z M0,15 L5,15 M0,75 L5,75 M60,10 L60,26.5 M60,63.5 L60,80 M8,15 L14,15 M8,75 L14,75 M11,72 L11,78
+    </Geometry>
+
+    <!-- Operational Amp 2 (98x90) -->
+    <Geometry x:Key="Abstract.Operational_Amp_2">
+        M5,0 L98,45 L5,90 Z M0,15 L5,15 M0,75 L5,75 M80,26.5 L60,26.5 M60,63.5 L80,63.5 M8,15 L14,15 M8,75 L14,75 M11,72 L11,78 M40,5 L40,17 M40,73 L40,85 M45,28 L51,28 M48,25 L48,31 M45,62 L51,62
+    </Geometry>
+
+    <!-- OTA 1 (100x90) -->
+    <Geometry x:Key="Abstract.OTA_1">
+        M5,90 L5,0 L68,30.5 L68,59.5 Z M0,15 L5,15 M68,45 L100,45 M8,15 L14,15 M8,75 L14,75 M11,72 L11,78 M0,75 L5,75 M40,73 L40,85 M40,5 L40,17
+    </Geometry>
+
+    <!-- OTA 2 (100x90) -->
+    <Geometry x:Key="Abstract.OTA_2">
+        M5,90 L5,0 L68,30.5 L68,59.5 Z M0,15 L5,15 M68,45 L100,45 M8,15 L14,15 M8,75 L14,75 M11,72 L11,78 M0,75 L5,75 M45,62 L51,62 M45,28 L51,28 M48,25 L48,31 M60,63.5 L80,63.5 M80,26.5 L60,26.5 M40,73 L40,85 M40,5 L40,17
+    </Geometry>
+
+    <!-- OTA 3 (100x90) -->
+    <Geometry x:Key="Abstract.OTA_3">
+        M5,90 L5,0 L68,30.5 L68,59.5 Z M0,45 L5,45 M68,45 L100,45
+    </Geometry>
+
+    <!-- Quantizer (52x46) -->
+    <Geometry x:Key="Abstract.Quantizer">
+        M0,0 L52.0,0 L52.0,46.0 L0,46.0 Z M21,33 L26,33 L26,13 L31,13 M21,23 L31,23
+    </Geometry>
+
+    <!-- Sum (50x50) -->
+    <Geometry x:Key="Abstract.Sum">
+        M0.0,25.0 A25.0,25.0 0 0 1 25.0,0.0 A25.0,25.0 0 0 1 50.0,25.0 A25.0,25.0 0 0 1 25.0,50.0 A25.0,25.0 0 0 1 0.0,25.0 Z M32,35 L18,35 L28,25 L18,15 L32,15
+    </Geometry>
+
+    <!-- Summation Point (50x50) -->
+    <Geometry x:Key="Abstract.Summation_Point">
+        M0.0,25.0 A25.0,25.0 0 0 1 25.0,0.0 A25.0,25.0 0 0 1 50.0,25.0 A25.0,25.0 0 0 1 25.0,50.0 A25.0,25.0 0 0 1 0.0,25.0 Z M25,10 L25,40 M10,25 L40,25
+    </Geometry>
+
+    <!-- Thermistor With Independent Integral Heater (100x94.25) -->
+    <Geometry x:Key="Abstract.Thermistor_With_Independent_Integral_Heater">
+        M10.0,45.0 A40.0,40.0 0 0 1 50.0,5.0 A40.0,40.0 0 0 1 90.0,45.0 A40.0,40.0 0 0 1 50.0,85.0 A40.0,40.0 0 0 1 10.0,45.0 Z M0,45 L18,45 L22,35 L30,55 L38,35 L46,55 L54,35 L62,55 L70,35 L78,55 L82,45 L100,45 M0,85 L15,85 L23.5,75 M43.5,93.5 L44,84.75 L53.75,73 L62.5,82.75 L62.75,94.25 M87,0 L75.3,14
+    </Geometry>
+
+    <!-- Voltage Regulator (70x58) -->
+    <Geometry x:Key="Abstract.Voltage_Regulator">
+        M9,0 L61.0,0 L61.0,46.0 L9,46.0 Z M0,23 L9,23 M35,58 L35,46 M61,23 L70,23
+    </Geometry>
+
+</ResourceDictionary>

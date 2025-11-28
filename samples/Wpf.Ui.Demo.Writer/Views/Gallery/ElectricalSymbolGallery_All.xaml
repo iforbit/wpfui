@@ -1,0 +1,207 @@
+<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Electrical Symbol Gallery - Full" Width="1200" Height="800">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <WrapPanel Margin="20">
+
+            <StackPanel Margin="10" Width="100" Height="100">
+                <Viewbox Width="80" Height="80">
+                    <Canvas Width="40" Height="40">
+                        <Path Stroke="Black" StrokeThickness="2" Data="M5,20 L15,20 M15,15 L25,25 M15,25 L25,15 M25,20 L35,20" />
+                    </Canvas>
+                </Viewbox>
+                <TextBlock Text="Fuse" FontSize="10" TextAlignment="Center" TextWrapping="Wrap"/>
+            </StackPanel>
+
+            <StackPanel Margin="10" Width="100" Height="100">
+                <Viewbox Width="80" Height="80">
+                    <Canvas Width="40" Height="40">
+                        <Path Stroke="Black" StrokeThickness="2" Data="M10,10 L30,10 M20,10 L20,30 M15,30 L25,30 M20,30 L20,40" />
+                    </Canvas>
+                </Viewbox>
+                <TextBlock Text="CircuitBreaker" FontSize="10" TextAlignment="Center" TextWrapping="Wrap"/>
+            </StackPanel>
+
+            <StackPanel Margin="10" Width="100" Height="100">
+                <Viewbox Width="80" Height="80">
+                    <Canvas Width="40" Height="40">
+                        <Path Stroke="Black" StrokeThickness="2" Data="M20,20 m-10,0 a10,10 0 1,0 20,0 a10,10 0 1,0 -20,0 M10,20 L30,20" />
+                    </Canvas>
+                </Viewbox>
+                <TextBlock Text="Motor" FontSize="10" TextAlignment="Center" TextWrapping="Wrap"/>
+            </StackPanel>
+
+            <StackPanel Margin="10" Width="100" Height="100">
+                <Viewbox Width="80" Height="80">
+                    <Canvas Width="40" Height="40">
+                        <Path Stroke="Black" StrokeThickness="2" Data="M10,10 L10,30 M30,10 L30,30 M10,20 C15,5 25,35 30,20" />
+                    </Canvas>
+                </Viewbox>
+                <TextBlock Text="Transformer" FontSize="10" TextAlignment="Center" TextWrapping="Wrap"/>
+            </StackPanel>
+
+            <StackPanel Margin="10" Width="100" Height="100">
+                <Viewbox Width="80" Height="80">
+                    <Canvas Width="40" Height="40">
+                        <Path Stroke="Black" StrokeThickness="2" Data="M10,30 L20,10 L30,30 M20,25 L20,35" />
+                    </Canvas>
+                </Viewbox>
+                <TextBlock Text="Voltmeter" FontSize="10" TextAlignment="Center" TextWrapping="Wrap"/>
+            </StackPanel>
+
+            <StackPanel Margin="10" Width="100" Height="100">
+                <Viewbox Width="80" Height="80">
+                    <Canvas Width="40" Height="40">
+                        <Path Stroke="Black" StrokeThickness="2" Data="M10,10 L30,30 M30,10 L10,30" />
+                    </Canvas>
+                </Viewbox>
+                <TextBlock Text="Disconnect" FontSize="10" TextAlignment="Center" TextWrapping="Wrap"/>
+            </StackPanel>
+
+            <StackPanel Margin="10" Width="100" Height="100">
+                <Viewbox Width="80" Height="80">
+                    <Canvas Width="40" Height="40">
+                        <Path Stroke="Black" StrokeThickness="2" Data="M10,10 L30,10 M30,10 L30,30 M30,30 L10,30 M10,30 L10,10" />
+                    </Canvas>
+                </Viewbox>
+                <TextBlock Text="OverloadHeater" FontSize="10" TextAlignment="Center" TextWrapping="Wrap"/>
+            </StackPanel>
+
+            <StackPanel Margin="10" Width="100" Height="100">
+                <Viewbox Width="80" Height="80">
+                    <Canvas Width="40" Height="40">
+                        <Path Stroke="Black" StrokeThickness="2" Data="M20,10 A10,10 0 1 1 19.9,10.1" />
+                    </Canvas>
+                </Viewbox>
+                <TextBlock Text="Contactor" FontSize="10" TextAlignment="Center" TextWrapping="Wrap"/>
+            </StackPanel>
+
+            <StackPanel Margin="10" Width="100" Height="100">
+                <Viewbox Width="80" Height="80">
+                    <Canvas Width="40" Height="40">
+                        <Path Stroke="Black" StrokeThickness="2" Data="M20,20 m-10,0 a10,10 0 1,0 20,0 a10,10 0 1,0 -20,0" />
+                    </Canvas>
+                </Viewbox>
+                <TextBlock Text="Generator" FontSize="10" TextAlignment="Center" TextWrapping="Wrap"/>
+            </StackPanel>
+
+            <StackPanel Margin="10" Width="100" Height="100">
+                <Viewbox Width="80" Height="80">
+                    <Canvas Width="40" Height="40">
+                        <Path Stroke="Black" StrokeThickness="2" Data="M10,10 L30,10 L30,30 L10,30 Z M15,15 L25,25 M25,15 L15,25" />
+                    </Canvas>
+                </Viewbox>
+                <TextBlock Text="DCMotorDrive" FontSize="10" TextAlignment="Center" TextWrapping="Wrap"/>
+            </StackPanel>
+
+            <StackPanel Margin="10" Width="100" Height="100">
+                <Viewbox Width="80" Height="80">
+                    <Canvas Width="40" Height="40">
+                        <Path Stroke="Black" StrokeThickness="2" Data="M20,10 L25,20 L15,20 Z M10,25 H30" />
+                    </Canvas>
+                </Viewbox>
+                <TextBlock Text="ACMotorDrive" FontSize="10" TextAlignment="Center" TextWrapping="Wrap"/>
+            </StackPanel>
+
+            <StackPanel Margin="10" Width="100" Height="100">
+                <Viewbox Width="80" Height="80">
+                    <Canvas Width="40" Height="40">
+                        <Path Stroke="Black" StrokeThickness="2" Data="M10,10 L20,20 L30,10" />
+                    </Canvas>
+                </Viewbox>
+                <TextBlock Text="Rectifier" FontSize="10" TextAlignment="Center" TextWrapping="Wrap"/>
+            </StackPanel>
+
+            <StackPanel Margin="10" Width="100" Height="100">
+                <Viewbox Width="80" Height="80">
+                    <Canvas Width="40" Height="40">
+                        <Path Stroke="Black" StrokeThickness="2" Data="M10,30 L20,20 L30,30" />
+                    </Canvas>
+                </Viewbox>
+                <TextBlock Text="Inverter" FontSize="10" TextAlignment="Center" TextWrapping="Wrap"/>
+            </StackPanel>
+
+            <StackPanel Margin="10" Width="100" Height="100">
+                <Viewbox Width="80" Height="80">
+                    <Canvas Width="40" Height="40">
+                        <Path Stroke="Black" StrokeThickness="2" Data="M20,10 A10,10 0 1 1 19.9,10.1 M15,25 H25" />
+                    </Canvas>
+                </Viewbox>
+                <TextBlock Text="Lamp" FontSize="10" TextAlignment="Center" TextWrapping="Wrap"/>
+            </StackPanel>
+
+            <StackPanel Margin="10" Width="100" Height="100">
+                <Viewbox Width="80" Height="80">
+                    <Canvas Width="40" Height="40">
+                        <Path Stroke="Black" StrokeThickness="2" Data="M15,15 L25,15 L20,25 Z" />
+                    </Canvas>
+                </Viewbox>
+                <TextBlock Text="Wattmeter" FontSize="10" TextAlignment="Center" TextWrapping="Wrap"/>
+            </StackPanel>
+
+            <StackPanel Margin="10" Width="100" Height="100">
+                <Viewbox Width="80" Height="80">
+                    <Canvas Width="40" Height="40">
+                        <Path Stroke="Black" StrokeThickness="2" Data="M15,10 L15,30 M25,10 L25,30" />
+                    </Canvas>
+                </Viewbox>
+                <TextBlock Text="FrequencyMeter" FontSize="10" TextAlignment="Center" TextWrapping="Wrap"/>
+            </StackPanel>
+
+            <StackPanel Margin="10" Width="100" Height="100">
+                <Viewbox Width="80" Height="80">
+                    <Canvas Width="40" Height="40">
+                        <Path Stroke="Black" StrokeThickness="2" Data="M10,10 L30,10 L30,30 L10,30 Z M15,15 L25,25" />
+                    </Canvas>
+                </Viewbox>
+                <TextBlock Text="KilowattHourMeter" FontSize="10" TextAlignment="Center" TextWrapping="Wrap"/>
+            </StackPanel>
+
+            <StackPanel Margin="10" Width="100" Height="100">
+                <Viewbox Width="80" Height="80">
+                    <Canvas Width="40" Height="40">
+                        <Path Stroke="Black" StrokeThickness="2" Data="M10,20 L30,20 M20,10 L20,30" />
+                    </Canvas>
+                </Viewbox>
+                <TextBlock Text="VARMeter" FontSize="10" TextAlignment="Center" TextWrapping="Wrap"/>
+            </StackPanel>
+
+            <StackPanel Margin="10" Width="100" Height="100">
+                <Viewbox Width="80" Height="80">
+                    <Canvas Width="40" Height="40">
+                        <Path Stroke="Black" StrokeThickness="2" Data="M20,20 m-10,0 a10,10 0 1,0 20,0 a10,10 0 1,0 -20,0 M20,0 L20,40" />
+                    </Canvas>
+                </Viewbox>
+                <TextBlock Text="CurrentTransformer" FontSize="10" TextAlignment="Center" TextWrapping="Wrap"/>
+            </StackPanel>
+
+            <StackPanel Margin="10" Width="100" Height="100">
+                <Viewbox Width="80" Height="80">
+                    <Canvas Width="40" Height="40">
+                        <Path Stroke="Black" StrokeThickness="2" Data="M10,10 L10,30 M30,10 L30,30 M10,20 C15,0 25,40 30,20" />
+                    </Canvas>
+                </Viewbox>
+                <TextBlock Text="PotentialTransformer" FontSize="10" TextAlignment="Center" TextWrapping="Wrap"/>
+            </StackPanel>
+
+            <StackPanel Margin="10" Width="100" Height="100">
+                <Viewbox Width="80" Height="80">
+                    <Canvas Width="40" Height="40">
+                        <Path Stroke="Black" StrokeThickness="2" Data="M10,30 A10,10 0 0 1 30,30 L30,10" />
+                    </Canvas>
+                </Viewbox>
+                <TextBlock Text="SynchronizationMeter" FontSize="10" TextAlignment="Center" TextWrapping="Wrap"/>
+            </StackPanel>
+
+            <StackPanel Margin="10" Width="100" Height="100">
+                <Viewbox Width="80" Height="80">
+                    <Canvas Width="40" Height="40">
+                        <Path Stroke="Black" StrokeThickness="2" Data="M20,20 m-10,0 a10,10 0 1,0 20,0 a10,10 0 1,0 -20,0 M20,10 L20,20 L25,25" />
+                    </Canvas>
+                </Viewbox>
+                <TextBlock Text="Ammeter" FontSize="10" TextAlignment="Center" TextWrapping="Wrap"/>
+            </StackPanel>
+
+        </WrapPanel>
+    </ScrollViewer>
+</Window>

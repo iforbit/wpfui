@@ -1,4 +1,5 @@
-<Page x:Class="Wpf.Ui.Demo.Mvvm.Views.Pages.DashboardPage"
+<Page x:Name="dashboardPage"
+      x:Class="Wpf.Ui.Demo.Mvvm.Views.Pages.DashboardPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -24,26 +25,232 @@
 
     <Page.Resources>
         <converters:BooleanToTextConverter x:Key="BooleanToTextConverter" />
-        <ui:Ribbon x:Key="DashboardPageRibbon">
+        <ui:Ribbon x:Key="DashboardPageRibbon" CanUseSimplified="True">
+            <ui:Ribbon.CommonPanel>
+                <ui:RibbonButton Margin="10,0" Header="Help"
+                                 Icon="{ui:SymbolIcon ChatBubblesQuestion24}"
+                                 LargeIcon="{ui:SymbolIcon ChatBubblesQuestion24,
+                                                           FontSize='32'}"
+                                 MediumIcon="{ui:SymbolIcon ChatBubblesQuestion24}"
+                                 ShowInSimplified="True" />
+
+            </ui:Ribbon.CommonPanel>
+            <ui:Ribbon.Menu>
+                <ui:Backstage Header="File">
+                    <ui:BackstageTabControl>
+                        <ui:BackstageTabItem Header="Info" Icon="{ui:SymbolIcon Info24}">
+                            <Grid Margin="40">
+                                <StackPanel>
+                                    <TextBlock FontSize="24" FontWeight="SemiBold" Text="Application Information" />
+                                    <TextBlock Margin="0,20,0,0" FontSize="14" Text="WPF UI Demo with Backstage" />
+                                </StackPanel>
+                            </Grid>
+                        </ui:BackstageTabItem>
+                        <ui:BackstageTabItem Header="Settings" Icon="{ui:SymbolIcon Settings24}">
+                            <Grid Margin="40">
+                                <TextBlock FontSize="20" Text="Settings Content" />
+                            </Grid>
+                        </ui:BackstageTabItem>
+                    </ui:BackstageTabControl>
+                </ui:Backstage>
+            </ui:Ribbon.Menu>
+
             <!--  페이지에 필요한 RibbonTabItem, RibbonGroupBox, Button 등을 정의  -->
             <ui:RibbonTabItem Header="Dashboard">
-                <ui:RibbonGroupBox Header="Group 1" IsLauncherVisible="False" IsSeparatorVisible="False">
-                    <ui:RibbonButton Header="Grey"
-                                     Icon="{ui:SymbolIcon Mail28}"
-                                     LargeIcon="{ui:SymbolIcon Mail28,
+                <!--  Left Column (ColumnIndex=0, default)  -->
+                <ui:RibbonGroupBox Header="Clipboard" IsSeparatorVisible="True">
+                    <ui:RibbonButton Header="Copy"
+                                     Icon="{ui:SymbolIcon Copy24}"
+                                     LargeIcon="{ui:SymbolIcon Copy24,
                                                                FontSize='32'}"
-                                     SizeDefinition="Large" />
+                                     MediumIcon="{ui:SymbolIcon Copy24}"
+                                     ShowInSimplified="True" SizeDefinition="Large" />
+                    <ui:RibbonDropDownButton Header="Cut"
+                                             Icon="{ui:SymbolIcon Cut24}"
+                                             LargeIcon="{ui:SymbolIcon Cut24,
+                                                                       FontSize='32'}"
+                                             MediumIcon="{ui:SymbolIcon Cut24}"
+                                             ShowInSimplified="True" SizeDefinition="Large">
+                        <ui:RibbonMenuItem Header="Cut Special" Icon="{ui:SymbolIcon Cut24}" />
+                        <ui:RibbonMenuItem Header="Cut with Format"
+                                           Icon="{ui:SymbolIcon DocumentCopy24}"
+                                           InputGestureText="Ctrl+Shift+X" />
+                        <Separator />
+                        <ui:RibbonMenuItem Header="Advanced Cut Options" Icon="{ui:SymbolIcon Settings24}">
+                            <ui:RibbonMenuItem Header="Cut and Keep Formatting" IsCheckable="True" />
+                            <ui:RibbonMenuItem Header="Cut as Plain Text" IsCheckable="True" IsChecked="True" />
+                        </ui:RibbonMenuItem>
+                    </ui:RibbonDropDownButton>
+                </ui:RibbonGroupBox>
 
-                    <ui:RibbonButton Header="Grey"
-                                     Icon="{ui:SymbolIcon Mail28}"
-                                     LargeIcon="{ui:SymbolIcon Mail28,
-                                                               FontSize='32'}"
-                                     SizeDefinition="Large" />
+                <!--  Format Group with TextBox  -->
+                <ui:RibbonGroupBox Header="Format" IsSeparatorVisible="False">
+                    <ui:RibbonDropDownButton Header="Font"
+                                             Icon="{ui:SymbolIcon TextFont24}"
+                                             LargeIcon="{ui:SymbolIcon TextFont24,
+                                                                       FontSize=32}"
+                                             MediumIcon="{ui:SymbolIcon TextFont24}"
+                                             ShowInSimplified="True" SizeDefinition="Large">
+                        <ui:RibbonMenuItem Header="Arial" IsCheckable="True" />
+                        <ui:RibbonMenuItem Header="Times New Roman" IsCheckable="True" IsChecked="True" />
+                        <ui:RibbonMenuItem Header="Calibri" IsCheckable="True" />
+                        <ui:RibbonMenuItem Header="Consolas" IsCheckable="True" />
+                    </ui:RibbonDropDownButton>
+
+                    <ui:RibbonTextBox Width="150" Header="Search"
+                                      Icon="{ui:SymbolIcon Search24}"
+                                      PlaceholderText="Type to search..." ShowInSimplified="True" />
+
+                    <ui:RibbonToggleButton Header="Bold"
+                                           Icon="{ui:SymbolIcon TextBold24}"
+                                           LargeIcon="{ui:SymbolIcon TextBold24,
+                                                                     FontSize=32}"
+                                           MediumIcon="{ui:SymbolIcon TextBold24}"
+                                           ShowInSimplified="True" SizeDefinition="Middle" />
+
+                    <ui:RibbonToggleButton Header="Italic"
+                                           Icon="{ui:SymbolIcon TextItalic24}"
+                                           LargeIcon="{ui:SymbolIcon TextItalic24,
+                                                                     FontSize=32}"
+                                           MediumIcon="{ui:SymbolIcon TextItalic24}"
+                                           ShowInSimplified="True" SizeDefinition="Large" />
+                </ui:RibbonGroupBox>
+
+                <!--  View Group with Description MenuItem  -->
+                <ui:RibbonGroupBox Header="View" IsSeparatorVisible="False">
+                    <ui:RibbonDropDownButton Header="Layout"
+                                             Icon="{ui:SymbolIcon LayoutColumnTwoSplitLeft24}"
+                                             LargeIcon="{ui:SymbolIcon LayoutColumnTwoSplitLeft24,
+                                                                       FontSize=32}"
+                                             MediumIcon="{ui:SymbolIcon LayoutColumnTwoSplitLeft24}"
+                                             ShowInSimplified="True" SizeDefinition="Large">
+                        <ui:RibbonMenuItem Description="Display the sidebar panel on the left" Header="Show Sidebar"
+                                           Icon="{ui:SymbolIcon PanelLeft24}" />
+                        <ui:RibbonMenuItem Description="Expand to fullscreen mode" Header="Fullscreen"
+                                           Icon="{ui:SymbolIcon FullScreenMaximize24}"
+                                           InputGestureText="F11" />
+                        <Separator />
+                        <ui:RibbonMenuItem Header="Panel Options" Icon="{ui:SymbolIcon Settings24}">
+                            <ui:RibbonMenuItem Header="Top Panel" IsCheckable="True" IsChecked="True" />
+                            <ui:RibbonMenuItem Header="Bottom Panel" IsCheckable="True" />
+                            <ui:RibbonMenuItem Header="Left Panel" IsCheckable="True" IsChecked="True" />
+                            <ui:RibbonMenuItem Header="Right Panel" IsCheckable="True" />
+                        </ui:RibbonMenuItem>
+                    </ui:RibbonDropDownButton>
+
+                    <ui:RibbonCheckBox Header="Grid"
+                                       Icon="{ui:SymbolIcon Grid24}"
+                                       IsChecked="True" ShowInSimplified="True" />
+
+                    <ui:RibbonCheckBox Header="Rulers"
+                                       Icon="{ui:SymbolIcon Ruler24}"
+                                       ShowInSimplified="False" />
+                </ui:RibbonGroupBox>
+
+                <ui:RibbonGroupBox Header="Actions" IsSeparatorVisible="False">
+                    <!--  RibbonSplitButton: 버튼 클릭 = Command 실행, 화살표 클릭 = 드롭다운 메뉴  -->
+                    <ui:RibbonSplitButton Command="{Binding ViewModel.NewDocumentCommand}"
+                                          Header="New"
+                                          Icon="{ui:SymbolIcon DocumentAdd24}"
+                                          LargeIcon="{ui:SymbolIcon DocumentAdd24,
+                                                                    FontSize=32}"
+                                          MediumIcon="{ui:SymbolIcon DocumentAdd24}"
+                                          ShowInSimplified="True" SizeDefinition="Large" ToolTip="Click to create new document, or click arrow for options">
+                        <ui:RibbonMenuItem Header="New Document" Icon="{ui:SymbolIcon Document24}" />
+                        <ui:RibbonMenuItem Header="New Spreadsheet" Icon="{ui:SymbolIcon Table24}" />
+                        <ui:RibbonMenuItem Header="New Presentation" Icon="{ui:SymbolIcon Presenter24}" />
+                        <Separator />
+                        <ui:RibbonMenuItem Header="From Template..." Icon="{ui:SymbolIcon Document24}" />
+                    </ui:RibbonSplitButton>
 
                 </ui:RibbonGroupBox>
+
+                <!--  More Actions Group  -->
+                <ui:RibbonGroupBox Header="Tools" IsSeparatorVisible="False">
+                    <ui:RibbonButton Header="Refresh"
+                                     Icon="{ui:SymbolIcon ArrowSync24}"
+                                     LargeIcon="{ui:SymbolIcon ArrowSync24,
+                                                               FontSize=32}"
+                                     MediumIcon="{ui:SymbolIcon ArrowSync24}"
+                                     ShowInSimplified="True" SizeDefinition="Large" />
+
+                    <ui:RibbonButton Header="Print"
+                                     Icon="{ui:SymbolIcon Print24}"
+                                     LargeIcon="{ui:SymbolIcon Print24,
+                                                               FontSize=32}"
+                                     MediumIcon="{ui:SymbolIcon Print24}"
+                                     ShowInSimplified="False" SizeDefinition="Middle" />
+                </ui:RibbonGroupBox>
+
+                <!--  Appearance Colors Demo  -->
+                <ui:RibbonGroupBox Header="Colors" IsSeparatorVisible="True">
+                    <ui:RibbonButton Appearance="Success" Header="Success"
+                                     Icon="{ui:SymbolIcon Checkmark24}"
+                                     LargeIcon="{ui:SymbolIcon Checkmark24,
+                                                               FontSize=32}"
+                                     SizeDefinition="Large" />
+                    <ui:RibbonButton Appearance="Danger" Header="Danger"
+                                     Icon="{ui:SymbolIcon ErrorCircle24}"
+                                     LargeIcon="{ui:SymbolIcon ErrorCircle24,
+                                                               FontSize=32}"
+                                     SizeDefinition="Large" />
+                    <ui:RibbonButton Appearance="Info" Header="Info"
+                                     Icon="{ui:SymbolIcon Info24}"
+                                     LargeIcon="{ui:SymbolIcon Info24,
+                                                               FontSize=32}"
+                                     SizeDefinition="Large" />
+                    <ui:RibbonButton Appearance="Caution" Header="Caution"
+                                     Icon="{ui:SymbolIcon Warning24}"
+                                     LargeIcon="{ui:SymbolIcon Warning24,
+                                                               FontSize=32}"
+                                     SizeDefinition="Large" />
+                </ui:RibbonGroupBox>
+
+                <!--  Extended Colors Demo  -->
+                <ui:RibbonGroupBox Header="Extended" IsSeparatorVisible="True">
+                    <ui:RibbonButton Appearance="Purple" Header="Purple"
+                                     Icon="{ui:SymbolIcon Heart24}"
+                                     SizeDefinition="Middle" />
+                    <ui:RibbonButton Appearance="Teal" Header="Teal"
+                                     Icon="{ui:SymbolIcon Patch24}"
+                                     SizeDefinition="Middle" />
+                    <ui:RibbonButton Appearance="Pink" Header="Pink"
+                                     Icon="{ui:SymbolIcon Star24}"
+                                     SizeDefinition="Middle" />
+                    <ui:RibbonButton Appearance="Indigo" Header="Indigo"
+                                     Icon="{ui:SymbolIcon Flash24}"
+                                     SizeDefinition="Middle" />
+                </ui:RibbonGroupBox>
+
+                <!--  Right Column (ColumnIndex=1)  -->
+                <ui:RibbonGroupBox ui:RibbonProperties.ColumnIndex="1" Header="Settings" IsSeparatorVisible="False">
+                    <ui:RibbonButton Header="Options"
+                                     Icon="{ui:SymbolIcon Settings28}"
+                                     LargeIcon="{ui:SymbolIcon Settings28,
+                                                               FontSize='32'}"
+                                     MediumIcon="{ui:SymbolIcon Settings28}"
+                                     SizeDefinition="Large" />
+                </ui:RibbonGroupBox>
+
+                <ui:RibbonGroupBox ui:RibbonProperties.ColumnIndex="1" Header="Help" IsSeparatorVisible="False">
+                    <ui:RibbonButton Header="Support"
+                                     Icon="{ui:SymbolIcon Question28}"
+                                     LargeIcon="{ui:SymbolIcon Question28,
+                                                               FontSize='32'}"
+                                     MediumIcon="{ui:SymbolIcon Question28}"
+                                     SizeDefinition="Large" />
+                </ui:RibbonGroupBox>
             </ui:RibbonTabItem>
-
-
+            <ui:RibbonTabItem Header="View">
+                <ui:RibbonGroupBox Header="Display" IsSeparatorVisible="False">
+                    <ui:RibbonButton Header="Zoom"
+                                     Icon="{ui:SymbolIcon ZoomIn24}"
+                                     LargeIcon="{ui:SymbolIcon ZoomIn24,
+                                                               FontSize='32'}"
+                                     MediumIcon="{ui:SymbolIcon ZoomIn24}"
+                                     ShowInSimplified="True" SizeDefinition="Large" />
+                </ui:RibbonGroupBox>
+            </ui:RibbonTabItem>
         </ui:Ribbon>
     </Page.Resources>
 

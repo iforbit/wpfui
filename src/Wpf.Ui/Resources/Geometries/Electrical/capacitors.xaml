@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Capacitors Symbols - Auto-generated from draw.io stencils -->
+
+    <!-- Capacitor 1 (100x60) -->
+    <Geometry x:Key="Capacitors.Capacitor_1">
+        M0,30 L45,30 M55,0 L55,60 M45,0 L45,60 M55,30 L100,30
+    </Geometry>
+
+    <!-- Capacitor 2 (100x60) -->
+    <Geometry x:Key="Capacitors.Capacitor_2">
+        M0,30 L45,30 M45,0 L45,60 M55,30 L100,30 M65,0 A50,50 0 0 0 65,60
+    </Geometry>
+
+    <!-- Capacitor 3 (100x60) -->
+    <Geometry x:Key="Capacitors.Capacitor_3">
+        M0,30 L45,30 M45,0 L45,60 M55,30 L100,30 M65,0 A50,50 0 0 0 65,60 M30,5 L30,15 M25,10 L35,10
+    </Geometry>
+
+    <!-- Capacitor 4 (100x60) -->
+    <Geometry x:Key="Capacitors.Capacitor_4">
+        M0,30 L42,30 M58,30 L100,30 M42,0 L45.0,0 L45.0,60.0 L42,60.0 Z M55,0 L58.0,0 L58.0,60.0 L55,60.0 Z
+    </Geometry>
+
+    <!-- Capacitor 5 (100x60) -->
+    <Geometry x:Key="Capacitors.Capacitor_5">
+        M0,30 L45,30 M55,0 L55,60 M45,0 L45,60 M55,30 L100,30 M30,5 L30,15 M25,10 L35,10
+    </Geometry>
+
+    <!-- Capacitor 6 (100x60) -->
+    <Geometry x:Key="Capacitors.Capacitor_6">
+        M0,30 L45,30 M55,0 L55,60 M45,0 L45,60 M55,30 L100,30 M30,5 L30,15 M25,10 L35,10 M45,5 L50,0 M45,10 L55,0 M45,15 L55,5 M45,20 L55,10 M45,25 L55,15 M45,30 L55,20 M45,35 L55,25 M45,40 L55,30 M45,45 L55,35 M45,50 L55,40 M45,55 L55,45 M45,60 L55,50 M50,60 L55,55
+    </Geometry>
+
+    <!-- Differential Capacitor (100x80) -->
+    <Geometry x:Key="Capacitors.Differential_Capacitor">
+        M0,50 L45,50 M55,20 L55,80 M45,20 L45,80 M55,50 L100,50 M30,80 L70,20 M57,30 L70,20 L66.5,35.5 M50,0 L50,80
+    </Geometry>
+
+    <!-- Feed Through Capacitor (90x100) -->
+    <Geometry x:Key="Capacitors.Feed_Through_Capacitor">
+        M0,50 L10,50 M50,20 L50,80 M40,20 L40,80 M50,50 L60,50 M15,50 L25,50 M30,50 L40,50 M65,50 L75,50 M80,50 L90,50 M45,0 L45,100
+    </Geometry>
+
+    <!-- Ganged Capacitor (100x130) -->
+    <Geometry x:Key="Capacitors.Ganged_Capacitor">
+        M0,30 L45,30 M55,0 L55,60 M45,0 L45,60 M55,30 L100,30 M55,70 L55,130 M55,100 L100,100 M0,100 L45,100 M45,70 L45,130 M57,10 L70,0 L66.5,15.5 M57,80 L70,70 L66.5,85.5 M30,80 L30,90 M30,100 L30,110 M30,70 L30,60 L70,0.6 M30,120 L30,130 L70,70
+    </Geometry>
+
+    <!-- Multiple Capacitor (100x130) -->
+    <Geometry x:Key="Capacitors.Multiple_Capacitor">
+        M0,65 L45,65 M55,0 L55,60 M45,0 L45,130 M55,30 L100,30 M55,70 L55,130 M55,100 L100,100
+    </Geometry>
+
+    <!-- Multiple Electrolytic Capacitor Comm Neg (100x130) -->
+    <Geometry x:Key="Capacitors.Multiple_Electrolytic_Capacitor_Comm_Neg">
+        M0,65 L45,65 M55,0 L55,60 M45,0 L45,130 M55,30 L100,30 M55,70 L55,130 M55,100 L100,100 M25,10 L35,10 M75,10 L65,10 M70,5 L70,15 M75,120 L65,120 M70,115 L70,125
+    </Geometry>
+
+    <!-- Multiple Electrolytic Capacitor Comm Pos (100x130) -->
+    <Geometry x:Key="Capacitors.Multiple_Electrolytic_Capacitor_Comm_Pos">
+        M0,65 L45,65 M55,0 L55,60 M45,0 L45,130 M55,30 L100,30 M55,70 L55,130 M55,100 L100,100 M30,5 L30,15 M25,10 L35,10 M75,120 L65,120 M75,10 L65,10
+    </Geometry>
+
+    <!-- Trimmer Capacitor 1 (100x65.5) -->
+    <Geometry x:Key="Capacitors.Trimmer_Capacitor_1">
+        M0,35.5 L45,35.5 M55,5.5 L55,65.5 M45,5.5 L45,65.5 M55,35.5 L100,35.5 M30,65.5 L70,5.5 M62.2,0 L78.2,10.5
+    </Geometry>
+
+    <!-- Trimmer Capacitor 2 (100x65.5) -->
+    <Geometry x:Key="Capacitors.Trimmer_Capacitor_2">
+        M0,35.5 L45,35.5 M45,5.5 L45,65.5 M55,35.5 L100,35.5 M65,5.5 A50,50 0 0 0 65,65.5 M30,65.5 L70,5.5 M62.2,0 L78.2,10.5
+    </Geometry>
+
+    <!-- Variable Capacitor 1 (100x60) -->
+    <Geometry x:Key="Capacitors.Variable_Capacitor_1">
+        M0,30 L45,30 M55,0 L55,60 M45,0 L45,60 M55,30 L100,30 M30,60 L70,0 M57,10 L70,0 L66.5,15.5
+    </Geometry>
+
+    <!-- Variable Capacitor 2 (100x60) -->
+    <Geometry x:Key="Capacitors.Variable_Capacitor_2">
+        M0,30 L45,30 M45,0 L45,60 M55,30 L100,30 M65,0 A50,50 0 0 0 65,60 M30,60 L70,0 M57,10 L70,0 L66.5,15.5
+    </Geometry>
+
+</ResourceDictionary>

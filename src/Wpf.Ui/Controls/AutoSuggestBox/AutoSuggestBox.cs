@@ -317,9 +317,12 @@ public class AutoSuggestBox : System.Windows.Controls.ItemsControl, IIconControl
 
         if (_isHwndHookSubscribed.HasValue && !_isHwndHookSubscribed.Value)
         {
-            var hwnd = (HwndSource)PresentationSource.FromVisual(this)!;
-            hwnd.AddHook(Hook);
-            _isHwndHookSubscribed = true;
+            var presentationSource = PresentationSource.FromVisual(this);
+            if (presentationSource is HwndSource hwnd)
+            {
+                hwnd.AddHook(Hook);
+                _isHwndHookSubscribed = true;
+            }
         }
     }
 

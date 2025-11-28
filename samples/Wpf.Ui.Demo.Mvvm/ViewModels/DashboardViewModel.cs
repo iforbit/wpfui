@@ -15,30 +15,39 @@ namespace Wpf.Ui.Demo.Mvvm.ViewModels;
 
 public partial class DashboardViewModel : ViewModel, IDisposable
 {
+    // Readonly fields first
     private readonly IRenderThreadService? _renderThread;
-    private DXGraph? _graphControl;
     private readonly SharedMemoryReader _reader = new();
     private readonly CancellationTokenSource _cts = new();
     private readonly Dictionary<string, RealTimeSeries<VertexPosition>> _seriesMap = new();
     private readonly Dictionary<string, (double X, float Y)> _lastValueMap = new();
     private readonly Dictionary<string, int> _channelIndexMap = new();
+    private readonly DateTime _lastLoopUpdate = DateTime.Now;
+    private readonly DateTime _lastLoopRateUpdate = DateTime.Now;
 
-    private readonly string[] _channels = ["CH1", "CH2"];
-
+    // Non-readonly fields
+    private DXGraph? _graphControl;
     private int _receiveCount = 0;
     private int _loopCount = 0;
     private DateTime _lastRateUpdate = DateTime.Now;
-    private readonly DateTime _lastLoopUpdate = DateTime.Now;
+    private int _lastChannelCount = 0;
 
     [ObservableProperty]
     private string _statusMessage = "그래프 대기 중";
     [ObservableProperty]
     private string _receiveRateText = "Signal Hz: -";
+
+    // Command for RibbonSplitButton demo
+    [RelayCommand]
+    private void NewDocument()
+    {
+        StatusMessage = "📄 New Document created!";
+        Debug.WriteLine("RibbonSplitButton clicked - New Document command executed");
+    }
+
     public DashboardViewModel(IRenderThreadService renderThread)
     {
         _renderThread = renderThread;
-        for (int i = 0; i < _channels.Length; i++)
-            _channelIndexMap[_channels[i]] = i;
         StartPolling();
     }
 
@@ -48,35 +57,79 @@ public partial class DashboardViewModel : ViewModel, IDisposable
         _seriesMap.Clear();
         _graphControl.AttachRenderThread(_renderThread!);
 
-        foreach (string ch in _channels)
-        {
-            var series = new RealTimeSeries<VertexPosition>
-            {
-                Name = ch,
-                GraphColor = ch switch
-                {
-                    "CH1" => new(1f, 0f, 0f, 1f),
-                    "CH2" => new(0f, 1f, 0f, 1f),
-                    _ => new(1f, 1f, 1f, 1f)
-                }
-            };
-            series.Initialize();
-            _seriesMap[ch] = series;
-            _graphControl.AddSeries(series);
-        }
-
         _graphControl.SetAutoScrollEnabled(true);
-        _graphControl.SetYScaleLock(false);
+
+        // Lock Y scale to prevent jittering from auto-scaling
+        // Assuming typical amplitude is around -5 to +5
+        _graphControl.SetYScaleLock(true);
+
+        // Set initial visible range to show more data points
+        // Writer sends 5000 points per update, so show ~10000 range
+        _graphControl.SetVisibleRange(0, 10000);
     }
 
-    private readonly DateTime _lastLoopRateUpdate = DateTime.Now;
+    private void UpdateChannels(int channelCount)
+    {
+        if (_graphControl == null || channelCount == _lastChannelCount)
+            return;
+
+        // Clear data for removed channels (DXGraph doesn't have RemoveSeries)
+        if (channelCount < _lastChannelCount)
+        {
+            for (int i = channelCount; i < _lastChannelCount; i++)
+            {
+                string name = $"CH{i + 1}";
+                if (_seriesMap.TryGetValue(name, out RealTimeSeries<VertexPosition>? series))
+                {
+                    series.Clear();
+                }
+
+                _ = _seriesMap.Remove(name);
+                _ = _channelIndexMap.Remove(name);
+                _ = _lastValueMap.Remove(name);
+            }
+        }
+        // Add new channels
+        else if (channelCount > _lastChannelCount)
+        {
+            for (int i = _lastChannelCount; i < channelCount; i++)
+            {
+                string name = $"CH{i + 1}";
+                var series = new RealTimeSeries<VertexPosition>(capacity: 100_000)
+                {
+                    Name = name,
+                    GraphColor = i switch
+                    {
+                        0 => new(1f, 0f, 0f, 1f),  // Red
+                        1 => new(0f, 1f, 0f, 1f),  // Green
+                        2 => new(0f, 0f, 1f, 1f),  // Blue
+                        3 => new(1f, 1f, 0f, 1f),  // Yellow
+                        4 => new(1f, 0f, 1f, 1f),  // Magenta
+                        5 => new(0f, 1f, 1f, 1f),  // Cyan
+                        _ => new(1f, 1f, 1f, 1f)   // White
+                    }
+                };
+                series.Initialize();
+                _seriesMap[name] = series;
+                _channelIndexMap[name] = i;
+                _graphControl.AddSeries(series);
+            }
+        }
+
+        _lastChannelCount = channelCount;
+    }
+
     private async void StartPolling()
     {
         StatusMessage = "⏳ SharedMemory 연결 중...";
-        const int intervalMs = 10;
+        const int intervalMs = 16; // ~60 FPS to match Writer's UpdateRate
 
         var stopwatch = Stopwatch.StartNew();
         int _rawReceiveCount = 0;
+
+        // async 메서드에서는 stackalloc 사용 불가 - 배열 사용
+        var pointBuffer = new (double X, float Y)[50000];
+        var vertexBuffer = new VertexPosition[50000];
 
         try
         {
@@ -85,39 +138,33 @@ public partial class DashboardViewModel : ViewModel, IDisposable
                 long loopStart = stopwatch.ElapsedMilliseconds;
                 _loopCount++;
 
-                if (_seriesMap.Count == 0)
-                {
-                    await Task.Delay(100);
-                    continue;
-                }
-
                 (int channelCount, int pointsPerChannel) = _reader.ReadHeader();
-                if (channelCount <= 0 || pointsPerChannel <= 0 || channelCount > 16 || pointsPerChannel > 1024)
+                if (channelCount <= 0 || pointsPerChannel <= 0 || channelCount > 10 || pointsPerChannel > 50000)
                 {
                     await Task.Delay(10);
                     continue;
                 }
 
-                Span<(double X, float Y)> pointBuffer = stackalloc (double X, float Y)[pointsPerChannel];
+                // Update channels dynamically based on channelCount from SharedMemory
+                UpdateChannels(channelCount);
 
                 for (int ch = 0; ch < channelCount; ch++)
                 {
-                    if (ch >= _channels.Length)
-                        continue;
-
-                    string name = _channels[ch];
+                    string name = $"CH{ch + 1}";
                     if (!_seriesMap.TryGetValue(name, out RealTimeSeries<VertexPosition>? series))
                         continue;
 
-                    _reader.ReadChannel(ch, pointsPerChannel, pointBuffer);
+                    // 필요한 크기만큼 Slice해서 사용
+                    Span<(double X, float Y)> currentPointBuffer = pointBuffer.AsSpan(0, pointsPerChannel);
+                    _reader.ReadChannel(ch, pointsPerChannel, currentPointBuffer);
                     _rawReceiveCount += pointsPerChannel;
 
-                    Span<VertexPosition> vertexSpan = stackalloc VertexPosition[pointsPerChannel];
+                    Span<VertexPosition> vertexSpan = vertexBuffer.AsSpan(0, pointsPerChannel);
                     int count = 0;
 
                     for (int i = 0; i < pointsPerChannel; i++)
                     {
-                        (double X, float Y) p = pointBuffer[i];
+                        (double X, float Y) p = currentPointBuffer[i];
                         bool hasData = series.TotalVertexCount > 0;
                         float lastX = series.LastX;
 
@@ -168,9 +215,19 @@ public partial class DashboardViewModel : ViewModel, IDisposable
 
     public void Dispose()
     {
-        _graphControl = null;
-        _cts.Cancel();
-        _reader.Dispose();
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            _cts.Cancel();
+            _cts.Dispose();
+            _reader.Dispose();
+            _graphControl = null;
+        }
     }
 }
 

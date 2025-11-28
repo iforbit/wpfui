@@ -1,0 +1,172 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:Wpf.Ui.Controls">
+
+    <!-- MenuBarItem TopLevelHeader Template (with submenu) -->
+    <ControlTemplate x:Key="MenuBarItemTopLevelHeaderTemplate" TargetType="{x:Type controls:MenuBarItem}">
+        <Grid>
+            <Border
+                x:Name="Border"
+                Margin="2,4"
+                Padding="8,4"
+                Background="Transparent"
+                CornerRadius="4">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Icon (optional for top-level) -->
+                    <ContentPresenter
+                        x:Name="IconPresenter"
+                        Grid.Column="0"
+                        Width="{TemplateBinding IconSize}"
+                        Height="{TemplateBinding IconSize}"
+                        Margin="0,0,6,0"
+                        VerticalAlignment="Center"
+                        Content="{TemplateBinding Icon}"
+                        Visibility="Collapsed" />
+
+                    <!-- Header -->
+                    <ContentPresenter
+                        x:Name="HeaderPresenter"
+                        Grid.Column="1"
+                        VerticalAlignment="Center"
+                        ContentSource="Header"
+                        RecognizesAccessKey="True" />
+                </Grid>
+            </Border>
+
+            <!-- Submenu Popup -->
+            <Popup
+                x:Name="PART_Popup"
+                AllowsTransparency="True"
+                Focusable="False"
+                HorizontalOffset="-8"
+                IsOpen="{Binding IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}"
+                Placement="Bottom"
+                PlacementTarget="{Binding ElementName=Border}"
+                PopupAnimation="Fade"
+                VerticalOffset="1">
+                <Border
+                    Margin="12"
+                    Background="{DynamicResource FlyoutBackground}"
+                    BorderBrush="{DynamicResource FlyoutBorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="8">
+                    <Border.Effect>
+                        <DropShadowEffect
+                            BlurRadius="20"
+                            Direction="270"
+                            Opacity="0.25"
+                            ShadowDepth="6"
+                            Color="#000000" />
+                    </Border.Effect>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <controls:PassiveScrollViewer
+                            MaxHeight="400"
+                            CanContentScroll="True"
+                            HorizontalScrollBarVisibility="Disabled"
+                            Style="{DynamicResource UiScrollViewer}"
+                            VerticalScrollBarVisibility="Auto">
+                            <Grid Grid.IsSharedSizeScope="True">
+                                <StackPanel
+                                    Margin="4"
+                                    IsItemsHost="True"
+                                    KeyboardNavigation.DirectionalNavigation="Cycle" />
+                            </Grid>
+                        </controls:PassiveScrollViewer>
+                    </Grid>
+                </Border>
+            </Popup>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="Icon" Value="{x:Null}">
+                <Setter TargetName="IconPresenter" Property="Visibility" Value="Collapsed" />
+            </Trigger>
+            <DataTrigger Binding="{Binding Icon, RelativeSource={RelativeSource Self}, Converter={x:Static controls:ObjectToNotNullConverter.Instance}}" Value="True">
+                <Setter TargetName="IconPresenter" Property="Visibility" Value="Visible" />
+            </DataTrigger>
+            <Trigger Property="IsHighlighted" Value="True">
+                <Setter TargetName="Border" Property="Background" Value="{DynamicResource MenuBarItemBackgroundSelected}" />
+            </Trigger>
+            <Trigger Property="IsSubmenuOpen" Value="True">
+                <Setter TargetName="Border" Property="Background" Value="{DynamicResource MenuBarItemBackgroundSelected}" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="{DynamicResource TextFillColorDisabledBrush}" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <!-- MenuBarItem TopLevelItem Template (without submenu) -->
+    <ControlTemplate x:Key="MenuBarItemTopLevelItemTemplate" TargetType="{x:Type controls:MenuBarItem}">
+        <Border
+            x:Name="Border"
+            Margin="2,4"
+            Padding="8,4"
+            Background="Transparent"
+            CornerRadius="4">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Icon -->
+                <ContentPresenter
+                    x:Name="IconPresenter"
+                    Grid.Column="0"
+                    Width="{TemplateBinding IconSize}"
+                    Height="{TemplateBinding IconSize}"
+                    Margin="0,0,6,0"
+                    VerticalAlignment="Center"
+                    Content="{TemplateBinding Icon}"
+                    Visibility="Collapsed" />
+
+                <!-- Header -->
+                <ContentPresenter
+                    Grid.Column="1"
+                    VerticalAlignment="Center"
+                    ContentSource="Header"
+                    RecognizesAccessKey="True" />
+            </Grid>
+        </Border>
+        <ControlTemplate.Triggers>
+            <DataTrigger Binding="{Binding Icon, RelativeSource={RelativeSource Self}, Converter={x:Static controls:ObjectToNotNullConverter.Instance}}" Value="True">
+                <Setter TargetName="IconPresenter" Property="Visibility" Value="Visible" />
+            </DataTrigger>
+            <Trigger Property="IsHighlighted" Value="True">
+                <Setter TargetName="Border" Property="Background" Value="{DynamicResource MenuBarItemBackgroundSelected}" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="{DynamicResource TextFillColorDisabledBrush}" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <!-- MenuBarItem Style -->
+    <Style TargetType="{x:Type controls:MenuBarItem}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="IconSize" Value="16" />
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="Template" Value="{StaticResource MenuBarItemTopLevelHeaderTemplate}" />
+        <Style.Triggers>
+            <Trigger Property="Role" Value="TopLevelHeader">
+                <Setter Property="Template" Value="{StaticResource MenuBarItemTopLevelHeaderTemplate}" />
+            </Trigger>
+            <Trigger Property="Role" Value="TopLevelItem">
+                <Setter Property="Template" Value="{StaticResource MenuBarItemTopLevelItemTemplate}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+</ResourceDictionary>

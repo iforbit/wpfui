@@ -1,0 +1,37 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!--
+        Electrical Symbols from draw.io v28.2.5
+        Auto-generated XAML Geometries
+        Total: 527 symbols across 24 categories
+    -->
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Electrical/abstract.xaml"/>
+        <ResourceDictionary Source="Electrical/capacitors.xaml"/>
+        <ResourceDictionary Source="Electrical/diodes.xaml"/>
+        <ResourceDictionary Source="Electrical/electro-mechanical.xaml"/>
+        <ResourceDictionary Source="Electrical/iec417.xaml"/>
+        <ResourceDictionary Source="Electrical/iec_logic_gates.xaml"/>
+        <ResourceDictionary Source="Electrical/inductors.xaml"/>
+        <ResourceDictionary Source="Electrical/instruments.xaml"/>
+        <ResourceDictionary Source="Electrical/logic_gates.xaml"/>
+        <ResourceDictionary Source="Electrical/miscellaneous.xaml"/>
+        <ResourceDictionary Source="Electrical/mosfets1.xaml"/>
+        <ResourceDictionary Source="Electrical/mosfets2.xaml"/>
+        <ResourceDictionary Source="Electrical/op_amps.xaml"/>
+        <ResourceDictionary Source="Electrical/opto_electronics.xaml"/>
+        <ResourceDictionary Source="Electrical/plc_ladder.xaml"/>
+        <ResourceDictionary Source="Electrical/power_semiconductors.xaml"/>
+        <ResourceDictionary Source="Electrical/radio.xaml"/>
+        <ResourceDictionary Source="Electrical/resistors.xaml"/>
+        <ResourceDictionary Source="Electrical/rot_mech.xaml"/>
+        <ResourceDictionary Source="Electrical/signal_sources.xaml"/>
+        <ResourceDictionary Source="Electrical/thermionic_devices.xaml"/>
+        <ResourceDictionary Source="Electrical/transistors.xaml"/>
+        <ResourceDictionary Source="Electrical/transmission.xaml"/>
+        <ResourceDictionary Source="Electrical/waveforms.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+</ResourceDictionary>

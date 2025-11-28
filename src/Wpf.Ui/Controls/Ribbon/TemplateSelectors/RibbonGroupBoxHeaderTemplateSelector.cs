@@ -5,7 +5,7 @@
 
 using System.Windows.Controls;
 
-namespace Wpf.Ui.Controls.TemplateSelectors;
+namespace Wpf.Ui.Controls;
 
 /// <summary>
 /// <see cref="DataTemplateSelector"/> for the header of <see cref="RibbonGroupBox"/>.

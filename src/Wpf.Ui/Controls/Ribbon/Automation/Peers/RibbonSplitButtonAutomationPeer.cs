@@ -1,4 +1,4 @@
-// This Source Code Form is subject to the terms of the MIT License.
+﻿// This Source Code Form is subject to the terms of the MIT License.
 // If a copy of the MIT was not distributed with this file, You can obtain one at https://opensource.org/licenses/MIT.
 // Copyright (C) Leszek Pomianowski and WPF UI Contributors.
 // All Rights Reserved.
@@ -11,7 +11,7 @@ using System.Windows.Threading;
 using Wpf.Ui.Extensions;
 using Wpf.Ui.Internal;
 
-namespace Wpf.Ui.Controls.Automation.Peers;
+namespace Wpf.Ui.Controls;
 
 /// <summary>
 /// Automation peer for <see cref="SplitButton"/>.

@@ -1,0 +1,237 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="clr-namespace:Wpf.Ui.Controls">
+
+    <!-- Converters -->
+    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+
+    <!-- Classic Template: Label above TextBox (Vertical) -->
+    <ControlTemplate x:Key="controls.Ribbon.Templates.RibbonTextBox.Classic" TargetType="{x:Type controls:RibbonTextBox}">
+        <StackPanel Orientation="Vertical"
+                    HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                    VerticalAlignment="{TemplateBinding VerticalAlignment}">
+            <!-- Header Label -->
+            <ContentControl x:Name="PART_HeaderContentHost"
+                            Margin="2,0,2,2"
+                            Content="{TemplateBinding Header}"
+                            ContentTemplate="{TemplateBinding HeaderTemplate}"
+                            ContentTemplateSelector="{TemplateBinding HeaderTemplateSelector}"
+                            Focusable="False"
+                            HorizontalAlignment="Left" />
+
+            <!-- TextBox -->
+            <Border x:Name="ContentBorder"
+                    MinWidth="{TemplateBinding TextBoxWidth}"
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="4">
+                <Grid HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <ContentPresenter x:Name="PART_LeftContentPresenter"
+                                      Grid.Column="0"
+                                      Margin="0"
+                                      VerticalAlignment="Center"
+                                      Content="{TemplateBinding Icon}"
+                                      TextElement.Foreground="{DynamicResource TextControlPlaceholderForeground}" />
+                    <ScrollViewer x:Name="PART_ContentHost"
+                                  Grid.Column="1"
+                                  Margin="0"
+                                  VerticalAlignment="Stretch"
+                                  CanContentScroll="{TemplateBinding ScrollViewer.CanContentScroll}"
+                                  HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
+                                  IsDeferredScrollingEnabled="{TemplateBinding ScrollViewer.IsDeferredScrollingEnabled}"
+                                  IsTabStop="{TemplateBinding ScrollViewer.IsTabStop}"
+                                  TextElement.Foreground="{TemplateBinding Foreground}"
+                                  VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}" />
+                    <ContentPresenter x:Name="PART_RightContentPresenter"
+                                      Grid.Column="2"
+                                      Margin="0"
+                                      VerticalAlignment="Center"
+                                      TextElement.Foreground="{DynamicResource TextControlPlaceholderForeground}" />
+                    <TextBlock x:Name="PlaceholderTextBox"
+                               Grid.Column="1"
+                               Margin="0"
+                               Padding="{TemplateBinding Padding}"
+                               VerticalAlignment="Center"
+                               Foreground="{DynamicResource TextControlPlaceholderForeground}"
+                               Text="{TemplateBinding PlaceholderText}">
+                        <TextBlock.Visibility>
+                            <Binding Mode="OneWay"
+                                     Path="CurrentPlaceholderEnabled"
+                                     RelativeSource="{RelativeSource TemplatedParent}">
+                                <Binding.Converter>
+                                    <BooleanToVisibilityConverter />
+                                </Binding.Converter>
+                            </Binding>
+                        </TextBlock.Visibility>
+                    </TextBlock>
+                    <controls:Button x:Name="ClearButton"
+                                     Grid.Column="2"
+                                     Width="28"
+                                     Height="26"
+                                     Margin="0,0,4,0"
+                                     Padding="6"
+                                     VerticalAlignment="Center"
+                                     Appearance="Secondary"
+                                     BorderBrush="Transparent"
+                                     Command="{Binding Path=TemplateButtonCommand, RelativeSource={RelativeSource TemplatedParent}}"
+                                     Foreground="{DynamicResource TextControlButtonForeground}"
+                                     IsTabStop="False"
+                                     Visibility="{Binding Path=ShowClearButton, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <controls:Button.Icon>
+                            <controls:SymbolIcon Symbol="Dismiss24" />
+                        </controls:Button.Icon>
+                    </controls:Button>
+                </Grid>
+            </Border>
+        </StackPanel>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter TargetName="ContentBorder" Property="Background" Value="{DynamicResource ControlFillColorDisabledBrush}" />
+                <Setter TargetName="ContentBorder" Property="BorderBrush" Value="{DynamicResource ControlStrokeColorDefaultBrush}" />
+                <Setter TargetName="PART_ContentHost" Property="Foreground" Value="{DynamicResource TextFillColorDisabledBrush}" />
+                <Setter TargetName="PlaceholderTextBox" Property="Foreground" Value="{DynamicResource TextFillColorDisabledBrush}" />
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="ContentBorder" Property="BorderBrush" Value="{DynamicResource ControlElevationBorderBrush}" />
+            </Trigger>
+            <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                <Setter TargetName="ContentBorder" Property="Background" Value="{DynamicResource ControlFillColorInputActiveBrush}" />
+                <Setter TargetName="ContentBorder" Property="BorderBrush" Value="{DynamicResource ControlStrongStrokeColorDefaultBrush}" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <!-- Simplified Template: Label left, TextBox right (Horizontal) -->
+    <ControlTemplate x:Key="controls.Ribbon.Templates.RibbonTextBox.Simplified" TargetType="{x:Type controls:RibbonTextBox}">
+        <Grid HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+              VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Header Label (Optional) -->
+            <ContentControl x:Name="PART_HeaderContentHost"
+                            Grid.Column="0"
+                            Margin="0,0,4,0"
+                            VerticalAlignment="Center"
+                            Content="{TemplateBinding Header}"
+                            ContentTemplate="{TemplateBinding HeaderTemplate}"
+                            ContentTemplateSelector="{TemplateBinding HeaderTemplateSelector}"
+                            Focusable="False" />
+
+            <!-- TextBox -->
+            <Border x:Name="ContentBorder"
+                    Grid.Column="1"
+                    MinWidth="{TemplateBinding SimplifiedTextBoxWidth}"
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="4">
+                <Grid HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <ContentPresenter x:Name="PART_LeftContentPresenter"
+                                      Grid.Column="0"
+                                      Margin="0"
+                                      VerticalAlignment="Center"
+                                      Content="{TemplateBinding Icon}"
+                                      TextElement.Foreground="{DynamicResource TextControlPlaceholderForeground}" />
+                    <ScrollViewer x:Name="PART_ContentHost"
+                                  Grid.Column="1"
+                                  Margin="0"
+                                  VerticalAlignment="Stretch"
+                                  CanContentScroll="{TemplateBinding ScrollViewer.CanContentScroll}"
+                                  HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
+                                  IsDeferredScrollingEnabled="{TemplateBinding ScrollViewer.IsDeferredScrollingEnabled}"
+                                  IsTabStop="{TemplateBinding ScrollViewer.IsTabStop}"
+                                  TextElement.Foreground="{TemplateBinding Foreground}"
+                                  VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}" />
+                    <ContentPresenter x:Name="PART_RightContentPresenter"
+                                      Grid.Column="2"
+                                      Margin="0"
+                                      VerticalAlignment="Center"
+                                      TextElement.Foreground="{DynamicResource TextControlPlaceholderForeground}" />
+                    <TextBlock x:Name="PlaceholderTextBox"
+                               Grid.Column="1"
+                               Margin="0"
+                               Padding="{TemplateBinding Padding}"
+                               VerticalAlignment="Center"
+                               Foreground="{DynamicResource TextControlPlaceholderForeground}"
+                               Text="{TemplateBinding PlaceholderText}">
+                        <TextBlock.Visibility>
+                            <Binding Mode="OneWay"
+                                     Path="CurrentPlaceholderEnabled"
+                                     RelativeSource="{RelativeSource TemplatedParent}">
+                                <Binding.Converter>
+                                    <BooleanToVisibilityConverter />
+                                </Binding.Converter>
+                            </Binding>
+                        </TextBlock.Visibility>
+                    </TextBlock>
+                    <controls:Button x:Name="ClearButton"
+                                     Grid.Column="2"
+                                     Width="28"
+                                     Height="26"
+                                     Margin="0,0,4,0"
+                                     Padding="6"
+                                     VerticalAlignment="Center"
+                                     Appearance="Secondary"
+                                     BorderBrush="Transparent"
+                                     Command="{Binding Path=TemplateButtonCommand, RelativeSource={RelativeSource TemplatedParent}}"
+                                     Foreground="{DynamicResource TextControlButtonForeground}"
+                                     IsTabStop="False"
+                                     Visibility="{Binding Path=ShowClearButton, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <controls:Button.Icon>
+                            <controls:SymbolIcon Symbol="Dismiss24" />
+                        </controls:Button.Icon>
+                    </controls:Button>
+                </Grid>
+            </Border>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter TargetName="ContentBorder" Property="Background" Value="{DynamicResource ControlFillColorDisabledBrush}" />
+                <Setter TargetName="ContentBorder" Property="BorderBrush" Value="{DynamicResource ControlStrokeColorDefaultBrush}" />
+                <Setter TargetName="PART_ContentHost" Property="Foreground" Value="{DynamicResource TextFillColorDisabledBrush}" />
+                <Setter TargetName="PlaceholderTextBox" Property="Foreground" Value="{DynamicResource TextFillColorDisabledBrush}" />
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="ContentBorder" Property="BorderBrush" Value="{DynamicResource ControlElevationBorderBrush}" />
+            </Trigger>
+            <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                <Setter TargetName="ContentBorder" Property="Background" Value="{DynamicResource ControlFillColorInputActiveBrush}" />
+                <Setter TargetName="ContentBorder" Property="BorderBrush" Value="{DynamicResource ControlStrongStrokeColorDefaultBrush}" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <!-- Default Style with Template Switching -->
+    <Style TargetType="{x:Type controls:RibbonTextBox}">
+        <Setter Property="Background" Value="{DynamicResource ControlFillColorDefaultBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource ControlStrokeColorDefaultBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Padding" Value="8,4" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Template" Value="{StaticResource controls.Ribbon.Templates.RibbonTextBox.Classic}" />
+        <Style.Triggers>
+            <!-- Switch to Simplified template when IsSimplified = True -->
+            <Trigger Property="IsSimplified" Value="True">
+                <Setter Property="Template" Value="{StaticResource controls.Ribbon.Templates.RibbonTextBox.Simplified}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+</ResourceDictionary>

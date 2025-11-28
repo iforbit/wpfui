@@ -3,7 +3,6 @@
 // Copyright (C) Leszek Pomianowski and WPF UI Contributors.
 // All Rights Reserved.
 
-using Wpf.Ui.Controls.Extensibility;
 using Wpf.Ui.Internal.KnowBoxes;
 
 namespace Wpf.Ui.Controls;
@@ -143,7 +142,7 @@ public class RibbonProperties : DependencyObject
     /// </summary>
     public static readonly DependencyProperty SimplifiedSizeDefinitionProperty =
         DependencyProperty.RegisterAttached(
-            nameof(ISimplifiedRibbonControl.SimplifiedSizeDefinition),
+            nameof(IRibbonControl.SimplifiedSizeDefinition),
             typeof(RibbonControlSizeDefinition),
             typeof(RibbonProperties),
             new FrameworkPropertyMetadata(
@@ -169,7 +168,7 @@ public class RibbonProperties : DependencyObject
     /// <summary>
     /// Gets <see cref="SimplifiedSizeDefinitionProperty"/> for <paramref name="element"/>.
     /// </summary>
-    // [AttachedPropertyBrowsableForType(typeof(ISimplifiedRibbonControl))]
+    // [AttachedPropertyBrowsableForType(typeof(IRibbonControl))]
     public static RibbonControlSizeDefinition GetSimplifiedSizeDefinition(DependencyObject element)
     {
         return (RibbonControlSizeDefinition)element.GetValue(SimplifiedSizeDefinitionProperty);
@@ -373,5 +372,32 @@ public class RibbonProperties : DependencyObject
     public static CornerRadius GetCornerRadius(DependencyObject element)
     {
         return (CornerRadius)element.GetValue(CornerRadiusProperty);
+    }
+
+    /// <summary>
+    /// Defines which column the RibbonGroupBox should appear in (0 = left, 1 = right).
+    /// This allows splitting the ribbon content area into left and right sections.
+    /// </summary>
+    public static readonly DependencyProperty ColumnIndexProperty = DependencyProperty.RegisterAttached(
+        "ColumnIndex",
+        typeof(int),
+        typeof(RibbonProperties),
+        new FrameworkPropertyMetadata(
+            0,
+            FrameworkPropertyMetadataOptions.AffectsArrange |
+            FrameworkPropertyMetadataOptions.AffectsMeasure |
+            FrameworkPropertyMetadataOptions.AffectsParentArrange |
+            FrameworkPropertyMetadataOptions.AffectsParentMeasure));
+
+    /// <summary>Helper for setting <see cref="ColumnIndexProperty"/> on <paramref name="element"/>.</summary>
+    public static void SetColumnIndex(DependencyObject element, int value)
+    {
+        element.SetValue(ColumnIndexProperty, value);
+    }
+
+    /// <summary>Helper for getting <see cref="ColumnIndexProperty"/> on <paramref name="element"/>.</summary>
+    public static int GetColumnIndex(DependencyObject element)
+    {
+        return (int)element.GetValue(ColumnIndexProperty);
     }
 }

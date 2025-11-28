@@ -29,4 +29,9 @@ public enum ApplicationTheme
     /// High contract application theme.
     /// </summary>
     HighContrast,
+
+    /// <summary>
+    /// System theme. Automatically follows the Windows system theme setting.
+    /// </summary>
+    System,
 }

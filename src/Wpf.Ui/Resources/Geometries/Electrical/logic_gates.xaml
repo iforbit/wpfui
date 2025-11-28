@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- LogicGates Symbols - Auto-generated from draw.io stencils -->
+
+    <!-- AND (100x60) -->
+    <Geometry x:Key="LogicGates.AND">
+        M20,0 L50,0 A30,30 0 0 1 50,60 L20,60 Z M0,10 L20,10 M0,50 L20,50 M80,30 L100,30
+    </Geometry>
+
+    <!-- Bandpass Filter (52x46) -->
+    <Geometry x:Key="LogicGates.Bandpass_Filter">
+        M0,0 L52.0,0 L52.0,46.0 L0,46.0 Z M6,33 L16,13 L36,13 L46,33
+    </Geometry>
+
+    <!-- Buffer (100x60) -->
+    <Geometry x:Key="LogicGates.Buffer">
+        M20,0 L80,30 L20,60 Z M0,30 L20,30 M80,30 L100,30
+    </Geometry>
+
+    <!-- D Type Flip-Flop (100x80) -->
+    <Geometry x:Key="LogicGates.D_Type_Flip_Flop">
+        M20,0 L80.0,0 L80.0,80.0 L20,80.0 Z M0,20 L20,20 M0,60 L20,60 M80,20 L100,20 M71,55 L79,55 M20,55 L30,60 L20,65 M80,60 L100,60
+    </Geometry>
+
+    <!-- D Type Flip-Flop With Clear (100x90) -->
+    <Geometry x:Key="LogicGates.D_Type_Flip_Flop_With_Clear">
+        M20,10 L80.0,10 L80.0,90.0 L20,90.0 Z M0,30 L20,30 M0,70 L20,70 M80,30 L100,30 M80,70 L100,70 M71,65 L79,65 M20,65 L30,70 L20,75 M50,0 L50,6 M48.0,8.0 A2.0,2.0 0 0 1 50.0,6.0 A2.0,2.0 0 0 1 52.0,8.0 A2.0,2.0 0 0 1 50.0,10.0 A2.0,2.0 0 0 1 48.0,8.0 Z
+    </Geometry>
+
+    <!-- D Type Flip-Flop With Clear 2 (100x94) -->
+    <Geometry x:Key="LogicGates.D_Type_Flip_Flop_With_Clear_2">
+        M20,14 L80.0,14 L80.0,94.0 L20,94.0 Z M0,34 L20,34 M0,74 L20,74 M80,34 L100,34 M80,74 L100,74 M71,69 L79,69 M20,69 L30,74 L20,79 M0,0 L10.0,0 L10.0,10.0 L0,10.0 Z M50,0 L50,6 M46.0,10.0 A4.0,4.0 0 0 1 50.0,6.0 A4.0,4.0 0 0 1 54.0,10.0 A4.0,4.0 0 0 1 50.0,14.0 A4.0,4.0 0 0 1 46.0,10.0 Z
+    </Geometry>
+
+    <!-- D Type RS Flip-Flop (100x100) -->
+    <Geometry x:Key="LogicGates.D_Type_RS_Flip_Flop">
+        M20,10 L80.0,10 L80.0,90.0 L20,90.0 Z M0,30 L20,30 M0,70 L20,70 M80,30 L100,30 M80,70 L100,70 M71,65 L79,65 M20,65 L30,70 L20,75 M50,0 L50,10 M50,90 L50,100
+    </Geometry>
+
+    <!-- Highpass Filter (52x46) -->
+    <Geometry x:Key="LogicGates.Highpass_Filter">
+        M0,0 L52.0,0 L52.0,46.0 L0,46.0 Z M6,33 L16,13 L46,13
+    </Geometry>
+
+    <!-- Inverter (100x60) -->
+    <Geometry x:Key="LogicGates.Inverter">
+        M20,0 L80,30 L20,60 Z M0,30 L20,30 M84,30 L100,30 M80.0,30.0 A2.0,2.0 0 0 1 82.0,28.0 A2.0,2.0 0 0 1 84.0,30.0 A2.0,2.0 0 0 1 82.0,32.0 A2.0,2.0 0 0 1 80.0,30.0 Z
+    </Geometry>
+
+    <!-- Inverter 2 (100x60) -->
+    <Geometry x:Key="LogicGates.Inverter_2">
+        M0,30 L20,30 M84,30 L100,30 M77,30 L17,60 L17,0 Z M77.0,30.0 A4.0,4.0 0 0 1 81.0,26.0 A4.0,4.0 0 0 1 85.0,30.0 A4.0,4.0 0 0 1 81.0,34.0 A4.0,4.0 0 0 1 77.0,30.0 Z
+    </Geometry>
+
+    <!-- Inverting Contact (5x5) -->
+    <Geometry x:Key="LogicGates.Inverting_Contact">
+        M0.5,2.5 A2.0,2.0 0 0 1 2.5,0.5 A2.0,2.0 0 0 1 4.5,2.5 A2.0,2.0 0 0 1 2.5,4.5 A2.0,2.0 0 0 1 0.5,2.5 Z
+    </Geometry>
+
+    <!-- JK Flip-Flop (100x80) -->
+    <Geometry x:Key="LogicGates.JK_Flip_Flop">
+        M20,0 L80.0,0 L80.0,80.0 L20,80.0 Z M0,20 L20,20 M0,60 L20,60 M80,20 L100,20 M80,60 L100,60 M71,55 L79,55 M20,35 L30,40 L20,45 M0,40 L20,40
+    </Geometry>
+
+    <!-- JK Flip-Flop With Clear (100x90) -->
+    <Geometry x:Key="LogicGates.JK_Flip_Flop_With_Clear">
+        M20,10 L80.0,10 L80.0,90.0 L20,90.0 Z M0,30 L20,30 M0,70 L20,70 M80,30 L100,30 M80,70 L100,70 M71,65 L79,65 M20,45 L30,50 L20,55 M0,50 L20,50 M50,0 L50,6 M48.0,8.0 A2.0,2.0 0 0 1 50.0,6.0 A2.0,2.0 0 0 1 52.0,8.0 A2.0,2.0 0 0 1 50.0,10.0 A2.0,2.0 0 0 1 48.0,8.0 Z
+    </Geometry>
+
+    <!-- JK Flip-Flop With Clear 2 (100x94) -->
+    <Geometry x:Key="LogicGates.JK_Flip_Flop_With_Clear_2">
+        M20,14 L80.0,14 L80.0,94.0 L20,94.0 Z M0,34 L20,34 M0,74 L20,74 M80,34 L100,34 M80,74 L100,74 M71,69 L79,69 M20,49 L30,54 L20,59 M0,0 L10.0,0 L10.0,10.0 L0,10.0 Z M0,54 L20,54 M50,0 L50,6 M46.0,10.0 A4.0,4.0 0 0 1 50.0,6.0 A4.0,4.0 0 0 1 54.0,10.0 A4.0,4.0 0 0 1 50.0,14.0 A4.0,4.0 0 0 1 46.0,10.0 Z
+    </Geometry>
+
+    <!-- JK Flip-Flop With SR (100x100) -->
+    <Geometry x:Key="LogicGates.JK_Flip_Flop_With_SR">
+        M20,10 L80.0,10 L80.0,90.0 L20,90.0 Z M0,30 L20,30 M0,70 L20,70 M80,30 L100,30 M80,70 L100,70 M71,65 L79,65 M20,45 L30,50 L20,55 M0,50 L20,50 M50,0 L50,10 M50,90 L50,100
+    </Geometry>
+
+    <!-- Lowpass Filter (52x46) -->
+    <Geometry x:Key="LogicGates.Lowpass_Filter">
+        M0,0 L52.0,0 L52.0,46.0 L0,46.0 Z M6,13 L36,13 L46,33
+    </Geometry>
+
+    <!-- NAND (100x60) -->
+    <Geometry x:Key="LogicGates.NAND">
+        M20,0 L50,0 A30,30 0 0 1 50,60 L20,60 Z M0,10 L20,10 M0,50 L20,50 M84,30 L100,30 M80.0,30.0 A2.0,2.0 0 0 1 82.0,28.0 A2.0,2.0 0 0 1 84.0,30.0 A2.0,2.0 0 0 1 82.0,32.0 A2.0,2.0 0 0 1 80.0,30.0 Z
+    </Geometry>
+
+    <!-- NOR (100x60) -->
+    <Geometry x:Key="LogicGates.NOR">
+        M15,0 L40,0 A45,50 0 0 1 80,30 A45,50 0 0 1 40,60 L15,60 A60,60 0 0 0 15,0 Z M0,10 L20,10 M0,50 L20,50 M84,30 L100,30 M80.0,30.0 A2.0,2.0 0 0 1 82.0,28.0 A2.0,2.0 0 0 1 84.0,30.0 A2.0,2.0 0 0 1 82.0,32.0 A2.0,2.0 0 0 1 80.0,30.0 Z
+    </Geometry>
+
+    <!-- OR (100x60) -->
+    <Geometry x:Key="LogicGates.OR">
+        M15,0 L40,0 A45,50 0 0 1 80,30 A45,50 0 0 1 40,60 L15,60 A60,60 0 0 0 15,0 Z M0,10 L20,10 M0,50 L20,50 M80,30 L100,30
+    </Geometry>
+
+    <!-- RS Latch (100x80) -->
+    <Geometry x:Key="LogicGates.RS_Latch">
+        M20,0 L80.0,0 L80.0,80.0 L20,80.0 Z M0,20 L20,20 M0,60 L20,60 M80,20 L100,20 M80,60 L100,60 M71,55 L79,55
+    </Geometry>
+
+    <!-- Schmitt Trigger (100x60) -->
+    <Geometry x:Key="LogicGates.Schmitt_Trigger">
+        M20,0 L80,30 L20,60 Z M0,30 L20,30 M80,30 L100,30 M30,35 L46,35 A4,4 0 0 0 50,31 L50,29 A4,4 0 0 1 54,25 L55,25 L39,25 A4,4 0 0 0 35,29 L35,31 A4,4 0 0 1 31,35 Z
+    </Geometry>
+
+    <!-- Synchronous RS Latch (100x80) -->
+    <Geometry x:Key="LogicGates.Synchronous_RS_Latch">
+        M20,0 L80.0,0 L80.0,80.0 L20,80.0 Z M0,20 L20,20 M0,60 L20,60 M80,20 L100,20 M80,60 L100,60 M71,55 L79,55 M20,35 L30,40 L20,45 M0,40 L20,40
+    </Geometry>
+
+    <!-- T Type Flip-Flop (100x80) -->
+    <Geometry x:Key="LogicGates.T_Type_Flip_Flop">
+        M20,0 L80.0,0 L80.0,80.0 L20,80.0 Z M0,20 L20,20 M0,60 L20,60 M80,20 L100,20 M80,60 L100,60 M71,55 L79,55 M20,55 L30,60 L20,65
+    </Geometry>
+
+    <!-- XNOR (100x60) -->
+    <Geometry x:Key="LogicGates.XNOR">
+        M15,0 L40,0 A45,50 0 0 1 80,30 A45,50 0 0 1 40,60 L15,60 A60,60 0 0 0 15,0 Z M0,10 L20,10 M0,50 L20,50 M84,30 L100,30 M10,0 A60,60 0 0 1 10,60 M80.0,30.0 A2.0,2.0 0 0 1 82.0,28.0 A2.0,2.0 0 0 1 84.0,30.0 A2.0,2.0 0 0 1 82.0,32.0 A2.0,2.0 0 0 1 80.0,30.0 Z
+    </Geometry>
+
+    <!-- XOR (100x60) -->
+    <Geometry x:Key="LogicGates.XOR">
+        M15,0 L40,0 A45,50 0 0 1 80,30 A45,50 0 0 1 40,60 L15,60 A60,60 0 0 0 15,0 Z M0,10 L20,10 M0,50 L20,50 M80,30 L100,30 M10,0 A60,60 0 0 1 10,60
+    </Geometry>
+
+</ResourceDictionary>

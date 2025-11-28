@@ -36,9 +36,39 @@ public class ImageIcon : IconElement
 
     protected override UIElement InitializeChildren()
     {
-        Image = new System.Windows.Controls.Image() { Source = Source, Stretch = Stretch.UniformToFill };
+        Image = new System.Windows.Controls.Image() { Source = Source, Stretch = Stretch.Uniform };
 
         return Image;
+    }
+
+    protected override Size MeasureOverride(Size availableSize)
+    {
+        // If explicit Width/Height are set, use them
+        double width = Width;
+        double height = Height;
+
+        if (!double.IsNaN(width) && !double.IsNaN(height))
+        {
+            Size constrainedSize = new Size(width, height);
+            base.MeasureOverride(constrainedSize);
+            return constrainedSize;
+        }
+
+        if (!double.IsNaN(width))
+        {
+            Size constrainedSize = new Size(width, availableSize.Height);
+            base.MeasureOverride(constrainedSize);
+            return new Size(width, Math.Min(width, availableSize.Height));
+        }
+
+        if (!double.IsNaN(height))
+        {
+            Size constrainedSize = new Size(availableSize.Width, height);
+            base.MeasureOverride(constrainedSize);
+            return new Size(Math.Min(height, availableSize.Width), height);
+        }
+
+        return base.MeasureOverride(availableSize);
     }
 
     private static void OnSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

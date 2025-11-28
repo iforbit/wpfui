@@ -16,24 +16,30 @@ public static class ColorExtensions
     private static readonly float _byteMax = (float)byte.MaxValue;
 
     /// <summary>
-    /// Creates a <see cref="SolidColorBrush"/> from a <see cref="System.Windows.Media.Color"/>.
+    /// Creates a frozen <see cref="SolidColorBrush"/> from a <see cref="System.Windows.Media.Color"/>.
+    /// Returns a frozen brush for optimal performance and thread-safety.
     /// </summary>
     /// <param name="color">Input color.</param>
-    /// <returns>Brush converted to color.</returns>
+    /// <returns>Frozen brush converted from color.</returns>
     public static SolidColorBrush ToBrush(this Color color)
     {
-        return new SolidColorBrush(color);
+        var brush = new SolidColorBrush(color);
+        brush.Freeze();
+        return brush;
     }
 
     /// <summary>
-    /// Creates a <see cref="SolidColorBrush"/> from a <see cref="System.Windows.Media.Color"/> with defined brush opacity.
+    /// Creates a frozen <see cref="SolidColorBrush"/> from a <see cref="System.Windows.Media.Color"/> with defined brush opacity.
+    /// Returns a frozen brush for optimal performance and thread-safety.
     /// </summary>
     /// <param name="color">Input color.</param>
     /// <param name="opacity">Degree of opacity.</param>
-    /// <returns>Brush converted to color with modified opacity.</returns>
+    /// <returns>Frozen brush converted from color with modified opacity.</returns>
     public static SolidColorBrush ToBrush(this Color color, double opacity)
     {
-        return new SolidColorBrush { Color = color, Opacity = opacity };
+        var brush = new SolidColorBrush { Color = color, Opacity = opacity };
+        brush.Freeze();
+        return brush;
     }
 
     /// <summary>

@@ -96,7 +96,7 @@ public partial class DXGraph : UserControl
         }
 
         _suppressScrollUpdate = true;
-        ScrollBarX.Value = Graph.ViewCenter;
+        ScrollBarX.SetCurrentValue(RangeBase.ValueProperty, (double)Graph.ViewCenter);
         _suppressScrollUpdate = false;
     }
 

@@ -18,6 +18,9 @@
 
                 <syntax:SyntaxHighlightDictionary />
 
+                <!-- Electrical Symbol Geometries -->
+                <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Resources/Geometries/ElectricalGeometries.xaml"/>
+
                 <ResourceDictionary Source="Controls/GalleryNavigationPresenter.xaml" />
                 <ResourceDictionary Source="Controls/ControlExample.xaml" />
                 <ResourceDictionary Source="Controls/TypographyControl.xaml" />

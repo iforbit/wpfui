@@ -8,12 +8,13 @@ using System.Windows.Input;
 
 namespace Wpf.Ui.Controls;
 
-[TemplatePart(Name = "PART_TextBox", Type = typeof(TextBox))]
-
 /// <summary>
 /// Unity Inspector 스타일 드래그 스크러버 컨트롤
 /// TextBox에 직접 입력하거나 드래그하여 실시간으로 숫자 값을 조절할 수 있습니다.
 /// </summary>
+[TemplatePart(Name = "PART_TextBox", Type = typeof(TextBox))]
+[TemplatePart(Name = "PART_LabelArea", Type = typeof(Border))]
+
 public class DragScrubber : Control
 {
     private bool _isDragging = false;
@@ -29,7 +30,6 @@ public class DragScrubber : Control
             new FrameworkPropertyMetadata(typeof(DragScrubber)));
     }
 
-
     /// <summary>
     /// 현재 값
     /// </summary>
@@ -41,7 +41,8 @@ public class DragScrubber : Control
             new FrameworkPropertyMetadata(
                 0.0,
                 FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
-                OnValueChanged, CoerceValue));
+                OnValueChanged,
+                CoerceValue));
 
     /// <summary>
     /// 최소값
@@ -51,7 +52,16 @@ public class DragScrubber : Control
             nameof(Minimum),
             typeof(double),
             typeof(DragScrubber),
-            new PropertyMetadata(double.MinValue));
+            new PropertyMetadata(double.MinValue, OnMinimumChanged));
+
+    private static void OnMinimumChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        if (d is DragScrubber scrubber)
+        {
+            // Minimum 변경 시 현재 Value를 재검증
+            scrubber.CoerceValue(ValueProperty);
+        }
+    }
 
     /// <summary>
     /// 최대값
@@ -61,7 +71,16 @@ public class DragScrubber : Control
             nameof(Maximum),
             typeof(double),
             typeof(DragScrubber),
-            new PropertyMetadata(double.MaxValue));
+            new PropertyMetadata(double.MaxValue, OnMaximumChanged));
+
+    private static void OnMaximumChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        if (d is DragScrubber scrubber)
+        {
+            // Maximum 변경 시 현재 Value를 재검증
+            scrubber.CoerceValue(ValueProperty);
+        }
+    }
 
     /// <summary>
     /// 단계 크기 (드래그 시 값 변화량)
@@ -209,8 +228,6 @@ public class DragScrubber : Control
         set => SetValue(LabelWidthProperty, value);
     }
 
-
-
     /// <summary>
     /// 값이 변경될 때 발생하는 이벤트
     /// </summary>
@@ -247,7 +264,7 @@ public class DragScrubber : Control
             // TextBox 텍스트 업데이트 (단, TextBox가 포커스된 상태가 아닐 때만)
             if (scrubber._textBox != null && !scrubber._textBox.IsFocused)
             {
-                scrubber._textBox.Text = Math.Round(newValue, scrubber.Precision).ToString();
+                scrubber._textBox.SetCurrentValue(System.Windows.Controls.TextBox.TextProperty, Math.Round(newValue, scrubber.Precision).ToString());
             }
 
             scrubber.RaiseEvent(new RoutedPropertyChangedEventArgs<double>(oldValue, newValue, ValueChangedEvent));
@@ -258,7 +275,7 @@ public class DragScrubber : Control
     {
         if (d is DragScrubber scrubber && value is double doubleValue)
         {
-            var coerced = Math.Max(scrubber.Minimum, Math.Min(scrubber.Maximum, doubleValue));
+            var coerced = Math.Clamp(doubleValue, scrubber.Minimum, scrubber.Maximum);
             return Math.Round(coerced, scrubber.Precision);
         }
 
@@ -275,7 +292,7 @@ public class DragScrubber : Control
             _textBox.LostFocus -= OnTextBoxLostFocus;
             _textBox.KeyDown -= OnTextBoxKeyDown;
         }
-        
+
         if (_labelArea != null)
         {
             _labelArea.MouseLeftButtonDown -= OnLabelAreaMouseLeftButtonDown;
@@ -334,8 +351,11 @@ public class DragScrubber : Control
             double deltaValue = deltaX * Step * DragSensitivity * multiplier;
             double newValue = _dragStartValue + deltaValue;
 
+            // Min/Max 범위 제한 (드래그 중 실시간 체크)
+            newValue = Math.Clamp(newValue, Minimum, Maximum);
+
             // 값 업데이트
-            Value = newValue; // CoerceValue에서 범위 제한과 정밀도 적용됨
+            SetCurrentValue(ValueProperty, newValue); // CoerceValue에서 추가로 정밀도 적용됨
 
             e.Handled = true;
         }
@@ -360,14 +380,14 @@ public class DragScrubber : Control
         // TextBox에서 직접 입력한 값 파싱
         if (_textBox != null && double.TryParse(_textBox.Text, out double parsedValue))
         {
-            Value = parsedValue;
+            SetCurrentValue(ValueProperty, parsedValue);
         }
         else
         {
             // 파싱 실패 시 현재 값으로 복원
             if (_textBox != null)
             {
-                _textBox.Text = Math.Round(Value, Precision).ToString();
+                _textBox.SetCurrentValue(System.Windows.Controls.TextBox.TextProperty, Math.Round(Value, Precision).ToString());
             }
         }
     }
@@ -379,11 +399,11 @@ public class DragScrubber : Control
             // Enter 키로 값 확정
             if (_textBox != null && double.TryParse(_textBox.Text, out double parsedValue))
             {
-                Value = parsedValue;
+                SetCurrentValue(ValueProperty, parsedValue);
             }
 
             // 포커스 해제
-            _ = (_textBox?.MoveFocus(new TraversalRequest(FocusNavigationDirection.Next)));
+            _ = _textBox?.MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
             e.Handled = true;
         }
         else if (e.Key == Key.Escape)
@@ -391,11 +411,11 @@ public class DragScrubber : Control
             // ESC 키로 취소
             if (_textBox != null)
             {
-                _textBox.Text = Math.Round(Value, Precision).ToString();
+                _textBox.SetCurrentValue(System.Windows.Controls.TextBox.TextProperty, Math.Round(Value, Precision).ToString());
             }
 
             // 포커스 해제
-            _ = (_textBox?.MoveFocus(new TraversalRequest(FocusNavigationDirection.Next)));
+            _ = _textBox?.MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
             e.Handled = true;
         }
     }

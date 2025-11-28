@@ -1,4 +1,4 @@
-// This Source Code Form is subject to the terms of the MIT License.
+﻿// This Source Code Form is subject to the terms of the MIT License.
 // If a copy of the MIT was not distributed with this file, You can obtain one at https://opensource.org/licenses/MIT.
 // Copyright (C) Leszek Pomianowski and WPF UI Contributors.
 // All Rights Reserved.
@@ -9,7 +9,7 @@ using System.IO.IsolatedStorage;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Wpf.Ui.Controls.Data;
+namespace Wpf.Ui.Controls;
 
 /// <summary>
 /// Handles loading and saving the state of a <see cref="Ribbon"/> from/to a <see cref="MemoryStream"/>, for temporary storage, and from/to <see cref="IsolatedStorage"/>, for persistent storage.
@@ -271,6 +271,7 @@ public class RibbonStateStorage : IRibbonStateStorage
         }
 
         if (this.ribbon.CanUseSimplified
+            && ribbonProperties.Length > 2
             && bool.TryParse(ribbonProperties[2], out var isSimplified))
         {
             this.ribbon.SetCurrentValue(Ribbon.IsSimplifiedProperty, isSimplified);

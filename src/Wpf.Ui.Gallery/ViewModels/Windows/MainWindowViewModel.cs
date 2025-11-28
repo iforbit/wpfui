@@ -46,6 +46,8 @@ public partial class MainWindowViewModel(IStringLocalizer<Translations> localize
                 new NavigationViewItem("Typography", SymbolRegular.TextFont24, typeof(TypographyPage)),
                 new NavigationViewItem("Icons", SymbolRegular.Diversity24, typeof(IconsPage)),
                 new NavigationViewItem("Colors", SymbolRegular.Color24, typeof(ColorsPage)),
+                new NavigationViewItem("Electrical TTF", SymbolRegular.PlugDisconnected24, typeof(ElectricalTTFPage)),
+                new NavigationViewItem("Electrical Geometry", SymbolRegular.Shapes24, typeof(ElectricalGeometryPage)),
             },
         },
         new NavigationViewItem("All samples", SymbolRegular.List24, typeof(AllControlsPage)),

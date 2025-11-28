@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- SignalSources Symbols - Auto-generated from draw.io stencils -->
+
+    <!-- AC Source (60x60) -->
+    <Geometry x:Key="SignalSources.AC_Source">
+        M0.0,30.0 A30.0,30.0 0 0 1 30.0,0.0 A30.0,30.0 0 0 1 60.0,30.0 A30.0,30.0 0 0 1 30.0,60.0 A30.0,30.0 0 0 1 0.0,30.0 Z M15,30 A8,8 0 0 1 30,30 A8,8 0 0 0 45,30
+    </Geometry>
+
+    <!-- Current Flow (70x10) -->
+    <Geometry x:Key="SignalSources.Current_Flow">
+        M0,5 L70,5 M60,0 L70,5 L60,10
+    </Geometry>
+
+    <!-- Current Source (40x60) -->
+    <Geometry x:Key="SignalSources.Current_Source">
+        M0.0,40.0 A20.0,20.0 0 0 1 20.0,20.0 A20.0,20.0 0 0 1 40.0,40.0 A20.0,20.0 0 0 1 20.0,60.0 A20.0,20.0 0 0 1 0.0,40.0 Z M0.0,20.0 A20.0,20.0 0 0 1 20.0,0.0 A20.0,20.0 0 0 1 40.0,20.0 A20.0,20.0 0 0 1 20.0,40.0 A20.0,20.0 0 0 1 0.0,20.0 Z M0.0,40.0 A20.0,20.0 0 0 1 20.0,20.0 A20.0,20.0 0 0 1 40.0,40.0 A20.0,20.0 0 0 1 20.0,60.0 A20.0,20.0 0 0 1 0.0,40.0 Z
+    </Geometry>
+
+    <!-- DC Source 1 (70x75) -->
+    <Geometry x:Key="SignalSources.DC_Source_1">
+        M10.0,40.0 A30.0,30.0 0 0 1 40.0,10.0 A30.0,30.0 0 0 1 70.0,40.0 A30.0,30.0 0 0 1 40.0,70.0 A30.0,30.0 0 0 1 10.0,40.0 Z M0,75 L10,75 M5,0 L5,10 M0,5 L10,5
+    </Geometry>
+
+    <!-- DC Source 2 (60x60) -->
+    <Geometry x:Key="SignalSources.DC_Source_2">
+        M0.0,30.0 A30.0,30.0 0 0 1 30.0,0.0 A30.0,30.0 0 0 1 60.0,30.0 A30.0,30.0 0 0 1 30.0,60.0 A30.0,30.0 0 0 1 0.0,30.0 Z M10,30 L50,30 M40,25 L50,30 L40,35
+    </Geometry>
+
+    <!-- DC Source 3 (60x60) -->
+    <Geometry x:Key="SignalSources.DC_Source_3">
+        M0.0,30.0 A30.0,30.0 0 0 1 30.0,0.0 A30.0,30.0 0 0 1 60.0,30.0 A30.0,30.0 0 0 1 30.0,60.0 A30.0,30.0 0 0 1 0.0,30.0 Z M27,55 L33,55 M30,2 L30,8 M27,5 L33,5
+    </Geometry>
+
+    <!-- Dependent Source 1 (60x60) -->
+    <Geometry x:Key="SignalSources.Dependent_Source_1">
+        M30,0 L60,30 L30,60 L0,30 Z
+    </Geometry>
+
+    <!-- Dependent Source 2 (60x60) -->
+    <Geometry x:Key="SignalSources.Dependent_Source_2">
+        M30,0 L60,30 L30,60 L0,30 Z M30,10 L30,50 M25,40 L30,50 L35,40
+    </Geometry>
+
+    <!-- Dependent Source 3 (60x60) -->
+    <Geometry x:Key="SignalSources.Dependent_Source_3">
+        M30,0 L60,30 L30,60 L0,30 Z M27,10 L33,10 M30,7 L30,13 M27,50 L33,50
+    </Geometry>
+
+    <!-- Equipotential (90x90) -->
+    <Geometry x:Key="SignalSources.Equipotential">
+        M0,15 L45,90 L90,15 Z M45,0 L45,15 M20.0,40.5 A25.0,25.0 0 0 1 45.0,15.5 A25.0,25.0 0 0 1 70.0,40.5 A25.0,25.0 0 0 1 45.0,65.5 A25.0,25.0 0 0 1 20.0,40.5 Z
+    </Geometry>
+
+    <!-- Explosive Squib (60x60) -->
+    <Geometry x:Key="SignalSources.Explosive_Squib">
+        M0.0,30.0 A30.0,30.0 0 0 1 30.0,0.0 A30.0,30.0 0 0 1 60.0,30.0 A30.0,30.0 0 0 1 30.0,60.0 A30.0,30.0 0 0 1 0.0,30.0 Z M0.0,30.0 A4.0,4.0 0 0 1 4.0,26.0 A4.0,4.0 0 0 1 8.0,30.0 A4.0,4.0 0 0 1 4.0,34.0 A4.0,4.0 0 0 1 0.0,30.0 Z M52.0,30.0 A4.0,4.0 0 0 1 56.0,26.0 A4.0,4.0 0 0 1 60.0,30.0 A4.0,4.0 0 0 1 56.0,34.0 A4.0,4.0 0 0 1 52.0,30.0 Z M50,38 L44,44 L16,16 L10,22 M12,15 L8,24 L17,20 Z
+    </Geometry>
+
+    <!-- Ideal Source (60x60) -->
+    <Geometry x:Key="SignalSources.Ideal_Source">
+        M0.0,30.0 A30.0,30.0 0 0 1 30.0,0.0 A30.0,30.0 0 0 1 60.0,30.0 A30.0,30.0 0 0 1 30.0,60.0 A30.0,30.0 0 0 1 0.0,30.0 Z M0,30 L60,30
+    </Geometry>
+
+    <!-- Noise Source (60x60) -->
+    <Geometry x:Key="SignalSources.Noise_Source">
+        M0.0,30.0 A30.0,30.0 0 0 1 30.0,0.0 A30.0,30.0 0 0 1 60.0,30.0 A30.0,30.0 0 0 1 30.0,60.0 A30.0,30.0 0 0 1 0.0,30.0 Z M30,10 L30,30 M11,25 L30,30 M19,47 L30,30 M41,47 L30,30 M49,25 L30,30
+    </Geometry>
+
+    <!-- Protective Earth (50x40) -->
+    <Geometry x:Key="SignalSources.Protective_Earth">
+        M0,10 L50,10 M4,15 L46,15 M8,20 L42,20 M16.5,30 L33.5,30 M20.5,35 L29.5,35 M25,0 L25,10 M12.5,25 L37.5,25 M24.5,40 L25.5,40
+    </Geometry>
+
+    <!-- Signal Ground (90x60) -->
+    <Geometry x:Key="SignalSources.Signal_Ground">
+        M0,20 L45,60 L90,20 Z M45,0 L45,20
+    </Geometry>
+
+    <!-- Vdd (60x40) -->
+    <Geometry x:Key="SignalSources.Vdd">
+        M0,40 L60,40 M30,40 L30,0
+    </Geometry>
+
+    <!-- Voltage (10x70) -->
+    <Geometry x:Key="SignalSources.Voltage">
+        M5,0 L5,70 M0,60 L5,70 L10,60 M0,10 L5,0 L10,10
+    </Geometry>
+
+    <!-- Vss2 (60x40) -->
+    <Geometry x:Key="SignalSources.Vss2">
+        M0,0 L60,0 M30,0 L30,40
+    </Geometry>
+
+</ResourceDictionary>

@@ -21,9 +21,14 @@
     <FontFamily x:Key="FluentSystemIconsFilled">pack://application:,,,/Wpf.Ui;component/Resources/Fonts/#FluentSystemIcons-Filled</FontFamily>
 
     <!--  https://github.com/microsoft/fluentui-system-icons  -->
-    <FontFamily x:Key="SegoeFluentIcons">pack://application:,,,/Wpf.Ui;component/Resources/Fonts/#SegoeFluentIcons</FontFamily>
+    <FontFamily x:Key="SegoeFluentIcons">pack://application:,,,/Wpf.Ui;component/Resources/Fonts/#Segoe Fluent Icons</FontFamily>
 
-    <!--  https://github.com/microsoft/fluentui-system-icons  -->
-    <FontFamily x:Key="MaterialIcons-Regular">pack://application:,,,/Wpf.Ui;component/Resources/Fonts/#MaterialIcons-Regular</FontFamily>
+    <!--  https://github.com/google/material-design-icons  -->
+    <FontFamily x:Key="MaterialIcons-Regular">pack://application:,,,/Wpf.Ui;component/Resources/Fonts/#Material Icons</FontFamily>
 
+    <!--  https://github.com/twbs/icons  -->
+    <FontFamily x:Key="BootstrapIcons">pack://application:,,,/Wpf.Ui;component/Resources/Fonts/#bootstrap-icons</FontFamily>
+
+    <!--  Electrical symbols from diagrams.net converted via IcoMoon  -->
+    <FontFamily x:Key="ElectricalIcons">pack://application:,,,/Wpf.Ui;component/Resources/Fonts/#electrical-icons</FontFamily>
 </ResourceDictionary>

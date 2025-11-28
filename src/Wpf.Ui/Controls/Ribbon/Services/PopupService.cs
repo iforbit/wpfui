@@ -40,12 +40,7 @@ public enum DismissPopupReason
     /// <summary>
     /// Application lost focus.
     /// </summary>
-    ApplicationLostFocus,
-
-    /// <summary>
-    /// Showing key tips.
-    /// </summary>
-    ShowingKeyTips
+    ApplicationLostFocus
 }
 
 /// <summary>

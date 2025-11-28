@@ -332,21 +332,37 @@ public static class WindowBackdrop
         return true;
     }
 
+    // Cached frozen brushes for optimal performance
+    private static readonly SolidColorBrush HC1Brush = CreateFrozenBrush(Color.FromArgb(0xFF, 0x2D, 0x32, 0x36));
+    private static readonly SolidColorBrush HC2Brush = CreateFrozenBrush(Color.FromArgb(0xFF, 0x00, 0x00, 0x00));
+    private static readonly SolidColorBrush HCBlackBrush = CreateFrozenBrush(Color.FromArgb(0xFF, 0x20, 0x20, 0x20));
+    private static readonly SolidColorBrush HCWhiteBrush = CreateFrozenBrush(Color.FromArgb(0xFF, 0x20, 0x20, 0x20));
+    private static readonly SolidColorBrush HCDefaultBrush = CreateFrozenBrush(Color.FromArgb(0xFF, 0xFF, 0xFA, 0xEF));
+    private static readonly SolidColorBrush DarkBrush = CreateFrozenBrush(Color.FromArgb(0xFF, 0x20, 0x20, 0x20));
+    private static readonly SolidColorBrush LightBrush = CreateFrozenBrush(Color.FromArgb(0xFF, 0xFA, 0xFA, 0xFA));
+
+    private static SolidColorBrush CreateFrozenBrush(Color color)
+    {
+        var brush = new SolidColorBrush(color);
+        brush.Freeze();
+        return brush;
+    }
+
     private static SolidColorBrush GetFallbackBackgroundBrush()
     {
         return ApplicationThemeManager.GetAppTheme() switch
         {
             ApplicationTheme.HighContrast => ApplicationThemeManager.GetSystemTheme() switch
             {
-                SystemTheme.HC1 => new SolidColorBrush(Color.FromArgb(0xFF, 0x2D, 0x32, 0x36)),
-                SystemTheme.HC2 => new SolidColorBrush(Color.FromArgb(0xFF, 0x00, 0x00, 0x00)),
-                SystemTheme.HCBlack => new SolidColorBrush(Color.FromArgb(0xFF, 0x20, 0x20, 0x20)),
-                SystemTheme.HCWhite => new SolidColorBrush(Color.FromArgb(0xFF, 0x20, 0x20, 0x20)),
-                _ => new SolidColorBrush(Color.FromArgb(0xFF, 0xFF, 0xFA, 0xEF)),
+                SystemTheme.HC1 => HC1Brush,
+                SystemTheme.HC2 => HC2Brush,
+                SystemTheme.HCBlack => HCBlackBrush,
+                SystemTheme.HCWhite => HCWhiteBrush,
+                _ => HCDefaultBrush,
             },
-            ApplicationTheme.Dark => new SolidColorBrush(Color.FromArgb(0xFF, 0x20, 0x20, 0x20)),
-            ApplicationTheme.Light => new SolidColorBrush(Color.FromArgb(0xFF, 0xFA, 0xFA, 0xFA)),
-            _ => new SolidColorBrush(Color.FromArgb(0xFF, 0xFA, 0xFA, 0xFA)),
+            ApplicationTheme.Dark => DarkBrush,
+            ApplicationTheme.Light => LightBrush,
+            _ => LightBrush,
         };
     }
 }

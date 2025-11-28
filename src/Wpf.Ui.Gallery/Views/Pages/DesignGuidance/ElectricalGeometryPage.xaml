@@ -1,0 +1,171 @@
+<Page x:Class="Wpf.Ui.Gallery.Views.Pages.DesignGuidance.ElectricalGeometryPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:controls="clr-namespace:Wpf.Ui.Gallery.Controls"
+      xmlns:local="clr-namespace:Wpf.Ui.Gallery.Views.Pages.DesignGuidance"
+      xmlns:models="clr-namespace:Wpf.Ui.Gallery.Models"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      Title="ElectricalGeometryPage"
+      d:DataContext="{d:DesignInstance local:ElectricalGeometryPage,
+                                       IsDesignTimeCreatable=False}"
+      d:DesignHeight="1200"
+      d:DesignWidth="800"
+      ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
+      ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+      Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+      ScrollViewer.CanContentScroll="False"
+      mc:Ignorable="d">
+
+    <Page.Resources>
+        <ResourceDictionary>
+            <!-- ElectricalGeometries.xaml is now loaded globally in App.xaml -->
+
+            <DataTemplate x:Key="GeometryItemTemplate">
+                <Border Width="120" Height="100" Margin="4"
+                        Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                        BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                        BorderThickness="1"
+                        CornerRadius="8"
+                        ToolTip="{Binding Name}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <!-- Geometry Display -->
+                        <Viewbox Grid.Row="0" Margin="12" Stretch="Uniform">
+                            <Path Data="{Binding Geometry}"
+                                  Fill="Transparent"
+                                  Stroke="{DynamicResource TextFillColorPrimaryBrush}"
+                                  StrokeThickness="1.5" />
+                        </Viewbox>
+
+                        <!-- Name -->
+                        <TextBlock Grid.Row="1"
+                                   Margin="8,4"
+                                   HorizontalAlignment="Center"
+                                   FontSize="10"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                   Text="{Binding Name}"
+                                   TextAlignment="Center"
+                                   TextTrimming="CharacterEllipsis"
+                                   TextWrapping="NoWrap" />
+                    </Grid>
+                </Border>
+            </DataTemplate>
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <ui:TextBlock Grid.Row="0"
+                      Text="Electrical symbol geometries converted from diagrams.net stencils. These are XAML Path Geometries that can be used with Path, ContentControl, or any WPF control that accepts Geometry."
+                      TextWrapping="WrapWithOverflow" />
+
+        <ui:HyperlinkButton Grid.Row="1"
+                            Margin="0,4,0,0"
+                            Padding="0"
+                            Content="Source: diagrams.net v28.2.5 electrical stencils"
+                            NavigateUri="https://github.com/jgraph/drawio/tree/v28.2.5" />
+
+        <StackPanel Grid.Row="2" Margin="0,24,0,12" Orientation="Horizontal">
+            <ui:TextBlock FontTypography="BodyStrong" Text="Electrical Geometries - 527 symbols across 24 categories" />
+        </StackPanel>
+
+        <!-- Category Tabs -->
+        <TabControl Grid.Row="3"
+                    BorderThickness="0"
+                    Background="Transparent">
+            <TabItem Header="Resistors (23)">
+                <ScrollViewer>
+                    <ui:VirtualizingItemsControl ItemsSource="{Binding ResistorSymbols}"
+                                                 ItemTemplate="{StaticResource GeometryItemTemplate}"
+                                                 Margin="0,12,0,0">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <ui:VirtualizingWrapPanel SpacingMode="Uniform" StretchItems="False" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                    </ui:VirtualizingItemsControl>
+                </ScrollViewer>
+            </TabItem>
+
+            <TabItem Header="Capacitors (16)">
+                <ScrollViewer>
+                    <ui:VirtualizingItemsControl ItemsSource="{Binding CapacitorSymbols}"
+                                                 ItemTemplate="{StaticResource GeometryItemTemplate}"
+                                                 Margin="0,12,0,0">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <ui:VirtualizingWrapPanel SpacingMode="Uniform" StretchItems="False" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                    </ui:VirtualizingItemsControl>
+                </ScrollViewer>
+            </TabItem>
+
+            <TabItem Header="Transistors (23)">
+                <ScrollViewer>
+                    <ui:VirtualizingItemsControl ItemsSource="{Binding TransistorSymbols}"
+                                                 ItemTemplate="{StaticResource GeometryItemTemplate}"
+                                                 Margin="0,12,0,0">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <ui:VirtualizingWrapPanel SpacingMode="Uniform" StretchItems="False" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                    </ui:VirtualizingItemsControl>
+                </ScrollViewer>
+            </TabItem>
+
+            <TabItem Header="Diodes (13)">
+                <ScrollViewer>
+                    <ui:VirtualizingItemsControl ItemsSource="{Binding DiodeSymbols}"
+                                                 ItemTemplate="{StaticResource GeometryItemTemplate}"
+                                                 Margin="0,12,0,0">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <ui:VirtualizingWrapPanel SpacingMode="Uniform" StretchItems="False" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                    </ui:VirtualizingItemsControl>
+                </ScrollViewer>
+            </TabItem>
+
+            <TabItem Header="All Categories">
+                <ScrollViewer>
+                    <ItemsControl ItemsSource="{Binding AllCategories}" Margin="0,12,0,0">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <ui:Card Margin="0,0,0,16">
+                                    <StackPanel>
+                                        <TextBlock FontSize="16" FontWeight="SemiBold" Text="{Binding CategoryName}" />
+                                        <ui:VirtualizingItemsControl ItemsSource="{Binding Symbols}"
+                                                                     ItemTemplate="{StaticResource GeometryItemTemplate}"
+                                                                     Margin="0,12,0,0">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <ui:VirtualizingWrapPanel SpacingMode="Uniform" StretchItems="False" />
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                        </ui:VirtualizingItemsControl>
+                                    </StackPanel>
+                                </ui:Card>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Page>

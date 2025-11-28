@@ -68,6 +68,12 @@ public static class ApplicationThemeManager
         bool updateAccent = true
     )
     {
+        if (applicationTheme == ApplicationTheme.System)
+        {
+            ApplySystemTheme(updateAccent);
+            return;
+        }
+
         if (updateAccent)
         {
             ApplicationAccentColorManager.Apply(

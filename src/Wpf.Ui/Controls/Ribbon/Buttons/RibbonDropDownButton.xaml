@@ -1,0 +1,300 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="clr-namespace:Wpf.Ui.Controls">
+
+    <DataTemplate x:Key="controls.Ribbon.DataTemplates.RibbonDropDownButton.Header">
+        <controls:TwoLineLabel HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                               Text="{Binding}">
+            <controls:TwoLineLabel.Style>
+                <Style BasedOn="{StaticResource DefaultRibbonTwoLineLabelStyle}" TargetType="controls:TwoLineLabel">
+                    <Setter Property="HasGlyph" Value="{Binding HasTriangle, RelativeSource={RelativeSource AncestorType=controls:RibbonDropDownButton}}" />
+                    <Setter Property="HasTwoLines" Value="True" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Size, RelativeSource={RelativeSource AncestorType=controls:IRibbonControl}}" Value="Middle">
+                            <Setter Property="HasTwoLines" Value="False" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Size, RelativeSource={RelativeSource AncestorType=controls:IRibbonControl}}" Value="Small">
+                            <Setter Property="HasTwoLines" Value="False" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsSimplified, RelativeSource={RelativeSource AncestorType=controls:IRibbonControl}}" Value="True">
+                            <Setter Property="HasTwoLines" Value="False" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </controls:TwoLineLabel.Style>
+        </controls:TwoLineLabel>
+    </DataTemplate>
+
+    <DataTemplate x:Key="controls.Ribbon.DataTemplates.RibbonDropDownButton.Header.Simplified">
+        <controls:TwoLineLabel HorizontalAlignment="Stretch" VerticalAlignment="Center" HasGlyph="False"
+                               HasTwoLines="False"
+                               Text="{Binding}" />
+    </DataTemplate>
+
+    <Style x:Key="DefaultRibbonDropDownButtonStyles" TargetType="{x:Type controls:RibbonDropDownButton}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource DefaultControlFocusVisualStyle}" />
+        <Setter Property="Foreground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
+        <Setter Property="HeaderTemplate" Value="{DynamicResource controls.Ribbon.DataTemplates.RibbonDropDownButton.Header}" />
+        <Setter Property="Height" Value="68" />
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Vertical" />
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Margin" Value="{DynamicResource controls.Ribbon.Values.Default.Margin}" />
+        <Setter Property="Padding" Value="{DynamicResource controls.Ribbon.Values.Default.Padding}" />
+        <Setter Property="SnapsToDevicePixels" Value="False" />
+        <Setter Property="Template" Value="{DynamicResource controls.Ribbon.Templates.RibbonDropDownButton}" />
+        <Style.Triggers>
+            <Trigger Property="Size" Value="Large">
+                <Setter Property="controls:RibbonProperties.IconSize" Value="Large" />
+                <Setter Property="Height" Value="68" />
+            </Trigger>
+            <Trigger Property="Size" Value="Middle">
+                <Setter Property="controls:RibbonProperties.IconSize" Value="Small" />
+                <Setter Property="Height" Value="22" />
+                <Setter Property="HorizontalAlignment" Value="Left" />
+            </Trigger>
+            <Trigger Property="Size" Value="Small">
+                <Setter Property="controls:RibbonProperties.IconSize" Value="Small" />
+                <Setter Property="Height" Value="22" />
+                <Setter Property="HorizontalAlignment" Value="Left" />
+                <Setter Property="Width" Value="Auto" />
+            </Trigger>
+            <Trigger Property="IsSimplified" Value="True">
+                <Setter Property="controls:RibbonProperties.IconSize" Value="Medium" />
+                <Setter Property="HeaderTemplate" Value="{DynamicResource controls.Ribbon.DataTemplates.RibbonDropDownButton.Header.Simplified}" />
+                <Setter Property="Height" Value="Auto" />
+                <Setter Property="HorizontalAlignment" Value="Stretch" />
+                <Setter Property="MinHeight" Value="30" />
+                <Setter Property="Template" Value="{DynamicResource controls.Ribbon.Templates.RibbonDropDownButton.Simplified}" />
+                <Setter Property="VerticalAlignment" Value="Stretch" />
+                <Setter Property="Width" Value="Auto" />
+            </Trigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsSimplified" Value="True" />
+                    <Condition Property="Size" Value="Small" />
+                </MultiTrigger.Conditions>
+                <Setter Property="controls:RibbonProperties.IconSize" Value="Small" />
+            </MultiTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <ControlTemplate x:Key="controls.Ribbon.Templates.RibbonDropDownButton" TargetType="{x:Type controls:RibbonDropDownButton}">
+        <ControlTemplate.Resources>
+            <Style BasedOn="{StaticResource controls.Ribbon.Styles.MenuSeparator}" TargetType="{x:Type Separator}" />
+        </ControlTemplate.Resources>
+        <Grid>
+            <Border x:Name="PART_ButtonBorder"
+                    HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                    VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}">
+                <StackPanel x:Name="stackPanel"
+                            Margin="{TemplateBinding Padding}"
+                            Orientation="Vertical">
+                    <controls:IconPresenter x:Name="iconImage"
+                                            Margin="0,2,0,0" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                            CustomSize="{Binding Path=(controls:RibbonProperties.CustomIconSize), RelativeSource={RelativeSource TemplatedParent}}"
+                                            IconSize="{Binding Path=(controls:RibbonProperties.IconSize), RelativeSource={RelativeSource TemplatedParent}}"
+                                            LargeIcon="{Binding LargeIcon, RelativeSource={RelativeSource TemplatedParent}}"
+                                            MediumIcon="{Binding MediumIcon, RelativeSource={RelativeSource TemplatedParent}}"
+                                            SmallIcon="{Binding Icon, RelativeSource={RelativeSource TemplatedParent}}" />
+
+                    <ContentControl x:Name="PART_HeaderContentHost"
+                                    Margin="2,0,2,2"
+                                    Content="{TemplateBinding Header}"
+                                    ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                    ContentTemplateSelector="{TemplateBinding HeaderTemplateSelector}"
+                                    Focusable="False" />
+                </StackPanel>
+            </Border>
+            <Popup x:Name="PART_Popup"
+                   Grid.ColumnSpan="2" Margin="0,0,-4,0" VerticalAlignment="Top"
+                   AllowsTransparency="True"
+                   IsOpen="{TemplateBinding IsDropDownOpen}"
+                   Placement="Bottom"
+                   PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}">
+                <controls:ResizeableContentControl x:Name="PART_PopupContentControl"
+                                                   MinWidth="{TemplateBinding ActualWidth}"
+                                                   MaxHeight="{TemplateBinding MaxDropDownHeight}"
+                                                   IsEnabled="{TemplateBinding IsEnabled}"
+                                                   ResizeMode="{TemplateBinding ResizeMode}">
+                    <ScrollViewer Margin="1" HorizontalScrollBarVisibility="Disabled" IsTabStop="False"
+                                  SnapsToDevicePixels="True"
+                                  Style="{DynamicResource DefaultRibbonMenuScrollViewerStyle}"
+                                  VerticalScrollBarVisibility="Auto">
+                        <ItemsPresenter KeyboardNavigation.DirectionalNavigation="Local" />
+                    </ScrollViewer>
+                </controls:ResizeableContentControl>
+            </Popup>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="Size" Value="Small">
+                <Setter TargetName="PART_HeaderContentHost" Property="Content" Value="" />
+                <Setter TargetName="PART_HeaderContentHost" Property="Margin" Value="0,0,0,0" />
+                <Setter TargetName="PART_HeaderContentHost" Property="VerticalAlignment" Value="Center" />
+                <Setter TargetName="PART_HeaderContentHost" Property="Width" Value="10" />
+                <Setter TargetName="iconImage" Property="Margin" Value="0" />
+                <Setter TargetName="stackPanel" Property="Orientation" Value="Horizontal" />
+            </Trigger>
+            <Trigger Property="Size" Value="Middle">
+                <Setter TargetName="PART_ButtonBorder" Property="VerticalAlignment" Value="Stretch" />
+                <Setter TargetName="PART_HeaderContentHost" Property="Margin" Value="0,0,0,0" />
+                <Setter TargetName="PART_HeaderContentHost" Property="VerticalAlignment" Value="Center" />
+                <Setter TargetName="iconImage" Property="Margin" Value="0" />
+                <Setter TargetName="iconImage" Property="VerticalAlignment" Value="Center" />
+                <Setter TargetName="stackPanel" Property="Orientation" Value="Horizontal" />
+                <Setter TargetName="stackPanel" Property="Width" Value="Auto" />
+            </Trigger>
+
+            <Trigger Property="IsDropDownOpen" Value="True">
+                <Setter TargetName="PART_ButtonBorder" Property="Background" Value="{DynamicResource ButtonBackgroundPressed}" />
+                <Setter TargetName="PART_ButtonBorder" Property="BorderBrush" Value="{DynamicResource ButtonBorderBrushPressed}" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter TargetName="PART_HeaderContentHost" Property="Opacity" Value="0.5" />
+            </Trigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsMouseOver" Value="True" />
+                    <Condition Property="IsDropDownOpen" Value="False" />
+                </MultiTrigger.Conditions>
+                <Setter TargetName="PART_ButtonBorder" Property="Background" Value="{DynamicResource ButtonBackgroundPointerOver}" />
+                <Setter TargetName="PART_ButtonBorder" Property="BorderBrush" Value="{DynamicResource ControlElevationBorderBrush}" />
+            </MultiTrigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="controls.Ribbon.Templates.RibbonDropDownButton.Simplified" TargetType="{x:Type controls:RibbonDropDownButton}">
+        <ControlTemplate.Resources>
+            <Style BasedOn="{StaticResource controls.Ribbon.Styles.MenuSeparator}" TargetType="{x:Type Separator}" />
+        </ControlTemplate.Resources>
+        <Grid>
+            <Border x:Name="PART_ButtonBorder"
+                    HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                    VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}">
+                <Grid x:Name="stackPanel"
+                      Margin="{TemplateBinding Padding}"
+                      HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid x:Name="iconImageGrid"
+                          Grid.Column="0" Margin="0" HorizontalAlignment="Center"
+                          VerticalAlignment="Center">
+                        <controls:IconPresenter x:Name="iconImage"
+                                                CustomSize="{Binding Path=(controls:RibbonProperties.CustomIconSize), RelativeSource={RelativeSource TemplatedParent}}"
+                                                IconSize="{Binding Path=(controls:RibbonProperties.IconSize), RelativeSource={RelativeSource TemplatedParent}}"
+                                                LargeIcon="{Binding LargeIcon, RelativeSource={RelativeSource TemplatedParent}}"
+                                                MediumIcon="{Binding MediumIcon, RelativeSource={RelativeSource TemplatedParent}}"
+                                                SmallIcon="{Binding Icon, RelativeSource={RelativeSource TemplatedParent}}" />
+                        <Border x:Name="iconImageBorder"
+                                Width="{Binding ActualWidth, ElementName=iconImage}"
+                                Height="{Binding ActualHeight, ElementName=iconImage}"
+                                BorderBrush="{DynamicResource controls.Ribbon.Brushes.Control.Border}"
+                                BorderThickness="1" Visibility="Collapsed" />
+                    </Grid>
+
+                    <ContentControl x:Name="PART_HeaderContentHost"
+                                    Grid.Column="1" Margin="2,0,0,0"
+                                    Content="{TemplateBinding Header}"
+                                    ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                    ContentTemplateSelector="{TemplateBinding HeaderTemplateSelector}"
+                                    Focusable="False" />
+
+                    <controls:TwoLineLabel x:Name="controlLabel2"
+                                           Grid.Column="2" Margin="2,0,0,0" HorizontalAlignment="Stretch"
+                                           VerticalAlignment="Center"
+                                           HasGlyph="{TemplateBinding HasTriangle}"
+                                           HasTwoLines="False" Text="" />
+                </Grid>
+            </Border>
+            <Popup x:Name="PART_Popup"
+                   Grid.ColumnSpan="2" Margin="0,0,-4,0" VerticalAlignment="Top"
+                   AllowsTransparency="True"
+                   IsOpen="{TemplateBinding IsDropDownOpen}"
+                   Placement="Bottom"
+                   PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}">
+                <controls:ResizeableContentControl x:Name="PART_PopupContentControl"
+                                                   MinWidth="{TemplateBinding ActualWidth}"
+                                                   MaxHeight="{TemplateBinding MaxDropDownHeight}"
+                                                   IsEnabled="{TemplateBinding IsEnabled}"
+                                                   ResizeMode="{TemplateBinding ResizeMode}">
+                    <ScrollViewer x:Name="PART_ScrollViewer"
+                                  MaxHeight="{TemplateBinding MaxDropDownHeight}"
+                                  Margin="1" HorizontalScrollBarVisibility="Disabled" IsTabStop="False"
+                                  SnapsToDevicePixels="True"
+                                  Style="{DynamicResource DefaultRibbonMenuScrollViewerStyle}"
+                                  VerticalScrollBarVisibility="Auto">
+                        <ItemsPresenter KeyboardNavigation.DirectionalNavigation="Local" />
+                    </ScrollViewer>
+                </controls:ResizeableContentControl>
+            </Popup>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="Size" Value="Small" />
+                    <Condition SourceName="iconImage" Property="OptimalIcon" Value="{x:Null}" />
+                </MultiTrigger.Conditions>
+                <Setter TargetName="iconImageBorder" Property="Visibility" Value="Visible" />
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="Size" Value="Middle" />
+                    <Condition SourceName="iconImage" Property="OptimalIcon" Value="{x:Null}" />
+                </MultiTrigger.Conditions>
+                <Setter TargetName="iconImageBorder" Property="Visibility" Value="Visible" />
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="Size" Value="Large" />
+                    <Condition SourceName="iconImage" Property="OptimalIcon" Value="{x:Null}" />
+                </MultiTrigger.Conditions>
+                <Setter TargetName="PART_HeaderContentHost" Property="Margin" Value="0" />
+                <Setter TargetName="iconImage" Property="Visibility" Value="Collapsed" />
+            </MultiTrigger>
+
+            <Trigger Property="Size" Value="Small">
+                <Setter TargetName="PART_HeaderContentHost" Property="Content" Value="" />
+                <Setter TargetName="PART_HeaderContentHost" Property="Margin" Value="0" />
+                <Setter TargetName="stackPanel" Property="Margin" Value="4,0,1,0" />
+            </Trigger>
+            <Trigger Property="Size" Value="Middle">
+                <Setter TargetName="PART_HeaderContentHost" Property="Content" Value="" />
+                <Setter TargetName="PART_HeaderContentHost" Property="Margin" Value="0" />
+            </Trigger>
+
+            <Trigger Property="IsDropDownOpen" Value="True">
+                <Setter TargetName="PART_ButtonBorder" Property="Background" Value="{DynamicResource ButtonBackgroundPressed}" />
+                <Setter TargetName="PART_ButtonBorder" Property="BorderBrush" Value="{DynamicResource ButtonBorderBrushPressed}" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter TargetName="PART_HeaderContentHost" Property="Opacity" Value="0.5" />
+                <Setter TargetName="controlLabel2" Property="Opacity" Value="0.5" />
+                <Setter TargetName="iconImageBorder" Property="BorderBrush" Value="{DynamicResource controls.Ribbon.Brushes.Control.Disabled.Border}" />
+            </Trigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsMouseOver" Value="True" />
+                    <Condition Property="IsDropDownOpen" Value="False" />
+                </MultiTrigger.Conditions>
+                <Setter TargetName="PART_ButtonBorder" Property="Background" Value="{DynamicResource ButtonBackgroundPointerOver}" />
+                <Setter TargetName="PART_ButtonBorder" Property="BorderBrush" Value="{DynamicResource ControlElevationBorderBrush}" />
+            </MultiTrigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+</ResourceDictionary>

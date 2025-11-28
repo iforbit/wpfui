@@ -118,7 +118,7 @@ public sealed class D3D11Renderer : IRenderable, IDisposable
 
         _context.OMSetRenderTargets(_renderTargetView);
         _context.ClearRenderTargetView(_renderTargetView, new Color4(1, 1, 1, 1));
-        _context.RSSetViewport(new Viewport(0, 0, (int)_width, (int)_height, 0, 1));
+        _context.RSSetViewport(new Viewport(0, 0, _width, _height, 0, 1));
 
         _transformManager.ApplyToContext(_context);
         var batcher = new DrawGroupBatcher();

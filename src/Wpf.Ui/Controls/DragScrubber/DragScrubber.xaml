@@ -4,7 +4,7 @@
 
     <!--  DragScrubber 기본 스타일  -->
     <Style TargetType="{x:Type controls:DragScrubber}">
-        <Setter Property="Height" Value="20" />
+        <Setter Property="Height" Value="32" />
         <Setter Property="LabelFontSize" Value="12" />
         <Setter Property="LabelForeground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
         <Setter Property="Step" Value="1.0" />

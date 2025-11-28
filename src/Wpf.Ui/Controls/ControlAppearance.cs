@@ -54,4 +54,24 @@ public enum ControlAppearance
     /// Transparent color theme.
     /// </summary>
     Transparent,
+
+    /// <summary>
+    /// Purple color theme.
+    /// </summary>
+    Purple,
+
+    /// <summary>
+    /// Teal color theme.
+    /// </summary>
+    Teal,
+
+    /// <summary>
+    /// Pink color theme.
+    /// </summary>
+    Pink,
+
+    /// <summary>
+    /// Indigo color theme.
+    /// </summary>
+    Indigo,
 }

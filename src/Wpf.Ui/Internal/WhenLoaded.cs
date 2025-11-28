@@ -13,7 +13,7 @@ namespace Wpf.Ui.Internal;
 /// </remarks>
 internal class WhenLoaded
 {
-    public WhenLoaded( FrameworkElement target, Action<FrameworkElement> loadedAction )
+    public WhenLoaded(FrameworkElement target, Action<FrameworkElement> loadedAction)
     {
         this.target = target;
         this.loadedAction = loadedAction;
@@ -33,7 +33,7 @@ internal class WhenLoaded
         }
     }
 
-    private void TargetLoaded( object sender, RoutedEventArgs e )
+    private void TargetLoaded(object sender, RoutedEventArgs e)
     {
         this.target.Loaded -= this.TargetLoaded;
         this.loadedAction(this.target);
@@ -55,7 +55,7 @@ internal static class WhenLoadedExtension
     /// <param name="frameworkElement">Target framework element which we want to be loaded.</param>
     /// <param name="loadedAction">Action to be executed when framework element is loaded.</param>
     /// <remarks>Action is executed only once.</remarks>
-    public static void WhenLoaded( this FrameworkElement frameworkElement, Action<FrameworkElement> loadedAction )
+    public static void WhenLoaded(this FrameworkElement frameworkElement, Action<FrameworkElement> loadedAction)
     {
         // The following object will not be GCed before its time.
         // * if frameworkElement is already loaded the ctor immediately executes loadedAction and rests in piece

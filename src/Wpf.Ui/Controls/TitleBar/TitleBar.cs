@@ -3,7 +3,6 @@
 // Copyright (C) Leszek Pomianowski and WPF UI Contributors.
 // All Rights Reserved.
 
-using System.Diagnostics;
 using System.Windows.Data;
 using System.Windows.Input;
 
@@ -513,7 +512,6 @@ public class TitleBar : System.Windows.Controls.Control, IThemeControl
         //     $"INFO | {typeof(TitleBar)} received theme -  {currentApplicationTheme}",
         //     "Wpf.Ui.TitleBar"
         // );
-
         SetCurrentValue(ApplicationThemeProperty, currentApplicationTheme);
     }
 
@@ -539,7 +537,6 @@ public class TitleBar : System.Windows.Controls.Control, IThemeControl
         //     $"INFO | {typeof(TitleBar)}.CloseWindow:ForceShutdown - {ForceShutdown}",
         //     "Wpf.Ui.TitleBar"
         // );
-
         if (ForceShutdown)
         {
             UiApplication.Current.Shutdown();

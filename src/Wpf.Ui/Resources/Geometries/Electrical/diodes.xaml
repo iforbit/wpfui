@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Diodes Symbols - Auto-generated from draw.io stencils -->
+
+    <!-- Diode (100x60) -->
+    <Geometry x:Key="Diodes.Diode">
+        M30,0 L70,30 L30,60 Z M0,30 L30,30 M70,0 L70,60 M70,30 L100,30
+    </Geometry>
+
+    <!-- Field Effect Diode (100x60) -->
+    <Geometry x:Key="Diodes.Field_Effect_Diode">
+        M30,0 L70,30 L30,60 Z M0,30 L30,30 M70,0 L70,60 M70,30 L100,30 M65,0 L75,0 M65,60 L75,60
+    </Geometry>
+
+    <!-- Four Layer Diode (100x80) -->
+    <Geometry x:Key="Diodes.Four_Layer_Diode">
+        M30,10 L70,40 L30,40 Z M0,40 L30,40 M30,40 L30,70 M70,40 L100,40 M10.0,40.0 A40.0,40.0 0 0 1 50.0,0.0 A40.0,40.0 0 0 1 90.0,40.0 A40.0,40.0 0 0 1 50.0,80.0 A40.0,40.0 0 0 1 10.0,40.0 Z
+    </Geometry>
+
+    <!-- Gunn Diode (100x60) -->
+    <Geometry x:Key="Diodes.Gunn_Diode">
+        M10,0 L90,60 L90,0 L10,60 Z M0,30 L10,30 M90,30 L100,30
+    </Geometry>
+
+    <!-- Schottky Diode (100x60) -->
+    <Geometry x:Key="Diodes.Schottky_Diode">
+        M30,0 L70,30 L30,60 Z M0,30 L30,30 M60,5 L60,0 L70,0 L70,60 L80,60 L80,55 M70,30 L100,30
+    </Geometry>
+
+    <!-- Transorb 1 (100x60) -->
+    <Geometry x:Key="Diodes.Transorb_1">
+        M10,0 L90,60 L90,0 L10,60 Z M50,0 L50,60 M0,30 L10,30 M90,30 L100,30
+    </Geometry>
+
+    <!-- Transorb 2 (100x60) -->
+    <Geometry x:Key="Diodes.Transorb_2">
+        M10,0 L90,60 L90,0 L10,60 Z M40,0 L50,10 L50,50 L60,60 M0,30 L10,30 M90,30 L100,30
+    </Geometry>
+
+    <!-- Tunnel Diode (100x60) -->
+    <Geometry x:Key="Diodes.Tunnel_Diode">
+        M30,0 L70,30 L30,60 Z M60,0 L70,0 L70,60 L60,60 M70,30 L100,30 M0,30 L30,30
+    </Geometry>
+
+    <!-- Tunnel Diode 2 (100x80) -->
+    <Geometry x:Key="Diodes.Tunnel_Diode_2">
+        M30,10 L70,40 L30,70 Z M0,40 L30,40 M70,10 L70,70 M70,40 L100,40 M10.0,40.0 A40.0,40.0 0 0 1 50.0,0.0 A40.0,40.0 0 0 1 90.0,40.0 A40.0,40.0 0 0 1 50.0,80.0 A40.0,40.0 0 0 1 10.0,40.0 Z
+    </Geometry>
+
+    <!-- Varactor - Varicap (100x60) -->
+    <Geometry x:Key="Diodes.Varactor___Varicap">
+        M30,0 L70,30 L30,60 Z M75,0 L75,60 M70,60 L70,0 M70,30 L100,30 M0,30 L30,30
+    </Geometry>
+
+    <!-- Zener Diode 1 (100x50) -->
+    <Geometry x:Key="Diodes.Zener_Diode_1">
+        M25,0 L75,25 L25,50 Z M65,0 L75,0 L75,50 L85,50 M0,25 L25,25 M75,25 L100,25
+    </Geometry>
+
+    <!-- Zener Diode 2 (100x50) -->
+    <Geometry x:Key="Diodes.Zener_Diode_2">
+        M25,0 L75,25 L25,50 Z M65,0 L75,0 L75,50 M0,25 L25,25 M75,25 L100,25
+    </Geometry>
+
+    <!-- Zener Diode 3 (100x50) -->
+    <Geometry x:Key="Diodes.Zener_Diode_3">
+        M25,0 L75,25 L25,50 Z M65,0 L75,10 L75,40 L85,50 M0,25 L25,25 M75,25 L100,25
+    </Geometry>
+
+</ResourceDictionary>

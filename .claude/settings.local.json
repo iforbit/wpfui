@@ -1,0 +1,34 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(move:*)",
+      "Bash(find:*)",
+      "Read(//c/Temp/GitHub/EntropySolution/Publish/**)",
+      "Bash(./eLink.UI.exe)",
+      "Bash(taskkill:*)",
+      "Bash(start eLink.UI.exe)",
+      "Bash(tasklist)",
+      "Bash(dir:*)",
+      "Read(//c/Temp/github/WPFUI/**)",
+      "Bash(reg query:*)",
+      "Bash(copy:*)",
+      "Bash(Select-Object -First 30)",
+      "Bash(findstr:*)",
+      "Bash(powershell:*)",
+      "Bash(Select-String -Pattern \"error|warning|Build succeeded|Build FAILED\" -Context 0,1)",
+      "Bash(dotnet list:*)",
+      "WebSearch",
+      "Bash(dotnet add src/eLink.Service/eLink.Service.csproj package Docker.DotNet)",
+      "Bash(tree \"C:\\Temp\\github\\WPFUI\\src\\Wpf.Ui\\Controls\\Ribbon\" -L 2)",
+      "Bash(cmd /c dir \"D:\")",
+      "Read(//d/refProject/Fluent.Ribbon/Fluent.Ribbon/Controls/**)",
+      "Read(//d/refProject/Fluent.Ribbon/Fluent.Ribbon/Automation/Peers/**)",
+      "Read(//d/refProject/Fluent.Ribbon/Fluent.Ribbon/**)",
+      "Read(//d/refProject/Fluent.Ribbon/Fluent.Ribbon.Showcase/**)",
+      "Read(//d/refProject/IconPacks.Browser//**)",
+    ],
+    "deny": [],
+    "ask": [],
+    "defaultMode": "default"
+  }
+}

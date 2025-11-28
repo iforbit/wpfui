@@ -21,6 +21,11 @@ internal sealed class ThemeToIndexConverter : IValueConverter
             return 2;
         }
 
+        if (value is ApplicationTheme.System)
+        {
+            return 3;
+        }
+
         return 0;
     }
 
@@ -34,6 +39,11 @@ internal sealed class ThemeToIndexConverter : IValueConverter
         if (value is 2)
         {
             return ApplicationTheme.HighContrast;
+        }
+
+        if (value is 3)
+        {
+            return ApplicationTheme.System;
         }
 
         return ApplicationTheme.Light;

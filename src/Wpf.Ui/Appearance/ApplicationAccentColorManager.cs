@@ -51,10 +51,29 @@ public static class ApplicationAccentColorManager
         }
     }
 
+    private static SolidColorBrush? _cachedSystemAccentBrush;
+    private static Color _cachedSystemAccentColor;
+
     /// <summary>
     /// Gets the <see cref="Brush"/> of the SystemAccentColor.
+    /// Returns a frozen brush for optimal performance.
     /// </summary>
-    public static Brush SystemAccentBrush => new SolidColorBrush(SystemAccent);
+    public static Brush SystemAccentBrush
+    {
+        get
+        {
+            Color currentColor = SystemAccent;
+            if (_cachedSystemAccentBrush == null || _cachedSystemAccentColor != currentColor)
+            {
+                var brush = new SolidColorBrush(currentColor);
+                brush.Freeze();
+                _cachedSystemAccentBrush = brush;
+                _cachedSystemAccentColor = currentColor;
+            }
+
+            return _cachedSystemAccentBrush;
+        }
+    }
 
     /// <summary>
     /// Gets the SystemAccentColorPrimary.
@@ -74,10 +93,29 @@ public static class ApplicationAccentColorManager
         }
     }
 
+    private static SolidColorBrush? _cachedPrimaryAccentBrush;
+    private static Color _cachedPrimaryAccentColor;
+
     /// <summary>
     /// Gets the <see cref="Brush"/> of the SystemAccentColorPrimary.
+    /// Returns a frozen brush for optimal performance.
     /// </summary>
-    public static Brush PrimaryAccentBrush => new SolidColorBrush(PrimaryAccent);
+    public static Brush PrimaryAccentBrush
+    {
+        get
+        {
+            Color currentColor = PrimaryAccent;
+            if (_cachedPrimaryAccentBrush == null || _cachedPrimaryAccentColor != currentColor)
+            {
+                var brush = new SolidColorBrush(currentColor);
+                brush.Freeze();
+                _cachedPrimaryAccentBrush = brush;
+                _cachedPrimaryAccentColor = currentColor;
+            }
+
+            return _cachedPrimaryAccentBrush;
+        }
+    }
 
     /// <summary>
     /// Gets the SystemAccentColorSecondary.
@@ -97,10 +135,29 @@ public static class ApplicationAccentColorManager
         }
     }
 
+    private static SolidColorBrush? _cachedSecondaryAccentBrush;
+    private static Color _cachedSecondaryAccentColor;
+
     /// <summary>
     /// Gets the <see cref="Brush"/> of the SystemAccentColorSecondary.
+    /// Returns a frozen brush for optimal performance.
     /// </summary>
-    public static Brush SecondaryAccentBrush => new SolidColorBrush(SecondaryAccent);
+    public static Brush SecondaryAccentBrush
+    {
+        get
+        {
+            Color currentColor = SecondaryAccent;
+            if (_cachedSecondaryAccentBrush == null || _cachedSecondaryAccentColor != currentColor)
+            {
+                var brush = new SolidColorBrush(currentColor);
+                brush.Freeze();
+                _cachedSecondaryAccentBrush = brush;
+                _cachedSecondaryAccentColor = currentColor;
+            }
+
+            return _cachedSecondaryAccentBrush;
+        }
+    }
 
     /// <summary>
     /// Gets the .NET 9 system accent color directly from SystemColors.
@@ -137,8 +194,10 @@ public static class ApplicationAccentColorManager
             }
             catch
             {
-                // Fallback to current system
-                return new SolidColorBrush(GetColorizationColor());
+                // Fallback to current system with frozen brush
+                var brush = new SolidColorBrush(GetColorizationColor());
+                brush.Freeze();
+                return brush;
             }
         }
     }
@@ -161,10 +220,29 @@ public static class ApplicationAccentColorManager
         }
     }
 
+    private static SolidColorBrush? _cachedTertiaryAccentBrush;
+    private static Color _cachedTertiaryAccentColor;
+
     /// <summary>
     /// Gets the <see cref="Brush"/> of the SystemAccentColorTertiary.
+    /// Returns a frozen brush for optimal performance.
     /// </summary>
-    public static Brush TertiaryAccentBrush => new SolidColorBrush(TertiaryAccent);
+    public static Brush TertiaryAccentBrush
+    {
+        get
+        {
+            Color currentColor = TertiaryAccent;
+            if (_cachedTertiaryAccentBrush == null || _cachedTertiaryAccentColor != currentColor)
+            {
+                var brush = new SolidColorBrush(currentColor);
+                brush.Freeze();
+                _cachedTertiaryAccentBrush = brush;
+                _cachedTertiaryAccentColor = currentColor;
+            }
+
+            return _cachedTertiaryAccentBrush;
+        }
+    }
 
     /// <summary>
     /// Changes the color accents of the application based on the color entered.
@@ -240,7 +318,7 @@ public static class ApplicationAccentColorManager
             // .NET 9 WPF Fluent 테마 시스템 액센트 컬러 적용
             Color net9AccentColor = Net9SystemAccent;
             Apply(net9AccentColor, ApplicationThemeManager.GetAppTheme());
-            
+
             // 추가로 .NET 9 시스템 컬러 리소스 업데이트
             UpdateNet9SystemColorResources();
         }
@@ -264,9 +342,9 @@ public static class ApplicationAccentColorManager
                 // .NET 9 시스템 액센트 컬러를 WPF UI 리소스와 연결
                 UiApplication.Current.Resources["SystemAccentColorBrush"] = Net9SystemAccentBrush;
                 UiApplication.Current.Resources["SystemFillColorAttentionBrush"] = Net9SystemAccentBrush;
-                
+
                 System.Diagnostics.Debug.WriteLine(
-                    "INFO | .NET 9 System Accent Colors applied successfully", 
+                    "INFO | .NET 9 System Accent Colors applied successfully",
                     "Wpf.Ui.Accent"
                 );
             }
@@ -274,7 +352,7 @@ public static class ApplicationAccentColorManager
         catch (Exception ex)
         {
             System.Diagnostics.Debug.WriteLine(
-                $"WARNING | Failed to update .NET 9 system color resources: {ex.Message}", 
+                $"WARNING | Failed to update .NET 9 system color resources: {ex.Message}",
                 "Wpf.Ui.Accent"
             );
         }
@@ -312,7 +390,6 @@ public static class ApplicationAccentColorManager
         //     "INFO | SystemAccentColorTertiary: " + tertiaryAccent,
         //     "Wpf.Ui.Accent"
         // );
-
         if (secondaryAccent.GetBrightness() > BackgroundBrightnessThresholdValue)
         {
             // System.Diagnostics.Debug.WriteLine("INFO | Text on accent is DARK", "Wpf.Ui.Accent");
