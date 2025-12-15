@@ -46,9 +46,8 @@
         </Grid.RowDefinitions>
         <!--  MenuBar with Visual Studio-style integrated title and menu  -->
         <ui:MenuBar x:Name="MainMenuBar"
-                    Title="MenuBar Test - 1.33"
-                    Grid.Row="0" Height="32" ShowIcon="True"
-                    TitleFontSize="12">
+                    Title="MenuBar Test - 1.33" Grid.Row="0" Height="32"
+                    ShowIcon="True" TitleFontSize="12">
             <ui:MenuBar.Icon>
                 <ui:ImageIcon Width="24" Height="24" Source="pack://application:,,,/Assets/applicationIcon-256.png" />
             </ui:MenuBar.Icon>
@@ -159,6 +158,78 @@
                 </ui:MenuBarItem>
             </ui:MenuBar.MenuItems>
         </ui:MenuBar>
+
+        <!--  VS2022 Style Toolbar with ToolBarGroup (Drag & Drop enabled)  -->
+        <Border Grid.Row="1" Background="Transparent"
+                BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
+                BorderThickness="0,0,0,1">
+            <ui:ToolBarPanel Margin="4,2" Orientation="Horizontal"
+                             DropIndicatorBrush="{DynamicResource SystemAccentColorPrimaryBrush}">
+
+                <!--  Navigation Group  -->
+                <ui:ToolBarGroup ShowGrip="True" IsDraggable="True">
+                    <ui:ToolBarButton Icon="{ui:SymbolIcon ArrowLeft20}" ToolTip="Back" />
+                    <ui:ToolBarButton Icon="{ui:SymbolIcon ArrowRight20}" ToolTip="Forward" />
+                </ui:ToolBarGroup>
+
+                <!--  File Group  -->
+                <ui:ToolBarGroup ShowGrip="True" IsDraggable="True">
+                    <ui:ToolBarButton Icon="{ui:SymbolIcon DocumentAdd20}" ToolTip="New (Ctrl+N)" />
+                    <ui:ToolBarButton Icon="{ui:SymbolIcon FolderOpen20}" ToolTip="Open (Ctrl+O)" />
+                    <ui:ToolBarGroupSeparator />
+                    <ui:ToolBarButton Icon="{ui:SymbolIcon Save20}" ToolTip="Save (Ctrl+S)" />
+                    <ui:ToolBarButton Icon="{ui:SymbolIcon SaveArrowRight20}" ToolTip="Save All" />
+                </ui:ToolBarGroup>
+
+                <!--  Edit Group  -->
+                <ui:ToolBarGroup ShowGrip="True" IsDraggable="True">
+                    <ui:ToolBarButton Icon="{ui:SymbolIcon ArrowUndo20}" ToolTip="Undo (Ctrl+Z)" />
+                    <ui:ToolBarButton Icon="{ui:SymbolIcon ArrowRedo20}" ToolTip="Redo (Ctrl+Y)" />
+                    <ui:ToolBarGroupSeparator />
+                    <ui:ToolBarButton Icon="{ui:SymbolIcon Cut20}" ToolTip="Cut (Ctrl+X)" />
+                    <ui:ToolBarButton Icon="{ui:SymbolIcon Copy20}" ToolTip="Copy (Ctrl+C)" />
+                    <ui:ToolBarButton Icon="{ui:SymbolIcon ClipboardPaste20}" ToolTip="Paste (Ctrl+V)" />
+                </ui:ToolBarGroup>
+
+                <!--  Run Group  -->
+                <ui:ToolBarGroup ShowGrip="True" IsDraggable="True">
+                    <ui:ToolBarComboBox MinWidth="120" SelectedIndex="0">
+                        <ComboBoxItem Content="Debug" />
+                        <ComboBoxItem Content="Release" />
+                    </ui:ToolBarComboBox>
+                    <ui:ToolBarComboBox MinWidth="100" SelectedIndex="0">
+                        <ComboBoxItem Content="Any CPU" />
+                        <ComboBoxItem Content="x64" />
+                        <ComboBoxItem Content="x86" />
+                    </ui:ToolBarComboBox>
+                    <ui:ToolBarGroupSeparator />
+                    <ui:ToolBarSplitButton Icon="{ui:SymbolIcon Play20}" ToolTip="Start (F5)">
+                        <ui:ToolBarSplitButton.Flyout>
+                            <ContextMenu>
+                                <MenuItem Header="Start Without Debugging" InputGestureText="Ctrl+F5" />
+                                <MenuItem Header="Start Performance Profiler" />
+                                <Separator />
+                                <MenuItem Header="Attach to Process..." />
+                            </ContextMenu>
+                        </ui:ToolBarSplitButton.Flyout>
+                    </ui:ToolBarSplitButton>
+                    <ui:ToolBarButton Icon="{ui:SymbolIcon Pause20}" ToolTip="Pause" />
+                    <ui:ToolBarButton Icon="{ui:SymbolIcon Stop20}" ToolTip="Stop" />
+                </ui:ToolBarGroup>
+
+                <!--  View Group  -->
+                <ui:ToolBarGroup ShowGrip="True" IsDraggable="True">
+                    <ui:ToolBarToggleButton IsChecked="True" ToolTip="Show Grid">
+                        <ui:SymbolIcon Symbol="Grid20" />
+                    </ui:ToolBarToggleButton>
+                    <ui:ToolBarToggleButton ToolTip="Search">
+                        <ui:SymbolIcon Symbol="Search20" />
+                    </ui:ToolBarToggleButton>
+                </ui:ToolBarGroup>
+
+            </ui:ToolBarPanel>
+        </Border>
+
         <ui:NavigationView x:Name="RootNavigation"
                            Grid.Row="2"
                            FooterMenuItemsSource="{Binding ViewModel.NavigationFooter, Mode=OneWay}"

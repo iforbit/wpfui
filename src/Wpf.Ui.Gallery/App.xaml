@@ -30,6 +30,7 @@
             <helpers:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
             <helpers:ThemeToIndexConverter x:Key="ThemeToIndexConverter" />
             <helpers:PaneDisplayModeToIndexConverter x:Key="PaneDisplayModeToIndexConverter" />
+            <helpers:NullToBoolConverter x:Key="NullToBoolConverter" />
 
         </ResourceDictionary>
     </Application.Resources>

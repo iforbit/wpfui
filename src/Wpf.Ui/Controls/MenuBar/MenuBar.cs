@@ -164,6 +164,18 @@ public class MenuBar : Control, IThemeControl
     );
 
     /// <summary>
+    /// Identifies the <see cref="CloseCommand"/> dependency property.
+    /// When set, this command is executed instead of default close behavior.
+    /// The command can return false to cancel the close operation.
+    /// </summary>
+    public static readonly DependencyProperty CloseCommandProperty = DependencyProperty.Register(
+        nameof(CloseCommand),
+        typeof(ICommand),
+        typeof(MenuBar),
+        new PropertyMetadata(null)
+    );
+
+    /// <summary>
     /// Identifies the <see cref="ApplicationTheme"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty ApplicationThemeProperty = DependencyProperty.Register(
@@ -325,6 +337,16 @@ public class MenuBar : Control, IThemeControl
     }
 
     /// <summary>
+    /// Gets or sets the command to execute when the close button is clicked.
+    /// If set, this command handles the close logic instead of default behavior.
+    /// </summary>
+    public ICommand? CloseCommand
+    {
+        get => (ICommand?)GetValue(CloseCommandProperty);
+        set => SetValue(CloseCommandProperty, value);
+    }
+
+    /// <summary>
     /// Gets or sets the current application theme.
     /// </summary>
     public ApplicationTheme ApplicationTheme
@@ -483,6 +505,14 @@ public class MenuBar : Control, IThemeControl
 
     private void OnCloseClick(object sender, RoutedEventArgs e)
     {
+        // CloseCommand가 있으면 커스텀 핸들러에 위임 (저장 확인 다이얼로그 등)
+        if (CloseCommand != null && CloseCommand.CanExecute(null))
+        {
+            CloseCommand.Execute(null);
+            return; // Command가 종료 처리를 담당
+        }
+
+        // 기본 동작: ShowCloseConfirmation 다이얼로그
         if (ShowCloseConfirmation)
         {
             var result = new MessageBox

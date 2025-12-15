@@ -55,6 +55,7 @@
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/InfoBar/InfoBar.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/InfoBadge/InfoBadge.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/ItemsControl/ItemsControl.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/KeyframeTimeline/KeyframeTimeline.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/Label/Label.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/LabelText/LabelText.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/ListBox/ListBox.xaml" />
@@ -99,6 +100,7 @@
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/ToggleButton/ToggleButton.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/ToggleSwitch/ToggleSwitch.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/ToolBar/ToolBar.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/ToolBarGroup/ToolBarGroup.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/ToolTip/ToolTip.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/TreeGrid/TreeGrid.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/TreeView/TreeView.xaml" />
