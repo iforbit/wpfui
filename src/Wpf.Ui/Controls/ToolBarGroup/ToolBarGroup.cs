@@ -24,6 +24,7 @@ namespace Wpf.Ui.Controls;
 /// &lt;/ui:ToolBarGroup&gt;
 /// </code>
 /// </example>
+[TemplatePart(Name = "PART_DragGrip", Type = typeof(Thumb))]
 public class ToolBarGroup : ItemsControl
 {
     /// <summary>Identifies the <see cref="Header"/> dependency property.</summary>
@@ -116,7 +117,7 @@ public class ToolBarGroup : ItemsControl
     }
 
     /// <summary>
-    /// Gets or sets whether to show the group border.
+    /// Gets or sets a value indicating whether gets or sets whether to show the group border.
     /// </summary>
     [Bindable(true)]
     [Category("Appearance")]
@@ -138,7 +139,7 @@ public class ToolBarGroup : ItemsControl
     }
 
     /// <summary>
-    /// Gets or sets whether the group can be dragged to reorder.
+    /// Gets or sets a value indicating whether gets or sets whether the group can be dragged to reorder.
     /// </summary>
     [Bindable(true)]
     [Category("Behavior")]
@@ -149,7 +150,7 @@ public class ToolBarGroup : ItemsControl
     }
 
     /// <summary>
-    /// Gets or sets whether to show the drag grip handle.
+    /// Gets or sets a value indicating whether gets or sets whether to show the drag grip handle.
     /// </summary>
     [Bindable(true)]
     [Category("Appearance")]
@@ -163,6 +164,7 @@ public class ToolBarGroup : ItemsControl
     private Thumb? _dragGrip;
     private Point _dragStartPoint;
     private bool _isDragging;
+    private ToolBarPanel? _parentPanel;
 
     static ToolBarGroup()
     {
@@ -196,26 +198,108 @@ public class ToolBarGroup : ItemsControl
 
     private void OnDragGripDragStarted(object sender, DragStartedEventArgs e)
     {
-        if (!IsDraggable)
+        if (!IsDraggable || !IsLoaded || !IsMeasureValid)
+        {
+            return;
+        }
+
+        _parentPanel = FindParentToolBarPanel();
+        if (_parentPanel == null)
         {
             return;
         }
 
         _isDragging = true;
-        _dragStartPoint = Mouse.GetPosition(this);
 
-        // Start drag-drop operation
-        var data = new DataObject(typeof(ToolBarGroup), this);
-        DragDrop.DoDragDrop(this, data, DragDropEffects.Move);
+        try
+        {
+            _dragStartPoint = Mouse.GetPosition(_parentPanel);
+        }
+        catch
+        {
+            _dragStartPoint = new Point(0, 0);
+        }
+
+        // NOTE: Do NOT call CaptureMouse() - Thumb handles its own capture
+        _parentPanel.BeginDrag(this);
     }
 
     private void OnDragGripDragDelta(object sender, DragDeltaEventArgs e)
     {
-        // Visual feedback during drag can be added here
+        if (!_isDragging || _parentPanel == null)
+        {
+            return;
+        }
+
+        try
+        {
+            Point currentPos = Mouse.GetPosition(_parentPanel);
+            _parentPanel.UpdateDragPosition(this, currentPos);
+        }
+        catch
+        {
+            // Ignore position errors during drag
+        }
     }
 
     private void OnDragGripDragCompleted(object sender, DragCompletedEventArgs e)
     {
+        ToolBarPanel? panel = _parentPanel;
+        var wasDragging = _isDragging;
+
+        // Reset state first
         _isDragging = false;
+        _parentPanel = null;
+
+        // NOTE: Do NOT call ReleaseMouseCapture() - Thumb handles its own capture
+
+        // Notify parent panel that drag ended
+        if (wasDragging && panel != null)
+        {
+            panel.EndDrag(this);
+        }
+    }
+
+    private ToolBarPanel? FindParentToolBarPanel()
+    {
+        // Method 1: Walk up visual tree
+        try
+        {
+            DependencyObject? current = VisualTreeHelper.GetParent(this);
+            while (current != null)
+            {
+                if (current is ToolBarPanel panel)
+                {
+                    return panel;
+                }
+
+                current = VisualTreeHelper.GetParent(current);
+            }
+        }
+        catch
+        {
+            // Ignore visual tree traversal errors
+        }
+
+        // Method 2: Walk up logical tree
+        try
+        {
+            DependencyObject? current = LogicalTreeHelper.GetParent(this);
+            while (current != null)
+            {
+                if (current is ToolBarPanel panel)
+                {
+                    return panel;
+                }
+
+                current = LogicalTreeHelper.GetParent(current);
+            }
+        }
+        catch
+        {
+            // Ignore logical tree traversal errors
+        }
+
+        return null;
     }
 }

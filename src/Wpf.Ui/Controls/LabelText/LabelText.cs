@@ -381,6 +381,11 @@ public class LabelText : TextBox
 
     private void EnsureTransformGroup()
     {
+        if (_labelElement is null)
+        {
+            return;
+        }
+
         if (_labelElement.RenderTransform is not TransformGroup)
         {
             var transformGroup = new TransformGroup();

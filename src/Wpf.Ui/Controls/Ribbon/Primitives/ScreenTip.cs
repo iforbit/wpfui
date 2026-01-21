@@ -406,24 +406,3 @@ public class ScreenTip : ToolTip, ILogicalChildSupport
         }
     }
 }
-
-/// <summary>
-/// Event args for HelpPressed event handler
-/// </summary>
-public class ScreenTipHelpEventArgs : EventArgs
-{
-    /// <summary>
-    /// Initializes a new instance of the <see cref="ScreenTipHelpEventArgs"/> class.
-    /// Constructor
-    /// </summary>
-    /// <param name="helpTopic">Help topic</param>
-    public ScreenTipHelpEventArgs(object? helpTopic)
-    {
-        this.HelpTopic = helpTopic;
-    }
-
-    /// <summary>
-    /// Gets help topic associated with screen tip
-    /// </summary>
-    public object? HelpTopic { get; }
-}

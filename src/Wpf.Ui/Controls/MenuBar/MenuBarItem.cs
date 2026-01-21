@@ -2,10 +2,6 @@
 // If a copy of the MIT was not distributed with this file, You can obtain one at https://opensource.org/licenses/MIT.
 // Copyright (C) Lighted Solutions and Contributors.
 
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-
 namespace Wpf.Ui.Controls;
 
 /// <summary>
@@ -81,7 +77,7 @@ public class MenuBarItem : System.Windows.Controls.MenuItem
     }
 
     /// <summary>
-    /// Gets or sets whether the item should be highlighted when submenu is open.
+    /// Gets or sets a value indicating whether gets or sets whether the item should be highlighted when submenu is open.
     /// </summary>
     public bool IsHighlightedOnOpen
     {

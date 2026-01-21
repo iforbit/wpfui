@@ -50,21 +50,21 @@ public class ImageIcon : IconElement
         if (!double.IsNaN(width) && !double.IsNaN(height))
         {
             Size constrainedSize = new Size(width, height);
-            base.MeasureOverride(constrainedSize);
+            _ = base.MeasureOverride(constrainedSize);
             return constrainedSize;
         }
 
         if (!double.IsNaN(width))
         {
             Size constrainedSize = new Size(width, availableSize.Height);
-            base.MeasureOverride(constrainedSize);
+            _ = base.MeasureOverride(constrainedSize);
             return new Size(width, Math.Min(width, availableSize.Height));
         }
 
         if (!double.IsNaN(height))
         {
             Size constrainedSize = new Size(availableSize.Width, height);
-            base.MeasureOverride(constrainedSize);
+            _ = base.MeasureOverride(constrainedSize);
             return new Size(Math.Min(height, availableSize.Width), height);
         }
 

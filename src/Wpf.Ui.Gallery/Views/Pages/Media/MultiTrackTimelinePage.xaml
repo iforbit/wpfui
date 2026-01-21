@@ -1,0 +1,293 @@
+<Page x:Class="Wpf.Ui.Gallery.Views.Pages.Media.MultiTrackTimelinePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:controls="clr-namespace:Wpf.Ui.Gallery.Controls"
+      xmlns:local="clr-namespace:Wpf.Ui.Gallery.Views.Pages.Media"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      Title="MultiTrackTimelinePage"
+      controls:PageControlDocumentation.DocumentationType="{x:Type ui:MultiTrackTimeline}"
+      d:DataContext="{d:DesignInstance local:MultiTrackTimelinePage,
+                                       IsDesignTimeCreatable=False}"
+      d:DesignHeight="700"
+      d:DesignWidth="900"
+      ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
+      ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+      Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+      mc:Ignorable="d">
+
+    <StackPanel Margin="0,0,0,24">
+        <!--  Basic MultiTrackTimeline  -->
+        <controls:ControlExample Margin="0" HeaderText="Multi-Track Timeline for property-based animation editing (Unity/Blender style)." XamlCode="&lt;ui:MultiTrackTimeline TrackGroups=&quot;{Binding Groups}&quot; Duration=&quot;3.0&quot; /&gt;">
+            <StackPanel>
+                <ui:MultiTrackTimeline x:Name="MainTimeline"
+                                       Height="250"
+                                       TrackGroups="{Binding ViewModel.TrackGroups}"
+                                       CurrentTime="{Binding ViewModel.CurrentTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                       SelectedTrack="{Binding ViewModel.SelectedTrack, Mode=TwoWay}"
+                                       SelectedKeyframe="{Binding ViewModel.SelectedKeyframe, Mode=TwoWay}"
+                                       SelectedSegment="{Binding ViewModel.SelectedSegment, Mode=TwoWay}"
+                                       Duration="{Binding ViewModel.Duration}"
+                                       ScrubberBrush="{Binding ViewModel.ScrubberBrush}"
+                                       SegmentBrush="{Binding ViewModel.SegmentBrush}"
+                                       KeyframeBrush="{Binding ViewModel.KeyframeBrush}"
+                                       KeyframeSelectedBrush="{Binding ViewModel.KeyframeSelectedBrush}"
+                                       WaypointBrush="{Binding ViewModel.WaypointBrush}"
+                                       SegmentSelectedBrush="{Binding ViewModel.SegmentSelectedBrush}" />
+
+                <!--  Control buttons  -->
+                <StackPanel Margin="0,12,0,0" Orientation="Horizontal">
+                    <ui:Button Margin="0,0,8,0"
+                               Command="{Binding ViewModel.PlayCommand}"
+                               Content="Play"
+                               Icon="{ui:SymbolIcon Play24}" />
+                    <ui:Button Margin="0,0,8,0"
+                               Command="{Binding ViewModel.PauseCommand}"
+                               Content="Pause"
+                               Icon="{ui:SymbolIcon Pause24}" />
+                    <ui:Button Margin="0,0,8,0"
+                               Command="{Binding ViewModel.StopCommand}"
+                               Content="Stop"
+                               Icon="{ui:SymbolIcon Stop24}" />
+                    <Border Width="1" Margin="8,4" Background="{DynamicResource DividerStrokeColorDefaultBrush}" />
+                    <ui:Button Margin="0,0,8,0"
+                               Command="{Binding ViewModel.AddKeyframeCommand}"
+                               Content="Add Keyframe"
+                               Icon="{ui:SymbolIcon Add24}" />
+                    <ui:Button Margin="0,0,8,0"
+                               Command="{Binding ViewModel.RemoveKeyframeCommand}"
+                               Content="Remove"
+                               Icon="{ui:SymbolIcon Delete24}" />
+                    <Border Width="1" Margin="8,4" Background="{DynamicResource DividerStrokeColorDefaultBrush}" />
+                    <ui:Button Margin="0,0,8,0"
+                               Command="{Binding ViewModel.AddWaypointCommand}"
+                               Content="Add Waypoint"
+                               Icon="{ui:SymbolIcon AddCircle24}" />
+                    <ui:Button Margin="0,0,8,0"
+                               Command="{Binding ViewModel.RemoveWaypointCommand}"
+                               Content="Remove Waypoint"
+                               Icon="{ui:SymbolIcon SubtractCircle24}" />
+                    <Border Width="1" Margin="8,4" Background="{DynamicResource DividerStrokeColorDefaultBrush}" />
+                    <ui:Button Command="{Binding ViewModel.ResetToSampleCommand}"
+                               Content="Reset"
+                               Icon="{ui:SymbolIcon ArrowReset24}" />
+                </StackPanel>
+
+                <!--  Status and time display  -->
+                <Grid Margin="0,8,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0"
+                               Style="{DynamicResource CaptionTextBlockStyle}"
+                               Text="{Binding ViewModel.StatusText}" />
+
+                    <TextBlock Grid.Column="1" VerticalAlignment="Center">
+                        <Run Text="Time: " />
+                        <Run FontWeight="SemiBold" Text="{Binding ViewModel.CurrentTime, StringFormat={}{0:F2}}" />
+                        <Run Text="s / " />
+                        <Run Text="{Binding ViewModel.Duration, StringFormat={}{0:F1}}" />
+                        <Run Text="s" />
+                    </TextBlock>
+                </Grid>
+
+                <!--  Selection info  -->
+                <StackPanel Margin="0,4,0,0" Orientation="Horizontal">
+                    <TextBlock Style="{DynamicResource CaptionTextBlockStyle}" Foreground="{DynamicResource TextFillColorSecondaryBrush}">
+                        <Run Text="Track: " />
+                        <Run FontWeight="SemiBold" Text="{Binding ViewModel.SelectedTrack.PropertyName, FallbackValue='-'}" />
+                    </TextBlock>
+                    <TextBlock Margin="16,0,0,0" Style="{DynamicResource CaptionTextBlockStyle}" Foreground="{DynamicResource TextFillColorSecondaryBrush}">
+                        <Run Text="Keyframe: " />
+                        <Run FontWeight="SemiBold" Text="{Binding ViewModel.SelectedKeyframe.Time, StringFormat={}{0:F2}s, FallbackValue='-'}" />
+                    </TextBlock>
+                    <TextBlock Margin="16,0,0,0" Style="{DynamicResource CaptionTextBlockStyle}" Foreground="{DynamicResource TextFillColorSecondaryBrush}">
+                        <Run Text="Segment: " />
+                        <Run FontWeight="SemiBold" Text="{Binding ViewModel.SelectedSegment.StartTime, StringFormat={}{0:F2}s, FallbackValue='-'}" />
+                        <Run Text="~" />
+                        <Run FontWeight="SemiBold" Text="{Binding ViewModel.SelectedSegment.EndTime, StringFormat={}{0:F2}s, FallbackValue=''}" />
+                    </TextBlock>
+                </StackPanel>
+            </StackPanel>
+        </controls:ControlExample>
+
+        <!--  Features Description  -->
+        <controls:ControlExample Margin="0,36,0,0" HeaderText="Key Features" XamlCode="">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" Margin="0,0,16,0">
+                    <TextBlock FontWeight="SemiBold" Text="Track Types" />
+                    <TextBlock Margin="0,8,0,0" TextWrapping="Wrap"
+                               Style="{DynamicResource CaptionTextBlockStyle}">
+                        <Run FontWeight="SemiBold" Text="Numeric:" />
+                        <Run Text="Double values with min/max range (Rotation, Scale, Opacity)" />
+                    </TextBlock>
+                    <TextBlock Margin="0,4,0,0" TextWrapping="Wrap"
+                               Style="{DynamicResource CaptionTextBlockStyle}">
+                        <Run FontWeight="SemiBold" Text="Color:" />
+                        <Run Text="Hex color values with interpolation (#RRGGBB)" />
+                    </TextBlock>
+                    <TextBlock Margin="0,4,0,0" TextWrapping="Wrap"
+                               Style="{DynamicResource CaptionTextBlockStyle}">
+                        <Run FontWeight="SemiBold" Text="Boolean:" />
+                        <Run Text="On/Off values with Hold interpolation (Visibility)" />
+                    </TextBlock>
+                    <TextBlock Margin="0,4,0,0" TextWrapping="Wrap"
+                               Style="{DynamicResource CaptionTextBlockStyle}">
+                        <Run FontWeight="SemiBold" Text="Enum:" />
+                        <Run Text="Discrete values from a predefined set" />
+                    </TextBlock>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1">
+                    <TextBlock FontWeight="SemiBold" Text="Interactions" />
+                    <TextBlock Margin="0,8,0,0" TextWrapping="Wrap"
+                               Style="{DynamicResource CaptionTextBlockStyle}">
+                        <Run FontWeight="SemiBold" Text="Scrubber:" />
+                        <Run Text="Drag the red playhead to seek" />
+                    </TextBlock>
+                    <TextBlock Margin="0,4,0,0" TextWrapping="Wrap"
+                               Style="{DynamicResource CaptionTextBlockStyle}">
+                        <Run FontWeight="SemiBold" Text="Zoom:" />
+                        <Run Text="Mouse wheel on timeline canvas" />
+                    </TextBlock>
+                    <TextBlock Margin="0,4,0,0" TextWrapping="Wrap"
+                               Style="{DynamicResource CaptionTextBlockStyle}">
+                        <Run FontWeight="SemiBold" Text="Expand/Collapse:" />
+                        <Run Text="Click group headers to toggle" />
+                    </TextBlock>
+                    <TextBlock Margin="0,4,0,0" TextWrapping="Wrap"
+                               Style="{DynamicResource CaptionTextBlockStyle}">
+                        <Run FontWeight="SemiBold" Text="Resize:" />
+                        <Run Text="Drag the splitter between panels" />
+                    </TextBlock>
+                </StackPanel>
+            </Grid>
+        </controls:ControlExample>
+
+        <!--  Color Customization  -->
+        <controls:ControlExample Margin="0,36,0,0" HeaderText="Runtime color customization for Scrubber, Segment, Keyframe, and Waypoint." XamlCode="&lt;ui:MultiTrackTimeline ScrubberBrush=&quot;Red&quot; SegmentBrush=&quot;Blue&quot; SegmentSelectedBrush=&quot;Yellow&quot; KeyframeBrush=&quot;Blue&quot; KeyframeSelectedBrush=&quot;Green&quot; WaypointBrush=&quot;Orange&quot; /&gt;">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <!--  Row 0: Scrubber, Segment  -->
+                <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,12,8">
+                    <TextBlock Text="Scrubber" FontWeight="SemiBold" Margin="0,0,0,4" />
+                    <ComboBox ItemsSource="{Binding ViewModel.BrushPresets}"
+                              SelectedValue="{Binding ViewModel.ScrubberBrush, Mode=TwoWay}"
+                              SelectedValuePath="Brush"
+                              DisplayMemberPath="Name" />
+                </StackPanel>
+                <StackPanel Grid.Row="0" Grid.Column="1" Margin="0,0,0,8">
+                    <TextBlock Text="Segment" FontWeight="SemiBold" Margin="0,0,0,4" />
+                    <ComboBox ItemsSource="{Binding ViewModel.BrushPresets}"
+                              SelectedValue="{Binding ViewModel.SegmentBrush, Mode=TwoWay}"
+                              SelectedValuePath="Brush"
+                              DisplayMemberPath="Name" />
+                </StackPanel>
+
+                <!--  Row 1: Keyframe, Keyframe Selected  -->
+                <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,12,8">
+                    <TextBlock Text="Keyframe" FontWeight="SemiBold" Margin="0,0,0,4" />
+                    <ComboBox ItemsSource="{Binding ViewModel.BrushPresets}"
+                              SelectedValue="{Binding ViewModel.KeyframeBrush, Mode=TwoWay}"
+                              SelectedValuePath="Brush"
+                              DisplayMemberPath="Name" />
+                </StackPanel>
+                <StackPanel Grid.Row="1" Grid.Column="1" Margin="0,0,0,8">
+                    <TextBlock Text="Keyframe (Selected)" FontWeight="SemiBold" Margin="0,0,0,4" />
+                    <ComboBox ItemsSource="{Binding ViewModel.BrushPresets}"
+                              SelectedValue="{Binding ViewModel.KeyframeSelectedBrush, Mode=TwoWay}"
+                              SelectedValuePath="Brush"
+                              DisplayMemberPath="Name" />
+                </StackPanel>
+
+                <!--  Row 2: Waypoint, Segment Selected  -->
+                <StackPanel Grid.Row="2" Grid.Column="0" Margin="0,0,12,8">
+                    <TextBlock Text="Waypoint" FontWeight="SemiBold" Margin="0,0,0,4" />
+                    <ComboBox ItemsSource="{Binding ViewModel.BrushPresets}"
+                              SelectedValue="{Binding ViewModel.WaypointBrush, Mode=TwoWay}"
+                              SelectedValuePath="Brush"
+                              DisplayMemberPath="Name" />
+                </StackPanel>
+                <StackPanel Grid.Row="2" Grid.Column="1" Margin="0,0,0,8">
+                    <TextBlock Text="Segment (Selected)" FontWeight="SemiBold" Margin="0,0,0,4" />
+                    <ComboBox ItemsSource="{Binding ViewModel.BrushPresets}"
+                              SelectedValue="{Binding ViewModel.SegmentSelectedBrush, Mode=TwoWay}"
+                              SelectedValuePath="Brush"
+                              DisplayMemberPath="Name" />
+                </StackPanel>
+
+                <!--  Color Preview  -->
+                <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="0,4,0,0">
+                    <Border Width="24" Height="24" Margin="0,0,8,0" CornerRadius="12" Background="{Binding ViewModel.ScrubberBrush}" ToolTip="Scrubber" />
+                    <Border Width="24" Height="24" Margin="0,0,8,0" CornerRadius="4" Background="{Binding ViewModel.SegmentBrush}" ToolTip="Segment" />
+                    <Border Width="24" Height="24" Margin="0,0,8,0" CornerRadius="4" BorderThickness="2" BorderBrush="{Binding ViewModel.SegmentSelectedBrush}" Background="{Binding ViewModel.SegmentBrush}" ToolTip="Segment Selected" />
+                    <Border Width="24" Height="24" Margin="0,0,8,0" CornerRadius="12" Background="{Binding ViewModel.KeyframeBrush}" ToolTip="Keyframe" />
+                    <Border Width="24" Height="24" Margin="0,0,8,0" CornerRadius="12" Background="{Binding ViewModel.KeyframeSelectedBrush}" ToolTip="Keyframe Selected" />
+                    <Border Width="24" Height="24" CornerRadius="2" Background="{Binding ViewModel.WaypointBrush}" ToolTip="Waypoint">
+                        <Border.RenderTransform>
+                            <RotateTransform Angle="45" CenterX="12" CenterY="12" />
+                        </Border.RenderTransform>
+                    </Border>
+                </StackPanel>
+            </Grid>
+        </controls:ControlExample>
+
+        <!--  Compact Timeline  -->
+        <controls:ControlExample Margin="0,36,0,0" HeaderText="Compact style for space-constrained layouts." XamlCode="&lt;ui:MultiTrackTimeline TrackHeight=&quot;18&quot; TrackListWidth=&quot;120&quot; /&gt;">
+            <ui:MultiTrackTimeline x:Name="CompactTimeline"
+                                   Height="150"
+                                   TrackHeight="18"
+                                   TrackListWidth="120"
+                                   TrackGroups="{Binding ViewModel.TrackGroups}"
+                                   CurrentTime="{Binding ViewModel.CurrentTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                   Duration="{Binding ViewModel.Duration}"
+                                   ScrubberBrush="{Binding ViewModel.ScrubberBrush}"
+                                   SegmentBrush="{Binding ViewModel.SegmentBrush}"
+                                   KeyframeBrush="{Binding ViewModel.KeyframeBrush}"
+                                   KeyframeSelectedBrush="{Binding ViewModel.KeyframeSelectedBrush}"
+                                   WaypointBrush="{Binding ViewModel.WaypointBrush}"
+                                   SegmentSelectedBrush="{Binding ViewModel.SegmentSelectedBrush}" />
+        </controls:ControlExample>
+
+        <!--  Usage Code Example  -->
+        <controls:ControlExample Margin="0,36,0,0" HeaderText="Creating tracks programmatically" XamlCode="">
+            <Border Padding="12"
+                    Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{DynamicResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1" CornerRadius="4">
+                <TextBlock FontFamily="Consolas" FontSize="11" TextWrapping="Wrap">
+                    <Run Text="// Create track group" /><LineBreak />
+                    <Run Text="var group = new TimelineTrackGroup(&quot;Transform&quot;);" /><LineBreak /><LineBreak />
+                    <Run Text="// Create numeric track" /><LineBreak />
+                    <Run Text="var rotationTrack = TimelineTrack.CreateNumeric(&quot;Rotation&quot;, -360, 360);" /><LineBreak />
+                    <Run Text="rotationTrack.Keyframes.Add(new TimelineKeyframe(0.0, 0.0));" /><LineBreak />
+                    <Run Text="rotationTrack.Keyframes.Add(new TimelineKeyframe(1.0, 180.0));" /><LineBreak /><LineBreak />
+                    <Run Text="// Create color track" /><LineBreak />
+                    <Run Text="var colorTrack = TimelineTrack.CreateColor(&quot;Fill&quot;);" /><LineBreak />
+                    <Run Text="colorTrack.Keyframes.Add(new TimelineKeyframe(0.0, &quot;#FF0078D4&quot;));" /><LineBreak /><LineBreak />
+                    <Run Text="group.Tracks.Add(rotationTrack);" /><LineBreak />
+                    <Run Text="group.Tracks.Add(colorTrack);" /><LineBreak />
+                    <Run Text="timeline.TrackGroups.Add(group);" />
+                </TextBlock>
+            </Border>
+        </controls:ControlExample>
+    </StackPanel>
+</Page>

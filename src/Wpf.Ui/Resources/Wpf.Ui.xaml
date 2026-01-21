@@ -32,7 +32,7 @@
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/CardControl/CardControl.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/CardExpander/CardExpander.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/CheckBox/CheckBox.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/CheckBox/CheckBox.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/CheckBox/CompactCheckBox.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/ColorPicker/ColorPicker.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/ComboBox/ComboBox.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/ComboBox/ComboBoxExtension.xaml" />
@@ -56,6 +56,7 @@
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/InfoBadge/InfoBadge.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/ItemsControl/ItemsControl.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/KeyframeTimeline/KeyframeTimeline.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/MultiTrackTimeline/MultiTrackTimeline.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/Label/Label.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/LabelText/LabelText.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Wpf.Ui;component/Controls/ListBox/ListBox.xaml" />

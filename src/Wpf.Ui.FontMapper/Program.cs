@@ -3,6 +3,10 @@
 // Copyright (C) Leszek Pomianowski and WPF UI Contributors.
 // All Rights Reserved.
 
+// FontMapper is a dev-time code generation tool, not intended for AOT deployment
+#pragma warning disable IL2026 // RequiresUnreferencedCode - dev tool uses reflection for JSON deserialization
+#pragma warning disable IL3050 // RequiresDynamicCode - dev tool uses dynamic code for JSON deserialization
+
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -12,9 +16,7 @@ using Wpf.Ui.FontMapper;
 Console.WriteLine("Fluent System Icons Mapper");
 System.Diagnostics.Debug.WriteLine("INFO | Fluent System Icons Mapper", "Wpf.Ui.FontMapper");
 
-var workingDirectory =
-    Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location)
-    ?? throw new InvalidOperationException("Could not determine the working directory.");
+var workingDirectory = AppContext.BaseDirectory;
 
 var regularIcons = new FontSource(
     "SymbolRegular",

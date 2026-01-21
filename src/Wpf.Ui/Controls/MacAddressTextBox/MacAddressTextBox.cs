@@ -33,16 +33,16 @@ public partial class MacAddressTextBox : Wpf.Ui.Controls.TextBox
 
     public static readonly DependencyProperty MaskTypeProperty = DependencyProperty.Register(
         nameof(MaskType),
-        typeof(MaskType),
+        typeof(MacMaskType),
         typeof(MacAddressTextBox),
-        new PropertyMetadata(MaskType.None));
+        new PropertyMetadata(MacMaskType.None));
 
     /// <summary>
     /// Gets or sets 마스크의 타입을 지정합니다. 기본은 None이며, RegEx로 설정하면 Mask 속성이 정규식으로 해석됩니다.
     /// </summary>
-    public MaskType MaskType
+    public MacMaskType MaskType
     {
-        get => (MaskType)GetValue(MaskTypeProperty);
+        get => (MacMaskType)GetValue(MaskTypeProperty);
         set => SetValue(MaskTypeProperty, value);
     }
 
@@ -115,7 +115,7 @@ public partial class MacAddressTextBox : Wpf.Ui.Controls.TextBox
 
     protected override void OnPreviewTextInput(TextCompositionEventArgs e)
     {
-        if (MaskType == MaskType.RegEx && !string.IsNullOrWhiteSpace(Mask))
+        if (MaskType == MacMaskType.RegEx && !string.IsNullOrWhiteSpace(Mask))
         {
             string proposedText = GetProposedText(e.Text);
 
@@ -165,7 +165,7 @@ public partial class MacAddressTextBox : Wpf.Ui.Controls.TextBox
     {
         base.OnTextChanged(e);
 
-        if (MaskType == MaskType.RegEx && !string.IsNullOrWhiteSpace(Mask))
+        if (MaskType == MacMaskType.RegEx && !string.IsNullOrWhiteSpace(Mask))
         {
             // 기존 텍스트에서 콜론(:) 제거
             string textWithoutColons = this.Text.Replace(":", string.Empty);

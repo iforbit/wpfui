@@ -157,8 +157,9 @@ public partial class IconsViewModel : ViewModel
                     });
                 }
             }
-            else // FluentSystemIcons (default)
+            else
             {
+                // FluentSystemIcons (default)
                 var names = Enum.GetNames(typeof(SymbolRegular));
                 names = names.OrderBy(n => n).ToArray();
 

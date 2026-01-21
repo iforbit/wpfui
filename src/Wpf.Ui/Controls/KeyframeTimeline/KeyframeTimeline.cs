@@ -40,7 +40,6 @@ public class KeyframeTimeline : Control
     private ItemsControl? _keyframeItemsControl;
     private ItemsControl? _segmentItemsControl;
 
-    private bool _isDraggingScrubber;
     private bool _isPanning;
     private bool _isDraggingKeyframe;
     private KeyframePoint? _draggingKeyframe;
@@ -118,7 +117,7 @@ public class KeyframeTimeline : Control
             nameof(KeyframePoints),
             typeof(ObservableCollection<KeyframePoint>),
             typeof(KeyframeTimeline),
-            new PropertyMetadata(null, OnKeyframePointsPropertyChanged));
+            new PropertyMetadata(null, OnKeyframePointsChanged));
 
     /// <summary>
     /// 키프레임 세그먼트 컬렉션 (범위/구간)
@@ -128,7 +127,7 @@ public class KeyframeTimeline : Control
             nameof(KeyframeSegments),
             typeof(ObservableCollection<KeyframeSegment>),
             typeof(KeyframeTimeline),
-            new PropertyMetadata(null, OnKeyframeSegmentsPropertyChanged));
+            new PropertyMetadata(null, OnKeyframeSegmentsChanged));
 
     /// <summary>
     /// 선택된 세그먼트
@@ -452,14 +451,14 @@ public class KeyframeTimeline : Control
         }
     }
 
-    private static object CoerceCurrentTime(DependencyObject d, object value)
+    private static object CoerceCurrentTime(DependencyObject d, object? value)
     {
         if (d is KeyframeTimeline timeline && value is double time)
         {
             return Math.Clamp(time, timeline.StartTime, timeline.EndTime);
         }
 
-        return value;
+        return value ?? 0.0;
     }
 
     private static void OnSelectedPointChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -511,7 +510,7 @@ public class KeyframeTimeline : Control
         }
     }
 
-    private static object CoerceViewportStart(DependencyObject d, object value)
+    private static object CoerceViewportStart(DependencyObject d, object? value)
     {
         if (d is KeyframeTimeline timeline && value is double start)
         {
@@ -520,20 +519,20 @@ public class KeyframeTimeline : Control
             return Math.Clamp(start, timeline.StartTime, maxStart);
         }
 
-        return value;
+        return value ?? 0.0;
     }
 
-    private static object CoerceViewportDuration(DependencyObject d, object value)
+    private static object CoerceViewportDuration(DependencyObject d, object? value)
     {
         if (d is KeyframeTimeline timeline && value is double duration)
         {
             return Math.Clamp(duration, timeline.MinViewportDuration, timeline.MaxViewportDuration);
         }
 
-        return value;
+        return value ?? 1.0;
     }
 
-    private static void OnKeyframePointsPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void OnKeyframePointsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if (d is KeyframeTimeline timeline)
         {
@@ -559,7 +558,7 @@ public class KeyframeTimeline : Control
         }
     }
 
-    private static void OnKeyframeSegmentsPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void OnKeyframeSegmentsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if (d is KeyframeTimeline timeline)
         {
@@ -651,7 +650,7 @@ public class KeyframeTimeline : Control
             _timeRuler.MouseLeftButtonUp += OnRulerMouseLeftButtonUp;
             _timeRuler.MouseMove += OnRulerMouseMove;
             _timeRuler.MouseWheel += OnRulerMouseWheel; // 타임 룰러에서도 휠 줌
-            _timeRuler.Cursor = Cursors.SizeWE; // 좌우 화살표 커서
+            _timeRuler.SetCurrentValue(CursorProperty, Cursors.SizeWE); // 좌우 화살표 커서
         }
 
         // ItemsControl 바인딩 및 Keyframe Thumb 이벤트
@@ -668,6 +667,9 @@ public class KeyframeTimeline : Control
             _keyframeItemsControl.AddHandler(Thumb.DragStartedEvent, new DragStartedEventHandler(OnKeyframeDragStarted));
             _keyframeItemsControl.AddHandler(Thumb.DragDeltaEvent, new DragDeltaEventHandler(OnKeyframeDragDelta));
             _keyframeItemsControl.AddHandler(Thumb.DragCompletedEvent, new DragCompletedEventHandler(OnKeyframeDragCompleted));
+
+            // 클릭으로 선택 (드래그 없이도 선택 가능하도록)
+            _keyframeItemsControl.AddHandler(UIElement.PreviewMouseLeftButtonDownEvent, new MouseButtonEventHandler(OnKeyframeMouseLeftButtonDown));
         }
 
         // Segment ItemsControl 바인딩 및 리사이즈 핸들 이벤트
@@ -708,7 +710,6 @@ public class KeyframeTimeline : Control
 
     private void OnScrubberDragStarted(object sender, DragStartedEventArgs e)
     {
-        _isDraggingScrubber = true;
         ScrubberDragStarted?.Invoke(this, new KeyframeTimelineEventArgs(CurrentTime));
     }
 
@@ -735,8 +736,61 @@ public class KeyframeTimeline : Control
 
     private void OnScrubberDragCompleted(object sender, DragCompletedEventArgs e)
     {
-        _isDraggingScrubber = false;
         ScrubberDragCompleted?.Invoke(this, new KeyframeTimelineEventArgs(CurrentTime));
+    }
+
+    private void OnKeyframeMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        // Thumb 클릭 시 바로 선택 (드래그 없이도 선택 가능)
+        if (e.OriginalSource is FrameworkElement element)
+        {
+            // Thumb 또는 Thumb 내부 요소에서 KeyframePoint 찾기
+            KeyframePoint? point = FindKeyframePointFromElement(element);
+            if (point != null)
+            {
+                SetCurrentValue(SelectedPointProperty, point);
+
+                // Command 실행
+                if (KeyframeClickCommand?.CanExecute(point) == true)
+                {
+                    KeyframeClickCommand.Execute(point);
+                }
+
+                // NOTE: e.Handled = true 제거!
+                // PreviewMouseLeftButtonDown (Tunneling)에서 Handled=true하면
+                // Thumb의 드래그 시작 로직이 실행되지 않음.
+                // Track 클릭 방지는 OnTrackMouseLeftButtonDown에서 처리
+            }
+        }
+    }
+
+    private KeyframePoint? FindKeyframePointFromElement(FrameworkElement element)
+    {
+        // Tag에서 직접 찾기
+        if (element.Tag is KeyframePoint point)
+        {
+            return point;
+        }
+
+        // DataContext에서 찾기
+        if (element.DataContext is KeyframePoint dcPoint)
+        {
+            return dcPoint;
+        }
+
+        // 부모에서 찾기 (Thumb 내부 요소인 경우)
+        if (element.Parent is FrameworkElement parent)
+        {
+            return FindKeyframePointFromElement(parent);
+        }
+
+        // TemplatedParent에서 찾기 (ControlTemplate 내부 요소인 경우)
+        if (element.TemplatedParent is FrameworkElement templatedParent)
+        {
+            return FindKeyframePointFromElement(templatedParent);
+        }
+
+        return null;
     }
 
     private void OnKeyframeDragStarted(object sender, DragStartedEventArgs e)
@@ -746,7 +800,7 @@ public class KeyframeTimeline : Control
             _isDraggingKeyframe = true;
             _draggingKeyframe = point;
 
-            // 드래그 시작 시 선택
+            // 드래그 시작 시 선택 (클릭에서 이미 처리되지만 보험용)
             SetCurrentValue(SelectedPointProperty, point);
         }
     }
@@ -800,6 +854,9 @@ public class KeyframeTimeline : Control
             if (segment != null)
             {
                 SetCurrentValue(SelectedSegmentProperty, segment);
+
+                // Segment 클릭 시 이벤트 버블링 중단 (Track으로 전달되어 Scrubber가 이동하지 않도록)
+                e.Handled = true;
             }
         }
     }
@@ -875,6 +932,7 @@ public class KeyframeTimeline : Control
         {
             // 왼쪽 핸들: StartTime 조정
             double newStartTime = _resizingSegment.StartTime + deltaTime;
+
             // EndTime보다 작고 타임라인 범위 내로 제한 (최소 0.01초 간격 유지)
             newStartTime = Math.Clamp(newStartTime, StartTime, _resizingSegment.EndTime - 0.01);
             _resizingSegment.StartTime = newStartTime;
@@ -883,6 +941,7 @@ public class KeyframeTimeline : Control
         {
             // 오른쪽 핸들: EndTime 조정
             double newEndTime = _resizingSegment.EndTime + deltaTime;
+
             // StartTime보다 크고 타임라인 범위 내로 제한 (최소 0.01초 간격 유지)
             newEndTime = Math.Clamp(newEndTime, _resizingSegment.StartTime + 0.01, EndTime);
             _resizingSegment.EndTime = newEndTime;
@@ -913,7 +972,17 @@ public class KeyframeTimeline : Control
             return;
         }
 
-        // 트랙 클릭 시 해당 위치로 스크러버 이동
+        // Keyframe 또는 Segment 클릭 시 Scrubber 이동하지 않음
+        if (e.OriginalSource is FrameworkElement element)
+        {
+            if (FindKeyframePointFromElement(element) != null ||
+                FindSegmentFromElement(element) != null)
+            {
+                return; // Keyframe/Segment 클릭은 무시
+            }
+        }
+
+        // 트랙 빈 공간 클릭 시 해당 위치로 스크러버 이동
         Point pos = e.GetPosition(_keyframeTrack);
         double trackWidth = _keyframeTrack.ActualWidth;
 
@@ -1002,8 +1071,6 @@ public class KeyframeTimeline : Control
         SetCurrentValue(ViewportStartProperty, newStart);
     }
 
-    #region Time Ruler Panning (시간 눈금자 드래그 패닝)
-
     private void OnRulerMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
         if (_timeRuler == null)
@@ -1084,8 +1151,6 @@ public class KeyframeTimeline : Control
 
         e.Handled = true;
     }
-
-    #endregion
 
     /// <summary>
     /// 시간 눈금자 그리기
@@ -1263,11 +1328,11 @@ public class KeyframeTimeline : Control
         double viewportEnd = ViewportStart + ViewportDuration;
         if (CurrentTime < ViewportStart || CurrentTime > viewportEnd)
         {
-            _scrubber.Visibility = Visibility.Collapsed;
+            _scrubber.SetCurrentValue(VisibilityProperty, Visibility.Collapsed);
             return;
         }
 
-        _scrubber.Visibility = Visibility.Visible;
+        _scrubber.SetCurrentValue(VisibilityProperty, Visibility.Visible);
         double x = TimeToX(CurrentTime, trackWidth);
         Canvas.SetLeft(_scrubber, x - (_scrubber.ActualWidth / 2));
     }
@@ -1490,7 +1555,7 @@ public class KeyframeTimeline : Control
         // 연속된 포인트 사이에 세그먼트 생성
         for (int i = 0; i < sortedPoints.Count - 1; i++)
         {
-            AddKeyframeSegmentBetween(
+            _ = AddKeyframeSegmentBetween(
                 sortedPoints[i],
                 sortedPoints[i + 1],
                 null,

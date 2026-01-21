@@ -559,23 +559,3 @@ public class MenuBar : Control, IThemeControl
         // Theme update logic if needed
     }
 }
-
-/// <summary>
-/// Event arguments for MenuBar button command events.
-/// </summary>
-public class MenuBarButtonCommandEventArgs : RoutedEventArgs
-{
-    /// <summary>
-    /// Gets the type of button that was clicked.
-    /// </summary>
-    public TitleBarButtonType ButtonType { get; }
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="MenuBarButtonCommandEventArgs"/> class.
-    /// </summary>
-    public MenuBarButtonCommandEventArgs(RoutedEvent routedEvent, object source, TitleBarButtonType buttonType)
-        : base(routedEvent, source)
-    {
-        ButtonType = buttonType;
-    }
-}

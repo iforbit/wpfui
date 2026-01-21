@@ -262,7 +262,7 @@ public class ComboBox : System.Windows.Controls.ComboBox
                         {
                             observable.Add(num);
                         }
-                        else
+                        else if (item is not null)
                         {
                             observable.Add(item);
                         }

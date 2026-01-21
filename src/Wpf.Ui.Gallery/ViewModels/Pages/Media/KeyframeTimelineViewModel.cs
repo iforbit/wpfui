@@ -14,9 +14,10 @@ namespace Wpf.Ui.Gallery.ViewModels.Pages.Media;
 
 public partial class KeyframeTimelineViewModel : ViewModel
 {
-    private readonly DispatcherTimer _playbackTimer;
     private const double PlaybackInterval = 1.0 / 60.0; // 60 FPS
     private const double PlaybackSpeed = 1.0; // 1x speed
+
+    private readonly DispatcherTimer _playbackTimer;
 
     [ObservableProperty]
     private double _duration = 2.0;

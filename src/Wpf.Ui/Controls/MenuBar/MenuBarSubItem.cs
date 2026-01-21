@@ -2,9 +2,6 @@
 // If a copy of the MIT was not distributed with this file, You can obtain one at https://opensource.org/licenses/MIT.
 // Copyright (C) Lighted Solutions and Contributors.
 
-using System.Windows;
-using System.Windows.Input;
-
 namespace Wpf.Ui.Controls;
 
 /// <summary>
@@ -109,7 +106,7 @@ public class MenuBarSubItem : System.Windows.Controls.MenuItem
     }
 
     /// <summary>
-    /// Gets or sets whether this item acts as a toggle button.
+    /// Gets or sets a value indicating whether gets or sets whether this item acts as a toggle button.
     /// </summary>
     public bool IsToggle
     {
@@ -118,7 +115,7 @@ public class MenuBarSubItem : System.Windows.Controls.MenuItem
     }
 
     /// <summary>
-    /// Gets or sets the toggle state when IsToggle is true.
+    /// Gets or sets a value indicating whether gets or sets the toggle state when IsToggle is true.
     /// </summary>
     public bool ToggleState
     {
@@ -146,8 +143,8 @@ public class MenuBarSubItem : System.Windows.Controls.MenuItem
     {
         if (IsToggle)
         {
-            ToggleState = !ToggleState;
-            IsChecked = ToggleState;
+            SetCurrentValue(ToggleStateProperty, !ToggleState);
+            SetCurrentValue(IsCheckedProperty, ToggleState);
         }
 
         base.OnClick();

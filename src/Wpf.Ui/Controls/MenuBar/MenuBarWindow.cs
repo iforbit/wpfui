@@ -2,9 +2,6 @@
 // If a copy of the MIT was not distributed with this file, You can obtain one at https://opensource.org/licenses/MIT.
 // Copyright (C) Lighted Solutions and Contributors.
 
-using System;
-using System.Windows;
-using System.Windows.Input;
 using System.Windows.Shell;
 
 namespace Wpf.Ui.Controls;
@@ -102,7 +99,7 @@ public class MenuBarWindow : FluentWindow
 
             if (window.MenuBar != null)
             {
-                window.MenuBar.Height = height;
+                window.MenuBar.SetCurrentValue(MenuBar.HeightProperty, height);
             }
         }
     }
@@ -114,7 +111,7 @@ public class MenuBarWindow : FluentWindow
 
         if (MenuBar != null)
         {
-            MenuBar.IsMaximized = WindowState == WindowState.Maximized;
+            MenuBar.SetCurrentValue(MenuBar.IsMaximizedProperty, WindowState == WindowState.Maximized);
         }
     }
 }

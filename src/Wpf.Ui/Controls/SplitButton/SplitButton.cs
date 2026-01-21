@@ -154,6 +154,9 @@ public class SplitButton : Wpf.Ui.Controls.Button
             return;
         }
 
+        // ToggleButton 클릭 이벤트가 부모로 버블링되지 않도록 함
+        e.Handled = true;
+
         _contextMenu.SetCurrentValue(MinWidthProperty, ActualWidth);
         _contextMenu.SetCurrentValue(ContextMenu.PlacementTargetProperty, this);
         _contextMenu.SetCurrentValue(

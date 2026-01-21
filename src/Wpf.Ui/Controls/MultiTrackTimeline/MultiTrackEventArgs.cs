@@ -5,8 +5,15 @@
 
 namespace Wpf.Ui.Controls;
 
-public enum MaskType
+/// <summary>
+/// MultiTrackTimeline 이벤트 인자
+/// </summary>
+public class MultiTrackEventArgs : EventArgs
 {
-    None,
-    RegEx
+    public ITimelineTrack Track { get; }
+
+    public MultiTrackEventArgs(ITimelineTrack track)
+    {
+        Track = track;
+    }
 }

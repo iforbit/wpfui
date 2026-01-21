@@ -114,17 +114,3 @@ public partial class ElectricalGeometryPage
         }
     }
 }
-
-public class GeometryItem
-{
-    public string Name { get; set; } = string.Empty;
-
-    public Geometry? Geometry { get; set; }
-}
-
-public class CategoryGroup
-{
-    public string CategoryName { get; set; } = string.Empty;
-
-    public ObservableCollection<GeometryItem> Symbols { get; set; } = [];
-}

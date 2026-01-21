@@ -62,31 +62,53 @@
             <Setter.Value>
                 <ControlTemplate TargetType="Thumb">
                     <Grid>
-                        <!--  외부 원 (선택 시 강조)  -->
-                        <Ellipse x:Name="OuterRing"
+                        <!--  선택된 상태 링 (IsSelected=true 시 지속 표시)  -->
+                        <Ellipse x:Name="SelectedRing"
+                                 Width="18" Height="18" Fill="Transparent"
+                                 Opacity="0"
+                                 Stroke="{DynamicResource SystemFillColorAttentionBrush}"
+                                 StrokeThickness="2" />
+                        <!--  Hover/클릭 피드백 링  -->
+                        <Ellipse x:Name="HoverRing"
                                  Width="14" Height="14" Fill="Transparent"
                                  Opacity="0"
                                  Stroke="{DynamicResource AccentTextFillColorPrimaryBrush}"
-                                 StrokeThickness="2" />
+                                 StrokeThickness="1" />
                         <!--  내부 원  -->
                         <Ellipse x:Name="InnerDot"
                                  Width="10" Height="10"
                                  Fill="{DynamicResource AccentFillColorDefaultBrush}" />
                     </Grid>
                     <ControlTemplate.Triggers>
+                        <!--  Hover 시: 살짝 커지고 외곽선 표시  -->
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="OuterRing" Property="Opacity" Value="0.5" />
+                            <Setter TargetName="HoverRing" Property="Opacity" Value="0.6" />
+                            <Setter TargetName="InnerDot" Property="Width" Value="11" />
+                            <Setter TargetName="InnerDot" Property="Height" Value="11" />
+                        </Trigger>
+                        <!--  클릭/누름 시: 강한 하이라이트 + 크기 확대 (마우스 캡처됨 = 드래그/클릭 중)  -->
+                        <Trigger Property="IsMouseCaptured" Value="True">
+                            <Setter TargetName="HoverRing" Property="Width" Value="20" />
+                            <Setter TargetName="HoverRing" Property="Height" Value="20" />
+                            <Setter TargetName="HoverRing" Property="Opacity" Value="1" />
+                            <Setter TargetName="HoverRing" Property="Stroke" Value="{DynamicResource SystemFillColorAttentionBrush}" />
+                            <Setter TargetName="HoverRing" Property="StrokeThickness" Value="2" />
                             <Setter TargetName="InnerDot" Property="Width" Value="12" />
                             <Setter TargetName="InnerDot" Property="Height" Value="12" />
+                            <Setter TargetName="InnerDot" Property="Fill" Value="{DynamicResource AccentFillColorSecondaryBrush}" />
                         </Trigger>
+                        <!--  드래그 중: 강조  -->
                         <Trigger Property="IsDragging" Value="True">
-                            <Setter TargetName="OuterRing" Property="Opacity" Value="0.8" />
+                            <Setter TargetName="HoverRing" Property="Opacity" Value="1" />
                             <Setter TargetName="InnerDot" Property="Width" Value="12" />
                             <Setter TargetName="InnerDot" Property="Height" Value="12" />
                         </Trigger>
+                        <!--  선택된 상태: 색상 변경 + 외곽 링 지속 표시  -->
                         <DataTrigger Binding="{Binding IsSelected}" Value="True">
-                            <Setter TargetName="OuterRing" Property="Opacity" Value="1" />
+                            <Setter TargetName="SelectedRing" Property="Opacity" Value="1" />
                             <Setter TargetName="InnerDot" Property="Fill" Value="{DynamicResource SystemFillColorAttentionBrush}" />
+                            <Setter TargetName="InnerDot" Property="Width" Value="10" />
+                            <Setter TargetName="InnerDot" Property="Height" Value="10" />
                         </DataTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

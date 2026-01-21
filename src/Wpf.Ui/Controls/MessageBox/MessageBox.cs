@@ -3,7 +3,6 @@
 // Copyright (C) Leszek Pomianowski and WPF UI Contributors.
 // All Rights Reserved.
 
-using System.Reflection;
 using Wpf.Ui.Input;
 using Wpf.Ui.Interop;
 
@@ -341,9 +340,7 @@ public class MessageBox : System.Windows.Window
                 break;
             case MessageBoxButton.YesNoCancel:
                 SetCurrentValue(PrimaryButtonTextProperty, "Yes");
-                SetCurrentValue(CloseButtonTextProperty, "No");
-
-                // Close 버튼을 Cancel로 사용하도록 설정
+                SetCurrentValue(SecondaryButtonTextProperty, "No");
                 SetCurrentValue(CloseButtonTextProperty, "Cancel");
                 break;
             default:
