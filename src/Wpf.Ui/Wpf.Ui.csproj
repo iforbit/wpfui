@@ -35,6 +35,7 @@
     <Resource Include="Resources\Fonts\bootstrap-icons.ttf" />
     <Resource Include="Resources\Fonts\electrical-icons.ttf" />
     <Resource Include="Resources\Theme\Effects\Grayscale.ps" />
+    <Resource Include="Resources\Cursor\eyedropper.cur" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Assets\ConstPixelShader.hlsl">

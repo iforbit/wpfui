@@ -388,19 +388,11 @@
                                         -->
                                         <ContentPresenter x:Name="PART_ContentPresenter"
                                                           HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                                          Content="{TemplateBinding SelectionBoxItem}"
                                                           ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
                                                           ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
                                                           IsHitTestVisible="False"
-                                                          TextElement.Foreground="{TemplateBinding Foreground}">
-                                            <ContentPresenter.Content>
-                                                <PriorityBinding>
-                                                    <!--  다중 선택 모드 시 CustomSelectionBoxItem을 우선 사용  -->
-                                                    <Binding Path="CustomSelectionBoxItem" RelativeSource="{RelativeSource TemplatedParent}" />
-                                                    <!--  기본적으로 SelectionBoxItem을 사용  -->
-                                                    <Binding Path="SelectionBoxItem" RelativeSource="{RelativeSource TemplatedParent}" />
-                                                </PriorityBinding>
-                                            </ContentPresenter.Content>
-                                        </ContentPresenter>
+                                                          TextElement.Foreground="{TemplateBinding Foreground}" />
                                     </Grid>
                                     <Grid Grid.Column="1" Margin="{StaticResource ComboBoxChevronMargin}">
                                         <controls:SymbolIcon x:Name="ChevronIcon"
@@ -531,6 +523,10 @@
                             <Setter TargetName="ContentBorder" Property="Background" Value="{DynamicResource ComboBoxBackgroundDisabled}" />
                             <Setter TargetName="ContentBorder" Property="BorderBrush" Value="{DynamicResource ComboBoxBorderBrushDisabled}" />
                             <Setter Property="Foreground" Value="{DynamicResource ComboBoxForegroundDisabled}" />
+                        </Trigger>
+                        <!--  다중 선택 모드: SelectionBoxItem 대신 CustomSelectionBoxItem 표시  -->
+                        <Trigger Property="AllowMultipleSelection" Value="True">
+                            <Setter TargetName="PART_ContentPresenter" Property="Content" Value="{Binding CustomSelectionBoxItem, RelativeSource={RelativeSource TemplatedParent}}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

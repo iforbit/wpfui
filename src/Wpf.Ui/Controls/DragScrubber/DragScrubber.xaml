@@ -4,7 +4,6 @@
 
     <!--  DragScrubber 기본 스타일  -->
     <Style TargetType="{x:Type controls:DragScrubber}">
-        <Setter Property="Height" Value="32" />
         <Setter Property="LabelFontSize" Value="12" />
         <Setter Property="LabelForeground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
         <Setter Property="Step" Value="1.0" />
@@ -40,7 +39,7 @@
                                      VerticalContentAlignment="Center" BorderBrush="#CCCCCC" BorderThickness="1"
                                      FontSize="{TemplateBinding LabelFontSize}"
                                      Foreground="{TemplateBinding LabelForeground}"
-                                     Text="{Binding Value, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
+                                     Text="{Binding Value, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=LostFocus}" />
                         </Grid>
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="InteractionStates">
@@ -77,7 +76,6 @@
 
     <!--  PropertyPane 전용 컴팩트 스타일 - 더 작고 유연한 크기  -->
     <Style x:Key="CompactDragScrubberStyle" TargetType="{x:Type controls:DragScrubber}">
-        <Setter Property="Height" Value="14" />
         <Setter Property="LabelFontSize" Value="8" />
         <Setter Property="LabelForeground" Value="{DynamicResource TextFillColorPrimaryBrush}" />
         <Setter Property="Step" Value="1.0" />
@@ -110,12 +108,11 @@
                         <!--  컴팩트 입력 가능한 TextBox (외부에서 높이 조정 가능)  -->
                         <TextBox x:Name="PART_TextBox"
                                  Grid.Column="1"
-                                 Height="{Binding Height, RelativeSource={RelativeSource TemplatedParent}}"
-                                 MinHeight="12" Padding="2,0" VerticalAlignment="Center"
+                                 MinHeight="0" Padding="2,0" VerticalAlignment="Center"
                                  VerticalContentAlignment="Center" BorderThickness="0"
                                  FontSize="{TemplateBinding LabelFontSize}"
                                  Foreground="{TemplateBinding LabelForeground}"
-                                 Text="{Binding Value, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
+                                 Text="{Binding Value, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=LostFocus}" />
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

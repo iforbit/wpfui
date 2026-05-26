@@ -1,0 +1,201 @@
+<!--
+    This Source Code Form is subject to the terms of the MIT License.
+    If a copy of the MIT was not distributed with this file, You can obtain one at https://opensource.org/licenses/MIT.
+    Copyright (C) Leszek Pomianowski and WPF UI Contributors.
+    All Rights Reserved.
+-->
+
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:Wpf.Ui.Controls">
+
+    <!--
+        ===================================================================
+        StepProgressBarItem — individual step
+        ===================================================================
+    -->
+    <Style x:Key="DefaultUiStepProgressBarItemStyle" TargetType="{x:Type controls:StepProgressBarItem}">
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Cursor" Value="Arrow" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:StepProgressBarItem}">
+                    <!--
+                        Root adapts to Orientation:
+                          Horizontal parent → StackPanel Vertical (indicator top, label below)
+                          Vertical parent   → StackPanel Horizontal (indicator left, label right)
+                    -->
+                    <Button
+                        x:Name="PART_Button"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Command="{Binding Path=TemplateButtonCommand, Mode=OneTime, RelativeSource={RelativeSource AncestorType={x:Type controls:StepProgressBar}}}"
+                        CommandParameter="{TemplateBinding Index}"
+                        Cursor="{TemplateBinding Cursor}"
+                        Focusable="False"
+                        OverridesDefaultStyle="True">
+                        <Button.Template>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <ContentPresenter />
+                            </ControlTemplate>
+                        </Button.Template>
+                        <StackPanel
+                            x:Name="PART_Root"
+                            HorizontalAlignment="Center"
+                            Orientation="Vertical">
+                            <!-- Indicator circle -->
+                            <Grid
+                                x:Name="PART_Indicator"
+                                Width="{Binding IndicatorSize, RelativeSource={RelativeSource AncestorType={x:Type controls:StepProgressBar}}}"
+                                Height="{Binding IndicatorSize, RelativeSource={RelativeSource AncestorType={x:Type controls:StepProgressBar}}}"
+                                HorizontalAlignment="Center">
+                                <!-- Track ring (NotStarted/Active border) -->
+                                <Ellipse
+                                    x:Name="PART_Ring"
+                                    Stroke="{DynamicResource StepProgressBarTrackBrush}"
+                                    StrokeThickness="2" />
+                                <!-- Filled center dot (Active) — always in visual tree, opacity drives visibility -->
+                                <Ellipse
+                                    x:Name="PART_Dot"
+                                    Margin="7"
+                                    Fill="{DynamicResource StepProgressBarActiveBrush}"
+                                    Opacity="0" />
+                                <!-- Completed fill — covers ring in Completed state -->
+                                <Ellipse
+                                    x:Name="PART_CompletedFill"
+                                    Fill="{DynamicResource StepProgressBarCompletedBrush}"
+                                    Opacity="0" />
+                                <!--
+                                    Default checkmark (Completed, no custom Icon).
+                                    Rendered below PART_IconHost so a custom icon naturally covers it.
+                                -->
+                                <controls:SymbolIcon
+                                    x:Name="PART_DefaultCheck"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    FontSize="14"
+                                    Foreground="{DynamicResource StepProgressBarCompletedForegroundBrush}"
+                                    Symbol="Checkmark20"
+                                    Opacity="0" />
+                                <!--
+                                    Custom icon host (Completed state, Icon property set).
+                                    On top of PART_DefaultCheck — when Icon is set the custom icon
+                                    renders here and naturally overlaps the default checkmark.
+                                    When Icon is null ContentControl renders nothing.
+                                -->
+                                <ContentControl
+                                    x:Name="PART_IconHost"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Content="{TemplateBinding Icon}"
+                                    Focusable="False"
+                                    Opacity="0" />
+                            </Grid>
+
+                            <!-- Labels panel -->
+                            <StackPanel
+                                x:Name="PART_Labels"
+                                Margin="0,8,0,0"
+                                HorizontalAlignment="Center"
+                                Orientation="Vertical">
+                                <ContentPresenter
+                                    x:Name="PART_Label"
+                                    HorizontalAlignment="Center"
+                                    ContentSource="Content"
+                                    TextElement.FontSize="12"
+                                    TextElement.FontWeight="SemiBold"
+                                    TextElement.Foreground="{DynamicResource TextFillColorPrimaryBrush}" />
+                                <ContentPresenter
+                                    x:Name="PART_Description"
+                                    HorizontalAlignment="Center"
+                                    ContentSource="Description"
+                                    TextElement.FontSize="11"
+                                    TextElement.Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+                            </StackPanel>
+                        </StackPanel>
+                    </Button>
+
+                    <ControlTemplate.Triggers>
+                        <!-- Active status -->
+                        <Trigger Property="Status" Value="Active">
+                            <Setter TargetName="PART_Ring" Property="Stroke" Value="{DynamicResource StepProgressBarActiveBrush}" />
+                            <Setter TargetName="PART_Dot" Property="Opacity" Value="1" />
+                        </Trigger>
+
+                        <!-- Completed status -->
+                        <Trigger Property="Status" Value="Completed">
+                            <Setter TargetName="PART_Ring" Property="StrokeThickness" Value="0" />
+                            <Setter TargetName="PART_CompletedFill" Property="Opacity" Value="1" />
+                            <Setter TargetName="PART_DefaultCheck" Property="Opacity" Value="1" />
+                            <Setter TargetName="PART_IconHost" Property="Opacity" Value="1" />
+                        </Trigger>
+
+                        <!-- Vertical orientation: indicator left, label right -->
+                        <Trigger Property="Orientation" Value="Vertical">
+                            <Setter TargetName="PART_Root" Property="Orientation" Value="Horizontal" />
+                            <Setter TargetName="PART_Labels" Property="Margin" Value="12,0,0,0" />
+                            <Setter TargetName="PART_Labels" Property="HorizontalAlignment" Value="Left" />
+                            <Setter TargetName="PART_Labels" Property="VerticalAlignment" Value="Center" />
+                            <Setter TargetName="PART_Label" Property="HorizontalAlignment" Value="Left" />
+                            <Setter TargetName="PART_Description" Property="HorizontalAlignment" Value="Left" />
+                        </Trigger>
+
+                        <!-- Cursor: pointer when CanUserSelect -->
+                        <DataTrigger Binding="{Binding CanUserSelect, RelativeSource={RelativeSource AncestorType={x:Type controls:StepProgressBar}}}" Value="True">
+                            <Setter Property="Cursor" Value="Hand" />
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--
+        ===================================================================
+        StepProgressBar — container
+        ===================================================================
+    -->
+    <Style x:Key="DefaultUiStepProgressBarStyle" TargetType="{x:Type controls:StepProgressBar}">
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="ItemContainerStyle" Value="{StaticResource DefaultUiStepProgressBarItemStyle}" />
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <controls:StepProgressBarPanel IsItemsHost="True" />
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:StepProgressBar}">
+                    <StackPanel>
+                        <!-- Step indicators row/column -->
+                        <ItemsPresenter x:Name="PART_ItemsPresenter" />
+                        <!-- Per-step content area — collapsed when CurrentStepContent is null -->
+                        <ContentControl
+                            x:Name="PART_StepContent"
+                            Margin="{TemplateBinding ContentMargin}"
+                            Content="{TemplateBinding CurrentStepContent}"
+                            Focusable="False"
+                            Visibility="Visible" />
+                    </StackPanel>
+                    <ControlTemplate.Triggers>
+                        <Trigger SourceName="PART_StepContent" Property="Content" Value="{x:Null}">
+                            <Setter TargetName="PART_StepContent" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Implicit styles -->
+    <Style BasedOn="{StaticResource DefaultUiStepProgressBarItemStyle}" TargetType="{x:Type controls:StepProgressBarItem}" />
+    <Style BasedOn="{StaticResource DefaultUiStepProgressBarStyle}" TargetType="{x:Type controls:StepProgressBar}" />
+
+</ResourceDictionary>

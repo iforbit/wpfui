@@ -36,8 +36,8 @@ internal static class Libraries
     internal const string User32 = "user32.dll";
     internal const string UxTheme = "uxtheme.dll";
 
-    /*internal const string Gdi32 = "gdi32.dll";
-    internal const string Gdip = "gdiplus.dll";*/
+    internal const string Gdi32 = "gdi32.dll";
+    // internal const string Gdip = "gdiplus.dll";
     internal const string Version = "version.dll";
     /*internal const string WebSocket = "websocket.dll";
     internal const string WinHttp = "winhttp.dll";

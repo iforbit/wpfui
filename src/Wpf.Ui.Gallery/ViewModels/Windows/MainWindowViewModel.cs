@@ -69,6 +69,9 @@ public partial class MainWindowViewModel(IStringLocalizer<Translations> localize
                 new NavigationViewItem(nameof(ThumbRate), typeof(ThumbRatePage)),
                 new NavigationViewItem(nameof(SplitButton), typeof(SplitButtonPage)),
                 new NavigationViewItem(nameof(Slider), typeof(SliderPage)),
+                new NavigationViewItem(nameof(DragScrubber), typeof(DragScrubberPage)),
+                new NavigationViewItem(nameof(EyedropperButton), typeof(EyedropperButtonPage)),
+                new NavigationViewItem(nameof(Wpf.Ui.Controls.StepProgressBar), typeof(StepProgressBarPage)),
             },
         },
         new NavigationViewItem

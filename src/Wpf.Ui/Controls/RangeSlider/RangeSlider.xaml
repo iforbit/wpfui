@@ -1,0 +1,137 @@
+<!--
+    This Source Code Form is subject to the terms of the MIT License.
+    If a copy of the MIT was not distributed with this file, You can obtain one at https://opensource.org/licenses/MIT.
+    Copyright (C) Leszek Pomianowski and WPF UI Contributors.
+    All Rights Reserved.
+-->
+
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:Wpf.Ui.Controls">
+
+    <!-- Range Slider Thumb Style (smaller than standard slider for dual-thumb clarity) -->
+    <Style x:Key="RangeSliderThumbStyle" TargetType="{x:Type Thumb}">
+        <Setter Property="Height" Value="18" />
+        <Setter Property="Width" Value="18" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Thumb}">
+                    <Border
+                        x:Name="ThumbBorder"
+                        Background="{DynamicResource SliderOuterThumbBackground}"
+                        BorderBrush="{DynamicResource ControlElevationBorderBrush}"
+                        BorderThickness="1"
+                        CornerRadius="9">
+                        <Ellipse
+                            x:Name="ThumbInner"
+                            Width="10"
+                            Height="10"
+                            Fill="{DynamicResource SliderThumbBackground}"
+                            Stroke="Transparent"
+                            StrokeThickness="0" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="ThumbInner" Property="Fill" Value="{DynamicResource SliderThumbBackgroundPointerOver}" />
+                        </Trigger>
+                        <Trigger Property="IsDragging" Value="True">
+                            <Setter TargetName="ThumbInner" Property="Fill" Value="{DynamicResource SystemAccentColorSecondaryBrush}" />
+                            <Setter TargetName="ThumbBorder" Property="BorderBrush" Value="{DynamicResource AccentControlElevationBorderBrush}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Middle Thumb (selection range drag area) -->
+    <Style x:Key="RangeSliderMiddleThumbStyle" TargetType="{x:Type Thumb}">
+        <Setter Property="Height" Value="6" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="Cursor" Value="SizeWE" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Thumb}">
+                    <Border
+                        x:Name="MiddleBorder"
+                        Background="Transparent"
+                        CornerRadius="0" />
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="MiddleBorder" Property="Background" Value="{DynamicResource SliderTrackFillPointerOver}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- RangeSlider Control Template -->
+    <Style TargetType="{x:Type controls:RangeSlider}">
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource DefaultControlFocusVisualStyle}" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="MinHeight" Value="21" />
+        <Setter Property="MinWidth" Value="60" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:RangeSlider}">
+                    <Grid MinHeight="{TemplateBinding MinHeight}">
+                        <!-- Track Background (centered) -->
+                        <Border
+                            x:Name="PART_Track"
+                            Height="4"
+                            VerticalAlignment="Center"
+                            Background="{DynamicResource SliderTrackFill}"
+                            BorderThickness="0"
+                            CornerRadius="2" />
+
+                        <!-- Canvas aligned to track center -->
+                        <Canvas Height="4" VerticalAlignment="Center" ClipToBounds="False">
+                            <!-- Selected range bar -->
+                            <Border
+                                x:Name="PART_SelectedRange"
+                                Height="4"
+                                Background="{DynamicResource SliderThumbBackground}"
+                                CornerRadius="2"
+                                Canvas.Top="0" />
+
+                            <!-- Middle thumb (drag entire range) -->
+                            <Thumb
+                                x:Name="PART_MiddleThumb"
+                                Style="{StaticResource RangeSliderMiddleThumbStyle}"
+                                Canvas.Top="-1" />
+
+                            <!-- Start thumb -->
+                            <Thumb
+                                x:Name="PART_StartThumb"
+                                Style="{StaticResource RangeSliderThumbStyle}"
+                                Canvas.Top="-7" />
+
+                            <!-- End thumb -->
+                            <Thumb
+                                x:Name="PART_EndThumb"
+                                Style="{StaticResource RangeSliderThumbStyle}"
+                                Canvas.Top="-7" />
+                        </Canvas>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="PART_Track" Property="Background" Value="{DynamicResource SliderTrackFillPointerOver}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.5" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

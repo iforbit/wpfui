@@ -1,0 +1,163 @@
+<Page x:Class="Wpf.Ui.Gallery.Views.Pages.BasicInput.StepProgressBarPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:controls="clr-namespace:Wpf.Ui.Gallery.Controls"
+      xmlns:local="clr-namespace:Wpf.Ui.Gallery.Views.Pages.BasicInput"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      Title="StepProgressBarPage"
+      d:DataContext="{d:DesignInstance local:StepProgressBarPage, IsDesignTimeCreatable=False}"
+      d:DesignHeight="900"
+      d:DesignWidth="800"
+      ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
+      ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+      Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+      mc:Ignorable="d">
+
+    <StackPanel Margin="0,0,0,24">
+
+        <!-- ─── Scenario 1: StepContent 페이지 전환 ─────────────────────────── -->
+        <controls:ControlExample
+            Margin="0"
+            HeaderText="Step-based content area (wizard pattern)."
+            XamlCode="&lt;ui:StepProgressBar SelectedIndex=&quot;{Binding}&quot;&gt;&#10;    &lt;ui:StepProgressBar.StepContent&gt;&lt;!-- Pages --&gt;&lt;/ui:StepProgressBar.StepContent&gt;&#10;    &lt;ui:StepProgressBarItem Content=&quot;A&quot; /&gt; ...&#10;&lt;/ui:StepProgressBar&gt;">
+            <ui:StepProgressBar
+                HorizontalAlignment="Stretch"
+                IndicatorSize="32"
+                SelectedIndex="{Binding ViewModel.WizardStep, RelativeSource={RelativeSource AncestorType=local:StepProgressBarPage}, Mode=TwoWay}"
+                StepSpacing="80">
+
+                <!-- ── 단계별 콘텐츠 ── -->
+                <ui:StepProgressBar.StepContent>
+
+                    <!-- Step 0: A Page -->
+                    <ui:Card Padding="24,20">
+                        <StackPanel>
+                            <ui:TextBlock
+                                Margin="0,0,0,8"
+                                FontTypography="BodyStrong"
+                                Text="A Page — Account Details" />
+                            <ui:TextBlock
+                                Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                Text="Enter your name and email address to create your account."
+                                TextWrapping="Wrap" />
+                        </StackPanel>
+                    </ui:Card>
+
+                    <!-- Step 1: B Page -->
+                    <ui:Card Padding="24,20">
+                        <StackPanel>
+                            <ui:TextBlock
+                                Margin="0,0,0,8"
+                                FontTypography="BodyStrong"
+                                Text="B Page — Profile Setup" />
+                            <ui:TextBlock
+                                Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                Text="Upload a profile picture and choose your display preferences."
+                                TextWrapping="Wrap" />
+                        </StackPanel>
+                    </ui:Card>
+
+                    <!-- Step 2: C Page -->
+                    <ui:Card Padding="24,20">
+                        <StackPanel>
+                            <ui:TextBlock
+                                Margin="0,0,0,8"
+                                FontTypography="BodyStrong"
+                                Text="C Page — Confirm" />
+                            <ui:TextBlock
+                                Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                Text="Review your settings and click Finish to complete setup."
+                                TextWrapping="Wrap" />
+                        </StackPanel>
+                    </ui:Card>
+
+                </ui:StepProgressBar.StepContent>
+
+                <!-- ── 스텝 인디케이터 ── -->
+                <ui:StepProgressBarItem Content="Account" Description="Enter info" />
+                <ui:StepProgressBarItem Content="Profile" Description="Customize" />
+                <ui:StepProgressBarItem Content="Confirm" Description="Review" />
+            </ui:StepProgressBar>
+        </controls:ControlExample>
+
+        <!-- ─── Scenario 2: Vertical + icons ────────────────────────────────── -->
+        <controls:ControlExample
+            Margin="0,32,0,0"
+            HeaderText="Vertical step bar with per-step icons."
+            XamlCode="&lt;ui:StepProgressBar Orientation=&quot;Vertical&quot; StepSpacing=&quot;40&quot;&gt;...&lt;/ui:StepProgressBar&gt;">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <ui:StepProgressBar
+                    IndicatorSize="32"
+                    Orientation="Vertical"
+                    SelectedIndex="{Binding ViewModel.InstallStep, RelativeSource={RelativeSource AncestorType=local:StepProgressBarPage}, Mode=TwoWay}"
+                    StepSpacing="40">
+                    <ui:StepProgressBarItem Content="Download">
+                        <ui:StepProgressBarItem.Description>Fetching packages</ui:StepProgressBarItem.Description>
+                        <ui:StepProgressBarItem.Icon>
+                            <ui:SymbolIcon Symbol="ArrowDownload24" />
+                        </ui:StepProgressBarItem.Icon>
+                    </ui:StepProgressBarItem>
+                    <ui:StepProgressBarItem Content="Verify">
+                        <ui:StepProgressBarItem.Description>Checking integrity</ui:StepProgressBarItem.Description>
+                        <ui:StepProgressBarItem.Icon>
+                            <ui:SymbolIcon Symbol="ShieldCheckmark24" />
+                        </ui:StepProgressBarItem.Icon>
+                    </ui:StepProgressBarItem>
+                    <ui:StepProgressBarItem Content="Install">
+                        <ui:StepProgressBarItem.Description>Copying files</ui:StepProgressBarItem.Description>
+                        <ui:StepProgressBarItem.Icon>
+                            <ui:SymbolIcon Symbol="ArrowDownload24" />
+                        </ui:StepProgressBarItem.Icon>
+                    </ui:StepProgressBarItem>
+                    <ui:StepProgressBarItem Content="Complete">
+                        <ui:StepProgressBarItem.Description>Ready to use</ui:StepProgressBarItem.Description>
+                        <ui:StepProgressBarItem.Icon>
+                            <ui:SymbolIcon Symbol="CheckmarkCircle24" />
+                        </ui:StepProgressBarItem.Icon>
+                    </ui:StepProgressBarItem>
+                </ui:StepProgressBar>
+
+                <StackPanel
+                    Grid.Column="1"
+                    Margin="32,0,0,0"
+                    VerticalAlignment="Center">
+                    <ui:Button
+                        Margin="0,0,0,8"
+                        Command="{Binding ViewModel.GoBackVerticalCommand, RelativeSource={RelativeSource AncestorType=local:StepProgressBarPage}}"
+                        Content="Previous step"
+                        IsEnabled="{Binding ViewModel.CanGoBackVertical, RelativeSource={RelativeSource AncestorType=local:StepProgressBarPage}}" />
+                    <ui:Button
+                        Appearance="Primary"
+                        Command="{Binding ViewModel.GoNextVerticalCommand, RelativeSource={RelativeSource AncestorType=local:StepProgressBarPage}}"
+                        Content="Next step"
+                        IsEnabled="{Binding ViewModel.CanGoNextVertical, RelativeSource={RelativeSource AncestorType=local:StepProgressBarPage}}" />
+                </StackPanel>
+            </Grid>
+        </controls:ControlExample>
+
+        <!-- ─── Scenario 3: CanUserSelect click demo ─────────────────────────── -->
+        <controls:ControlExample
+            Margin="0,32,0,0"
+            HeaderText="Click any step to jump — CanUserSelect=True (default)."
+            XamlCode="&lt;ui:StepProgressBar SelectedIndex=&quot;{Binding}&quot;&gt;...&lt;/ui:StepProgressBar&gt;">
+            <ui:StepProgressBar
+                HorizontalAlignment="Center"
+                IndicatorSize="32"
+                SelectedIndex="{Binding ViewModel.InteractiveStep, RelativeSource={RelativeSource AncestorType=local:StepProgressBarPage}, Mode=TwoWay}"
+                StepSpacing="80">
+                <ui:StepProgressBarItem Content="Order placed" />
+                <ui:StepProgressBarItem Content="Processing" />
+                <ui:StepProgressBarItem Content="Shipped" />
+                <ui:StepProgressBarItem Content="Delivered" />
+            </ui:StepProgressBar>
+        </controls:ControlExample>
+
+    </StackPanel>
+</Page>

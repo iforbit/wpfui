@@ -212,6 +212,12 @@
     <SolidColorBrush x:Key="BreadcrumbBarHoverForegroundBrush" Color="{StaticResource SystemColorHighlightColor}" />
     <SolidColorBrush x:Key="BreadcrumbBarCurrentNormalForegroundBrush" Color="{StaticResource SystemColorButtonTextColor}" />
 
+    <!--  StepProgressBar  -->
+    <SolidColorBrush x:Key="StepProgressBarTrackBrush" Color="{StaticResource SystemColorGrayTextColor}" />
+    <SolidColorBrush x:Key="StepProgressBarActiveBrush" Color="{StaticResource SystemColorHighlightColor}" />
+    <SolidColorBrush x:Key="StepProgressBarCompletedBrush" Color="{StaticResource SystemColorHighlightColor}" />
+    <SolidColorBrush x:Key="StepProgressBarCompletedForegroundBrush" Color="{StaticResource SystemColorHighlightTextColor}" />
+
     <!--  Button  -->
     <SolidColorBrush x:Key="AccentButtonBackground" Color="{StaticResource SystemColorHighlightColor}" />
     <SolidColorBrush x:Key="AccentButtonBackgroundPointerOver" Color="{StaticResource SystemColorButtonTextColor}" />

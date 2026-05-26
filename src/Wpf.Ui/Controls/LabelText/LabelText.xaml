@@ -31,6 +31,19 @@
         <Setter Property="IsHitTestVisible" Value="False" />
         <Setter Property="RenderTransformOrigin" Value="0,0.5" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
+        <!--  AccessKey 비활성화: _가 mnemonic으로 소비되지 않도록  -->
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Label}">
+                    <Border Padding="{TemplateBinding Padding}">
+                        <ContentPresenter
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                            RecognizesAccessKey="False" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
         <!--  Telerik: 선명한 렌더링  -->
         <Style.Triggers>
             <!--  Floated state styling (Telerik 방식)  -->

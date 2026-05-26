@@ -18,4 +18,16 @@ public partial class SliderViewModel : ViewModel
 
     [ObservableProperty]
     private int _verticalSliderValue = 0;
+
+    [ObservableProperty]
+    private double _rangeSliderStart = 20;
+
+    [ObservableProperty]
+    private double _rangeSliderEnd = 80;
+
+    [ObservableProperty]
+    private double _constrainedRangeStart = 30;
+
+    [ObservableProperty]
+    private double _constrainedRangeEnd = 60;
 }
